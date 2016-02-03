@@ -1,0 +1,71 @@
+---
+title: "Instalación"
+output: pdf_document
+---
+
+# R 
+
+Para los usuario de Linux recomiendo 
+[este link](https://github.com/Skalas/massive-adventure-ubuntu/blob/master/i_R.sh) 
+para instalar R compilándolo.
+Ésta es la mejor opción pues, de esta manera, se aprovecharán todas las 
+características de su máquina. Pueden clonar el repositorio y en la terminal
+correr
+
+```
+./i_R.sh
+```
+
+Para descargar e instalar R en su versión precompilada, seguir las instrucciones
+de [este link](https://cran.r-project.org/) para el sistema operativo que estén
+utilizando.
+
+# Editores
+
+Hay muchísimos, yo les recomiendo dos.
+
+## RStudio
+
+Puedes descargar [RStudio](https://www.rstudio.com/products/rstudio/download/) 
+siguiendo las instrucciones para cada sistema operativo. RStudio es un IDE (integrated
+development environment) para R que incluye consola, editor de texto, memoria de 
+gráficos, vista de objetos en el ambiente y otras herramientas útiles para 
+desarrollar. En su versión más reciente, también autocompleta código y debuggea
+al vuelo.
+
+Aguas con el uso de la memoria RAM de este editor pues abusa bastante y -cuando 
+están usando una gran cantidad de datos o procesos muy pesados- RStudio suele 
+tronar fácilmente. Buenas prácticas de todos los días: guarden seguido, sigan 
+un workflow aunado a controlador de versiones (o algún tipo de backup) y, sobretodo,
+creen sus funciones, lógica, algoritmos, con una muestra de sus datos.
+
+## ESS
+
+[Emacs speaks statistics](http://ess.r-project.org/) es el add-on favorito para
+los usuarios de emacs \& R. Soporta la edición de scripts para R, S-plus, SAS,
+Stata, OPenBUGS/JAGS. Para los que además ya están acostumbrados al enorme poder
+de Emacs, ésta será la mejor opción.
+
+El editor interactivo es muy bueno y casi no tiene overhead de memoria.
+
+# Optimizando
+
+Es común que muy pronto nos encontremos con limitaciones al poder de cómputo y 
+rapidez con el que R procesa los datos. Hay operaciones intensivas como, por 
+ejemplo, la inversión de matrices (qr) o el análisis por componentes principales (svd). 
+Incluso un back/forward selection usando una simple regresión lineal sobre 
+múltiples regresores puede hacernos esperar por horas/días o no terminar. 
+
+Una de las manera más rápidas de mejorar el performance de R es la librería de 
+álgebra lineal que utliza el software. Para mucho (demasiado) detalle al respecto,
+referirse a la comparación de performance en 
+[este paper](https://cran.r-project.org/web/packages/gcbd/vignettes/gcbd.pdf) o
+al paquete del gran Dirk Eddelbuettel 
+[gcbd](https://cran.rstudio.com/web/packages/gcbd/index.html).
+
+Para la parte práctica de todo esto, referirse a 
+[este blog](http://brettklamer.com/diversions/statistical/faster-blas-in-r/)
+para instalar las librerías apropiadas para BLAS y Lapack. Para una comparación
+bastante práctica de las diferentes versiones de esas librerías, ver
+[aquí](http://blog.nguyenvq.com/blog/2014/11/10/optimized-r-and-python-standard-blas-vs-atlas-vs-openblas-vs-mkl/)
+
