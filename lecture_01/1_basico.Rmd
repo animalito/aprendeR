@@ -3,7 +3,7 @@ title: "R: lo básico"
 output:
   pdf_document:
     fig_caption: yes
-    latex_engine: xelatex
+    latex_engine: pdflatex
     keep_tex: yes
     includes:
       in_header: mypackages.sty
@@ -248,14 +248,298 @@ RSiteSearch("foo") # Busca por la cadena "foo" en todos los manuales de ayuda
 
 # Estructuras de datos
 
+R tiene diferentes tipos y estructuras de datos que permiten al 
+usuario aprovechar el lenguaje. La manipulación de estos objetos es algo que se
+hace diario y entender cómo operarlos o cómo convertir de una a otra es muy útil.
+
+\renewcommand\bcStyleTitre[1]{\large\textcolor{ttblue}{#1}}
+\begin{bclogo}[
+  couleur=bgblue,
+  arrondi=0,
+  logo=\bcattention,
+  barre=none,
+  noborder=true]{En R}
+\begin{itemize}
+\item Todo lo que existe es un objeto.
+\item Todo lo que sucede es una llamada a una función.
+\end{itemize}
+\end{bclogo}
+
+## Clases atómicas (atomic classes)
+
+R tiene 6 clases atómicas.
+
+- character (*caracter*)
+- numeric (números reales o decimales)
+- integer (números enteros)
+- logical (booleanos, i.e. falsos-verdaderos)
+- complex (números complejos)
+
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{p{3cm}p{5cm}}
+  \hline
+Tipo & Ejemplo \\ 
+  \hline
+Caracter & "hola", "x" \\ 
+Numérico & 67, 45.5 \\
+Integer & 2L, 67L \\
+Lógico & TRUE, FALSE, T, F \\
+Complejo & 1 + 4i\\
+   \hline
+\end{tabular}
+\caption{Clases atómicas.}
+\end{table}
+
+Algunos comandos importantes para las clases atómicas son su tipo `typeof()`, su 
+tamaño `length()` y sus atributos `attributes()`, es decir, sus metadatos.
+
+```{r}
+############ Ejemplo 1
+
+x <- "una cadena"
+typeof(x)
+length(x) # tamaño: cuántas cadenas son?
+nchar(x) # Número de caracteres
+attributes(x) # Le pusimos metadatos?
+
+############ Ejemplo 2
+
+y <- 1:10
+typeof(y)
+length(y)
+attributes(y)
+
+############ Ejemplo 3
+
+z <- c(1L, 2L, 3L) # Nota como para denotar enteros debes incluir una L al final
+typeof(z)
+length(z)
+```
+
 ## Vectores
 
-## Matrices
+Los vectores son la estructura de datos más común y básica de R. Hay dos tipos 
+de vectores: vectores atómicos y listas.
+
+Típicamente -en libros, blogs, manuales, cuando se mencionan vectores se refieren
+a los atómicos y no a las listas.
+
+### Vectores atómicos
+
+Un vector es un conjunto de elementos con alguna de las clases atómicas, 
+es decir, `character`, `logical`, `integer`, `numeric`. Se puede crear un vector
+vacío con el comando `vector()` así como especificar su tamaño y su clase.
+
+```{r}
+v <- vector()
+v 
+
+## Especifico clase y longitud
+vector("character", length = 10)
+
+## Lo mismo pero usando un wrapper
+character(10)
+
+## Numerico de tamaño 5
+numeric(5)
+
+## Lógico tamaño 5
+logical(5)
+```
+
+Realiza los siguientes ejemplos en la consola de R.
+
+```{r, eval = F}
+x <- rep(1, 5)
+x
+typeof(x)
+
+xi <- c(1L, 3L, 56L, 4L)
+xi
+typeof(xi)
+
+y <- c(T, F, T, F, F, T)
+
+z <- c("a", "aba", "andrea", "b", "bueno")
+class(z)
+str(z)
+```
+
+**Operaciones con vectores**
+
+Accesar partes del vector.
+
+```{r}
+a <- c(1:5)
+a
+a[1]
+a[2]
+a[4:5]
+```
+
+Aritmética: por default, se realizan componente a componente.
+
+```{r}
+b <- a + 10
+b
+
+c <- sqrt(b) # square root = raíz
+c
+
+a + c
+10 * (a + c)
+a^2
+a * c
+```
+
+Agregar elementos aun vector ya creado
+
+```{r}
+a <- c(a, 7)
+a
+```
+
+Para construir datos rápido, podemos usar comandos como `rep`, `seq` o distintas
+distribuciones, e.g., la normal `rnorm`, uniformes `runif` o cualquiera en 
+[esta lista](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/Distributions.html).
+
+Prueba lo siguiente:
+
+```{r, eval=F}
+# Dame un vector donde el minimo sea 0, maximo 1 en intervalos de 0.25
+seq(0, 1, 0.25)
+# Vector con 10 unos
+rep(1, 10)
+# 5 realizaciones de una normal(0,1)
+rnorm(5)
+# De una normal(10, 5)
+rnorm(5, mean = 10, sd = sqrt(5))
+# De una uniforme(0,1)
+runif(5)
+# De una uniforme(5, 15)
+runif(5, min = 5, max = 15)
+```
+
+Otros objetos importantes
+
+`Inf` es como R denomina al infinito. En el mundo de R se permite también positivo
+o negativo.
+
+```{r}
+1/0
+1/Inf
+```
+
+`NaN` es como R denota a algo que no es un número (literal: *not a number*).
+
+```{r}
+0/0
+```
+
+Cada objeto tiene atributos. Hay atributos específicos para vectores que, sin
+importar su clase, tienen en común. Ya revisamos algunos: tamaño (`length`), clase
+(`class`). También son importantes atributos como los nombres
+
+```{r}
+calificaciones <- c(6, 5, 8, 9, 10)
+names(calificaciones) <- c("Maria", "Jorge", "Miguel", "Raúl", "Carla")
+attributes(calificaciones)
+# O llamamos directo a los nombres
+names(calificaciones)
+```
+
+Mezclar tipos no es una buena idea
+
+```{r}
+c(1.7, "a")
+c(TRUE, 2)
+c("a", TRUE)
+```
+
+R realiza una coerción implícita entre los objetos y "decide" cuál es la clase del vector.
+También hay coercioń explícita (*explicit coercion*) utilizando `as.<nombre_clase>`.
+
+```{r, eval = F}
+as.numeric()
+as.character()
+as.integer()
+as.logical()
+```
+
+Muchos problemas suceden cuando le permites a R decidir por ti (o cuando no sabes
+cuál decisión tomará R por *default*).
+
+```{r}
+x <- 0:5
+
+identical(x, as.numeric(x))
+```
+
+En este ejemplo, cuando declaramos $x$ no especificamos su clase y R decidió que
+era entero. Al coercionar al objeto para que fuese numérico, R no considera a 
+los dos objetos iguales. R te protege -no te permite hacer o te advierte- 
+de algunas cosas
+
+```{r}
+1 < "2"
+```
+
+Pero en otras, hace lo mejor que puede con lo que le das (cosa que a veces no
+tiene sentido)
+
+```{r}
+x <- c("a", "b", "c")
+as.numeric(x)
+as.logical(x)
+```
+
+### Matrices
+
+Las matrices son un tipo especial de vectores. Son un vector atómico con dimensión pues
+tienen filas y columnas.
+
+```{r}
+m <- matrix(c(1, 2, 3, 4), nrow = 2, ncol = 2)
+m
+```
+
+Como puedes notar, las matrices se llenan siguiendo las columnas. Podemos
+simplemente "agregarle" una dimensión a un vector para construir una matriz.
+
+```{r}
+m <- 1:10
+dim(m) <- c(2, 5)
+m
+```
+
+También podemos pegar vectores de la misma longitud como si fueran columnas de
+una matriz `cbind` o como si fueran filas `rbind` (r \= row, c \= column).
+
+```{r}
+x <- runif(4)
+y <- rnorm(4)
+cbind(x, y)
+rbind(x, y)
+```
+
+Le agregamos atributos para accesar más fácilmente a los objetos.
+
+```{r}
+m <- matrix(c(x, y), nrow = 4, ncol = 2, byrow = T,
+            dimnames = list(paste0("row", 1:4),
+                            paste0("col", 1:2)))
+m
+
+m[1, 1] == m["row1", "col1"]
+```
+  
+### Listas
+
+### Factores
 
 ## Data frames
-
-## Listas
-
 
 # Leer y escribir archivos de datos
 
