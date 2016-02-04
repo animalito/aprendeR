@@ -1,0 +1,536 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+    \usepackage{xltxtra,xunicode}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
+  \newcommand{\euro}{€}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{{#1}}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{{#1}}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{{#1}}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{{#1}}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{{#1}}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{{#1}}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{{#1}}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{{#1}}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{{#1}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{{#1}}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{{#1}}}
+\newcommand{\RegionMarkerTok}[1]{{#1}}
+\newcommand{\ErrorTok}[1]{\textbf{{#1}}}
+\newcommand{\NormalTok}[1]{{#1}}
+\ifxetex
+  \usepackage[setpagesize=false, % page size defined by xetex
+              unicode=false, % unicode breaks when used with xetex
+              xetex]{hyperref}
+\else
+  \usepackage[unicode=true]{hyperref}
+\fi
+\hypersetup{breaklinks=true,
+            bookmarks=true,
+            pdfauthor={},
+            pdftitle={R: lo básico},
+            colorlinks=true,
+            citecolor=blue,
+            urlcolor=blue,
+            linkcolor=magenta,
+            pdfborder={0 0 0}}
+\urlstyle{same}  % don't use monospace font for urls
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\setcounter{secnumdepth}{0}
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+  \title{R: lo básico}
+  \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+  \author{}
+  \preauthor{}\postauthor{}
+  \date{}
+  \predate{}\postdate{}
+
+\usepackage[
+  backend=biber,
+  style=alphabetic,
+  sorting=ynt,
+  citestyle=authoryear
+  ]{biblatex}
+\addbibresource{../lit/bib.bib}
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+
+
+\begin{document}
+
+\maketitle
+
+
+\section{El espacio de trabajo
+(Workspace)}\label{el-espacio-de-trabajo-workspace}
+
+\subsection{Directorio de trabajo}\label{directorio-de-trabajo}
+
+El directorio de trabajo o \emph{working directory} es el folder en tu
+computadora en el que estás trabajando en ese momento. Cuando se le pide
+a R que abra un archivo o guarde ciertos datos, R lo hará a partir del
+directorio de trabajo que le hayas fijado.
+
+Para saber en qué directorio te encuentras, se usa el comando
+\texttt{getwd()}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{getwd}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "/home/animalito/study/aprendeR/lecture_01"
+\end{verbatim}
+
+Para especificar el directorio de trabajo, se utiliza el comando
+\texttt{setwd()} en la consola. Y volvemos a
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{setwd}\NormalTok{(}\StringTok{"/home/animalito/study/"}\NormalTok{)}
+\KeywordTok{getwd}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+Con lo que acabamos de hacer, R buscará archivos o guardará archivos en
+el folder \texttt{/home/animalito/study/}. En R también es posible
+navegar a partir de el directorio de trabajo. Como siempre,
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  ``../un\_archivo.R'' le indica a R que busque un folder arriva del
+  actual directorio de trabajo por el archivo \emph{un\_archivo.R}.
+\item
+  ``datos/otro\_archivo.R'' hace que se busque en el directorio de
+  trabajo, dentro del folder \emph{datos} por el archivo
+  \emph{otro\_archivo.R}
+\end{itemize}
+
+\subsection{Ejemplos básicos}\label{ejemplos-basicos}
+
+La consola permite hacer operaciones sobre números o caracteres (cuando
+tiene sentido).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Potencias, sumas, multiplicaciones}
+\DecValTok{2}\NormalTok{^}\DecValTok{3} \NormalTok{+}\StringTok{ }\DecValTok{67} \NormalTok{*}\StringTok{ }\DecValTok{4} \NormalTok{-}\StringTok{ }\NormalTok{(}\DecValTok{45} \NormalTok{+}\StringTok{ }\DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 226
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Comparaciones}
+\DecValTok{56} \NormalTok{>}\StringTok{ }\DecValTok{78} 
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] FALSE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DecValTok{34} \NormalTok{<=}\StringTok{ }\DecValTok{34}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DecValTok{234} \NormalTok{<}\StringTok{ }\DecValTok{345}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\StringTok{"hola"} \NormalTok{==}\StringTok{ "hola"}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# modulo}
+\DecValTok{10} \NormalTok{%%}\StringTok{ }\DecValTok{4} 
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 2
+\end{verbatim}
+
+Estas operaciones también pueden ser realizadas entre vectores
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x <-}\StringTok{ }\NormalTok{-}\DecValTok{1}\NormalTok{:}\DecValTok{12}
+\NormalTok{x}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] -1  0  1  2  3  4  5  6  7  8  9 10 11 12
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x +}\StringTok{ }\DecValTok{1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1]  0  1  2  3  4  5  6  7  8  9 10 11 12 13
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DecValTok{2} \NormalTok{*}\StringTok{ }\NormalTok{x +}\StringTok{ }\DecValTok{3}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1]  1  3  5  7  9 11 13 15 17 19 21 23 25 27
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x %%}\StringTok{ }\DecValTok{5} \CommentTok{#-- is periodic}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] 4 0 1 2 3 4 0 1 2 3 4 0 1 2
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x %/%}\StringTok{ }\DecValTok{5}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] -1  0  0  0  0  0  1  1  1  1  1  2  2  2
+\end{verbatim}
+
+\subsection{Comandos útiles}\label{comandos-utiles}
+
+Para enlistar lso objetos que están en el espacio de trabajo
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ls}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "x"
+\end{verbatim}
+
+Para eliminar todos los objetos en un workspace
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{rm(list = ls(}\ErrorTok{))} \CommentTok{# se puede borrar solo uno, por ejemplo, nombrándolo}
+\KeywordTok{ls}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## character(0)
+\end{verbatim}
+
+También se puede utilizar/guardar la historia de comandos utilizados
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{history}\NormalTok{()}
+\KeywordTok{history}\NormalTok{(}\DataTypeTok{max.show =} \DecValTok{5}\NormalTok{)}
+\KeywordTok{history}\NormalTok{(}\DataTypeTok{max.show =} \OtherTok{Inf}\NormalTok{) }\CommentTok{# Muestra toda la historia}
+
+\CommentTok{# Se puede salvar la historia de comandos a un archivo}
+\KeywordTok{savehistory}\NormalTok{(}\DataTypeTok{file =} \StringTok{"mihistoria"}\NormalTok{) }\CommentTok{# Por default, R ya hace esto }
+\CommentTok{# en un archivo ".Rhistory"}
+
+\CommentTok{# Cargar al current workspace una historia de comandos en particular}
+\KeywordTok{loadhistory}\NormalTok{(}\DataTypeTok{file =} \StringTok{"mihistoria"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Es posible también guardar el workspace -en forma completa- en un
+archivo con el comando \texttt{save.image()} a un archivo con extensión
+\emph{.RData}. Puedes guardar una lista de objetos específica a un
+archivo \emph{.RData}. Por ejemplo:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x <-}\StringTok{ }\DecValTok{1}\NormalTok{:}\DecValTok{12}
+\NormalTok{y <-}\StringTok{ }\DecValTok{3}\NormalTok{:}\DecValTok{45}
+\NormalTok{save(x, y, file = }\StringTok{"ejemplo.RData"}\ErrorTok{)} \CommentTok{#la extensión puede ser arbitraria.}
+\end{Highlighting}
+\end{Shaded}
+
+Después puedo cargar ese archivo. Prueba hacer:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{rm}\NormalTok{(}\DataTypeTok{list =} \KeywordTok{ls}\NormalTok{()) }\CommentTok{# limpiamos workspace}
+\NormalTok{load(file = }\StringTok{"ejemplo.RData"}\ErrorTok{)} \CommentTok{#la extensión puede ser arbitraria.}
+\KeywordTok{ls}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+Nota como los objetos preservan el nombre con el que fueron guardados.
+
+\section{Librerías}\label{librerias}
+
+R puede hacer muchos análisis estadísticos y de datos. Las diferentes
+capacidades están organizadas en paquetes o librerías. Con la
+\href{https://github.com/animalito/aprendeR/blob/master/lecture_01/0_instalacion.pdf}{instalación
+estándar} se instalan también las librerías más comunes. Para obtener
+una lista de todos los paquetes instalados se puede utilizar el comando
+\texttt{library()} en la consola.
+
+Existen una gran cantidad de paquetes disponibles además de los
+incluidos por default.
+
+\subsection{CRAN}\label{cran}
+
+CRAN o \emph{Comprehensive R Archive Network} es una colección de sitios
+que contienen exactamente el mismo material, es decir, las
+distribuciones de R, las extensiones, la documentación y los binarios.
+El master de CRAN está en Wirtschaftsuniversität Wien en Austria. Éste
+se ``espeja'' (\emph{mirrors}) en forma diaria a muchos sitios alrededor
+del mundo. En la \href{https://cran.r-project.org/mirrors.html}{lista de
+espejos} se puede ver que para México están disponibles el espejo del
+ITAM, del Colegio de Postgraduados (Texcoco) y Jellyfish Foundation.
+
+Los espejos son importantes pues, cada vez que busquen instalar
+paquetes, se les preguntará qué espejo quieren utilizar para la sesión
+en cuestión. Del espejo que selecciones, será del cuál R \emph{bajará}
+el binario y la documentación.
+
+Del CRAN es que se obtiene la última versión oficial de R. Diario se
+actualizan los espejos. Para más detalles consultar el
+\href{https://cran.r-project.org/doc/FAQ/R-FAQ.html}{FAQ}.
+
+Para contribuir un paquete en CRAN se deben seguir las instrucciones
+\href{https://cran.r-project.org/web/packages/policies.html}{aquí}.
+
+\subsection{Github}\label{github}
+
+Git es un controlador de versiones muy popular para desarrollar
+software. Cuando se combina con \href{https://github.com/}{GitHub} se
+puede compartir el código con el resto de la comunidad. Éste controlador
+de versiones es el más popular entre los que contribuyen a R. Muchos
+problemas a los que uno se enfrenta alguien ya los desarrolló y no
+necesariamente publicó el paquete en CRAN. Para instalar algún paquete
+desde GitHub, se pueden seguir las instrucciones siguientes
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{install.packages}\NormalTok{(}\StringTok{"devtools"}\NormalTok{)}
+\NormalTok{devtools::}\KeywordTok{install_github}\NormalTok{(}\StringTok{"username/packagename"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Donde \texttt{username} es el usuario de Github y \texttt{packagename}
+es el nombre del repositorio que contiene el paquete. Cuidado, no todo
+repositorio en GitHub es un paquete. Para más información ver el
+capítulo \href{http://r-pkgs.had.co.nz/git.html}{Git and GitHub} en
+\textcite{wickham2015r}.
+
+\subsection{Otras fuentes}\label{otras-fuentes}
+
+Otros lugares en donde es común que se publiquen paquetes es en
+\href{https://www.bioconductor.org/}{Bioconductor} un projecto de
+software para la comprensión de datos del genoma humano.
+
+\section{Paquetes recomendados}\label{paquetes-recomendados}
+
+Hay muchísimas librerías y lo recomendable es, dado un problema y un
+modelo para resolverlo, revisar si alguien ya implementó el método en
+algunas de las fuentes de paquetes mencionadas antes. Para una lista de
+paquetes que son de mucha utilidad ver
+\href{https://github.com/Skalas/massive-adventure-ubuntu/blob/master/Rpackages/data_manipulation.R}{estas
+recomendaciones}.
+
+\section{Scripting}\label{scripting}
+
+R es un intérprete. Utiliza un ambiente basado en línea de comandos. Por
+ende, es necesario escribir la secuencia de comandos que se desea
+realizar a diferencia de otras herramientas en donde es posible utlizar
+el mouse o menús.
+
+Aunque los comandos pueden ser ejecutados directamente en consola una
+única vez, también es posible guardarlos en archivos conocidos como
+\emph{scripts}. Típicamente, utilizamos la extensión \textbf{.R} o
+\textbf{.r}. En RStudio, \texttt{CTRL\ +\ SHIFT\ +\ N} abre
+inmediatamente un nuevo editor en el panel superior izquierdo.
+
+Se puede \emph{ir editando} el script y corriendo los comandos línea por
+línea con \texttt{CTRL\ +\ ENTER}. Esto también aplica para
+\emph{correr} una selección del texto editable.
+
+Es posible también correr todo el script
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{source}\NormalTok{(}\StringTok{"foo.R"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+O con el atajo \texttt{CTRL\ +\ SHIFT\ +\ S} en RStudio.
+
+Para enlistar algunos shortcuts comunes en RStudio presiona
+\texttt{ALT\ +\ SHIFT\ +\ K}. De la misma manera, si utilizas Emacs +
+ESS, existen múltiples atajos de teclado para realizar todo mucho más
+eficientemente. Estudiarlos no es tiempo perdido.
+
+\section{Ayuda \& documentación}\label{ayuda-documentacion}
+
+R tiene mucha documentación. Desde la consola se puede accesar a la
+misma.
+
+Para ayuda general,
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{help.start}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+Para la ayuda de una función en especifico, por ejemplo, si se quiere
+graficar algo y sabemos que existe la funcion \texttt{plot} podemos
+consultar fácilmente la ayuda.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{help}\NormalTok{(plot)}
+\CommentTok{# o tecleando directamente}
+\NormalTok{?plot}
+\end{Highlighting}
+\end{Shaded}
+
+El segundo ejemplo se puede extender para buscar esa función en todos
+los paquetes que tengo instalados en mi ambiente al escribir
+\texttt{??plot}.
+
+La documetnación normalmente se acompaña de ejemplos. Para \emph{correr}
+los ejemplos sin necesidad de copiar y pegar, prueba
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{example}\NormalTok{(plot)}
+\end{Highlighting}
+\end{Shaded}
+
+Para búsquedas más comprensivas, se puede buscar de otras maneras:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{apropos}\NormalTok{(}\StringTok{"foo"}\NormalTok{) }\CommentTok{# Enlista todas las funciones que contengan la cadena "foo"}
+\KeywordTok{RSiteSearch}\NormalTok{(}\StringTok{"foo"}\NormalTok{) }\CommentTok{# Busca por la cadena "foo" en todos los manuales de ayuda }
+\CommentTok{# y listas de distribución.}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Estructuras de datos}\label{estructuras-de-datos}
+
+\subsection{Vectores}\label{vectores}
+
+\subsection{Matrices}\label{matrices}
+
+\subsection{Data frames}\label{data-frames}
+
+\subsection{Listas}\label{listas}
+
+\section{Leer y escribir archivos de
+datos}\label{leer-y-escribir-archivos-de-datos}
+
+\subsection{Lectura}\label{lectura}
+
+Desde archivo
+
+Datos de muestra
+
+\subsection{Escritura}\label{escritura}
+
+\section{Estructuras de programación}\label{estructuras-de-programacion}
+
+\subsection{IFs}\label{ifs}
+
+\subsection{Fors}\label{fors}
+
+\subsection{Whiles}\label{whiles}
+
+\subsection{Funciones propias}\label{funciones-propias}
+
+\printbibliography
+
+\end{document}
