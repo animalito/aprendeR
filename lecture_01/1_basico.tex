@@ -149,7 +149,7 @@
   colframe=black,
 }
 
-\newtcolorbox{myboxii}[1][]{
+\newtcolorbox{nota}[1][]{
   breakable,
   freelance,
   title=#1,
@@ -1210,10 +1210,10 @@ columnas de una matriz \texttt{cbind} o como si fueran filas
 
 \begin{verbatim}
 ##              x          y
-## [1,] 0.7175439  1.5110723
-## [2,] 0.9804935  0.8484441
-## [3,] 0.6155117 -1.6513531
-## [4,] 0.7500755 -1.3797025
+## [1,] 0.6815020 -0.3491374
+## [2,] 0.6324576 -1.2433298
+## [3,] 0.8485953  0.8542629
+## [4,] 0.3936644 -0.9745044
 \end{verbatim}
 
 \begin{Shaded}
@@ -1223,9 +1223,9 @@ columnas de una matriz \texttt{cbind} o como si fueran filas
 \end{Shaded}
 
 \begin{verbatim}
-##        [,1]      [,2]       [,3]       [,4]
-## x 0.7175439 0.9804935  0.6155117  0.7500755
-## y 1.5110723 0.8484441 -1.6513531 -1.3797025
+##         [,1]       [,2]      [,3]       [,4]
+## x  0.6815020  0.6324576 0.8485953  0.3936644
+## y -0.3491374 -1.2433298 0.8542629 -0.9745044
 \end{verbatim}
 
 Le agregamos atributos para accesar más fácilmente a los objetos.
@@ -1241,10 +1241,10 @@ Le agregamos atributos para accesar más fácilmente a los objetos.
 
 \begin{verbatim}
 ##            col1       col2
-## row1  0.7175439  0.9804935
-## row2  0.6155117  0.7500755
-## row3  1.5110723  0.8484441
-## row4 -1.6513531 -1.3797025
+## row1  0.6815020  0.6324576
+## row2  0.8485953  0.3936644
+## row3 -0.3491374 -1.2433298
+## row4  0.8542629 -0.9745044
 \end{verbatim}
 
 \begin{Shaded}
@@ -1259,9 +1259,347 @@ Le agregamos atributos para accesar más fácilmente a los objetos.
 
 \subsubsection{Listas}\label{listas}
 
-\subsubsection{Factores}\label{factores}
+Es un tipo de vector en el cuál cada elemento puede ser de un tipo
+distinto. Mas aun, es posible incluir una lista como un elemento de otra
+lista y por eso también se les conoce como vectores recursivos
+(\emph{recursive vectors}).
+
+Para crear una lista vacía utilizas \texttt{list()} y para coercionar un
+objeto a una lista usa \texttt{as.list()}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x <-}\StringTok{ }\KeywordTok{list}\NormalTok{(3L, }\FloatTok{3.56}\NormalTok{, }\DecValTok{1} \NormalTok{+}\StringTok{ }\NormalTok{4i, }\OtherTok{TRUE}\NormalTok{, }\StringTok{"hola"}\NormalTok{, }\KeywordTok{list}\NormalTok{(}\StringTok{"genial"}\NormalTok{, }\DecValTok{1}\NormalTok{))}
+\NormalTok{x}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [[1]]
+## [1] 3
+## 
+## [[2]]
+## [1] 3.56
+## 
+## [[3]]
+## [1] 1+4i
+## 
+## [[4]]
+## [1] TRUE
+## 
+## [[5]]
+## [1] "hola"
+## 
+## [[6]]
+## [[6]][[1]]
+## [1] "genial"
+## 
+## [[6]][[2]]
+## [1] 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{length}\NormalTok{(x)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 6
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{class}\NormalTok{(x)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "list"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{class}\NormalTok{(x[}\DecValTok{1}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "list"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{class}\NormalTok{(x[[}\DecValTok{1}\NormalTok{]])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "integer"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{y <-}\StringTok{ }\KeywordTok{as.list}\NormalTok{(}\DecValTok{1}\NormalTok{:}\DecValTok{10}\NormalTok{)}
+\KeywordTok{length}\NormalTok{(y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 10
+\end{verbatim}
+
+Nota como muchas propiedades que tenían los vectores atómicos los tienen
+también las listas. Por su propiedad recursiva, se navega diferente. Si
+pides \texttt{x{[}1{]}} te devuelve una lista con lo que hayas puesto en
+ese contenedor.
+
+Para extraer el objeto (con la clase de ese objeto y no simplemente otra
+lista) necesitas usar \texttt{x{[}{[}1{]}{]}}, es decir, el integer 3.
+
+\subsubsection{Factores (factor)}\label{factores-factor}
+
+Otro tipo de vector pero que ayuda a representar datos del tipo
+categórico u ordinal. Es muy importante decirle a R que algo debe ser
+tratado como factor cuando se empieza a modelar o incluso para que los
+métodos de gráficos funcionen de manera apropiada. Sin embargo, hay que
+entender bien cómo tratarlos porque mal usados hacen que pasen muchas
+cosas muy raras que dan resultados que estan \emph{mal, mal, mal}.
+
+Los factores son enteros pero con etiquetas encima.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"no"}\NormalTok{, }\StringTok{"si"}\NormalTok{, }\StringTok{"si"}\NormalTok{, }\StringTok{"no"}\NormalTok{))}
+\NormalTok{x}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] no si si no
+## Levels: no si
+\end{verbatim}
+
+Lo que te deja utilizar métodos para factores como tablas de frecuencias
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{table}\NormalTok{(x)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## x
+## no si 
+##  2  2
+\end{verbatim}
+
+Los factores se van a ver \emph{como si fueran} vectores tipo caracter.
+A veces se comportan como character vectors pero \emph{debemos} recordar
+que por abajo son integers y tenemos que ser cuidadosos si los tratamos
+como caracteres. Algunos métodos que están hechos para caracteres
+coersionan un factor a caracter mientras que otros arrojan un error. Si
+usas métodos de caracteres, lo mejor es ``castear'' a caracter tu factor
+\texttt{as.character(mifactor)}. Pierdes algunas cosas pero te aseguras
+que las cosas funcionen como deben.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{summary}\NormalTok{(x)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## no si 
+##  2  2
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{summary}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(x))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    Length     Class      Mode 
+##         4 character character
+\end{verbatim}
+
+Los factores pueden contener únicamente valores predefinidos. Por eso la
+``unión'' de factores puede tronar.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{y <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"si"}\NormalTok{, }\StringTok{"no"}\NormalTok{, }\StringTok{"tal vez"}\NormalTok{))}
+\KeywordTok{c}\NormalTok{(x, y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1 2 2 1 2 1 3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{class}\NormalTok{(}\KeywordTok{c}\NormalTok{(x, y))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "integer"
+\end{verbatim}
+
+¿Cómo recuperas el valor de las etiquetas? R hizo lo que pudo y está
+mal. Para hacerlo bien, debemos
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{factor}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(x), }\KeywordTok{as.character}\NormalTok{(y)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] no      si      si      no      si      no      tal vez
+## Levels: no si tal vez
+\end{verbatim}
+
+Para datos ordinales como las respuestas en una pregunta de encuesta con
+escala likert, podemos usar
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{set.seed}\NormalTok{(}\DecValTok{2887}\NormalTok{)}
+\NormalTok{respuestas <-}\StringTok{ }\KeywordTok{sample}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{:}\DecValTok{5}\NormalTok{), }\DataTypeTok{size =} \DecValTok{5}\NormalTok{, }\DataTypeTok{replace =}  \NormalTok{T)}
+\NormalTok{respuestas }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 4 1 4 2 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{y <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(}
+  \DataTypeTok{x =} \NormalTok{respuestas,}
+  \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"1"}\NormalTok{, }\StringTok{"2"}\NormalTok{, }\StringTok{"3"}\NormalTok{, }\StringTok{"4"}\NormalTok{, }\StringTok{"5"}\NormalTok{),}
+  \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"muy en contra"}\NormalTok{, }\StringTok{"en contra"}\NormalTok{, }\StringTok{"indiferente"}\NormalTok{, }\StringTok{"a favor"}\NormalTok{, }\StringTok{"muy a favor"}\NormalTok{),}
+  \DataTypeTok{ordered =} \NormalTok{T)}
+\NormalTok{y}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] a favor       muy en contra a favor       en contra     muy en contra
+## 5 Levels: muy en contra < en contra < indiferente < ... < muy a favor
+\end{verbatim}
+
+Nota como aunque no tengamos todos las respuestas, nuestro factor sabe
+que las no ocurrencias son factibles (los niveles y las etiquetas las
+incluyen).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{table}\NormalTok{(y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## y
+## muy en contra     en contra   indiferente       a favor   muy a favor 
+##             2             1             0             2             0
+\end{verbatim}
+
+\begin{nota}[Nota]
+En R muchas cosas se reducen a utlizar la estructura de datos apropiada y darle
+todos los metadatos necesarios al objeto para que R no haga tonterias.
+\end{nota}
 
 \subsection{Data frames}\label{data-frames}
+
+Los dataframes son uno de los objetos más importantes en R. Tanto así
+que muchos no dejarían R porque implica abandonar este objeto. En
+python, se intenta replicar este objeto con la librería \texttt{pandas}.
+
+Este objeto es tan importante porque muchos de los modelos estadísticos
+que se utliizan necesitan una estructura de datos tabular.
+
+Los dataframes tienen atributos adicionales a los que tienen los
+vectores:
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{rownames()}
+\item
+  \texttt{names()}
+\item
+  \texttt{head()} te enseña las primeras 6 lineas.
+\item
+  \texttt{tail()} te enseña las últimas 6 líneas.
+\item
+  \texttt{nrow()} te da el número de filas
+\item
+  \texttt{ncol()} te da el número de columnas
+\item
+  \texttt{str()} te dice el tipo de cada columna y te muestra ejemplos
+\end{itemize}
+
+Podemos ver a los dataframes como un tipo de lista restringido a que
+todos los elementos de ésta tienen la misma longitud o tamaño.
+
+Los dataframes se pueden crear utilizando comandos como
+\texttt{read.table()} (que tiene como caso particular
+\texttt{read.csv()}. Para convertir un dataframe a una matriz se utiliza
+\texttt{data.matrix()}. La coerción es forzada y no necesariamente da lo
+que uno espera.
+
+Se pueden crear data.frames con la función \texttt{data.frame()}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}
+  \DataTypeTok{x =} \KeywordTok{rnorm}\NormalTok{(}\DecValTok{10}\NormalTok{),}
+  \DataTypeTok{y =} \KeywordTok{runif}\NormalTok{(}\DecValTok{10}\NormalTok{),}
+  \DataTypeTok{n =} \NormalTok{LETTERS[}\DecValTok{1}\NormalTok{:}\DecValTok{10}\NormalTok{]}
+\NormalTok{)}
+
+\KeywordTok{head}\NormalTok{(df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##            x         y n
+## 1  0.4923136 0.7117542 A
+## 2  1.2949079 0.5276390 B
+## 3 -0.2432564 0.4198618 C
+## 4  1.1128253 0.6586744 D
+## 5 -2.2455891 0.9040571 E
+## 6 -1.2421756 0.2724684 F
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{dim}\NormalTok{(df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 10  3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{str}\NormalTok{(df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 'data.frame':    10 obs. of  3 variables:
+##  $ x: num  0.492 1.295 -0.243 1.113 -2.246 ...
+##  $ y: num  0.712 0.528 0.42 0.659 0.904 ...
+##  $ n: Factor w/ 10 levels "A","B","C","D",..: 1 2 3 4 5 6 7 8 9 10
+\end{verbatim}
 
 \section{Leer y escribir archivos de
 datos}\label{leer-y-escribir-archivos-de-datos}

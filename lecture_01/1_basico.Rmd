@@ -537,9 +537,153 @@ m[1, 1] == m["row1", "col1"]
   
 ### Listas
 
-### Factores
+Es un tipo de vector en el cuál cada elemento puede ser de un tipo distinto.
+Mas aun, es posible incluir una lista como un elemento de otra lista y por eso 
+también se les conoce como vectores recursivos (*recursive vectors*).
+
+Para crear una lista vacía utilizas `list()` y para coercionar un objeto a una 
+lista usa `as.list()`.
+
+```{r}
+x <- list(3L, 3.56, 1 + 4i, TRUE, "hola", list("genial", 1))
+x
+
+length(x)
+class(x)
+class(x[1])
+class(x[[1]])
+
+y <- as.list(1:10)
+length(y)
+```
+
+Nota como muchas propiedades que tenían los vectores atómicos los tienen también 
+las listas. Por su propiedad recursiva, se navega diferente. Si pides `x[1]` te 
+devuelve una lista con lo que hayas puesto en ese contenedor.
+
+Para extraer el objeto (con la clase de ese objeto y no simplemente otra lista)
+necesitas usar `x[[1]]`, es decir, el `r class(x[[1]])` `r x[[1]]`.
+
+### Factores (factor)
+
+Otro tipo de vector pero que ayuda a representar datos del tipo categórico u 
+ordinal. Es muy importante decirle a R que algo debe ser tratado como factor 
+cuando se empieza a modelar o incluso para que los métodos de gráficos funcionen
+de manera apropiada. Sin embargo, hay que entender bien cómo tratarlos porque
+mal usados hacen que pasen muchas cosas muy raras que dan resultados que estan 
+*mal, mal, mal*.
+
+Los factores son enteros pero con etiquetas encima. 
+
+```{r}
+x <- factor(c("no", "si", "si", "no"))
+x
+```
+
+Lo que te deja utilizar métodos para factores como tablas de frecuencias
+
+```{r}
+table(x)
+```
+
+Los factores se van a ver 
+*como si fueran* vectores tipo caracter. A veces se comportan como character
+vectors pero *debemos* recordar que por abajo son integers y tenemos que ser 
+cuidadosos si los tratamos como caracteres. Algunos métodos que están hechos 
+para caracteres coersionan un factor a caracter mientras que otros arrojan  un error.
+Si usas métodos de caracteres, lo mejor es "castear" a 
+caracter tu factor `as.character(mifactor)`. Pierdes algunas cosas pero te 
+aseguras que las cosas funcionen como deben.
+
+```{r}
+summary(x)
+summary(as.character(x))
+```
+
+Los factores pueden contener únicamente valores predefinidos. Por eso la "unión"
+de factores puede tronar.
+
+```{r}
+y <- factor(c("si", "no", "tal vez"))
+c(x, y)
+class(c(x, y))
+```
+
+¿Cómo recuperas el valor de las etiquetas? R hizo lo que pudo y está mal. Para 
+hacerlo bien, debemos
+
+```{r}
+factor(c(as.character(x), as.character(y)))
+```
+
+Para datos ordinales como las respuestas en una pregunta de encuesta con escala
+likert, podemos usar
+
+```{r}
+set.seed(2887)
+respuestas <- sample(x = c(1:5), size = 5, replace =  T)
+respuestas 
+y <- factor(
+  x = respuestas,
+  levels = c("1", "2", "3", "4", "5"),
+  labels = c("muy en contra", "en contra", "indiferente", "a favor", "muy a favor"),
+  ordered = T)
+y
+```
+
+Nota como aunque no tengamos todos las respuestas, nuestro factor sabe que las 
+no ocurrencias son factibles (los niveles y las etiquetas las incluyen).
+
+```{r}
+table(y)
+```
+
+\begin{nota}[Nota]
+En R muchas cosas se reducen a utlizar la estructura de datos apropiada y darle
+todos los metadatos necesarios al objeto para que R no haga tonterias.
+\end{nota}
 
 ## Data frames
+
+Los dataframes son uno de los objetos más importantes en R. Tanto así que muchos
+no dejarían R porque implica abandonar este objeto. En python, se intenta replicar
+este objeto con la librería `pandas`.
+
+Este objeto es tan importante porque muchos de los modelos estadísticos que se
+utliizan necesitan una estructura de datos tabular. 
+
+Los dataframes tienen atributos adicionales a los que tienen los vectores:
+
+- `rownames()` 
+- `names()`
+- `head()` te enseña las primeras 6 lineas.
+- `tail()` te enseña las últimas 6 líneas.
+- `nrow()` te da el número de filas
+- `ncol()` te da el número de columnas
+- `str()` te dice el tipo de cada columna y te muestra ejemplos
+
+Podemos ver a los dataframes como un tipo de lista restringido a que todos los
+elementos de ésta tienen la misma longitud o tamaño.
+
+Los dataframes se pueden crear utilizando comandos como `read.table()` (que tiene
+como caso particular `read.csv()`.
+Para convertir un dataframe a una matriz se utiliza `data.matrix()`. La coerción 
+es forzada y no necesariamente da lo que uno espera.
+
+Se pueden crear data.frames con la función `data.frame()`.
+
+```{r}
+df <- data.frame(
+  x = rnorm(10),
+  y = runif(10),
+  n = LETTERS[1:10]
+)
+
+head(df)
+dim(df)
+str(df)
+```
+
 
 # Leer y escribir archivos de datos
 
