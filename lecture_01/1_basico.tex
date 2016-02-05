@@ -132,7 +132,7 @@
   skipbelow=\topsep
 }
 
-\newtcolorbox{myboxi}[1][]{
+\newtcolorbox{curiosidad}[1][]{
   breakable,
   title=#1,
   colback=white,
@@ -1210,10 +1210,10 @@ columnas de una matriz \texttt{cbind} o como si fueran filas
 
 \begin{verbatim}
 ##              x          y
-## [1,] 0.6815020 -0.3491374
-## [2,] 0.6324576 -1.2433298
-## [3,] 0.8485953  0.8542629
-## [4,] 0.3936644 -0.9745044
+## [1,] 0.8375688  0.8265347
+## [2,] 0.7966654 -2.2453083
+## [3,] 0.9549324 -1.4588243
+## [4,] 0.7562416 -0.5150524
 \end{verbatim}
 
 \begin{Shaded}
@@ -1223,9 +1223,9 @@ columnas de una matriz \texttt{cbind} o como si fueran filas
 \end{Shaded}
 
 \begin{verbatim}
-##         [,1]       [,2]      [,3]       [,4]
-## x  0.6815020  0.6324576 0.8485953  0.3936644
-## y -0.3491374 -1.2433298 0.8542629 -0.9745044
+##        [,1]       [,2]       [,3]       [,4]
+## x 0.8375688  0.7966654  0.9549324  0.7562416
+## y 0.8265347 -2.2453083 -1.4588243 -0.5150524
 \end{verbatim}
 
 Le agregamos atributos para accesar más fácilmente a los objetos.
@@ -1241,10 +1241,10 @@ Le agregamos atributos para accesar más fácilmente a los objetos.
 
 \begin{verbatim}
 ##            col1       col2
-## row1  0.6815020  0.6324576
-## row2  0.8485953  0.3936644
-## row3 -0.3491374 -1.2433298
-## row4  0.8542629 -0.9745044
+## row1  0.8375688  0.7966654
+## row2  0.9549324  0.7562416
+## row3  0.8265347 -2.2453083
+## row4 -1.4588243 -0.5150524
 \end{verbatim}
 
 \begin{Shaded}
@@ -1561,7 +1561,8 @@ Se pueden crear data.frames con la función \texttt{data.frame()}.
 \NormalTok{df <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}
   \DataTypeTok{x =} \KeywordTok{rnorm}\NormalTok{(}\DecValTok{10}\NormalTok{),}
   \DataTypeTok{y =} \KeywordTok{runif}\NormalTok{(}\DecValTok{10}\NormalTok{),}
-  \DataTypeTok{n =} \NormalTok{LETTERS[}\DecValTok{1}\NormalTok{:}\DecValTok{10}\NormalTok{]}
+  \DataTypeTok{n =} \NormalTok{LETTERS[}\DecValTok{1}\NormalTok{:}\DecValTok{10}\NormalTok{],}
+  \DataTypeTok{stringsAsFactors =} \NormalTok{F}
 \NormalTok{)}
 
 \KeywordTok{head}\NormalTok{(df)}
@@ -1598,8 +1599,22 @@ Se pueden crear data.frames con la función \texttt{data.frame()}.
 ## 'data.frame':    10 obs. of  3 variables:
 ##  $ x: num  0.492 1.295 -0.243 1.113 -2.246 ...
 ##  $ y: num  0.712 0.528 0.42 0.659 0.904 ...
-##  $ n: Factor w/ 10 levels "A","B","C","D",..: 1 2 3 4 5 6 7 8 9 10
+##  $ n: chr  "A" "B" "C" "D" ...
 \end{verbatim}
+
+\begin{curiosidad}
+¿Por qué use la opción "stringsAsFactors \= F"?
+\end{curiosidad}
+
+Podemos ``pegarle'' columnas o filas:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df <-}\StringTok{ }\KeywordTok{cbind}\NormalTok{(df, }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{z =} \KeywordTok{rexp}\NormalTok{(}\DecValTok{10}\NormalTok{)))}
+
+\NormalTok{df <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(df, }\KeywordTok{c}\NormalTok{(}\KeywordTok{rnorm}\NormalTok{(}\DecValTok{1}\NormalTok{), }\KeywordTok{runif}\NormalTok{(}\DecValTok{1}\NormalTok{), }\StringTok{"K"}\NormalTok{, }\KeywordTok{rexp}\NormalTok{(}\DecValTok{1}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
 
 \section{Leer y escribir archivos de
 datos}\label{leer-y-escribir-archivos-de-datos}

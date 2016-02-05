@@ -676,7 +676,8 @@ Se pueden crear data.frames con la función `data.frame()`.
 df <- data.frame(
   x = rnorm(10),
   y = runif(10),
-  n = LETTERS[1:10]
+  n = LETTERS[1:10],
+  stringsAsFactors = F
 )
 
 head(df)
@@ -684,6 +685,17 @@ dim(df)
 str(df)
 ```
 
+\begin{curiosidad}
+¿Por qué use la opción "stringsAsFactors \= F"?
+\end{curiosidad}
+
+Podemos "pegarle" columnas o filas:
+
+```{r}
+df <- cbind(df, data.frame(z = rexp(10)))
+
+df <- rbind(df, c(rnorm(1), runif(1), "K", rexp(1)))
+```
 
 # Leer y escribir archivos de datos
 
