@@ -989,7 +989,7 @@ Prueba lo siguiente:
 \end{Highlighting}
 \end{Shaded}
 
-Otros objetos importantes
+\paragraph{Otros objetos importantes}\label{otros-objetos-importantes}
 
 \texttt{Inf} es como R denomina al infinito. En el mundo de R se permite
 también positivo o negativo.
@@ -1209,11 +1209,11 @@ columnas de una matriz \texttt{cbind} o como si fueran filas
 \end{Shaded}
 
 \begin{verbatim}
-##              x          y
-## [1,] 0.8375688  0.8265347
-## [2,] 0.7966654 -2.2453083
-## [3,] 0.9549324 -1.4588243
-## [4,] 0.7562416 -0.5150524
+##               x          y
+## [1,] 0.09794746  0.2023505
+## [2,] 0.73544549 -0.2663627
+## [3,] 0.85344305 -0.3403452
+## [4,] 0.15927897  0.4226135
 \end{verbatim}
 
 \begin{Shaded}
@@ -1223,9 +1223,9 @@ columnas de una matriz \texttt{cbind} o como si fueran filas
 \end{Shaded}
 
 \begin{verbatim}
-##        [,1]       [,2]       [,3]       [,4]
-## x 0.8375688  0.7966654  0.9549324  0.7562416
-## y 0.8265347 -2.2453083 -1.4588243 -0.5150524
+##         [,1]       [,2]       [,3]      [,4]
+## x 0.09794746  0.7354455  0.8534430 0.1592790
+## y 0.20235053 -0.2663627 -0.3403452 0.4226135
 \end{verbatim}
 
 Le agregamos atributos para accesar más fácilmente a los objetos.
@@ -1240,11 +1240,11 @@ Le agregamos atributos para accesar más fácilmente a los objetos.
 \end{Shaded}
 
 \begin{verbatim}
-##            col1       col2
-## row1  0.8375688  0.7966654
-## row2  0.9549324  0.7562416
-## row3  0.8265347 -2.2453083
-## row4 -1.4588243 -0.5150524
+##             col1       col2
+## row1  0.09794746  0.7354455
+## row2  0.85344305  0.1592790
+## row3  0.20235053 -0.2663627
+## row4 -0.34034523  0.4226135
 \end{verbatim}
 
 \begin{Shaded}
@@ -1255,6 +1255,20 @@ Le agregamos atributos para accesar más fácilmente a los objetos.
 
 \begin{verbatim}
 ## [1] TRUE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{dimnames}\NormalTok{(m)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [[1]]
+## [1] "row1" "row2" "row3" "row4"
+## 
+## [[2]]
+## [1] "col1" "col2"
 \end{verbatim}
 
 \subsubsection{Listas}\label{listas}
@@ -1356,6 +1370,39 @@ ese contenedor.
 
 Para extraer el objeto (con la clase de ese objeto y no simplemente otra
 lista) necesitas usar \texttt{x{[}{[}1{]}{]}}, es decir, el integer 3.
+
+Las listas también pueden tener nombres
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Lista vacia}
+\NormalTok{lista <-}\StringTok{ }\KeywordTok{list}\NormalTok{()}
+\NormalTok{lista[[}\StringTok{"numeros"}\NormalTok{]] <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{34}\NormalTok{, }\FloatTok{45.5}\NormalTok{, }\DecValTok{34}\NormalTok{) }
+\NormalTok{lista[[}\StringTok{"datos"}\NormalTok{]] <-}\StringTok{ }\KeywordTok{head}\NormalTok{(iris)}
+
+\NormalTok{lista}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $numeros
+## [1]  1.0 34.0 45.5 34.0
+## 
+## $datos
+##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+## 1          5.1         3.5          1.4         0.2  setosa
+## 2          4.9         3.0          1.4         0.2  setosa
+## 3          4.7         3.2          1.3         0.2  setosa
+## 4          4.6         3.1          1.5         0.2  setosa
+## 5          5.0         3.6          1.4         0.2  setosa
+## 6          5.4         3.9          1.7         0.4  setosa
+\end{verbatim}
+
+\begin{curiosidad}
+R tiene muchos \href{https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/00Index.html}{datos de ejemplo}
+que son utilizados en muchos paquetes, blogs y libros. Utiliza {\bf help(iris)} para
+saber más del dataset usado arriba.
+\end{curiosidad}
 
 \subsubsection{Factores (factor)}\label{factores-factor}
 
@@ -1603,7 +1650,7 @@ Se pueden crear data.frames con la función \texttt{data.frame()}.
 \end{verbatim}
 
 \begin{curiosidad}
-¿Por qué use la opción "stringsAsFactors \= F"?
+¿Por qué usar la opción ``stringsAsFactors = F''?
 \end{curiosidad}
 
 Podemos ``pegarle'' columnas o filas:
@@ -1611,10 +1658,61 @@ Podemos ``pegarle'' columnas o filas:
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{df <-}\StringTok{ }\KeywordTok{cbind}\NormalTok{(df, }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{z =} \KeywordTok{rexp}\NormalTok{(}\DecValTok{10}\NormalTok{)))}
-
 \NormalTok{df <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(df, }\KeywordTok{c}\NormalTok{(}\KeywordTok{rnorm}\NormalTok{(}\DecValTok{1}\NormalTok{), }\KeywordTok{runif}\NormalTok{(}\DecValTok{1}\NormalTok{), }\StringTok{"K"}\NormalTok{, }\KeywordTok{rexp}\NormalTok{(}\DecValTok{1}\NormalTok{)))}
+\KeywordTok{dim}\NormalTok{(df)}
 \end{Highlighting}
 \end{Shaded}
+
+\begin{verbatim}
+## [1] 11  4
+\end{verbatim}
+
+\section{Valores perdidos (missing
+values)}\label{valores-perdidos-missing-values}
+
+En la página \pageref{otros-objetos-importantes} se habló de otros
+objetos en R. De particular importancia es \texttt{NA} para valores
+perdidos en general y \texttt{NaN} para operaciones matemáticas no
+definidas. Lógicamente, podemos preguntar a R si un objeto es de este
+tipo
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{is.na}\NormalTok{()}
+\KeywordTok{is.nan}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+Los valores \texttt{NA} tienen una clase particular. Puede haber valores
+perdidos enteros \texttt{NA\_integer\_} o caracteres
+\texttt{NA\_character\_}. \texttt{NaN} es un \texttt{NA} pero no al
+revés.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{6}\NormalTok{, }\OtherTok{NA}\NormalTok{, }\OtherTok{NaN}\NormalTok{, }\DecValTok{45}\NormalTok{)}
+\KeywordTok{is.nan}\NormalTok{(x)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] FALSE FALSE FALSE FALSE  TRUE FALSE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{is.na}\NormalTok{(x)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] FALSE FALSE FALSE  TRUE  TRUE FALSE
+\end{verbatim}
+
+Cuando tenemos un dataframe que tiene valores perdidos y lo queremos
+incorporar, por ejemplo, a un modelo de regresión, lo primero que hará
+el método es excluir todos los renglones que tengan \emph{algún} valor
+perdido usando \texttt{na.exclude(datos)}.
 
 \section{Leer y escribir archivos de
 datos}\label{leer-y-escribir-archivos-de-datos}
@@ -1625,9 +1723,12 @@ Desde archivo
 
 Datos de muestra
 
+\section{Extracción de partes de los
+objetos}\label{extraccion-de-partes-de-los-objetos}
+
 \subsection{Escritura}\label{escritura}
 
-\section{Estructuras de programación}\label{estructuras-de-programacion}
+\section{Estructuras}\label{estructuras}
 
 \subsection{IFs}\label{ifs}
 
@@ -1635,7 +1736,22 @@ Datos de muestra
 
 \subsection{Whiles}\label{whiles}
 
-\subsection{Funciones propias}\label{funciones-propias}
+\subsection{Repeat - Break}\label{repeat---break}
+
+\subsection{Next}\label{next}
+
+\subsection{Return}\label{return}
+
+\section{Funciones}\label{funciones}
+
+\section{Do's y don'ts de R}\label{dos-y-donts-de-r}
+
+\subsection{Vectoriza y pre-asigna estructuras de
+datos}\label{vectoriza-y-pre-asigna-estructuras-de-datos}
+
+\subsection{Which}\label{which}
+
+\subsection{La familia apply}\label{la-familia-apply}
 
 \printbibliography
 
