@@ -1209,11 +1209,11 @@ columnas de una matriz \texttt{cbind} o como si fueran filas
 \end{Shaded}
 
 \begin{verbatim}
-##               x            y
-## [1,] 0.03199269 -1.029709402
-## [2,] 0.91629534 -0.246808523
-## [3,] 0.35868682  1.019829627
-## [4,] 0.86688507 -0.001040416
+##               x           y
+## [1,] 0.66987984 -0.60483592
+## [2,] 0.80821763 -0.02817149
+## [3,] 0.80911319  0.46896507
+## [4,] 0.04933215  0.10052081
 \end{verbatim}
 
 \begin{Shaded}
@@ -1223,9 +1223,9 @@ columnas de una matriz \texttt{cbind} o como si fueran filas
 \end{Shaded}
 
 \begin{verbatim}
-##          [,1]       [,2]      [,3]         [,4]
-## x  0.03199269  0.9162953 0.3586868  0.866885071
-## y -1.02970940 -0.2468085 1.0198296 -0.001040416
+##         [,1]        [,2]      [,3]       [,4]
+## x  0.6698798  0.80821763 0.8091132 0.04933215
+## y -0.6048359 -0.02817149 0.4689651 0.10052081
 \end{verbatim}
 
 Le agregamos atributos para accesar más fácilmente a los objetos.
@@ -1240,11 +1240,11 @@ Le agregamos atributos para accesar más fácilmente a los objetos.
 \end{Shaded}
 
 \begin{verbatim}
-##             col1         col2
-## row1  0.03199269  0.916295344
-## row2  0.35868682  0.866885071
-## row3 -1.02970940 -0.246808523
-## row4  1.01982963 -0.001040416
+##            col1        col2
+## row1  0.6698798  0.80821763
+## row2  0.8091132  0.04933215
+## row3 -0.6048359 -0.02817149
+## row4  0.4689651  0.10052081
 \end{verbatim}
 
 \begin{Shaded}
@@ -2309,5 +2309,37 @@ resultados no son lo que esperábamos.
 \end{verbatim}
 
 \printbibliography
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{sessionInfo}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## R version 3.2.2 (2015-08-14)
+## Platform: x86_64-pc-linux-gnu (64-bit)
+## Running under: Ubuntu 15.04
+## 
+## locale:
+##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+##  [3] LC_TIME=es_MX.UTF-8        LC_COLLATE=en_US.UTF-8    
+##  [5] LC_MONETARY=es_MX.UTF-8    LC_MESSAGES=en_US.UTF-8   
+##  [7] LC_PAPER=es_MX.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=es_MX.UTF-8 LC_IDENTIFICATION=C       
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  base     
+## 
+## other attached packages:
+## [1] plyr_1.8.3      dplyr_0.4.3     rmarkdown_0.8.1
+## 
+## loaded via a namespace (and not attached):
+##  [1] Rcpp_0.12.2.2   digest_0.6.8    assertthat_0.1  R6_2.1.1       
+##  [5] DBI_0.3.1.9008  formatR_1.2.1   magrittr_1.5    evaluate_0.8   
+##  [9] stringi_1.0-1   tools_3.2.2     stringr_1.0.0   yaml_2.1.13    
+## [13] parallel_3.2.2  htmltools_0.2.6 knitr_1.11      methods_3.2.2
+\end{verbatim}
 
 \end{document}

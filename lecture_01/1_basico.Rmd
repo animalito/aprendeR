@@ -1081,3 +1081,7 @@ rms::vif(modelo)
 
 \printbibliography
 
+```{r}
+sessionInfo()
+```
+
