@@ -523,12 +523,12 @@ el mouse o menús.
 Aunque los comandos pueden ser ejecutados directamente en consola una
 única vez, también es posible guardarlos en archivos conocidos como
 \emph{scripts}. Típicamente, utilizamos la extensión \textbf{.R} o
-\textbf{.r}. En RStudio, \texttt{CTRL\ +\ SHIFT\ +\ N} abre
-inmediatamente un nuevo editor en el panel superior izquierdo.
+\textbf{.r}. En RStudio, \texttt{CTRL + SHIFT + N} abre inmediatamente
+un nuevo editor en el panel superior izquierdo.
 
 Se puede \emph{ir editando} el script y corriendo los comandos línea por
-línea con \texttt{CTRL\ +\ ENTER}. Esto también aplica para
-\emph{correr} una selección del texto editable.
+línea con \texttt{CTRL + ENTER}. Esto también aplica para \emph{correr}
+una selección del texto editable.
 
 Es posible también correr todo el script
 
@@ -538,11 +538,11 @@ Es posible también correr todo el script
 \end{Highlighting}
 \end{Shaded}
 
-O con el atajo \texttt{CTRL\ +\ SHIFT\ +\ S} en RStudio.
+O con el atajo \texttt{CTRL + SHIFT + S} en RStudio.
 
 Para enlistar algunos shortcuts comunes en RStudio presiona
-\texttt{ALT\ +\ SHIFT\ +\ K}. De la misma manera, si utilizas Emacs +
-ESS, existen múltiples atajos de teclado para realizar todo mucho más
+\texttt{ALT + SHIFT + K}. De la misma manera, si utilizas Emacs + ESS,
+existen múltiples atajos de teclado para realizar todo mucho más
 eficientemente. Estudiarlos no es tiempo perdido.
 
 \section{Ayuda \& documentación}\label{ayuda-documentacion}
@@ -1117,7 +1117,7 @@ no sabes cuál decisión tomará R por \emph{default}).
 ## [1] FALSE
 \end{verbatim}
 
-En este ejemplo, cuando declaramos \(x\) no especificamos su clase y R
+En este ejemplo, cuando declaramos $x$ no especificamos su clase y R
 decidió que era entero. Al coercionar al objeto para que fuese numérico,
 R no considera a los dos objetos iguales. R te protege -no te permite
 hacer o te advierte- de algunas cosas
@@ -1209,11 +1209,11 @@ columnas de una matriz \texttt{cbind} o como si fueran filas
 \end{Shaded}
 
 \begin{verbatim}
-##               x          y
-## [1,] 0.09794746  0.2023505
-## [2,] 0.73544549 -0.2663627
-## [3,] 0.85344305 -0.3403452
-## [4,] 0.15927897  0.4226135
+##               x            y
+## [1,] 0.03199269 -1.029709402
+## [2,] 0.91629534 -0.246808523
+## [3,] 0.35868682  1.019829627
+## [4,] 0.86688507 -0.001040416
 \end{verbatim}
 
 \begin{Shaded}
@@ -1223,9 +1223,9 @@ columnas de una matriz \texttt{cbind} o como si fueran filas
 \end{Shaded}
 
 \begin{verbatim}
-##         [,1]       [,2]       [,3]      [,4]
-## x 0.09794746  0.7354455  0.8534430 0.1592790
-## y 0.20235053 -0.2663627 -0.3403452 0.4226135
+##          [,1]       [,2]      [,3]         [,4]
+## x  0.03199269  0.9162953 0.3586868  0.866885071
+## y -1.02970940 -0.2468085 1.0198296 -0.001040416
 \end{verbatim}
 
 Le agregamos atributos para accesar más fácilmente a los objetos.
@@ -1240,11 +1240,11 @@ Le agregamos atributos para accesar más fácilmente a los objetos.
 \end{Shaded}
 
 \begin{verbatim}
-##             col1       col2
-## row1  0.09794746  0.7354455
-## row2  0.85344305  0.1592790
-## row3  0.20235053 -0.2663627
-## row4 -0.34034523  0.4226135
+##             col1         col2
+## row1  0.03199269  0.916295344
+## row2  0.35868682  0.866885071
+## row3 -1.02970940 -0.246808523
+## row4  1.01982963 -0.001040416
 \end{verbatim}
 
 \begin{Shaded}
@@ -1714,44 +1714,599 @@ incorporar, por ejemplo, a un modelo de regresión, lo primero que hará
 el método es excluir todos los renglones que tengan \emph{algún} valor
 perdido usando \texttt{na.exclude(datos)}.
 
-\section{Leer y escribir archivos de
-datos}\label{leer-y-escribir-archivos-de-datos}
-
-\subsection{Lectura}\label{lectura}
-
-Desde archivo
-
-Datos de muestra
-
-\section{Extracción de partes de los
-objetos}\label{extraccion-de-partes-de-los-objetos}
-
-\subsection{Escritura}\label{escritura}
-
 \section{Estructuras}\label{estructuras}
 
-\subsection{IFs}\label{ifs}
+Las estructuras de control permiten controlar la ejecución. Pueden ser
+utilizadas en un script o dentro de funciones. Entre las más comunes se
+encuentran:
 
-\subsection{Fors}\label{fors}
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  if, else
+\item
+  for
+\item
+  while
+\item
+  repeat
+\item
+  break
+\item
+  next
+\item
+  return
+\end{itemize}
+
+\subsection{If}\label{if}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{if ( condicion ) \{}
+  \CommentTok{# Cuando se cumple la condicion, ejecuta esto}
+\NormalTok{\} else \{}
+  \CommentTok{# Para todo lo que no se cumple la condicion, ejecuta esto}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Ejemplo,
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x <-}\StringTok{ }\DecValTok{1}\NormalTok{:}\DecValTok{20}
+\NormalTok{if ( }\KeywordTok{sample}\NormalTok{(x, }\DecValTok{1}\NormalTok{) <=}\StringTok{ }\DecValTok{10} \NormalTok{) \{}
+  \KeywordTok{print}\NormalTok{(}\StringTok{"x es menor o igual que 10"}\NormalTok{)}
+\NormalTok{\} else \{}
+  \KeywordTok{print}\NormalTok{(}\StringTok{"x es mayor que 10"}\NormalTok{)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "x es menor o igual que 10"
+\end{verbatim}
+
+O lo que es lo mismo pero un poco mas eficiente (vectorizado)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ifelse}\NormalTok{(}\KeywordTok{sample}\NormalTok{(x, }\DecValTok{1}\NormalTok{) <=}\StringTok{ }\DecValTok{10}\NormalTok{, }\StringTok{"x es menor o igual que 10"}\NormalTok{, }\StringTok{"x es mayor que 10"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "x es mayor que 10"
+\end{verbatim}
+
+También es posible asignar variables a través condicionando a algo.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{if ( }\KeywordTok{sample}\NormalTok{(x, }\DecValTok{1}\NormalTok{) <=}\StringTok{ }\DecValTok{10} \NormalTok{)\{}
+  \NormalTok{y <-}\StringTok{ }\DecValTok{0}
+\NormalTok{\} else \{}
+  \NormalTok{y <-}\StringTok{ }\DecValTok{1}
+\NormalTok{\}}
+
+\CommentTok{# o}
+
+\NormalTok{y <-}\StringTok{ }\NormalTok{if ( }\KeywordTok{sample}\NormalTok{(x, }\DecValTok{1}\NormalTok{) <=}\StringTok{ }\DecValTok{10} \NormalTok{)\{}
+    \DecValTok{0}
+  \NormalTok{\} else \{}
+    \DecValTok{1}
+  \NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{For}\label{for}
+
+Un ciclo \texttt{for} itera una variable y va realizando, para cada
+iteración, la secuencia de comandos que se especifica dentro del mismo.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{for (i in }\DecValTok{1}\NormalTok{:}\DecValTok{3} \NormalTok{)\{}
+  \KeywordTok{print}\NormalTok{(}\KeywordTok{paste0}\NormalTok{(}\StringTok{"i vale: "}\NormalTok{, i))}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "i vale: 1"
+## [1] "i vale: 2"
+## [1] "i vale: 3"
+\end{verbatim}
+
+Es posible también iterar directamente sobre vectores o partes de
+vectores.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Andrea"}\NormalTok{, }\StringTok{"Liz"}\NormalTok{, }\StringTok{"Edwin"}\NormalTok{, }\StringTok{"Miguel"}\NormalTok{)}
+
+\NormalTok{for ( i in x ) \{}
+  \KeywordTok{print}\NormalTok{(x[i])}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] NA
+## [1] NA
+## [1] NA
+## [1] NA
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{for ( e in x ) \{}
+  \KeywordTok{print}\NormalTok{(e)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Andrea"
+## [1] "Liz"
+## [1] "Edwin"
+## [1] "Miguel"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{for ( i in }\KeywordTok{seq}\NormalTok{(x) )\{}
+  \KeywordTok{print}\NormalTok{(x[i])}
+\NormalTok{\}}
+
+\NormalTok{for ( i in }\DecValTok{1}\NormalTok{:}\KeywordTok{length}\NormalTok{(x) ) }\KeywordTok{print}\NormalTok{(x[i])}
+\end{Highlighting}
+\end{Shaded}
+
+Podemos incluir \texttt{fors} dentro de \texttt{fors}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{m <-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\DecValTok{1}\NormalTok{:}\DecValTok{10}\NormalTok{, }\DecValTok{2}\NormalTok{)}
+
+\NormalTok{for( i in }\KeywordTok{seq}\NormalTok{(}\KeywordTok{nrow}\NormalTok{(m)) ) \{}
+  \NormalTok{for ( j in }\KeywordTok{seq}\NormalTok{(}\KeywordTok{ncol}\NormalTok{(m)) ) \{}
+    \KeywordTok{print}\NormalTok{(m[i, j])}
+  \NormalTok{\}}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
 
 \subsection{Whiles}\label{whiles}
 
+Otra manera de iterar sobre comandos es con la estructura
+\texttt{while}. A diferencia del \texttt{for}, esta te permite iterar
+sobre la secuencia de comandos especificada hasta que se cumpla cierta
+condición. Esta última tiene que variar a lo largo de las iteraciones o
+es posible generar ciclos infinitos. Esta estructrura da mucha
+flexibilidad.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x <-}\StringTok{ }\KeywordTok{runif}\NormalTok{(}\DecValTok{1}\NormalTok{)}
+
+\NormalTok{while ( x <}\StringTok{ }\FloatTok{0.20} \NormalTok{|}\StringTok{ }\NormalTok{i <=}\StringTok{ }\DecValTok{10} \NormalTok{) \{}
+  \KeywordTok{print}\NormalTok{(x)}
+  \NormalTok{x <-}\StringTok{ }\KeywordTok{runif}\NormalTok{(}\DecValTok{1}\NormalTok{)}
+  \NormalTok{i <-}\StringTok{ }\NormalTok{i +}\StringTok{ }\DecValTok{1}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{nota}[Importante]
+Asegurate de especificar una manera de salir de un ciclo while.
+\end{nota}
+
 \subsection{Repeat - Break}\label{repeat---break}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x <-}\StringTok{ }\DecValTok{1}
+\NormalTok{repeat \{}
+  \CommentTok{# Haz algo}
+  \KeywordTok{print}\NormalTok{(x)}
+  \NormalTok{x =}\StringTok{ }\NormalTok{x}\DecValTok{+1}
+  \CommentTok{# Hasta que se cumpla lo siguiente}
+  \NormalTok{if (x ==}\StringTok{ }\DecValTok{6}\NormalTok{)\{}
+    \NormalTok{break}
+  \NormalTok{\}}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
 
 \subsection{Next}\label{next}
 
-\subsection{Return}\label{return}
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{for (i in }\DecValTok{1}\NormalTok{:}\DecValTok{20}\NormalTok{) \{}
+  \NormalTok{if (i %%}\StringTok{ }\DecValTok{2} \NormalTok{==}\StringTok{ }\DecValTok{0}\NormalTok{)\{}
+    \NormalTok{next}
+  \NormalTok{\} else \{}
+    \KeywordTok{print}\NormalTok{(i)}
+  \NormalTok{\}}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Este ciclo itera sobre los valores del 1 al 20 e imprime los valores
+impares.
+
+\begin{nota}[Importante]
+R no es muy eficiente cuando se combina con estructuras de control tipo for o 
+while. Sin embargo, estas estructuras son muy comunes y es útil conocerlas. 
+
+Normalmente, se recomienda utilizar estrucutras vectorizadas (como ifelse) pues,
+de esta manera, R es mucho más eficiente. 
+\end{nota}
 
 \section{Funciones}\label{funciones}
 
-\section{Do's y don'ts de R}\label{dos-y-donts-de-r}
+Hay una regla de oro en programación en general: \emph{dry code}.
+Básicamente esto se reduce a \emph{no te repitas}. Cuando tienes las
+mismas líneas de código varias veces (cuando estas copy-pasteando mucho)
+entonces lo que necesitas es escribir una función que realice esa tarea.
 
-\subsection{Vectoriza y pre-asigna estructuras de
-datos}\label{vectoriza-y-pre-asigna-estructuras-de-datos}
+En R las funciones son los \emph{building blocks} de básicamente todo.
+Como todo lo demás en R, las funciones son también objetos. Por default,
+los argumentos de una función son \emph{flojos} (lazy), es decir,
+solamente son evaluados cuando se utilizan (esto es importante pues si
+tienes un error en una función no te darás cuenta cuando ejecutes la
+misma sino cuando la mandes llamar). Cuando llamas a un objeto en R,
+casi siempre estas en realidad llamando a una función.
 
-\subsection{Which}\label{which}
+\subsection{Componentes de una
+función}\label{componentes-de-una-funcion}
 
-\subsection{La familia apply}\label{la-familia-apply}
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  El \texttt{body()} o cuerpo de la función es el código dentro de la
+  misma.
+\item
+  \texttt{formals()} o el listaod de argumentos formales de la función,
+  controla cómo se puede llamar a una función.
+\item
+  El ambiente \texttt{environment()} determina cómo son referidas las
+  variables dentro de la función.
+\item
+  La lista de argumentos se obtiene con \texttt{args()}
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{f <-}\StringTok{ }\NormalTok{function(x) x}
+\NormalTok{f}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## function(x) x
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{formals}\NormalTok{(f)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $x
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{environment}\NormalTok{(f)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## <environment: R_GlobalEnv>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{rm}\NormalTok{(f)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{El ambiente}\label{el-ambiente}
+
+Las variables que se definen dentro de una función existen en un
+ambiente distinto al ambiente global de R. Si una variable \textbf{no}
+está definida dentro de la función, R busca en el nivel superior por esa
+variable.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x <-}\StringTok{ }\DecValTok{2}
+\NormalTok{g <-}\StringTok{ }\NormalTok{function() \{}
+    \NormalTok{y <-}\StringTok{ }\DecValTok{1}
+    \KeywordTok{c}\NormalTok{(x, y)}
+\NormalTok{\}}
+\KeywordTok{g}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 2 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{rm}\NormalTok{(x, g)}
+\end{Highlighting}
+\end{Shaded}
+
+Así como fuimos capaces de anidar ciclos for, también podemos anidar
+funciones. Esta capacidad es muy útil pero hay que tener cuidado con los
+ambientes y la jerarquía en los mismos.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{myfuncion <-}\StringTok{ }\NormalTok{function() \{}
+  \KeywordTok{print}\NormalTok{(}\StringTok{"Hola"}\NormalTok{)}
+\NormalTok{\}}
+\KeywordTok{myfuncion}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Hola"
+\end{verbatim}
+
+Podemos generar funciones con mayor utilidad.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{suma <-}\StringTok{ }\NormalTok{function(x, y)\{}
+  \KeywordTok{return}\NormalTok{(x +}\StringTok{ }\NormalTok{y)}
+\NormalTok{\}}
+\NormalTok{vector <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{)}
+\KeywordTok{sapply}\NormalTok{(vector, suma, }\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 3 4 5 6
+\end{verbatim}
+
+Toda función \emph{regresa} un valor.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x <-}\StringTok{ }\DecValTok{10}
+\NormalTok{f <-}\StringTok{ }\NormalTok{function() \{}
+    \NormalTok{y <-}\StringTok{ }\DecValTok{25}
+    \NormalTok{g <-}\StringTok{ }\NormalTok{function() \{}
+        \NormalTok{z <-}\StringTok{ }\DecValTok{30}
+        \KeywordTok{c}\NormalTok{(}\DataTypeTok{x =} \NormalTok{x, }\DataTypeTok{y =} \NormalTok{y, }\DataTypeTok{z =} \NormalTok{z)}
+    \NormalTok{\}}
+    \KeywordTok{g}\NormalTok{()}
+\NormalTok{\}}
+\KeywordTok{f}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  x  y  z 
+## 10 25 30
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{f <-}\StringTok{ }\NormalTok{function(x) \{}
+  \NormalTok{x *}\StringTok{ }\DecValTok{2}
+\NormalTok{\}}
+\NormalTok{g <-}\StringTok{ }\NormalTok{function(x) \{}
+  \NormalTok{x +}\StringTok{ }\DecValTok{2}
+\NormalTok{\}}
+\KeywordTok{f}\NormalTok{(}\KeywordTok{g}\NormalTok{(}\DecValTok{2}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 8
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{g}\NormalTok{(}\KeywordTok{f}\NormalTok{(}\DecValTok{2}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 6
+\end{verbatim}
+
+En este caso, utilizamos una función con parámetros que \emph{recibe}
+cuando es llamada. También podemos generar funciones con valores
+predefinidos, es decir, defaults. Éstos son utilizados cuando se llama a
+la función \emph{a menos que} se especifique lo contrario (es decir, se
+\emph{overide them}).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{f <-}\StringTok{ }\NormalTok{function(}\DataTypeTok{a =} \DecValTok{2}\NormalTok{, }\DataTypeTok{b =} \DecValTok{3}\NormalTok{) \{}
+  \KeywordTok{return}\NormalTok{(a +}\StringTok{ }\NormalTok{b)}
+\NormalTok{\}}
+\KeywordTok{f}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 5
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{f}\NormalTok{(}\DecValTok{4}\NormalTok{, }\DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 9
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{f}\NormalTok{(}\DataTypeTok{b =} \DecValTok{4}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 6
+\end{verbatim}
+
+\begin{curiosidad}[Return]
+No es necesario especificar lo que regresa la función. Las funciones por
+default regresan el último elemento o valor computado.
+\end{curiosidad}
+
+\subsection{Reglas de scope}\label{reglas-de-scope}
+
+Sabemos que existe la función \emph{c} que nos permite concatenar
+vectores o elementos a vectores. Sin embargo, es posible asignar un
+valor a una variable llamada \emph{c} y que la función \emph{c} siga
+funcionando.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{c <-}\StringTok{ }\DecValTok{1000}
+\NormalTok{c +}\StringTok{ }\DecValTok{1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1001
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{:}\DecValTok{4}\NormalTok{)}
+\NormalTok{x}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1 2 3 4
+\end{verbatim}
+
+Esto es debido a que R tienen namespaces separados para funciones y
+no-funciones. Cuando R intenta concatenar los valores del 1 al 4, busca
+primero en el ambiente global y, en caso de no encontrarlo, busca en los
+\emph{namespaces} de cada uno de los paquetes que tiene cargados.
+
+El orden en el que busca se puede encontrar utilizando el comando
+\texttt{search()}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{search}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] ".GlobalEnv"        "package:rmarkdown" "package:stats"    
+## [4] "package:graphics"  "package:grDevices" "package:utils"    
+## [7] "package:datasets"  "Autoloads"         "package:base"
+\end{verbatim}
+
+Los paquetes recien llamados acaban en la posición número 2 y todo lo
+demás se recorre en el orden de la lista. Nota como el \emph{base} (que
+se carga por default en toda sesión) está hasta el final.
+
+\texttt{.GlobalEnv} es el workspace del que hablamos antes. Si hay un
+símbolo que corresponde a tu petición entonces tomará el valor en tu
+workspace para poder ejecutar tu petición. Si no encuentra nada, busca
+en el namespace de cada uno de los paquetes que has cargado hasta el
+momento en el \emph{orden} en el que los llamaste.
+
+Esto es \textbf{muy} importante. Hay contribuidores de paquetes en todo
+el mundo y es muy común que utilicen el mismo nombre para
+implementaciones distintas de cosas y, por lo tanto, a veces nuestros
+resultados no son lo que esperábamos.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(dplyr)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Attaching package: 'dplyr'
+## 
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+## 
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(plyr)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## -------------------------------------------------------------------------
+## You have loaded plyr after dplyr - this is likely to cause problems.
+## If you need functions from both plyr and dplyr, please load plyr first, then dplyr:
+## library(plyr); library(dplyr)
+## -------------------------------------------------------------------------
+## 
+## Attaching package: 'plyr'
+## 
+## The following objects are masked from 'package:dplyr':
+## 
+##     arrange, count, desc, failwith, id, mutate, rename, summarise,
+##     summarize
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{is.discrete}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## function (x) 
+## is.factor(x) || is.character(x) || is.logical(x)
+## <environment: namespace:plyr>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(plyr)}
+\KeywordTok{library}\NormalTok{(dplyr)}
+\NormalTok{rename}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## function (x, replace, warn_missing = TRUE, warn_duplicated = TRUE) 
+## {
+##     names(x) <- revalue(names(x), replace, warn_missing = warn_missing)
+##     duplicated_names <- names(x)[duplicated(names(x))]
+##     if (warn_duplicated && (length(duplicated_names) > 0L)) {
+##         duplicated_names_message <- paste0("`", duplicated_names, 
+##             "`", collapse = ", ")
+##         warning("The plyr::rename operation has created duplicates for the ", 
+##             "following name(s): (", duplicated_names_message, 
+##             ")", call. = FALSE)
+##     }
+##     x
+## }
+## <environment: namespace:plyr>
+\end{verbatim}
 
 \printbibliography
 

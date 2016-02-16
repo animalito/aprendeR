@@ -742,42 +742,342 @@ Cuando tenemos un dataframe que tiene valores perdidos y lo queremos incorporar,
 por ejemplo, a un modelo de regresión, lo primero que hará el método es excluir
 todos los renglones que tengan *algún* valor perdido usando `na.exclude(datos)`.
 
-# Leer y escribir archivos de datos
-
-## Lectura
-
-Desde archivo
-
-Datos de muestra
-
-# Extracción de partes de los objetos
-
-## Escritura
-
 # Estructuras
 
-## IFs
+Las estructuras de control permiten controlar la ejecución. Pueden ser 
+utilizadas en un script o dentro de funciones. Entre las más comunes se 
+encuentran:
 
-## Fors
+- if, else 
+- for
+- while
+- repeat
+- break
+- next
+- return
+
+## If
+
+```{r, eval = F}
+if ( condicion ) {
+  # Cuando se cumple la condicion, ejecuta esto
+} else {
+  # Para todo lo que no se cumple la condicion, ejecuta esto
+}
+```
+
+Ejemplo,
+
+```{r}
+x <- 1:20
+if ( sample(x, 1) <= 10 ) {
+  print("x es menor o igual que 10")
+} else {
+  print("x es mayor que 10")
+}
+```
+
+O lo que es lo mismo pero un poco mas eficiente (vectorizado)
+
+```{r}
+ifelse(sample(x, 1) <= 10, "x es menor o igual que 10", "x es mayor que 10")
+```
+
+También es posible asignar variables a través condicionando a algo.
+
+```{r, eval = F}
+if ( sample(x, 1) <= 10 ){
+  y <- 0
+} else {
+  y <- 1
+}
+
+# o
+
+y <- if ( sample(x, 1) <= 10 ){
+    0
+  } else {
+    1
+  }
+```
+
+## For
+
+Un ciclo `for` itera una variable y va realizando, para cada iteración, la
+secuencia de comandos que se especifica dentro del mismo.
+
+```{r}
+for (i in 1:3 ){
+  print(paste0("i vale: ", i))
+}
+```
+
+Es posible también iterar directamente sobre vectores o partes de vectores.
+
+```{r}
+x <- c("Andrea", "Liz", "Edwin", "Miguel")
+
+for ( i in x ) {
+  print(x[i])
+}
+
+for ( e in x ) {
+  print(e)
+}
+```
+
+```{r, eval = F}
+
+for ( i in seq(x) ){
+  print(x[i])
+}
+
+for ( i in 1:length(x) ) print(x[i])
+```
+
+Podemos incluir `fors` dentro de `fors`.
+
+```{r, eval = F}
+m <- matrix(1:10, 2)
+
+for( i in seq(nrow(m)) ) {
+  for ( j in seq(ncol(m)) ) {
+    print(m[i, j])
+  }
+}
+```
 
 ## Whiles
 
+Otra manera de iterar sobre comandos es con la estructura `while`. A diferencia
+del `for`, esta te permite iterar sobre la secuencia de comandos especificada
+hasta que se cumpla cierta condición. Esta última tiene que variar a lo largo 
+de las iteraciones o es posible generar ciclos infinitos. Esta estructrura da
+mucha flexibilidad.
+
+```{r, eval = F}
+x <- runif(1)
+
+while ( x < 0.20 | i <= 10 ) {
+  print(x)
+  x <- runif(1)
+  i <- i + 1
+}
+```
+
+\begin{nota}[Importante]
+Asegurate de especificar una manera de salir de un ciclo while.
+\end{nota}
+
 ## Repeat - Break
+
+```{r, eval = F}
+x <- 1
+repeat {
+  # Haz algo
+  print(x)
+  x = x+1
+  # Hasta que se cumpla lo siguiente
+  if (x == 6){
+    break
+  }
+}
+```
 
 ## Next
 
-## Return
+```{r, eval = F}
+for (i in 1:20) {
+  if (i %% 2 == 0){
+    next
+  } else {
+    print(i)
+  }
+}
+```
+
+Este ciclo itera sobre los valores del 1 al 20 e imprime los valores impares.
+
+\begin{nota}[Importante]
+R no es muy eficiente cuando se combina con estructuras de control tipo for o 
+while. Sin embargo, estas estructuras son muy comunes y es útil conocerlas. 
+
+Normalmente, se recomienda utilizar estrucutras vectorizadas (como ifelse) pues,
+de esta manera, R es mucho más eficiente. 
+\end{nota}
 
 # Funciones 
 
-# Do's y don'ts de R
+Hay una regla de oro en programación en general: *dry code*. Básicamente esto
+se reduce a *no te repitas*. Cuando tienes las mismas líneas de código varias 
+veces (cuando estas copy-pasteando mucho) entonces lo que necesitas es escribir
+una función que realice esa tarea.
 
-## Vectoriza y pre-asigna estructuras de datos
+En R las funciones son los *building blocks* de básicamente todo. Como todo lo 
+demás en R, las funciones son también objetos. Por default, los argumentos de 
+una función son *flojos* (lazy), es decir, solamente son evaluados cuando se 
+utilizan (esto es importante pues si tienes un error en una función no te darás
+cuenta cuando ejecutes la misma sino cuando la mandes llamar). Cuando llamas a 
+un objeto en R, casi siempre estas en realidad llamando a una función.
 
-## Which
+## Componentes de una función
 
-## La familia apply
+- El `body()` o cuerpo de la función es el código dentro de la misma.
+- `formals()` o el listaod de argumentos formales de la función, controla cómo se puede llamar a una función.
+- El ambiente `environment()` determina cómo son referidas las variables dentro de
+la función.
+- La lista de argumentos se obtiene con `args()`
 
+```{r}
+f <- function(x) x
+f
+formals(f)
+environment(f)
+rm(f)
+```
+
+## El ambiente
+
+Las variables que se definen dentro de una función existen en un ambiente
+distinto al ambiente global de R. Si una variable **no** está definida
+dentro de la función, R busca en el nivel superior por esa variable.
+
+```{r}
+x <- 2
+g <- function() {
+    y <- 1
+    c(x, y)
+}
+g()
+rm(x, g)
+```
+
+Así como fuimos capaces de anidar ciclos for, también podemos anidar 
+funciones. Esta capacidad es muy útil pero hay que tener cuidado con los
+ambientes y la jerarquía en los mismos. 
+
+```{r}
+myfuncion <- function() {
+  print("Hola")
+}
+myfuncion()
+```
+
+Podemos generar funciones con mayor utilidad.
+
+```{r}
+suma <- function(x, y){
+  return(x + y)
+}
+vector <- c(1, 2, 3, 4)
+sapply(vector, suma, 2)
+```
+
+Toda función *regresa* un valor.
+
+```{r}
+x <- 10
+f <- function() {
+    y <- 25
+    g <- function() {
+        z <- 30
+        c(x = x, y = y, z = z)
+    }
+    g()
+}
+f()
+```
+
+```{r}
+f <- function(x) {
+  x * 2
+}
+g <- function(x) {
+  x + 2
+}
+f(g(2))
+g(f(2))
+```
+
+En este caso, utilizamos una función con parámetros que *recibe* cuando es llamada. También podemos generar funciones con valores predefinidos,
+es decir, defaults. Éstos son utilizados cuando se llama a la función 
+*a menos que* se especifique lo contrario (es decir, se *overide them*).
+
+```{r}
+f <- function(a = 2, b = 3) {
+  return(a + b)
+}
+f()
+f(4, 5)
+f(b = 4)
+```
+
+\begin{curiosidad}[Return]
+No es necesario especificar lo que regresa la función. Las funciones por
+default regresan el último elemento o valor computado.
+\end{curiosidad}
+
+## Reglas de scope
+
+Sabemos que existe la función *c* que nos permite concatenar vectores o 
+elementos a vectores. Sin embargo, es posible asignar un valor a una
+variable llamada *c* y que la función *c* siga funcionando. 
+
+```{r}
+c <- 1000
+c + 1
+x <- c(1:4)
+x
+```
+
+Esto es debido a que R tienen namespaces separados para funciones y no-funciones. Cuando R intenta concatenar los valores del 1 al 4, busca
+primero en el ambiente global y, en caso de no encontrarlo, busca en los 
+*namespaces* de cada uno de los paquetes que tiene cargados.
+
+El orden en el que busca se puede encontrar utilizando el comando `search()`.
+
+```{r}
+search()
+```
+
+Los paquetes recien llamados acaban en la posición número 2 y todo lo 
+demás se recorre en el orden de la lista. Nota como el *base* (que se
+carga por default en toda sesión) está hasta el final.
+
+`.GlobalEnv` es el workspace del que hablamos antes. Si hay un símbolo
+que corresponde a tu petición entonces tomará el valor en tu workspace para poder ejecutar tu petición. Si no encuentra nada, busca en el 
+namespace de cada uno de los paquetes que has cargado hasta el momento en
+el *orden* en el que los llamaste.
+
+Esto es **muy** importante. Hay contribuidores de paquetes en todo el
+mundo y es muy común que utilicen el mismo nombre para implementaciones
+distintas de cosas y, por lo tanto, a veces nuestros resultados no son
+lo que esperábamos.
+
+```{r}
+library(dplyr)
+library(plyr)
+is.discrete
+```
+
+```{r}
+library(plyr)
+library(dplyr)
+rename
+```
+
+```{r, eval=F, echo=F}
+library(car)
+library(Hmisc)
+data(diamonds)
+modelo <- lm(price ~ carat + x + y + z, data = diamonds)
+
+summary(modelo)
+
+car::vif(modelo)
+rms::vif(modelo)
+
+```
 
 \printbibliography
 
