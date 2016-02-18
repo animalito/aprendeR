@@ -1,0 +1,288 @@
+---
+title: "Vectorización, la familia apply y otros"
+output:
+  pdf_document:
+    fig_caption: yes
+    latex_engine: pdflatex
+    keep_tex: yes
+    includes:
+      in_header: mypackages.sty
+---
+
+```{r, echo = F, warning=F, error=F, message=F}
+library(rformat)
+library(xtable)
+```
+
+# Subconjuntos de diferentes estructuras de datos
+
+Esta sección está basada en \textcite[Subsetting]{wickham2014advanced} disponible 
+en [línea](http://adv-r.had.co.nz/Subsetting.html#subsetting-operators).
+
+Aprender a extraer subconjuntos de los datos es importante y permite realizar
+operaciones complejas con los mismos. De los conceptos importantes que se 
+deben aprender son
+
+- Los operadores para extraer subconjuntos (subsetting operators)
+- Los 6 tipos de extracciones de subconjuntos
+- Las diferencias a la hora de extraer subconjuntos de las diferentes estructuras de datos (factores, listas, matrices, dataframes)
+- El uso de la extracción de subconjuntos junto a asignar variables.
+
+Cuando tenemos que extraer pedazos de los datos (o analizar solamente parte de 
+éstos), necesitamos complementar `str()` con `[[`, es decir, la estructura nos
+dirá cómo utilizar el operador subconjunto de manera que de hecho extraigamos lo 
+que queremos.
+
+## Operadores para extraer subconjuntos
+
+Dependiendo la estructura de datos que tenemos, será la forma en la que extraemos
+elementos de ella. Hay dos operadores de subconjunto: `[[` y `$`. `[[` se parece 
+a `[` pero regresa un solo valor y te permite sacar pedazos de una lista. `$` es 
+un atajo útil para `[[`. 
+
+### Vectores atómicos
+
+¿De qué formas puedo extraer elementos de un vector? Hay varias maneras **sin importar**
+la *clase* del vector.
+
+- **Enteros positivos** regresan los elementos en las posiciones especificadas en el orden que especificamos.
+
+```{r}
+x <- c(5.6, 7.8, 4.5, 3.3)
+
+x[c(3, 1)]
+
+## Si duplicamos posiciones, nos regresa resultados duplicados
+x[c(1, 1, 1)]
+
+## Si usamos valores reales, se coerciona a entero
+x[c(1.1, 2.4)]
+
+x[order(x)]
+x[order(x, decreasing = T)]
+```
+
+- **Enteros negativos** omiten los valores en las posiciones que se especifican.
+
+```{r}
+x
+x[-c(3, 1)]
+
+```
+
+*Mezclar* no funciona.
+
+```{r, eval=F}
+x[c(-3, 1)]
+```
+
+- **Vectores lógicos** selecciona los elementos cuyo valor correspondiente es `TRUE`. Esta es una de los tipos más útiles.
+
+```{r}
+x[c(TRUE, TRUE, FALSE, FALSE)]
+x[c(TRUE, FALSE)] # Autocompleta el vector lógico al tamaño de x
+x[c(TRUE, TRUE, NA, FALSE)]
+```
+
+- **Nada** si no especifico nada, me regresa el vector original
+
+```{r}
+x[]
+```
+
+- **Cero** el índice cero no aplica en R, te regresa el vector vacio
+
+```{r}
+x[0]
+```
+
+- Si el vector tiene **nombres** también los puedo usar.
+
+```{r}
+names(x) <- c("a", "ab", "b", "c")
+x["ab"]
+x["d"]
+x[grep("a", names(x))]
+```
+
+Las **listas** operan básicamente igual a vectores recordando que si usamos `[`
+regresa una lista y tanto `[[` y `$` extrae componentes de la lista.
+
+### Matrices y arreglos
+
+Para estructuras de mayor dimensión se pueden extraer de tres maneras:
+
+- Con vectores múltiples
+- Con un solo vector
+- Con una matriz
+
+
+```{r}
+m <- matrix(1:12, nrow = 3)
+colnames(m) <- LETTERS[1:4]
+m[1:2, ]
+
+m[c(T, F, F), c("B", "C")]
+
+m[1, 4]
+```
+
+Como ven, es solamente generalizar lo que se hace en vectores replicándolo al 
+número de dimensiones que se tiene.
+
+```{r}
+m[c(T, F, F)]
+class(m[c(T, F, F)])
+```
+
+`[` simplifica al objeto. En matriz, me quita la dimensionalidad, en listas me 
+da lo que esta dentro de esa celda.
+
+### Dataframes
+
+```{r}
+df <- data.frame(x = 1:3, y = 3:1, z = letters[1:3])
+
+df[c(1, 2), ]
+
+df[, c(1, 2)]
+df[, c("z", "x")]
+df[c("z", "x")]
+
+class(df[, c("z", "x")])
+class(df[c("z", "x")])
+
+str(df["x"])
+str(df[, "x"])
+str(df$x)
+```
+
+\renewcommand\bcStyleTitre[1]{\large\textcolor{bbblack}{#1}}
+\begin{bclogo}[
+  couleur=llred,
+  arrondi=0,
+  logo=\bcstop,
+  barre=none,
+  noborder=true]{Ejercicios}
+\begin{enumerate}
+\item Utiliza la base mtcars
+\item{Arregla los errores al extraer subconjuntos en dataframes
+\begin{verbatim}
+mtcars[mtcars$cyl = 4, ]
+mtcars[-1:4, ]
+mtcars[mtcars$cyl <= 5]
+mtcars[mtcars$cyl == 4 | 6, ]
+\end{verbatim}
+}
+\item ¿Por qué al correr {\it x <- 1:5; x[NA] } obtengo valores perdidos?
+\item Genera una matriz cuadrada tamaño 5 llamada m. ¿Qué te da correr m[upper.tri(m)]?
+\item ¿Por qué al realizar mtcars[1:20] me da un error? ¿Por qué mtcars[1:2] no me lo da?
+¿Por qué mtcars[1:20, ] es distinto?
+\item Haz una función que extraiga la diagonal de la matriz m que creaste antes.
+Debe dar el mismo resultado que ejecutar diag(m)
+\item ¿Qué hace df[is.na(df)] <- 0?
+\end{enumerate}
+\end{bclogo}
+
+```{r, eval=F, echo=F}
+# Respuestas
+# 1
+head(mtcars)
+# 2
+mtcars[mtcars$cyl == 4, ]
+mtcars[-c(1:4), ]
+mtcars[mtcars$cyl <= 5, ]
+mtcars[mtcars$cyl == 4 | mtcars$cyl == 6, ]
+mtcars[mtcars$cyl %in% c(4, 6), ]
+# 3
+# NA siempre me da valores perdidos, como tiene longitud 1, se repite el valor 
+# para cubrir el tamaño del vector, es decir, 5 veces NA que me da 5 NAs
+# 4
+m <- matrix(c(1:25), ncol = 5)
+upper.tri(m)
+m[upper.tri(m)] # Me da los valores de m en la traingular superior sin incluir la diagonal
+# 5 dimensionalidad y porque se piden renglones, columnas
+# 6
+diag(m)
+midiagonal <- function(matriz){
+  diagonal <- c()
+  for ( i in 1:nrow(matriz) ) {
+    for (j in 1:ncol(matriz)) {
+      if (i == j) diagonal <- c(diagonal, matriz[i, j])
+    }
+  }
+  return(diagonal)
+}
+midiagonal(m)
+# 7
+df
+# Pongamos un valor perdido
+df[1, "x"] <- NA
+df
+is.na(df)
+df[is.na(df)] <- 0
+df
+```
+
+## Operadores lógicos
+
+```{r, echo = F, results='asis'}
+
+operadores <- "Operador^Descripción
+<^menor que
+<=^menor o igual que
+>^mayor que
+==^exactamente igual que
+!=^diferente de
+!x^ no x
+x | y^x O y
+x & y^x Y y
+isTRUE(x)^checa si x es verdadero"
+operadores <- read.delim(file = textConnection(operadores), 
+                           header = T, sep = "^",
+                           stringsAsFactors = F)
+
+print(xtable(operadores), comment = F, include.rownames=F)
+```
+
+**Ejemplo**: Supongamos que queremos saber qué elementos de $x$ son menores que
+$5$ y mayores que $8$.
+
+```{r}
+x <- c(1:10)
+x[(x>8) | (x<5)]
+
+# ¿Cómo funciona?
+x
+x > 8
+x < 5
+x > 8 | x < 5
+# x > 8 || x < 5
+x[c(T,T,T,T,F,F,F,F,T,T)]
+```
+
+\begin{nota}[|| vs. | y && vs. &]
+http://stackoverflow.com/questions/6558921/r-boolean-operators-and
+
+\end{nota}
+
+```{r, eval = F}
+  
+
+```
+
+\renewcommand\bcStyleTitre[1]{\large\textcolor{bbblack}{#1}}
+\begin{bclogo}[
+  couleur=llred,
+  arrondi=0,
+  logo=\bcstop,
+  barre=none,
+  noborder=true]{Ejercicio}
+\begin{itemize}
+\item Todo lo que existe es un objeto.
+\item Todo lo que sucede es una llamada a una función.
+\end{itemize}
+\end{bclogo}
+
+# Vectorización
+
