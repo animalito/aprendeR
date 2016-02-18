@@ -32,12 +32,14 @@ Cuando tenemos que extraer pedazos de los datos (o analizar solamente parte de
 éstos), necesitamos complementar `str()` con `[[`, es decir, la estructura nos
 dirá cómo utilizar el operador subconjunto de manera que de hecho extraigamos lo 
 que queremos.
+
 ## Operadores para extraer subconjuntos
 
 Dependiendo la estructura de datos que tenemos, será la forma en la que extraemos
 elementos de ella. Hay dos operadores de subconjunto: `[[` y `$`. `[[` se parece 
 a `[` pero regresa un solo valor y te permite sacar pedazos de una lista. `$` es 
 un atajo útil para `[[`. 
+
 ### Vectores atómicos
 
 ¿De qué formas puedo extraer elementos de un vector? Hay varias maneras **sin importar**
@@ -105,6 +107,7 @@ x[grep("a", names(x))]
 
 Las **listas** operan básicamente igual a vectores recordando que si usamos `[`
 regresa una lista y tanto `[[` y `$` extrae componentes de la lista.
+
 ### Matrices y arreglos
 
 Para estructuras de mayor dimensión se pueden extraer de tres maneras:
@@ -134,6 +137,7 @@ class(m[c(T, F, F)])
 
 `[` simplifica al objeto. En matriz, me quita la dimensionalidad, en listas me 
 da lo que esta dentro de esa celda.
+
 ### Dataframes
 
 ```{r}
@@ -219,6 +223,7 @@ is.na(df)
 df[is.na(df)] <- 0
 df
 ```
+
 ## Asignar a un subconjunto
 
 Muchas veces lo que necesitamos es encontrar ciertos valores para poder 
@@ -288,6 +293,7 @@ str(x)
 x["b"] <- list(NULL)
 str(x)
 ```
+
 ## Operadores lógicos
 
 ```{r, echo = F, results='asis'}
@@ -381,6 +387,7 @@ ahorra mucho sufrimiento y permite adaptarse ante cosas que necesitamos que
 aún no se encuentran implementadas por alguien más de una manera más sencilla.
 
 Con saber de subconjuntos podemos realizar varias tareas indispensables.
+
 ## Buscarv o buscarh
 
 Excel es excelente haciendo estas tareas. Lo malo de excel es que no es 
@@ -458,6 +465,7 @@ s <- sample(seq(nrow(diamonds)),
        replace = F)
 diamonds[s, c("price", "price.cat")]
 ```
+
 ## Muestras aleatorias
 
 Podemos utilizar índices enteros para generar muestras aleatorias de nuestras
@@ -528,6 +536,7 @@ l[order(l)]
 # 7
 tail(cars[order(cars$dist, decreasing = T), ])
 ```
+
 ## Expande bases
 
 Ahora, a veces tenemos tablas de resumen pero quisieramos extraer los datos
@@ -541,6 +550,7 @@ df <- data.frame(
 df
 df[rep(1:nrow(df), df$n), ]
 ```
+
 ## Otras
 
 Ya estuvimos utilizando otras aplicaciones de estos comandos: ordenamientos,
@@ -709,6 +719,7 @@ sapply(seq(x), FUN = function(i){
   }
 })
 ```
+
 ## mapply
 
 `mapply` es como la versión multivariada de `sapply`. Le aplica una función a
@@ -782,8 +793,6 @@ res <- by(diamonds[, c("carat")],
           list(cut = as.factor(diamonds[, c("cut")]), color = as.factor(diamonds$color))
           , mean, simplify = T)
 ```
-
-
 
 ## replicate
 

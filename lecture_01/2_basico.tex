@@ -241,14 +241,17 @@ Cuando tenemos que extraer pedazos de los datos (o analizar solamente
 parte de éstos), necesitamos complementar \texttt{str()} con
 \texttt{{[}{[}}, es decir, la estructura nos dirá cómo utilizar el
 operador subconjunto de manera que de hecho extraigamos lo que queremos.
-\#\# Operadores para extraer subconjuntos
+
+\subsection{Operadores para extraer
+subconjuntos}\label{operadores-para-extraer-subconjuntos}
 
 Dependiendo la estructura de datos que tenemos, será la forma en la que
 extraemos elementos de ella. Hay dos operadores de subconjunto:
 \texttt{{[}{[}} y \texttt{\$}. \texttt{{[}{[}} se parece a \texttt{{[}}
 pero regresa un solo valor y te permite sacar pedazos de una lista.
-\texttt{\$} es un atajo útil para \texttt{{[}{[}}. \#\#\# Vectores
-atómicos
+\texttt{\$} es un atajo útil para \texttt{{[}{[}}.
+
+\subsubsection{Vectores atómicos}\label{vectores-atomicos}
 
 ¿De qué formas puedo extraer elementos de un vector? Hay varias maneras
 \textbf{sin importar} la \emph{clase} del vector.
@@ -461,7 +464,9 @@ atómicos
 
 Las \textbf{listas} operan básicamente igual a vectores recordando que
 si usamos \texttt{{[}} regresa una lista y tanto \texttt{{[}{[}} y
-\texttt{\$} extrae componentes de la lista. \#\#\# Matrices y arreglos
+\texttt{\$} extrae componentes de la lista.
+
+\subsubsection{Matrices y arreglos}\label{matrices-y-arreglos}
 
 Para estructuras de mayor dimensión se pueden extraer de tres maneras:
 
@@ -535,8 +540,9 @@ replicándolo al número de dimensiones que se tiene.
 \end{verbatim}
 
 \texttt{{[}} simplifica al objeto. En matriz, me quita la
-dimensionalidad, en listas me da lo que esta dentro de esa celda. \#\#\#
-Dataframes
+dimensionalidad, en listas me da lo que esta dentro de esa celda.
+
+\subsubsection{Dataframes}\label{dataframes}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1046,7 +1052,8 @@ cosas que necesitamos que aún no se encuentran implementadas por alguien
 más de una manera más sencilla.
 
 Con saber de subconjuntos podemos realizar varias tareas indispensables.
-\#\# Buscarv o buscarh
+
+\subsection{Buscarv o buscarh}\label{buscarv-o-buscarh}
 
 Excel es excelente haciendo estas tareas. Lo malo de excel es que no es
 \textbf{reproducible}. Es muy común que resulte imposible llegar de los
