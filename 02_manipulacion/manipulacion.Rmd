@@ -1,0 +1,127 @@
+---
+title: "R: manipulación de datos"
+output:
+  pdf_document:
+    fig_caption: yes
+    latex_engine: pdflatex
+    keep_tex: yes
+    includes:
+      in_header: mypackages.sty
+---
+
+Un proyecto de datos tiene una gran cantidad de componentes. Sin embargo, en 
+básicamente todos se necesita iterar sobre el ciclo que se muestra en la figura \ref{fig:ciclo}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{../img/02_ciclo.png}
+    \caption{Modelo de las herramientas que se necesitan en un proyecto de datos según \textcite[Introducción]{grolemund2016r}.}
+    \label{fig:ciclo}
+\end{figure}
+
+Primero es necesario **importar** nuestros datos a R. Los datos pueden estar en 
+una gran cantidad de formatos o lugares.
+
+Después, normalmente es necesario **arreglar** nuestros datos, es decir, seguir
+criterios de datos limpios de manera que la manera en la que guardemos los datos
+equivalga a la semántica de los datos que tenemos. Es muy importante primero
+limpiar porque esto provee de consistencia a lo largo del análisis.
+
+Posteriormente, en casi todo proyecto, será necesario **transformar** los datos. 
+A veces esto implica enfocarse en un subconjunto de los datos, generar nuevas
+variables, calcular estadísticos, arreglar los datos de cierta manera, entre
+muchos otros.
+
+Solamente después de estas etapas podemos empezar a generar conocimiento a partir 
+de los datos. Para esto tenemos dos herramientas fundamentales: la estadística 
+descriptiva (en el diagrama reducido a **visualización**) y la generación de 
+**modelos**. La primera es fundamental pues permite derivar preguntas pertinentes
+a los datos, encontrar patrones, respuestas, plantear hipótesis. Sin embargo,
+éstas no escalan de la misma manera que los modelos pues estos, una vez que 
+aceptamos sus supuestos generan los resultados que esperamos o contestan la 
+pregunta planteada.
+
+Por último, necestamos **comunicar** los resultados. 
+
+
+
+
+# Importación de datos
+
+Para aplicar las herramientas de R a nuestro trabajo, es necesario poder importar
+nuestros datos a R. R tiene conectores ya implementados para casi cualquier 
+tipo y formato de datos. Entre los más comunes están:
+
+- Archivos de texto plano (como csvs) con `readr`.
+- Datos desde una API con `httr`.
+- Binarios (como excel o sas) con `haven` y `readxl`.
+
+\footnote{Los materiales para readr, httr, haven y readxl están basados en el capítulo de importación de datos de \textcite{grolemund2016r}.}
+
+# Leer y escribir archivos de datos
+
+## Lectura
+
+Desde archivo
+
+Datos de muestra
+
+# Extracción de partes de los objetos
+
+## Escritura
+
+
+# Do's y don'ts de R
+
+## Vectoriza y pre-asigna estructuras de datos
+
+## Which
+
+## La familia apply
+
+# Arreglar 
+
+## tidyr
+
+# Transformación
+
+Existen muchas maneras de transformar los datos y una gran cantidad de paquetes
+que implementan distintas funciones útiles para realizar esta tarea. En particular,
+resaltamos `dplyr` y `data.table`.
+
+## dplyr
+
+El material que se presenta aquí está basado en los ejemplos y código presentado
+por [Wickham en su tutorial](https://www.dropbox.com/sh/i8qnluwmuieicxc/AAAgt9tIKoIm7WZKIyK25lh6a) de **useR** en el 2014.
+
+**5 verbos** fundamentales implementados en `dplyr`
+
+- `filter`: seleccionamos filas de acuerdo a los valores de las variables
+- `select`: seleccionamos un subconjunto de las columnas utilizando los nombres
+de las variables
+- `arrange`: reordenamos filas
+- `mutate`: generar nuevas variables a partir de las variables originales
+- `summarise`: reducir variables a valores
+
+Todos estos verbos funcionan de la misma manera (tienen la misma estructura):
+
+- El primer argumento de la función es un *data.frame*
+- Los argumentos subsecuentes indican qué es lo que se debe hacer a ese *data.frame*
+- Siempre regresa un *data.frame*
+
+```{r}
+data("crimtab")
+```
+
+
+
+### select
+
+### join
+
+### do
+
+La manipulación de datos es parte del ciclo de análisis de datos. 
+
+
+
