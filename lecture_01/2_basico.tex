@@ -232,17 +232,14 @@ Cuando tenemos que extraer pedazos de los datos (o analizar solamente
 parte de éstos), necesitamos complementar \texttt{str()} con
 \texttt{{[}{[}}, es decir, la estructura nos dirá cómo utilizar el
 operador subconjunto de manera que de hecho extraigamos lo que queremos.
-
-\subsection{Operadores para extraer
-subconjuntos}\label{operadores-para-extraer-subconjuntos}
+\#\# Operadores para extraer subconjuntos
 
 Dependiendo la estructura de datos que tenemos, será la forma en la que
 extraemos elementos de ella. Hay dos operadores de subconjunto:
 \texttt{{[}{[}} y \texttt{\$}. \texttt{{[}{[}} se parece a \texttt{{[}}
 pero regresa un solo valor y te permite sacar pedazos de una lista.
-\texttt{\$} es un atajo útil para \texttt{{[}{[}}.
-
-\subsubsection{Vectores atómicos}\label{vectores-atomicos}
+\texttt{\$} es un atajo útil para \texttt{{[}{[}}. \#\#\# Vectores
+atómicos
 
 ¿De qué formas puedo extraer elementos de un vector? Hay varias maneras
 \textbf{sin importar} la \emph{clase} del vector.
@@ -362,7 +359,7 @@ pero regresa un solo valor y te permite sacar pedazos de una lista.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{x[c(}\OtherTok{TRUE}\NormalTok{, }\OtherTok{FALSE}\ErrorTok{)}\NormalTok{] }\CommentTok{# Autocompleta el vector lógico al tamaño de x}
+\NormalTok{x[}\KeywordTok{c}\NormalTok{(}\OtherTok{TRUE}\NormalTok{, }\OtherTok{FALSE}\NormalTok{)] }\CommentTok{# Autocompleta el vector lógico al tamaño de x}
 \end{Highlighting}
 \end{Shaded}
 
@@ -455,9 +452,7 @@ pero regresa un solo valor y te permite sacar pedazos de una lista.
 
 Las \textbf{listas} operan básicamente igual a vectores recordando que
 si usamos \texttt{{[}} regresa una lista y tanto \texttt{{[}{[}} y
-\texttt{\$} extrae componentes de la lista.
-
-\subsubsection{Matrices y arreglos}\label{matrices-y-arreglos}
+\texttt{\$} extrae componentes de la lista. \#\#\# Matrices y arreglos
 
 Para estructuras de mayor dimensión se pueden extraer de tres maneras:
 
@@ -531,9 +526,8 @@ replicándolo al número de dimensiones que se tiene.
 \end{verbatim}
 
 \texttt{{[}} simplifica al objeto. En matriz, me quita la
-dimensionalidad, en listas me da lo que esta dentro de esa celda.
-
-\subsubsection{Dataframes}\label{dataframes}
+dimensionalidad, en listas me da lo que esta dentro de esa celda. \#\#\#
+Dataframes
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -667,6 +661,199 @@ Debe dar el mismo resultado que ejecutar diag(m)
 \end{enumerate}
 \end{bclogo}
 
+\subsection{Asignar a un subconjunto}\label{asignar-a-un-subconjunto}
+
+Muchas veces lo que necesitamos es encontrar ciertos valores para poder
+reemplazarlos con algo más. Por ejemplo, muchas veces queremos imputar
+valores perdidos con cierto valor.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Variables continuas}
+\NormalTok{x <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\OtherTok{NA}\NormalTok{, }\OtherTok{NaN}\NormalTok{, }\DecValTok{7}\NormalTok{)}
+\NormalTok{media <-}\StringTok{ }\KeywordTok{mean}\NormalTok{(x, }\DataTypeTok{na.rm =} \NormalTok{T)}
+\NormalTok{media}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 3.25
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x[}\KeywordTok{is.na}\NormalTok{(x)] <-}\StringTok{ }\NormalTok{media}
+\NormalTok{x}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1.00 2.00 3.00 3.25 3.25 7.00
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Variables discretas}
+\NormalTok{x <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\KeywordTok{rep}\NormalTok{(}\StringTok{"azul"}\NormalTok{, }\DecValTok{3}\NormalTok{), }\StringTok{"verde"}\NormalTok{, }\OtherTok{NA}\NormalTok{, }\StringTok{"verde"}\NormalTok{, }\KeywordTok{rep}\NormalTok{(}\StringTok{"rojo"}\NormalTok{, }\DecValTok{4}\NormalTok{))}
+\NormalTok{x}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] "azul"  "azul"  "azul"  "verde" NA      "verde" "rojo"  "rojo" 
+##  [9] "rojo"  "rojo"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{moda <-}\StringTok{ }\KeywordTok{names}\NormalTok{(}\KeywordTok{table}\NormalTok{(x))[}\KeywordTok{which}\NormalTok{(}\KeywordTok{table}\NormalTok{(x) ==}\StringTok{ }\KeywordTok{max}\NormalTok{(}\KeywordTok{table}\NormalTok{(x)))] }\CommentTok{# Engorroso, no?}
+\NormalTok{x[}\KeywordTok{is.na}\NormalTok{(x)] <-}\StringTok{ }\NormalTok{moda}
+\NormalTok{x}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] "azul"  "azul"  "azul"  "verde" "rojo"  "verde" "rojo"  "rojo" 
+##  [9] "rojo"  "rojo"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Puedo reemplazar partes de un vector}
+\NormalTok{x <-}\StringTok{ }\DecValTok{1}\NormalTok{:}\DecValTok{5}
+\NormalTok{x[}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{)] <-}\StringTok{ }\DecValTok{2}\NormalTok{:}\DecValTok{3}
+\NormalTok{x}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 2 3 3 4 5
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Las longitudes de las asignaciones tienen que ser iguales}
+\NormalTok{x[-}\DecValTok{1}\NormalTok{] <-}\StringTok{ }\DecValTok{4}\NormalTok{:}\DecValTok{1}
+\NormalTok{x}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 2 4 3 2 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# No se revisan duplicados}
+\NormalTok{x[}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{)] <-}\StringTok{ }\DecValTok{2}\NormalTok{:}\DecValTok{3}
+\NormalTok{x}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 3 4 3 2 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Puedo sustituir valores considerando toda la logica }
+\NormalTok{x <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{:}\DecValTok{10}\NormalTok{)}
+\NormalTok{x[x >}\StringTok{ }\DecValTok{5}\NormalTok{] <-}\StringTok{ }\DecValTok{0}
+\NormalTok{x}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] 1 2 3 4 5 0 0 0 0 0
+\end{verbatim}
+
+Por último, es útil notar la utilidad de asignar utilizando la forma de
+asignar \textbf{nada} mencionada anteriormente.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{class}\NormalTok{(mtcars)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "data.frame"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mtcars[] <-}\StringTok{ }\KeywordTok{lapply}\NormalTok{(mtcars, as.integer)}
+\KeywordTok{class}\NormalTok{(mtcars)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "data.frame"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{dim}\NormalTok{(mtcars)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 32 11
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mtcars <-}\StringTok{ }\KeywordTok{lapply}\NormalTok{(mtcars, as.integer)}
+\KeywordTok{class}\NormalTok{(mtcars)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "list"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{dim}\NormalTok{(mtcars)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## NULL
+\end{verbatim}
+
+Asignar utilizando el operador de suconjunto a nada nos permite
+preservar la estructura del objeto original así como su clase.
+
+En el caso de listas, si combinamos un operador de sunjunto mas
+asignación a nulo, podemos remover objetos de ésta.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x <-}\StringTok{ }\KeywordTok{list}\NormalTok{(}\DataTypeTok{a =} \DecValTok{1}\NormalTok{, }\DataTypeTok{b =} \DecValTok{2}\NormalTok{)}
+\NormalTok{x[[}\DecValTok{2}\NormalTok{]] <-}\StringTok{ }\OtherTok{NULL}
+\KeywordTok{str}\NormalTok{(x)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## List of 1
+##  $ a: num 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x[}\StringTok{"b"}\NormalTok{] <-}\StringTok{ }\KeywordTok{list}\NormalTok{(}\OtherTok{NULL}\NormalTok{)}
+\KeywordTok{str}\NormalTok{(x)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## List of 2
+##  $ a: num 1
+##  $ b: NULL
+\end{verbatim}
+
 \subsection{Operadores lógicos}\label{operadores-logicos}
 
 \begin{table}[ht]
@@ -754,9 +941,176 @@ son menores que \(5\) y mayores que \(8\).
 ## [1]  1  2  3  4  9 10
 \end{verbatim}
 
-\begin{nota}[|| vs. | y && vs. &]
-
+\begin{nota}
+\begin{verbatim} || vs. | y && vs. & \end{verbatim}
+La diferencia entre \& y \&\& (o | y ||) es que el primero es vectorizado y el
+segundo no.
 \end{nota}
+
+\textbf{Ejercicio} ¿Qué crees que pasa en las siguientes situaciones?
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{rm}\NormalTok{(}\DataTypeTok{list =} \KeywordTok{ls}\NormalTok{())}
+\OtherTok{TRUE} \NormalTok{||}\StringTok{ }\NormalTok{a}
+\OtherTok{FALSE} \NormalTok{&&}\StringTok{ }\NormalTok{a}
+\OtherTok{TRUE} \NormalTok{&&}\StringTok{ }\NormalTok{a}
+\OtherTok{TRUE} \NormalTok{|}\StringTok{ }\NormalTok{a}
+\OtherTok{FALSE} \NormalTok{&}\StringTok{ }\NormalTok{a}
+\end{Highlighting}
+\end{Shaded}
+
+La forma larga (la versión doble) no parece ser muy útil. El propósito
+de ésta es que es más apropiado cuando se programa usando estructuras de
+control, por ejemplo, en \textbf{ifs}*.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{if( }\KeywordTok{c}\NormalTok{(T, F) ) }\KeywordTok{print}\NormalTok{(}\StringTok{"Hola"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in if (c(T, F)) print("Hola"): the condition has length > 1 and
+## only the first element will be used
+\end{verbatim}
+
+\begin{verbatim}
+## [1] "Hola"
+\end{verbatim}
+
+Poner el \&\& me garantiza que la condicional será evaluado sobre un
+único valor falso/verdadero.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{(-}\DecValTok{2}\NormalTok{:}\DecValTok{2}\NormalTok{) >=}\StringTok{ }\DecValTok{0} 
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] FALSE FALSE  TRUE  TRUE  TRUE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{(-}\DecValTok{2}\NormalTok{:}\DecValTok{2}\NormalTok{) <=}\StringTok{ }\DecValTok{0}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1]  TRUE  TRUE  TRUE FALSE FALSE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{((-}\DecValTok{2}\NormalTok{:}\DecValTok{2}\NormalTok{) >=}\StringTok{ }\DecValTok{0}\NormalTok{) &&}\StringTok{ }\NormalTok{((-}\DecValTok{2}\NormalTok{:}\DecValTok{2}\NormalTok{) <=}\StringTok{ }\DecValTok{0}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] FALSE
+\end{verbatim}
+
+\textbf{Ejercicio} Explora los siguientes comandos
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{impares <-}\StringTok{ }\DecValTok{1}\NormalTok{:}\DecValTok{10} \NormalTok{%%}\StringTok{ }\DecValTok{2} \NormalTok{==}\StringTok{ }\DecValTok{1}
+\NormalTok{mult}\FloatTok{.3} \NormalTok{<-}\StringTok{ }\DecValTok{1}\NormalTok{:}\DecValTok{10} \NormalTok{%%}\StringTok{ }\DecValTok{3} \NormalTok{==}\StringTok{ }\DecValTok{0}
+ 
+\NormalTok{impares &}\StringTok{ }\NormalTok{mult}\FloatTok{.3}
+\NormalTok{impares |}\StringTok{ }\NormalTok{mult}\FloatTok{.3}
+
+\KeywordTok{xor}\NormalTok{(impares, mult}\FloatTok{.3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\section{¿Por qué tanto detalle?
+Aplicaciones}\label{por-que-tanto-detalle-aplicaciones}
+
+Una de las formas más fáciles de frustrarse con R (y con cualquier otro
+lenguaje) es no saber decirle al lenguaje lo que se desea hacer.
+Entender cómo manipular las estructuras de datos y la lógica detrás de
+su comportamiento ahorra mucho sufrimiento y permite adaptarse ante
+cosas que necesitamos que aún no se encuentran implementadas por alguien
+más de una manera más sencilla.
+
+Con saber de subconjuntos podemos realizar varias tareas indispensables.
+\#\# Buscarv o buscarh
+
+Excel es excelente haciendo estas tareas. Lo malo de excel es que no es
+\textbf{reproducible}. Es muy común que resulte imposible llegar de los
+datos originales al resultado final pues muchos pasos intermedios de
+limpieza no están documentados de forma alguna. Un \emph{script} de
+limpieza nos permite no solamente ir del \emph{raw} a la estructura de
+datos limpia y analizable sino que permite que alguien más verifique las
+operaciones que se están realizando, se identifiquen errores y que,
+cuando nos llega un nuevo mes, sea trivial incluir estos datos al
+resultado final.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{rm}\NormalTok{(}\DataTypeTok{list =} \KeywordTok{ls}\NormalTok{())}
+\NormalTok{x <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"m"}\NormalTok{, }\StringTok{"f"}\NormalTok{, }\StringTok{"u"}\NormalTok{, }\StringTok{"f"}\NormalTok{, }\StringTok{"f"}\NormalTok{, }\StringTok{"m"}\NormalTok{, }\StringTok{"m"}\NormalTok{)}
+\NormalTok{busca <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DataTypeTok{m =} \StringTok{"Male"}\NormalTok{, }\DataTypeTok{f =} \StringTok{"Female"}\NormalTok{, }\DataTypeTok{u =} \OtherTok{NA}\NormalTok{)}
+\NormalTok{busca[x]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##        m        f        u        f        f        m        m 
+##   "Male" "Female"       NA "Female" "Female"   "Male"   "Male"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{unname}\NormalTok{(busca[x])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Male"   "Female" NA       "Female" "Female" "Male"   "Male"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{c}\NormalTok{(}\DataTypeTok{m =} \StringTok{"humano"}\NormalTok{, }\DataTypeTok{f =} \StringTok{"humano"}\NormalTok{, }\DataTypeTok{u =} \StringTok{"desconocido"}\NormalTok{)[x]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##             m             f             u             f             f 
+##      "humano"      "humano" "desconocido"      "humano"      "humano" 
+##             m             m 
+##      "humano"      "humano"
+\end{verbatim}
+
+Esto nos permite pegar un vector a una base de datos de acuerdo a una
+condicion.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{calificaciones <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{10}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{5}\NormalTok{, }\DecValTok{5}\NormalTok{, }\DecValTok{6}\NormalTok{)}
+\NormalTok{aprueba <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}
+  \DataTypeTok{calificacion =} \DecValTok{10}\NormalTok{:}\DecValTok{1}\NormalTok{,}
+  \DataTypeTok{descripcion =} \KeywordTok{c}\NormalTok{(}\KeywordTok{rep}\NormalTok{(}\StringTok{"excelente"}\NormalTok{, }\DecValTok{2}\NormalTok{), }\StringTok{"bueno"}\NormalTok{, }\KeywordTok{rep}\NormalTok{(}\StringTok{"aceptable"}\NormalTok{, }\DecValTok{2}\NormalTok{), }\KeywordTok{rep}\NormalTok{(}\StringTok{"no satisfactorio"}\NormalTok{, }\DecValTok{5}\NormalTok{)),}
+  \DataTypeTok{aprobatorio =} \KeywordTok{c}\NormalTok{(}\KeywordTok{rep}\NormalTok{(T, }\DecValTok{5}\NormalTok{), }\KeywordTok{rep}\NormalTok{(F, }\DecValTok{5}\NormalTok{))}
+\NormalTok{)}
+\NormalTok{id <-}\StringTok{ }\KeywordTok{match}\NormalTok{(calificaciones, aprueba$calificacion)}
+
+\NormalTok{aprueba[id, ]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##     calificacion      descripcion aprobatorio
+## 1             10        excelente        TRUE
+## 2              9        excelente        TRUE
+## 6              5 no satisfactorio       FALSE
+## 6.1            5 no satisfactorio       FALSE
+## 5              6        aceptable        TRUE
+\end{verbatim}
 
 \renewcommand\bcStyleTitre[1]{\large\textcolor{bbblack}{#1}}
 
@@ -765,13 +1119,625 @@ son menores que \(5\) y mayores que \(8\).
   arrondi=0,
   logo=\bcstop,
   barre=none,
-  noborder=true]{Ejercicio}
-\begin{itemize}
-\item Todo lo que existe es un objeto.
-\item Todo lo que sucede es una llamada a una función.
-\end{itemize}
+  noborder=true]{Ejercicios}
+\begin{enumerate}
+\item Realiza la misma operación con las calificaciones pero utilizando los 
+nombres de las filas, es decir, los rownames(aprueba)
+\item Carga la libreria ggplot2 y utiliza la base de datos diamonds
+\item Utiliza el comando match para quedarte con las variables cut y x 
+\item Genera la variable categórica tal que, si el precio es mayor que 5,000 el 
+valor de price.cat es cara, si es mayor que 2,000 es normal y barata en otro caso.
+\end{enumerate}
 \end{bclogo}
 
-\section{Vectorización}\label{vectorizacion}
+\subsection{Muestras aleatorias}\label{muestras-aleatorias}
+
+Podemos utilizar índices enteros para generar muestras aleatorias de
+nuestras bases de datos o de nuestros vectores.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{set.seed}\NormalTok{(}\DecValTok{102030}\NormalTok{)}
+\NormalTok{aprueba[}\KeywordTok{sample}\NormalTok{(}\KeywordTok{nrow}\NormalTok{(aprueba)), ]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    calificacion      descripcion aprobatorio
+## 10            1 no satisfactorio       FALSE
+## 2             9        excelente        TRUE
+## 8             3 no satisfactorio       FALSE
+## 7             4 no satisfactorio       FALSE
+## 9             2 no satisfactorio       FALSE
+## 3             8            bueno        TRUE
+## 1            10        excelente        TRUE
+## 6             5 no satisfactorio       FALSE
+## 4             7        aceptable        TRUE
+## 5             6        aceptable        TRUE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{aprueba[}\KeywordTok{sample}\NormalTok{(}\KeywordTok{nrow}\NormalTok{(aprueba), }\DataTypeTok{replace =} \NormalTok{T, }\DataTypeTok{size =} \DecValTok{5}\NormalTok{), ]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##     calificacion      descripcion aprobatorio
+## 4              7        aceptable        TRUE
+## 1             10        excelente        TRUE
+## 4.1            7        aceptable        TRUE
+## 7              4 no satisfactorio       FALSE
+## 2              9        excelente        TRUE
+\end{verbatim}
+
+\renewcommand\bcStyleTitre[1]{\large\textcolor{bbblack}{#1}}
+
+\begin{bclogo}[
+  couleur=llred,
+  arrondi=0,
+  logo=\bcstop,
+  barre=none,
+  noborder=true]{Ejercicios}
+\begin{enumerate}
+\item Utiliza la base de datos de iris y genera un conjunto de prueba y uno de entrenamiento correspondientes al 20 y 80 \% de los datos, respectivamente.
+\item Genera un vector x de tamaño 1000 con realizaciones de una normal media 10, varianza 3. 
+\item Crea 100 muestras bootstrap del vector x.
+\item Calcula la media para cada una de tus muestras.
+\item Grafica con la función hist() el vector de medias de tus muestras.
+\item Genera un vector l de letras, tamaño 10 y ordénalo. (Usa letters y order).
+\item Ordena la base cars de acuerdo a distancia, en forma descendiente (muestra la cola -usa tail- de la base ordenada).
+\end{enumerate}
+\end{bclogo}
+
+\subsection{Expande bases}\label{expande-bases}
+
+Ahora, a veces tenemos tablas de resumen pero quisieramos extraer los
+datos originales. Combinamos rep con subconjuntos de enteros para
+expandir.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}
+  \DataTypeTok{color =} \KeywordTok{c}\NormalTok{(}\StringTok{"azul"}\NormalTok{, }\StringTok{"verde"}\NormalTok{, }\StringTok{"amarillo"}\NormalTok{),}
+  \DataTypeTok{n =} \KeywordTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{5}\NormalTok{)}
+\NormalTok{)}
+\NormalTok{df}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      color n
+## 1     azul 4
+## 2    verde 3
+## 3 amarillo 5
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df[}\KeywordTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{:}\KeywordTok{nrow}\NormalTok{(df), df$n), ]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##        color n
+## 1       azul 4
+## 1.1     azul 4
+## 1.2     azul 4
+## 1.3     azul 4
+## 2      verde 3
+## 2.1    verde 3
+## 2.2    verde 3
+## 3   amarillo 5
+## 3.1 amarillo 5
+## 3.2 amarillo 5
+## 3.3 amarillo 5
+## 3.4 amarillo 5
+\end{verbatim}
+
+\subsection{Otras}\label{otras}
+
+Ya estuvimos utilizando otras aplicaciones de estos comandos:
+ordenamientos, selección de filas o columnas según una condición lógica.
+
+También utilizamos un comando muy útil llamado which.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{set.seed}\NormalTok{(}\DecValTok{45}\NormalTok{)}
+\NormalTok{x <-}\StringTok{ }\KeywordTok{sample}\NormalTok{(letters, }\DecValTok{10}\NormalTok{)}
+\NormalTok{x <=}\StringTok{ "e"}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE  TRUE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{which}\NormalTok{(x <=}\StringTok{ "e"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1]  7  9 10
+\end{verbatim}
+
+Junto con which, puedes usar intersect y union.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pares <-}\StringTok{ }\DecValTok{1}\NormalTok{:}\DecValTok{10} \NormalTok{%%}\StringTok{ }\DecValTok{2} \NormalTok{==}\StringTok{ }\DecValTok{0}
+\NormalTok{m}\FloatTok{.5} \NormalTok{<-}\StringTok{ }\DecValTok{1}\NormalTok{:}\DecValTok{10} \NormalTok{%%}\StringTok{ }\DecValTok{5} \NormalTok{==}\StringTok{ }\DecValTok{0}
+
+\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{:}\DecValTok{10}\NormalTok{)[}\KeywordTok{union}\NormalTok{(}\KeywordTok{which}\NormalTok{(pares), }\KeywordTok{which}\NormalTok{(m}\FloatTok{.5}\NormalTok{))]}
+\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{:}\DecValTok{10}\NormalTok{)[}\KeywordTok{intersect}\NormalTok{(}\KeywordTok{which}\NormalTok{(pares), }\KeywordTok{which}\NormalTok{(m}\FloatTok{.5}\NormalTok{))]}
+\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{:}\DecValTok{10}\NormalTok{)[}\KeywordTok{which}\NormalTok{(}\KeywordTok{xor}\NormalTok{(pares, m}\FloatTok{.5}\NormalTok{))]}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Split-apply-combine}\label{split-apply-combine}
+
+El paradigma split-apply-combine se resume en la figura \ref{fig:sac}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{../img/01_s-a-c.png}
+    \caption{Ejemplificación del split-apply-combine \textcite[Split-Apply-Combine]{vaidyanathan2014r}.}
+    \label{fig:sac}
+\end{figure}
+
+Entendamos mejor:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{letras <-}\StringTok{ }\KeywordTok{sample}\NormalTok{(letters, }\DecValTok{3}\NormalTok{)}
+\NormalTok{df <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}
+  \DataTypeTok{letra =} \NormalTok{letras[}\KeywordTok{rep}\NormalTok{(}\KeywordTok{seq}\NormalTok{(letras), }\DecValTok{4}\NormalTok{)],}
+  \DataTypeTok{valor =} \KeywordTok{sample}\NormalTok{(}\DecValTok{1}\NormalTok{:}\DecValTok{10}\NormalTok{, }\DataTypeTok{size =} \DecValTok{12}\NormalTok{, }\DataTypeTok{replace =} \NormalTok{T)}
+\NormalTok{)}
+\NormalTok{df <-}\StringTok{ }\NormalTok{df[}\KeywordTok{order}\NormalTok{(df$letra), ]}
+\NormalTok{df}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    letra valor
+## 3      h     5
+## 6      h     5
+## 9      h     4
+## 12     h     9
+## 1      j     5
+## 4      j    10
+## 7      j     3
+## 10     j     6
+## 2      w     5
+## 5      w     2
+## 8      w     2
+## 11     w     7
+\end{verbatim}
+
+Queremos estimar la media del valor para cada tipo de letra.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Dividimos}
+\NormalTok{for (l in }\KeywordTok{unique}\NormalTok{(df$letra) )\{}
+  \KeywordTok{print}\NormalTok{(df[l ==}\StringTok{ }\NormalTok{df$letra, ])}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    letra valor
+## 3      h     5
+## 6      h     5
+## 9      h     4
+## 12     h     9
+##    letra valor
+## 1      j     5
+## 4      j    10
+## 7      j     3
+## 10     j     6
+##    letra valor
+## 2      w     5
+## 5      w     2
+## 8      w     2
+## 11     w     7
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Aplicamos}
+\NormalTok{for (l in }\KeywordTok{unique}\NormalTok{(df$letra) )\{}
+  \KeywordTok{print}\NormalTok{(}\KeywordTok{mean}\NormalTok{(df[l ==}\StringTok{ }\NormalTok{df$letra, ]$valor))}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 5.75
+## [1] 6
+## [1] 4
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Combinamos}
+\NormalTok{medias <-}\StringTok{ }\KeywordTok{list}\NormalTok{()}
+\NormalTok{for (l in }\KeywordTok{unique}\NormalTok{(df$letra) )\{}
+  \NormalTok{medias[[l]] <-}\StringTok{ }\KeywordTok{mean}\NormalTok{(df[l ==}\StringTok{ }\NormalTok{df$letra, ]$valor)}
+\NormalTok{\}}
+\KeywordTok{as.data.frame}\NormalTok{(}\KeywordTok{list}\NormalTok{(}\DataTypeTok{letras =} \KeywordTok{names}\NormalTok{(medias), }\DataTypeTok{medias =} \KeywordTok{unname}\NormalTok{(}\KeywordTok{unlist}\NormalTok{(medias))))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   letras medias
+## 1      h   5.75
+## 2      j   6.00
+## 3      w   4.00
+\end{verbatim}
+
+R tiene muchas funciones que facilitan realizar este tipo de
+operaciones. En particular, la familia \texttt{apply} fue pensada para
+realizar ese tipo de operaciones.
+
+\subsection{apply}\label{apply}
+
+\texttt{apply} aplica una función a cada fila o columna en una matriz.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{m <-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{:}\DecValTok{5}\NormalTok{, }\DecValTok{6}\NormalTok{:}\DecValTok{10}\NormalTok{), }\DataTypeTok{nrow =} \DecValTok{5}\NormalTok{, }\DataTypeTok{ncol =} \DecValTok{2}\NormalTok{)}
+\CommentTok{# 1 is the row index 2 is the column index}
+\NormalTok{m}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      [,1] [,2]
+## [1,]    1    6
+## [2,]    2    7
+## [3,]    3    8
+## [4,]    4    9
+## [5,]    5   10
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{apply}\NormalTok{(m, }\DecValTok{1}\NormalTok{, sum)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1]  7  9 11 13 15
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{apply}\NormalTok{(m, }\DecValTok{2}\NormalTok{, sum)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 15 40
+\end{verbatim}
+
+\textbf{Ejercicio} Haz una función que reciba un vector y devuelva la
+suma de la posición \(v_i + v_{i + 1}\). Para el n-esimo elemento, suma
+el primero. Aplica esa función a las columnas y filas de la matriz m.
+
+\subsection{lapply}\label{lapply}
+
+\texttt{lapply} aplica una función a cada elemento en una lista. Como
+sabemos, un \texttt{data.frame} es únicamente un estilo particular de
+lista tal que todos sus elementos tienen el mismo tamaño. Por ende,
+también podemos utilizar \texttt{lapply} para iterar sobre las columnas
+de un \texttt{data.frame}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{lista <-}\StringTok{ }\KeywordTok{list}\NormalTok{(}\DataTypeTok{a =} \DecValTok{1}\NormalTok{:}\DecValTok{10}\NormalTok{, }\DataTypeTok{b =} \DecValTok{2}\NormalTok{:}\DecValTok{20}\NormalTok{)}
+\KeywordTok{lapply}\NormalTok{(lista, mean)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $a
+## [1] 5.5
+## 
+## $b
+## [1] 11
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{a =} \DecValTok{1}\NormalTok{:}\DecValTok{10}\NormalTok{, }\DataTypeTok{b =} \DecValTok{11}\NormalTok{:}\DecValTok{20}\NormalTok{)}
+\KeywordTok{lapply}\NormalTok{(df, mean)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $a
+## [1] 5.5
+## 
+## $b
+## [1] 15.5
+\end{verbatim}
+
+\subsection{sapply}\label{sapply}
+
+\texttt{sapply} es otra versión de \texttt{lapply} que regresa una lista
+de una matriz cuando es apropiado.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x <-}\StringTok{ }\KeywordTok{sapply}\NormalTok{(lista, mean, }\DataTypeTok{simplify =} \NormalTok{F)}
+\NormalTok{x}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $a
+## [1] 5.5
+## 
+## $b
+## [1] 11
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x <-}\StringTok{ }\KeywordTok{sapply}\NormalTok{(lista, mean, }\DataTypeTok{simplify =} \NormalTok{T)}
+\NormalTok{x}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    a    b 
+##  5.5 11.0
+\end{verbatim}
+
+\subsection{mapply}\label{mapply}
+
+\texttt{mapply} es como la versión multivariada de \texttt{sapply}. Le
+aplica una función a todos los elementos correspondientes de un
+argumento.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{l1 <-}\KeywordTok{list}\NormalTok{(}\DataTypeTok{a =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{:}\DecValTok{5}\NormalTok{), }\DataTypeTok{b =} \KeywordTok{c}\NormalTok{(}\DecValTok{6}\NormalTok{:}\DecValTok{10}\NormalTok{))}
+\NormalTok{l2 <-}\StringTok{ }\KeywordTok{list}\NormalTok{(}\DataTypeTok{c =} \KeywordTok{c}\NormalTok{(}\DecValTok{11}\NormalTok{:}\DecValTok{15}\NormalTok{), }\DataTypeTok{d =} \KeywordTok{c}\NormalTok{(}\DecValTok{16}\NormalTok{:}\DecValTok{20}\NormalTok{))}
+\NormalTok{l1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $a
+## [1] 1 2 3 4 5
+## 
+## $b
+## [1]  6  7  8  9 10
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{l2}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $c
+## [1] 11 12 13 14 15
+## 
+## $d
+## [1] 16 17 18 19 20
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{mapply}\NormalTok{(sum, l1$a, l1$b, l2$c, l2$d)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 34 38 42 46 50
+\end{verbatim}
+
+\subsection{tapply}\label{tapply}
+
+\texttt{tapply} le aplica una función a subconjuntos de un vector.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{head}\NormalTok{(warpbreaks)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   breaks wool tension
+## 1     26    A       L
+## 2     30    A       L
+## 3     54    A       L
+## 4     25    A       L
+## 5     70    A       L
+## 6     52    A       L
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{with}\NormalTok{(warpbreaks, }\KeywordTok{tapply}\NormalTok{(breaks, }\KeywordTok{list}\NormalTok{(wool, tension), mean))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##          L        M        H
+## A 44.55556 24.00000 24.55556
+## B 28.22222 28.77778 18.77778
+\end{verbatim}
+
+\subsection{by}\label{by}
+
+\texttt{by} le aplica una función a subconjuntos de un
+\texttt{data.frame}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{head}\NormalTok{(iris)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+## 1          5.1         3.5          1.4         0.2  setosa
+## 2          4.9         3.0          1.4         0.2  setosa
+## 3          4.7         3.2          1.3         0.2  setosa
+## 4          4.6         3.1          1.5         0.2  setosa
+## 5          5.0         3.6          1.4         0.2  setosa
+## 6          5.4         3.9          1.7         0.4  setosa
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{by}\NormalTok{(iris[, }\DecValTok{1}\NormalTok{:}\DecValTok{2}\NormalTok{], iris[, }\StringTok{"Species"}\NormalTok{], summary)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## iris[, "Species"]: setosa
+##   Sepal.Length    Sepal.Width   
+##  Min.   :4.300   Min.   :2.300  
+##  1st Qu.:4.800   1st Qu.:3.200  
+##  Median :5.000   Median :3.400  
+##  Mean   :5.006   Mean   :3.428  
+##  3rd Qu.:5.200   3rd Qu.:3.675  
+##  Max.   :5.800   Max.   :4.400  
+## -------------------------------------------------------- 
+## iris[, "Species"]: versicolor
+##   Sepal.Length    Sepal.Width   
+##  Min.   :4.900   Min.   :2.000  
+##  1st Qu.:5.600   1st Qu.:2.525  
+##  Median :5.900   Median :2.800  
+##  Mean   :5.936   Mean   :2.770  
+##  3rd Qu.:6.300   3rd Qu.:3.000  
+##  Max.   :7.000   Max.   :3.400  
+## -------------------------------------------------------- 
+## iris[, "Species"]: virginica
+##   Sepal.Length    Sepal.Width   
+##  Min.   :4.900   Min.   :2.200  
+##  1st Qu.:6.225   1st Qu.:2.800  
+##  Median :6.500   Median :3.000  
+##  Mean   :6.588   Mean   :2.974  
+##  3rd Qu.:6.900   3rd Qu.:3.175  
+##  Max.   :7.900   Max.   :3.800
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{by}\NormalTok{(iris[, }\DecValTok{1}\NormalTok{:}\DecValTok{2}\NormalTok{], iris[, }\StringTok{"Species"}\NormalTok{], sum)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## iris[, "Species"]: setosa
+## [1] 421.7
+## -------------------------------------------------------- 
+## iris[, "Species"]: versicolor
+## [1] 435.3
+## -------------------------------------------------------- 
+## iris[, "Species"]: virginica
+## [1] 478.1
+\end{verbatim}
+
+\subsection{replicate}\label{replicate}
+
+\texttt{replicate} es una función muy útil sobretodo en el contexto de
+simulación.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{replicate}\NormalTok{(}\DecValTok{10}\NormalTok{, }\KeywordTok{rnorm}\NormalTok{(}\DecValTok{10}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##              [,1]        [,2]       [,3]       [,4]       [,5]       [,6]
+##  [1,] -1.48174362  0.19230363 -0.8376586 -0.3633049 -0.9454914  0.5737528
+##  [2,]  0.66978164  1.16502038  1.7216593 -0.2211350  1.2493954  0.2225771
+##  [3,] -0.78426278 -0.18038327  0.4360063 -0.1981113  1.5543102  1.1414076
+##  [4,] -0.45197092  0.33794788  0.7571990  0.6676305  0.3306465 -0.6722725
+##  [5,]  1.02655102  0.08232277  1.5398858  0.8675148  0.2031200 -0.2678219
+##  [6,]  0.02008344 -0.10389078  1.5393945 -0.1700282 -2.5829970 -0.7966372
+##  [7,] -0.51265062 -1.14011737  2.1829996  1.1900491  0.6130339 -0.6357772
+##  [8,] -0.42850764 -0.61650967 -0.9953758  0.9188715  0.7158021  0.3941631
+##  [9,]  0.56324168  0.70398860 -0.3013422 -1.3168208  0.6501763  0.7992128
+## [10,]  0.10284099 -2.20665211  0.6005107 -0.6075526  0.7201334  0.1283459
+##             [,7]        [,8]        [,9]      [,10]
+##  [1,] -0.8887143  2.33711301  0.72783244 -0.9021050
+##  [2,]  0.6757678  1.66401784  0.48074691 -1.2009167
+##  [3,] -0.1255535 -1.52197009 -2.46822242 -0.3914280
+##  [4,] -0.9841736 -0.50966839  0.62665505 -1.6663467
+##  [5,]  0.2602586  2.18864496 -1.66127491  2.0649080
+##  [6,]  0.5542309  0.46450664  0.09699811 -0.1577638
+##  [7,] -0.4632636  0.06137625 -1.40269396  1.3468732
+##  [8,] -0.2556815 -1.48430525 -1.17868578 -1.4118988
+##  [9,] -0.4719348 -1.09642301 -0.46113330  0.9629640
+## [10,] -1.6754199 -0.72810649 -0.22188179  2.6097678
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{replicate}\NormalTok{(}\DecValTok{10}\NormalTok{, }\KeywordTok{rnorm}\NormalTok{(}\DecValTok{10}\NormalTok{), }\DataTypeTok{simplify =} \OtherTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##             [,1]       [,2]        [,3]        [,4]        [,5]
+##  [1,] -0.6519569  0.7439585 -0.43102128  0.74332085  0.52802258
+##  [2,] -0.5833962  0.4651983  0.08971035  1.06418885  0.12323611
+##  [3,] -2.0624519 -0.5649922  0.37888588 -1.39018821 -0.60300621
+##  [4,] -2.0741784  0.1103735 -1.01204125  0.18554604  0.02971295
+##  [5,]  0.3163909  0.7396178 -0.69527011 -0.68980018 -1.34754510
+##  [6,]  1.4130421 -1.0238289 -1.21656798  0.18664591  0.69717022
+##  [7,]  0.1083087 -1.7631844  0.17773017 -0.84670502  0.32247446
+##  [8,]  1.5800786 -0.3307447  1.34605420 -0.38910028 -1.21625774
+##  [9,]  2.5316414  0.1624836 -1.79621526 -1.40193912  1.13113655
+## [10,] -1.3564485 -0.6587953 -0.82300245  0.05695732  0.39172153
+##              [,6]       [,7]       [,8]        [,9]       [,10]
+##  [1,] -0.01207038 -0.3776475  0.4811280 -0.46905830 -0.19508150
+##  [2,]  0.48662548 -1.1120863  1.4909634 -0.24017522  0.72550816
+##  [3,] -1.37384355  0.7884565 -0.5161356  0.97767030 -0.25649573
+##  [4,] -0.97037180 -0.8074360  0.3241201  0.26685726  0.31816666
+##  [5,]  0.73055171 -2.4019384 -0.2704226  0.32066998  0.08013089
+##  [6,] -1.75196390 -0.4302810  0.5752032 -0.03026014 -0.84954471
+##  [7,]  0.10976613 -1.3427111  1.7014567  1.43112834 -1.17221837
+##  [8,]  1.73672532 -0.6723798 -0.2146187 -0.17963766  0.19212226
+##  [9,]  0.28714651 -0.8182435 -0.5740034 -0.95510250  0.88235221
+## [10,]  0.69205940  0.1532547 -0.6420396 -1.20607001 -1.41958617
+\end{verbatim}
+
+\subsection{¿Puede ser más fácil?}\label{puede-ser-mas-facil}
+
+La familia \texttt{apply} viene con R básico. Sin embargo, hay 3
+implementaciones excelentes del paradigma split-apply-combine:
+\texttt{plyr}, \texttt{dplyr} y \texttt{data.table}.
+
+Si la familia apply es poderosa, se queda corta comparada con estos
+tres. \texttt{plyr} es la primera versión de s-a-c de Wickham.
+Posteriormente, mejoró muchas de las funciones en \texttt{dplyr}
+sobretodo entorno a velocidad y facilidad de uso. \texttt{plyr} no
+termina de ser relevante pues varias de sus funciones aun no están en
+\texttt{dplyr}.
+
+\texttt{data.table}, es una implementación con una tradición muy
+diferente y tiene también funciones muy poderosas aunque con una
+sintaxis muy distinta a \texttt{dplyr}. Es absurdamente eficiente y
+tiene múltiples aplicaciones.
+
+Muchas de las funciones en \texttt{dplyr} también están implementadas en
+\texttt{data.table}. Cuál usar es cuestión de gustos. Depende de con qué
+se acomoda cada quién pero, para algunas cosas uno es superior al otro y
+viceversa.
 
 \end{document}

@@ -32,14 +32,12 @@ Cuando tenemos que extraer pedazos de los datos (o analizar solamente parte de
 éstos), necesitamos complementar `str()` con `[[`, es decir, la estructura nos
 dirá cómo utilizar el operador subconjunto de manera que de hecho extraigamos lo 
 que queremos.
-
 ## Operadores para extraer subconjuntos
 
 Dependiendo la estructura de datos que tenemos, será la forma en la que extraemos
 elementos de ella. Hay dos operadores de subconjunto: `[[` y `$`. `[[` se parece 
 a `[` pero regresa un solo valor y te permite sacar pedazos de una lista. `$` es 
 un atajo útil para `[[`. 
-
 ### Vectores atómicos
 
 ¿De qué formas puedo extraer elementos de un vector? Hay varias maneras **sin importar**
@@ -107,7 +105,6 @@ x[grep("a", names(x))]
 
 Las **listas** operan básicamente igual a vectores recordando que si usamos `[`
 regresa una lista y tanto `[[` y `$` extrae componentes de la lista.
-
 ### Matrices y arreglos
 
 Para estructuras de mayor dimensión se pueden extraer de tres maneras:
@@ -137,7 +134,6 @@ class(m[c(T, F, F)])
 
 `[` simplifica al objeto. En matriz, me quita la dimensionalidad, en listas me 
 da lo que esta dentro de esa celda.
-
 ### Dataframes
 
 ```{r}
@@ -223,7 +219,75 @@ is.na(df)
 df[is.na(df)] <- 0
 df
 ```
+## Asignar a un subconjunto
 
+Muchas veces lo que necesitamos es encontrar ciertos valores para poder 
+reemplazarlos con algo más. Por ejemplo, muchas veces queremos imputar valores
+perdidos con cierto valor.
+
+```{r}
+# Variables continuas
+x <- c(1, 2, 3, NA, NaN, 7)
+media <- mean(x, na.rm = T)
+media
+x[is.na(x)] <- media
+x
+
+# Variables discretas
+x <- c(rep("azul", 3), "verde", NA, "verde", rep("rojo", 4))
+x
+moda <- names(table(x))[which(table(x) == max(table(x)))] # Engorroso, no?
+x[is.na(x)] <- moda
+x
+```
+
+```{r}
+# Puedo reemplazar partes de un vector
+x <- 1:5
+x[c(1, 2)] <- 2:3
+x
+
+# Las longitudes de las asignaciones tienen que ser iguales
+x[-1] <- 4:1
+x
+
+# No se revisan duplicados
+x[c(1, 1)] <- 2:3
+x
+
+# Puedo sustituir valores considerando toda la logica 
+x <- c(1:10)
+x[x > 5] <- 0
+x
+```
+
+Por último, es útil notar la utilidad de asignar utilizando la forma de asignar
+**nada** mencionada anteriormente. 
+
+```{r}
+class(mtcars)
+mtcars[] <- lapply(mtcars, as.integer)
+class(mtcars)
+dim(mtcars)
+mtcars <- lapply(mtcars, as.integer)
+class(mtcars)
+dim(mtcars)
+```
+
+Asignar utilizando el operador de suconjunto a nada nos permite preservar la 
+estructura del objeto original así como su clase.
+
+En el caso de listas, si combinamos un operador de sunjunto mas asignación a nulo,
+podemos remover objetos de ésta. 
+
+```{r}
+x <- list(a = 1, b = 2)
+x[[2]] <- NULL
+str(x)
+
+x["b"] <- list(NULL)
+str(x)
+```
 ## Operadores lógicos
 
 ```{r, echo = F, results='asis'}
@@ -261,14 +325,96 @@ x > 8 | x < 5
 x[c(T,T,T,T,F,F,F,F,T,T)]
 ```
 
-\begin{nota}[|| vs. | y && vs. &]
-http://stackoverflow.com/questions/6558921/r-boolean-operators-and
-
+\begin{nota}
+\begin{verbatim} || vs. | y && vs. & \end{verbatim}
+La diferencia entre \& y \&\& (o | y ||) es que el primero es vectorizado y el
+segundo no.
 \end{nota}
 
-```{r, eval = F}
-  
+**Ejercicio** ¿Qué crees que pasa en las siguientes situaciones?
 
+```{r, eval = F}
+rm(list = ls())
+TRUE || a
+FALSE && a
+TRUE && a
+TRUE | a
+FALSE & a
+```
+
+La forma larga (la versión doble) no parece ser muy útil. El propósito de ésta
+es que es más apropiado cuando se programa usando estructuras de control, por 
+ejemplo, en **ifs***.
+
+```{r}
+if( c(T, F) ) print("Hola")
+```
+
+Poner el \&\& me garantiza que la condicional será evaluado sobre un único valor
+falso/verdadero.
+
+```{r}
+(-2:2) >= 0 
+(-2:2) <= 0
+
+((-2:2) >= 0) && ((-2:2) <= 0)
+```
+
+**Ejercicio** Explora los siguientes comandos
+
+```{r, eval = F}
+impares <- 1:10 %% 2 == 1
+mult.3 <- 1:10 %% 3 == 0
+ 
+impares & mult.3
+impares | mult.3
+
+xor(impares, mult.3)
+```
+
+# ¿Por qué tanto detalle? Aplicaciones 
+
+Una de las formas más fáciles de frustrarse con R (y con cualquier otro 
+lenguaje) es no saber decirle al lenguaje lo que se desea hacer. Entender
+cómo manipular las estructuras de datos y la lógica detrás de su comportamiento
+ahorra mucho sufrimiento y permite adaptarse ante cosas que necesitamos que
+aún no se encuentran implementadas por alguien más de una manera más sencilla.
+
+Con saber de subconjuntos podemos realizar varias tareas indispensables.
+## Buscarv o buscarh
+
+Excel es excelente haciendo estas tareas. Lo malo de excel es que no es 
+**reproducible**. Es muy común que resulte imposible llegar de los datos originales
+al resultado final pues muchos pasos intermedios de limpieza no están documentados
+de forma alguna. Un *script* de limpieza nos permite no solamente ir del *raw* a
+la estructura de datos limpia y analizable sino que permite que alguien más 
+verifique las operaciones que se están realizando, se identifiquen errores y que,
+cuando nos llega un nuevo mes, sea trivial incluir estos datos al resultado
+final.
+
+```{r}
+rm(list = ls())
+x <- c("m", "f", "u", "f", "f", "m", "m")
+busca <- c(m = "Male", f = "Female", u = NA)
+busca[x]
+
+unname(busca[x])
+
+c(m = "humano", f = "humano", u = "desconocido")[x]
+```
+
+Esto nos permite pegar un vector a una base de datos de acuerdo a una condicion.
+
+```{r}
+calificaciones <- c(10, 9, 5, 5, 6)
+aprueba <- data.frame(
+  calificacion = 10:1,
+  descripcion = c(rep("excelente", 2), "bueno", rep("aceptable", 2), rep("no satisfactorio", 5)),
+  aprobatorio = c(rep(T, 5), rep(F, 5))
+)
+id <- match(calificaciones, aprueba$calificacion)
+
+aprueba[id, ]
 ```
 
 \renewcommand\bcStyleTitre[1]{\large\textcolor{bbblack}{#1}}
@@ -277,12 +423,307 @@ http://stackoverflow.com/questions/6558921/r-boolean-operators-and
   arrondi=0,
   logo=\bcstop,
   barre=none,
-  noborder=true]{Ejercicio}
-\begin{itemize}
-\item Todo lo que existe es un objeto.
-\item Todo lo que sucede es una llamada a una función.
-\end{itemize}
+  noborder=true]{Ejercicios}
+\begin{enumerate}
+\item Realiza la misma operación con las calificaciones pero utilizando los 
+nombres de las filas, es decir, los rownames(aprueba)
+\item Carga la libreria ggplot2 y utiliza la base de datos diamonds
+\item Utiliza el comando match para quedarte con las variables cut y x 
+\item Genera la variable categórica tal que, si el precio es mayor que 5,000 el 
+valor de price.cat es cara, si es mayor que 2,000 es normal y barata en otro caso.
+\end{enumerate}
 \end{bclogo}
 
-# Vectorización
+```{r, eval=F, echo=F}
+# 1
+rownames(aprueba) <- aprueba$calificacion
+aprueba[as.character(calificaciones), ]
 
+# 2
+library(ggplot2)
+head(diamonds)
+
+# 3
+head(diamonds[, match(c("cut", "x"), names(diamonds))])
+
+# 4
+diamonds$price.cat <- character(nrow(diamonds))
+diamonds$price.cat[diamonds$price > 5000] <- "cara"
+diamonds$price.cat[diamonds$price > 2000 & diamonds$price <= 5000] <- "normal"
+diamonds$price.cat[diamonds$price <= 2000] <- "barata"
+
+set.seed(2811)
+s <- sample(seq(nrow(diamonds)), 
+       size = 10,
+       replace = F)
+diamonds[s, c("price", "price.cat")]
+```
+## Muestras aleatorias
+
+Podemos utilizar índices enteros para generar muestras aleatorias de nuestras
+bases de datos o de nuestros vectores.
+
+```{r}
+set.seed(102030)
+aprueba[sample(nrow(aprueba)), ]
+aprueba[sample(nrow(aprueba), replace = T, size = 5), ]
+```
+
+\renewcommand\bcStyleTitre[1]{\large\textcolor{bbblack}{#1}}
+\begin{bclogo}[
+  couleur=llred,
+  arrondi=0,
+  logo=\bcstop,
+  barre=none,
+  noborder=true]{Ejercicios}
+\begin{enumerate}
+\item Utiliza la base de datos de iris y genera un conjunto de prueba y uno de entrenamiento correspondientes al 20 y 80 \% de los datos, respectivamente.
+\item Genera un vector x de tamaño 1000 con realizaciones de una normal media 10, varianza 3. 
+\item Crea 100 muestras bootstrap del vector x.
+\item Calcula la media para cada una de tus muestras.
+\item Grafica con la función hist() el vector de medias de tus muestras.
+\item Genera un vector l de letras, tamaño 10 y ordénalo. (Usa letters y order).
+\item Ordena la base cars de acuerdo a distancia, en forma descendiente (muestra la cola -usa tail- de la base ordenada).
+\end{enumerate}
+\end{bclogo}
+
+```{r, echo=F, eval=F}
+# 1
+dim(iris)
+indices <- sample(seq(nrow(iris)), size = floor(0.8 * nrow(iris)))
+## checamos que esta correcto
+length(indices) == length(unique(indices))
+
+entrenamiento <- iris[indices, ]
+prueba <- iris[-indices, ]
+dim(entrenamiento)
+dim(prueba)
+
+## checamos que esta correcto
+nrow(entrenamiento) + nrow(prueba) == nrow(iris)
+
+# 2
+x <- rnorm(1000, mean = 10, sd = sqrt(3))
+# 3
+set.seed(1128)
+muestras <- list()
+for ( i in seq(100) ){
+  muestras[[i]] <- sample(x, size = 1000, replace = T)
+  # 4
+  medias[i] <- mean(muestras[[i]])
+}
+hist(medias)
+# 4 alternativo
+medias <- c()
+for (i in muestras){
+  medias <- c(medias, mean(i))
+}
+# 5
+hist(medias)
+# 6
+l <- sample(letters, size = 10)
+l
+l[order(l)]
+
+# 7
+tail(cars[order(cars$dist, decreasing = T), ])
+```
+## Expande bases
+
+Ahora, a veces tenemos tablas de resumen pero quisieramos extraer los datos
+originales. Combinamos rep con subconjuntos de enteros para expandir.
+
+```{r}
+df <- data.frame(
+  color = c("azul", "verde", "amarillo"),
+  n = c(4, 3, 5)
+)
+df
+df[rep(1:nrow(df), df$n), ]
+```
+## Otras
+
+Ya estuvimos utilizando otras aplicaciones de estos comandos: ordenamientos,
+selección de filas o columnas según una condición lógica.
+
+También utilizamos un comando muy útil llamado which.
+
+```{r}
+set.seed(45)
+x <- sample(letters, 10)
+x <= "e"
+which(x <= "e")
+```
+
+Junto con which, puedes usar intersect y union.
+
+```{r, eval = F}
+pares <- 1:10 %% 2 == 0
+m.5 <- 1:10 %% 5 == 0
+
+c(1:10)[union(which(pares), which(m.5))]
+c(1:10)[intersect(which(pares), which(m.5))]
+c(1:10)[which(xor(pares, m.5))]
+```
+
+# Split-apply-combine
+
+El paradigma split-apply-combine se resume en la figura \ref{fig:sac}. 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{../img/01_s-a-c.png}
+    \caption{Ejemplificación del split-apply-combine \textcite[Split-Apply-Combine]{vaidyanathan2014r}.}
+    \label{fig:sac}
+\end{figure}
+
+Entendamos mejor:
+
+```{r}
+letras <- sample(letters, 3)
+df <- data.frame(
+  letra = letras[rep(seq(letras), 4)],
+  valor = sample(1:10, size = 12, replace = T)
+)
+df <- df[order(df$letra), ]
+df
+```
+
+Queremos estimar la media del valor para cada tipo de letra.
+
+```{r}
+# Dividimos
+for (l in unique(df$letra) ){
+  print(df[l == df$letra, ])
+}
+# Aplicamos
+for (l in unique(df$letra) ){
+  print(mean(df[l == df$letra, ]$valor))
+}
+# Combinamos
+medias <- list()
+for (l in unique(df$letra) ){
+  medias[[l]] <- mean(df[l == df$letra, ]$valor)
+}
+as.data.frame(list(letras = names(medias), medias = unname(unlist(medias))))
+```
+
+R tiene muchas funciones que facilitan realizar este tipo de operaciones. En 
+particular, la familia `apply` fue pensada para realizar ese tipo de operaciones.
+
+## apply
+
+`apply` aplica una función a cada fila o columna en una matriz.
+
+```{r}
+m <- matrix(c(1:5, 6:10), nrow = 5, ncol = 2)
+# 1 is the row index 2 is the column index
+m
+apply(m, 1, sum)
+apply(m, 2, sum)
+```
+
+**Ejercicio** Haz una función que reciba un vector y devuelva la suma de la 
+posición $v_i + v_{i + 1}$. Para el n-esimo elemento, suma el primero.
+Aplica esa función a las columnas y filas de la matriz m.
+
+```{r, echo=F, eval=F}
+suma.rec <- function(v){
+  resultado <- c()
+  for (e in seq(length(v) - 1)){
+    resultado[e] <- v[e] + v[e + 1]
+  }
+  resultado[length(v)] <- v[length(v)] + v[1]
+  return(resultado)
+}
+
+m
+apply(m, 1, suma.rec)
+apply(m, 2, suma.rec)
+```
+
+## lapply
+
+`lapply` aplica una función a cada elemento en una lista. Como sabemos, un
+`data.frame` es únicamente un estilo particular de lista tal que todos sus elementos tienen el mismo tamaño. Por ende, también podemos utilizar `lapply`
+para iterar sobre las columnas de un `data.frame`.
+
+```{r}
+lista <- list(a = 1:10, b = 2:20)
+lapply(lista, mean)
+
+df <- data.frame(a = 1:10, b = 11:20)
+lapply(df, mean)
+```
+
+## sapply
+
+`sapply` es otra versión de `lapply` que regresa una lista de una matriz cuando
+es apropiado.
+
+```{r}
+x <- sapply(lista, mean, simplify = F)
+x
+x <- sapply(lista, mean, simplify = T)
+x
+```
+
+
+## mapply
+
+`mapply` es como la versión multivariada de `sapply`. Le aplica una función a
+todos los elementos correspondientes de un argumento.
+
+```{r}
+l1 <-list(a = c(1:5), b = c(6:10))
+l2 <- list(c = c(11:15), d = c(16:20))
+l1
+l2
+mapply(sum, l1$a, l1$b, l2$c, l2$d)
+```
+
+## tapply
+
+`tapply` le aplica una función a subconjuntos de un vector.
+
+```{r}
+head(warpbreaks)
+with(warpbreaks, tapply(breaks, list(wool, tension), mean))
+```
+
+## by
+
+`by` le aplica una función a subconjuntos de un `data.frame`.
+
+```{r}
+head(iris)
+by(iris[, 1:2], iris[, "Species"], summary)
+by(iris[, 1:2], iris[, "Species"], sum)
+```
+
+## replicate
+
+`replicate` es una función muy útil sobretodo en el contexto de simulación.
+
+```{r}
+replicate(10, rnorm(10))
+replicate(10, rnorm(10), simplify = TRUE)
+```
+
+## ¿Puede ser más fácil?
+
+La familia `apply` viene con R básico. Sin embargo, hay 3 implementaciones excelentes del paradigma split-apply-combine: `plyr`, `dplyr` y `data.table`.
+
+Si la familia apply es poderosa, se queda corta comparada con estos tres.
+`plyr` es la primera versión de s-a-c de Wickham. Posteriormente, mejoró
+muchas de las funciones en `dplyr` sobretodo entorno a velocidad y facilidad de
+uso. `plyr` no termina de ser relevante pues varias de sus funciones aun no están
+en `dplyr`.
+
+`data.table`, es una implementación con una tradición muy diferente y tiene
+también funciones muy poderosas aunque con una sintaxis muy distinta a `dplyr`.
+Es absurdamente eficiente y tiene múltiples aplicaciones.
+
+Muchas de las funciones en `dplyr` también están implementadas en `data.table`.
+Cuál usar es cuestión de gustos. Depende de con qué se acomoda cada quién pero,
+para algunas cosas uno es superior al otro y viceversa.
