@@ -24,6 +24,29 @@
 \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
 \usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{{#1}}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{{#1}}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{{#1}}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{{#1}}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{{#1}}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{{#1}}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{{#1}}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{{#1}}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{{#1}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{{#1}}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{{#1}}}
+\newcommand{\RegionMarkerTok}[1]{{#1}}
+\newcommand{\ErrorTok}[1]{\textbf{{#1}}}
+\newcommand{\NormalTok}[1]{{#1}}
 \ifxetex
   \usepackage[setpagesize=false, % page size defined by xetex
               unicode=false, % unicode breaks when used with xetex
@@ -96,6 +119,8 @@
 
 \definecolor{bgblue}{RGB}{245,243,253}
 \definecolor{ttblue}{RGB}{91,194,224}
+\definecolor{llred}{RGB}{255,228,225}
+\definecolor{bbblack}{RGB}{0,0,0}
 
 \mdfdefinestyle{mystyle}{%
   rightline=true,
@@ -187,57 +212,411 @@ muestra en la figura \ref{fig:ciclo}.
     \centering
     \includegraphics[width=0.75\textwidth]{../img/02_ciclo.png}
     \caption{Modelo de las herramientas que se necesitan en un proyecto de datos según \textcite[Introducción]{grolemund2016r}.}
-    \label{fig:mesh1}
+    \label{fig:ciclo}
 \end{figure}
 
-\section{Importación de datos}\label{importacion-de-datos}
+Primero es necesario \textbf{importar} nuestros datos a R. Los datos
+pueden estar en una gran cantidad de formatos o lugares.
 
-Para aplicar las herramientas de R a nuestro trabajo, es necesario poder
-importar nuestros datos a R. R tiene conectores ya implementados para
-casi cualquier tipo y formato de datos. Entre los más comunes están:
+Después, normalmente es necesario \textbf{arreglar} nuestros datos, es
+decir, seguir criterios de datos limpios de manera que la manera en la
+que guardemos los datos equivalga a la semántica de los datos que
+tenemos. Es muy importante primero limpiar porque esto provee de
+consistencia a lo largo del análisis.
 
-\begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
-\item
-  Archivos de texto plano (como csvs) con \texttt{readr}.
-\item
-  Datos desde una API con \texttt{httr}.
-\item
-  Binarios (como excel o sas) con \texttt{haven} y \texttt{readxl}.
-\end{itemize}
+Posteriormente, en casi todo proyecto, será necesario
+\textbf{transformar} los datos. A veces esto implica enfocarse en un
+subconjunto de los datos, generar nuevas variables, calcular
+estadísticos, arreglar los datos de cierta manera, entre muchos otros.
 
-\footnote{Los materiales para readr, httr, haven y readxl están basados en el capítulo de importación de datos de \textcite{grolemund2016r}.}
+Solamente después de estas etapas podemos empezar a generar conocimiento
+a partir de los datos. Para esto tenemos dos herramientas fundamentales:
+la estadística descriptiva (en el diagrama reducido a
+\textbf{visualización}) y la generación de \textbf{modelos}. La primera
+es fundamental pues permite derivar preguntas pertinentes a los datos,
+encontrar patrones, respuestas, plantear hipótesis. Sin embargo, éstas
+no escalan de la misma manera que los modelos pues estos, una vez que
+aceptamos sus supuestos generan los resultados que esperamos o contestan
+la pregunta planteada.
 
-\section{Leer y escribir archivos de
-datos}\label{leer-y-escribir-archivos-de-datos}
+Por último, necestamos \textbf{comunicar} los resultados.
 
-\subsection{Lectura}\label{lectura}
+\section{Datos limpios}\label{datos-limpios}
 
-Desde archivo
+Mucho del esfuerzo en analítica lidia con la limpieza de datos. Tomar
+datos de diferentes fuentes y poderlas poner en la forma en la que uno
+los necesita para realizar analítica toma mucho tiempo y esfuezo.
+Existen herramientas que permiten que esta parte sea más fácil y
+eficiente. Entre éstas se encuentran los criterios de datos limpios.
 
-Datos de muestra
+Los conjuntos de datos limpios (\emph{tidy datasets}) permiten
+manipularlos fácilmente, modelarlos y visualizarlos. Además, tienen una
+estructura específica: cada variable es una columna, cada observación
+una fila y cada tipo de unidad observacional es una tabla.
 
-\section{Extracción de partes de los
-objetos}\label{extraccion-de-partes-de-los-objetos}
+\subsection{Preparación de datos}\label{preparacion-de-datos}
 
-\subsection{Escritura}\label{escritura}
+Esta actividad incluye una gran cantidad de elementos: desde revisar los
+outliers, hasta extraer variables de cadenas en datos no estrucutrados,
+imputación de valores perdidos. Los datos limpios son tan solo un
+subconjunto de este proceso y lidian como el cómo estructurar los datos
+de manera que se facilite el análisis.
 
-\section{Do's y don'ts de R}\label{dos-y-donts-de-r}
+El estándar de datos limpios está diseñado para facilitar la exploración
+inicial y el análisis de datos así como simplificar el desarrollo de
+herramientas para el análsis de datos que trabajen bien con datos
+limpios.
 
-\subsection{Vectoriza y pre-asigna estructuras de
-datos}\label{vectoriza-y-pre-asigna-estructuras-de-datos}
+Los criterios de datos limpios están muy relacionados a los de las bases
+de datos relacionales y, por ende, al algebra relacional de Codd. Sin
+embargo, se expresan y enmarcan en lenguaje que le es familiar a
+estadísticos.
 
-\subsection{Which}\label{which}
+Básicamente, están creados para lidear con conjuntos de datos que se
+encuentran en el mundo real. Los criterios de datos limpios proporcionan
+un marco mental a través del cual la intuición es explícita.
 
-\subsection{La familia apply}\label{la-familia-apply}
+\subsection{Definición de datos
+limpios}\label{definicion-de-datos-limpios}
 
-\section{Dplyr}\label{dplyr}
+Los datos limpios proporcionan una manera estándar de ligar la
+estructura de un dataset (es decir su layout físico) con su semántica
+(su significado).
 
-La manipulación de datos es parte del ciclo de análisis de datos.
+\subsubsection{Estructura de datos}\label{estructura-de-datos}
+
+La mayoría de los datos estadísticos están conformados por tablas
+rectangulares compuestas por filas y columnas. Las columnas casi siempre
+están etiquetadas \emph{colnames} y las filas a veces lo están.
+
+Tomamos el ejemplo de datos de la figura \ref{fig:estructura} en donde
+se presentan datos de un experimento. La tabla contiene dos columas y
+tres filas, ambas etiquetaadas.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.4\textwidth]{../img/02_estructura.png}
+    \caption{Típica presentación de datos.}
+    \label{fig:estructura}
+\end{figure}
+
+Podemos estructurar los datos de diferentes manera pero la abstracción
+de filas y columnas solamnete nos permite pensar en la representación
+transpuesta que se muestra en la figura \ref{fig:estructurat}. El layout
+cambia pero los datos son los mismos. Con columnas y filas, no podemos
+decir esto de manera apropiada. Además de la simple apariencia, debemos
+poder describir la semántica -el significado- de los valores que se
+muestran en una tabla.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{../img/02_estructurat.png}
+    \caption{Mismos datos que en \ref{fig:estructura} pero traspuestos.}
+    \label{fig:estructurat}
+\end{figure}
+
+\subsection{Semántica}\label{semantica}
+
+Un conjunto de datos es una colección de \textbf{valores} (normalmente
+cuantitativos/números o cualitativos/caracteres).
+
+Los valores se organian de dos maneras. Cada valor pertenece a una
+variable y a una observación. Una variable contiene todos los valores de
+una medida y del mismo atributo subyacente (por ejemplo, temperatura,
+duración, altura, latitud) a través de unidades. Una observación, en
+cambio, contiene todos los valores medidos para la misma unidad (por
+ejemplo, una persona, un día, un municipio) a través de distintos
+atributos.
+
+Los mismos datos en las figuras \ref{fig:estructura} y
+\ref{fig:estructurat} los pensamos ahora en estos términos. Tenemos 3
+variables:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
+\itemsep1pt\parskip0pt\parsep0pt
 \item
+  \emph{persona} con tres posibles valores (John, Jane, Mary)
+\item
+  \emph{tratamiento} con dos posibles valores (a o b)
+\item
+  \emph{resultado} con 5 o 6 valores (-, 16, 3, 2, 11, 1)
 \end{enumerate}
+
+El diseño del experimento mismo nos habla de la estructura de las
+observaciones y los posibles valores que pueden tomar. Por ejemplo, en
+este caso el valor perdido nos dice que, por diseño, se debió de
+capturar esta variable pero no se hizo (por eso es importante guardarlo
+como tal). Los valores perdidos estructurales, representan mediciones de
+valores que no se puede hacer o que no suceden y, por tanto, se pueden
+eliminar (por ejemplo, hombres embarazados). En la figura
+\ref{fig:estructuratidy} se muestran los mismos datos que antes pero
+pensados tal que las variables son columnas y las observaciones (en este
+caso, cada punto en el diseño experimental) son filas.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.4\textwidth]{../img/02_estructuratidy.png}
+    \caption{Observaciones son filas, variables columnas.}
+    \label{fig:estructuratidy}
+\end{figure}
+
+Normalmente, es fácil determinar qué son observaciones y qué son
+variables pero es muy dificil definir en forma precisa variables y
+observaciones. Por ejemplo, si tienes teléfonos de casa y celulares, se
+pueden considerar como dos variables distintas en muchos contextos pero
+en prevención de fraude necesitas una variable que guarde el tipo de
+teléfono y otra en la que se guarde el número pues el uso regular del
+mismo número de teléfono por parte de la misma persona puede ayudar a
+detectarlo.
+
+En general, es más fácil describir las relaciones funcionales entre las
+variables que entre las filas (el radio, una combinación lineal).
+También es más fácil hacer comparaciones entre grupos que entre columnas
+(la suma, el promedio, la varianza, la moda).
+
+\subsection{Datos limpios}\label{datos-limpios-1}
+
+Éstos mapean de forma estándar el significado y la estructura de los
+datos. Un conjunto de datos se considera sucio o limpio dependendiendo
+en cómo las filas, columans y tablas mapean a observaciones, variables y
+tipos. En \textbf{datos limpios}:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  Cada \emph{variable} es una columna.
+\item
+  Cada \emph{observación} es una fila.
+\item
+  Cada \emph{tipo de unidad observacional} es una tabla.
+\end{enumerate}
+
+Esto equivale a la tercera forma normal de Codd enfocado a un solo
+conjunto de datos y no a datos conectados como en bases relacionales.
+Los datos sucios son cualquier otro tipo de manera de organizar los
+datos.
+
+La tabla \ref{fig:estructuratidy} corresponde a datos limpios: cada fila
+es una observación, es decir, el resultado de un tratamiento a una
+persona. Cada columna es una variable. Solo tenemos un tipo de unidad
+observacional, es decir, cada renglón es una unidad del diseño
+experimental.
+
+Con los datos así ordenados, suele ser más fácil extraer datos que, por
+ejemplo, la \ref{fig:estructura}.
+
+\renewcommand\bcStyleTitre[1]{\large\textcolor{bbblack}{#1}}
+
+\begin{bclogo}[
+  couleur=llred,
+  arrondi=0,
+  logo=\bcstop,
+  barre=none,
+  noborder=true]{Ejercicios}
+\begin{enumerate}
+\item Crea un dataframe con los valores de la tabla \ref{fig:estructura} y otro 
+con los valores de la tabla \ref{fig:estructuratidy}.
+\item Extrae el resultado para John Smith, tratamiento a en la primera configuración y en la segunda.
+\item Especifica el número de tratamientos con la forma sucia y la forma limpia.
+\item Cuál es la media de los resultados: usa la forma 1 y la forma 2.
+\item Extrae los tratamientos del tipo a en la forma 2.
+\end{enumerate}
+
+\end{bclogo}
+
+Como puedes ver, los datos limpios nos permiten preguntarle cosas a los
+datos de manera simple y sistemática. En particular, es una estructura
+muy útil para programación vectorizada como en R (el ejercicio 5) porque
+la forma se asegura que valores para diferentes variables de la misma
+observación siempre están apareados.
+
+Por convención, las variables se acomodan de una forma particular. Las
+variables \emph{fijas}, en este ejemplo, las propias al diseño
+experimental, van primero y posteriormente las variables \emph{medidas}.
+Ordenamos éstas de forma que las que están relacionadas sean contiguas.
+
+\section{De sucio a limpio}\label{de-sucio-a-limpio}
+
+Los conjuntos de datos normalmente violan estos criterios. Es raro
+obtener un conjunto de datos con el cuál podemos trabajar de manera
+inmediata.
+
+Los 5 problemas más comunes para llevar datos sucios a limpios son
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  Los nombres de las columnas son valores, no nombres de variables.
+\item
+  Múltiples variables se encuentran en la misma columna.
+\item
+  Las variables están guardadas tanto en filas como en columnas.
+\item
+  Muchos tipos de unidad observacional se encuentran en la misma tabla.
+\item
+  Una sola unidad observarcional se guardó en varias tablas.
+\end{enumerate}
+
+Estos problemas pueden ser resueltos con solamente: \emph{melting},
+separación de cadenas y \emph{casting}.
+
+\subsection{Los nombres de las columnas son valores, no nombres de
+variables}\label{los-nombres-de-las-columnas-son-valores-no-nombres-de-variables}
+
+La tabla siguiente muestra datos sucios con este problema. Se muestran
+distintas religiones con el numero de personas que pertenecen a
+distintos niveles de ingreso. Dentro de un reporte, este tipo de
+representación tiene mucho sentido y permite visualizar muchas cosas
+rápidamente.
+
+\begin{table}[ht]
+\centering
+{\tiny
+\begin{tabular}{lllllllllll}
+  \hline
+Religion & X..10k & X.10.20k & X.20.30k & X.30.40k & X.40.50k & X.50.75k & X.75.100k & X.100.150k & X.150k & Don T Know Refused \\ 
+  \hline
+Agnostic & 27 & 34 & 60 & 81 & 76 & 137 & 122 & 109 & 84 & 96 \\ 
+  Atheist & 12 & 27 & 37 & 52 & 35 & 70 & 73 & 59 & 74 & 76 \\ 
+  Buddhist & 27 & 21 & 30 & 34 & 33 & 58 & 62 & 39 & 53 & 54 \\ 
+  Catholic & 418 & 617 & 732 & 670 & 638 & 1,116 & 949 & 792 & 633 & 1,489 \\ 
+  Don’t know/refused & 15 & 14 & 15 & 11 & 10 & 35 & 21 & 17 & 18 & 116 \\ 
+  Evangelical Prot & 575 & 869 & 1,064 & 982 & 881 & 1,486 & 949 & 723 & 414 & 1,529 \\ 
+  Hindu & 1 & 9 & 7 & 9 & 11 & 34 & 47 & 48 & 54 & 37 \\ 
+  Historically Black Prot & 228 & 244 & 236 & 238 & 197 & 223 & 131 & 81 & 78 & 339 \\ 
+  Jehovah's Witness & 20 & 27 & 24 & 24 & 21 & 30 & 15 & 11 & 6 & 37 \\ 
+  Jewish & 19 & 19 & 25 & 25 & 30 & 95 & 69 & 87 & 151 & 162 \\ 
+  Mainline Prot & 289 & 495 & 619 & 655 & 651 & 1,107 & 939 & 753 & 634 & 1,328 \\ 
+  Mormon & 29 & 40 & 48 & 51 & 56 & 112 & 85 & 49 & 42 & 69 \\ 
+  Muslim & 6 & 7 & 9 & 10 & 9 & 23 & 16 & 8 & 6 & 22 \\ 
+  Orthodox & 13 & 17 & 23 & 32 & 32 & 47 & 38 & 42 & 46 & 73 \\ 
+  Other Christian & 9 & 7 & 11 & 13 & 13 & 14 & 18 & 14 & 12 & 18 \\ 
+  Other Faiths & 20 & 33 & 40 & 46 & 49 & 63 & 46 & 40 & 41 & 71 \\ 
+  Other World Religions & 5 & 2 & 3 & 4 & 2 & 7 & 3 & 4 & 4 & 8 \\ 
+  Unaffiliated & 217 & 299 & 374 & 365 & 341 & 528 & 407 & 321 & 258 & 597 \\ 
+   \hline
+\end{tabular}
+}
+\end{table}
+
+El conjunto de datos tiene 3 variables: \emph{religion}, \emph{ingreso}
+y \emph{frecuencia}. Para arreglarlo, necesitamos \emph{juntar} (melt)
+las columnas con nombres de niveles de ingreso en una sola columna que
+contenga esos nombres como valores. En otras palabras, debemos convertir
+de la columna 2 en adelante en filas.
+
+Con el paquete \textbf{tidyr} esto se puede realizar en forma fácil con
+el comando \texttt{gather}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{limpios <-}\StringTok{ }\NormalTok{tidyr::}\KeywordTok{gather}\NormalTok{(raw, }\DataTypeTok{key =} \NormalTok{income, }\DataTypeTok{value =} \NormalTok{freq, -religion)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lll}
+  \hline
+Religion & Income & Freq \\ 
+  \hline
+Agnostic & $<$\$10k & 27 \\ 
+  Atheist & $<$\$10k & 12 \\ 
+  Buddhist & $<$\$10k & 27 \\ 
+  Catholic & $<$\$10k & 418 \\ 
+  Don’t know/refused & $<$\$10k & 15 \\ 
+  Evangelical Prot & $<$\$10k & 575 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+Este tipo de forma de guardar datos es útil también cuando se capturan
+datos al evitar la repetición de valores.
+
+\subsection{Múltiples variables se encuentran en la misma
+columna}\label{multiples-variables-se-encuentran-en-la-misma-columna}
+
+Otra forma de datos sucios se encuentra cuando una columna con nombres
+de variables tiene realmente varias variables dentro del nombre (como en
+el ejemplo siguiente).
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrrrrrrrrrr}
+  \hline
+country & year & m014 & m1524 & m2534 & m3544 & m4554 & m5564 & m65 & mu & f014 \\ 
+  \hline
+AD & 2000 &   0 &   0 &   1 &   0 &   0 &   0 &   0 &  &  \\ 
+  AE & 2000 &   2 &   4 &   4 &   6 &   5 &  12 &  10 &  &   3 \\ 
+  AF & 2000 &  52 & 228 & 183 & 149 & 129 &  94 &  80 &  &  93 \\ 
+  AG & 2000 &   0 &   0 &   0 &   0 &   0 &   0 &   1 &  &   1 \\ 
+  AL & 2000 &   2 &  19 &  21 &  14 &  24 &  19 &  16 &  &   3 \\ 
+  AM & 2000 &   2 & 152 & 130 & 131 &  63 &  26 &  21 &  &   1 \\ 
+  AN & 2000 &   0 &   0 &   1 &   2 &   0 &   0 &   0 &  &   0 \\ 
+  AO & 2000 & 186 & 999 & 1003 & 912 & 482 & 312 & 194 &  & 247 \\ 
+  AR & 2000 &  97 & 278 & 594 & 402 & 419 & 368 & 330 &  & 121 \\ 
+  AS & 2000 &  &  &  &  &   1 &   1 &  &  &  \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+El primer paso es pasar las columnas que son valores de variable a una
+sola variable
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrllr}
+  \hline
+country & year & sex & age & cases \\ 
+  \hline
+AD & 2000 & m & 0-14 &   0 \\ 
+  AD & 2000 & m & 15-24 &   0 \\ 
+  AD & 2000 & m & 25-34 &   1 \\ 
+  AD & 2000 & m & 35-44 &   0 \\ 
+  AD & 2000 & m & 45-54 &   0 \\ 
+  AD & 2000 & m & 55-64 &   0 \\ 
+  AD & 2000 & m & 65+ &   0 \\ 
+  AE & 2000 & m & 0-14 &   2 \\ 
+  AE & 2000 & m & 15-24 &   4 \\ 
+  AE & 2000 & m & 25-34 &   4 \\ 
+  AE & 2000 & m & 35-44 &   6 \\ 
+  AE & 2000 & m & 45-54 &   5 \\ 
+  AE & 2000 & m & 55-64 &  12 \\ 
+  AE & 2000 & m & 65+ &  10 \\ 
+  AE & 2000 & f & 0-14 &   3 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+Posteriormente, debemos separar en las columnas apropiadas las variables
+que estan contenidas en los antiguos nombres de variables.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrllr}
+  \hline
+country & year & sex & age & cases \\ 
+  \hline
+AD & 2000 & m & 0-14 &   0 \\ 
+  AD & 2000 & m & 15-24 &   0 \\ 
+  AD & 2000 & m & 25-34 &   1 \\ 
+  AD & 2000 & m & 35-44 &   0 \\ 
+  AD & 2000 & m & 45-54 &   0 \\ 
+  AD & 2000 & m & 55-64 &   0 \\ 
+  AD & 2000 & m & 65+ &   0 \\ 
+  AE & 2000 & m & 0-14 &   2 \\ 
+  AE & 2000 & m & 15-24 &   4 \\ 
+  AE & 2000 & m & 25-34 &   4 \\ 
+  AE & 2000 & m & 35-44 &   6 \\ 
+  AE & 2000 & m & 45-54 &   5 \\ 
+  AE & 2000 & m & 55-64 &  12 \\ 
+  AE & 2000 & m & 65+ &  10 \\ 
+  AE & 2000 & f & 0-14 &   3 \\ 
+   \hline
+\end{tabular}
+\end{table}
 
 \end{document}

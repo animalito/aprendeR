@@ -44,84 +44,254 @@ pregunta planteada.
 Por último, necestamos **comunicar** los resultados. 
 
 
+# Datos limpios
 
+Mucho del esfuerzo en analítica lidia con la limpieza de datos. Tomar datos de 
+diferentes fuentes y poderlas poner en la forma en la que uno los necesita para
+realizar analítica toma mucho tiempo y esfuezo. Existen herramientas que permiten
+que esta parte sea más fácil y eficiente. Entre éstas se encuentran los criterios
+de datos limpios.
 
-# Importación de datos
+Los conjuntos de datos limpios (*tidy datasets*) permiten manipularlos fácilmente,
+modelarlos y visualizarlos. Además, tienen una estructura específica: cada variable es una 
+columna, cada observación una fila y cada tipo de unidad observacional es una
+tabla.
 
-Para aplicar las herramientas de R a nuestro trabajo, es necesario poder importar
-nuestros datos a R. R tiene conectores ya implementados para casi cualquier 
-tipo y formato de datos. Entre los más comunes están:
+## Preparación de datos
 
-- Archivos de texto plano (como csvs) con `readr`.
-- Datos desde una API con `httr`.
-- Binarios (como excel o sas) con `haven` y `readxl`.
+Esta actividad incluye una gran cantidad de elementos: desde revisar los outliers, 
+hasta extraer variables de cadenas en datos no estrucutrados, imputación de 
+valores perdidos. Los datos limpios son tan solo un subconjunto de este proceso y
+lidian como el cómo estructurar los datos de manera que se facilite el análisis.
 
-\footnote{Los materiales para readr, httr, haven y readxl están basados en el capítulo de importación de datos de \textcite{grolemund2016r}.}
+El estándar de datos limpios está diseñado para facilitar la exploración inicial y
+el análisis de datos así como simplificar el desarrollo de herramientas para el 
+análsis de datos que trabajen bien con datos limpios.
 
-# Leer y escribir archivos de datos
+Los criterios de datos limpios están muy relacionados a los de las bases de 
+datos relacionales y, por ende, al algebra relacional de Codd. Sin embargo,
+se expresan y enmarcan en lenguaje que le es familiar a estadísticos. 
 
-## Lectura
+Básicamente, están creados para lidear con conjuntos de datos que se encuentran
+en el mundo real. Los criterios de datos limpios proporcionan un marco mental a través
+del cual la intuición es explícita. 
 
-Desde archivo
+## Definición de datos limpios
 
-Datos de muestra
+Los datos limpios proporcionan una manera estándar de ligar la estructura de un
+dataset (es decir su layout físico) con su semántica (su significado).
 
-# Extracción de partes de los objetos
+### Estructura de datos
 
-## Escritura
+La mayoría de los datos estadísticos están conformados por tablas rectangulares 
+compuestas por filas y columnas. Las columnas casi siempre están etiquetadas 
+*colnames* y las filas a veces lo están. 
 
+Tomamos el ejemplo de datos de la figura \ref{fig:estructura} en donde se presentan datos de un experimento. La tabla contiene dos columas y tres filas, 
+ambas etiquetaadas.
 
-# Do's y don'ts de R
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.4\textwidth]{../img/02_estructura.png}
+    \caption{Típica presentación de datos.}
+    \label{fig:estructura}
+\end{figure}
 
-## Vectoriza y pre-asigna estructuras de datos
+Podemos estructurar los datos de diferentes manera pero la abstracción de filas
+y columnas solamnete nos permite pensar en la representación transpuesta que
+se muestra en la figura \ref{fig:estructurat}. El layout cambia pero los datos
+son los mismos. Con columnas y filas, no podemos decir esto de manera apropiada.
+Además de la simple apariencia, debemos poder describir la semántica -el significado- 
+de los valores que se muestran en una tabla.
 
-## Which
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{../img/02_estructurat.png}
+    \caption{Mismos datos que en \ref{fig:estructura} pero traspuestos.}
+    \label{fig:estructurat}
+\end{figure}
 
-## La familia apply
+## Semántica
 
-# Arreglar 
+Un conjunto de datos es una colección de **valores** (normalmente cuantitativos/números o cualitativos/caracteres).
 
-## tidyr
+Los valores se organian de dos maneras. Cada valor pertenece a una variable y a 
+una observación. Una variable contiene todos los valores de una medida y del
+mismo atributo subyacente (por ejemplo, temperatura, duración, altura, latitud)
+a través de unidades. Una observación, en cambio, contiene todos los valores
+medidos para la misma unidad (por ejemplo, una persona, un día, un municipio)
+a través de distintos atributos.
 
-# Transformación
+Los mismos datos en las figuras \ref{fig:estructura} y \ref{fig:estructurat} los
+pensamos ahora en estos términos. Tenemos 3 variables:
 
-Existen muchas maneras de transformar los datos y una gran cantidad de paquetes
-que implementan distintas funciones útiles para realizar esta tarea. En particular,
-resaltamos `dplyr` y `data.table`.
+1. *persona* con tres posibles valores (John, Jane, Mary)
+2. *tratamiento* con dos posibles valores (a o b)
+3. *resultado* con 5 o 6 valores (-, 16, 3, 2, 11, 1)
 
-## dplyr
+El diseño del experimento mismo nos habla de la estructura de las observaciones 
+y los posibles valores que pueden tomar. Por ejemplo, en este caso el valor
+perdido nos dice que, por diseño, se debió de capturar esta variable pero no se 
+hizo (por eso es importante guardarlo como tal). Los valores perdidos estructurales, 
+representan mediciones de valores que no se puede hacer o que no suceden y, por
+tanto, se pueden eliminar (por ejemplo, hombres embarazados). En la figura 
+\ref{fig:estructuratidy} se muestran los mismos datos que antes pero pensados tal que las 
+variables son columnas y las observaciones (en este caso, cada punto en el
+diseño experimental) son filas.
 
-El material que se presenta aquí está basado en los ejemplos y código presentado
-por [Wickham en su tutorial](https://www.dropbox.com/sh/i8qnluwmuieicxc/AAAgt9tIKoIm7WZKIyK25lh6a) de **useR** en el 2014.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.4\textwidth]{../img/02_estructuratidy.png}
+    \caption{Observaciones son filas, variables columnas.}
+    \label{fig:estructuratidy}
+\end{figure}
 
-**5 verbos** fundamentales implementados en `dplyr`
+Normalmente, es fácil determinar qué son observaciones y qué son variables pero
+es muy dificil definir en forma precisa variables y observaciones. Por ejemplo,
+si tienes teléfonos de casa y celulares, se pueden considerar como dos variables
+distintas en muchos contextos pero en prevención de fraude necesitas una variable 
+que guarde el tipo de teléfono y otra en la que se guarde el número pues el uso
+regular del mismo número de teléfono por parte de la misma persona puede ayudar
+a detectarlo.
 
-- `filter`: seleccionamos filas de acuerdo a los valores de las variables
-- `select`: seleccionamos un subconjunto de las columnas utilizando los nombres
-de las variables
-- `arrange`: reordenamos filas
-- `mutate`: generar nuevas variables a partir de las variables originales
-- `summarise`: reducir variables a valores
+En general, es más fácil describir las relaciones funcionales entre las variables que entre las filas (el radio, una combinación lineal). También es
+más fácil hacer comparaciones entre grupos que entre columnas (la suma, el
+promedio, la varianza, la moda).
 
-Todos estos verbos funcionan de la misma manera (tienen la misma estructura):
+## Datos limpios
 
-- El primer argumento de la función es un *data.frame*
-- Los argumentos subsecuentes indican qué es lo que se debe hacer a ese *data.frame*
-- Siempre regresa un *data.frame*
+Éstos mapean de forma estándar el significado y la estructura de los datos.
+Un conjunto de datos se considera sucio o limpio dependendiendo en cómo las
+filas, columans y tablas mapean a observaciones, variables y tipos. En 
+**datos limpios**:
 
-```{r}
-data("crimtab")
+1. Cada *variable* es una columna.
+2. Cada *observación* es una fila.
+3. Cada *tipo de unidad observacional* es una tabla.
+
+Esto equivale a la tercera forma normal de Codd enfocado a un solo conjunto de 
+datos y no a datos conectados como en bases relacionales. Los datos sucios son 
+cualquier otro tipo de manera de organizar los datos.
+
+La tabla \ref{fig:estructuratidy} corresponde a datos limpios: cada fila es
+una observación, es decir, el resultado de un tratamiento a una persona. Cada
+columna es una variable. Solo tenemos un tipo de unidad observacional, es decir,
+cada renglón es una unidad del diseño experimental. 
+
+Con los datos así ordenados, suele ser más fácil extraer datos que, por ejemplo,
+la \ref{fig:estructura}.
+
+\renewcommand\bcStyleTitre[1]{\large\textcolor{bbblack}{#1}}
+\begin{bclogo}[
+  couleur=llred,
+  arrondi=0,
+  logo=\bcstop,
+  barre=none,
+  noborder=true]{Ejercicios}
+\begin{enumerate}
+\item Crea un dataframe con los valores de la tabla \ref{fig:estructura} y otro 
+con los valores de la tabla \ref{fig:estructuratidy}.
+\item Extrae el resultado para John Smith, tratamiento a en la primera configuración y en la segunda.
+\item Especifica el número de tratamientos con la forma sucia y la forma limpia.
+\item Cuál es la media de los resultados: usa la forma 1 y la forma 2.
+\item Extrae los tratamientos del tipo a en la forma 2.
+\end{enumerate}
+
+\end{bclogo}
+
+```{r, eval=F, echo=F}
+
 ```
 
+Como puedes ver, los datos limpios nos permiten preguntarle cosas a los datos
+de manera simple y sistemática. En particular, es una estructura muy útil para
+programación vectorizada como en R (el ejercicio 5) porque la forma se asegura que
+valores para diferentes variables de la misma observación siempre están apareados.
 
+Por convención, las variables se acomodan de una forma particular. Las variables
+*fijas*, en este ejemplo, las propias al diseño experimental, van primero y
+posteriormente las variables *medidas*. Ordenamos éstas de forma que las que 
+están relacionadas sean contiguas. 
 
-### select
+# De sucio a limpio
 
-### join
+Los conjuntos de datos normalmente violan estos criterios. Es raro obtener un
+conjunto de datos con el cuál podemos trabajar de manera inmediata. 
 
-### do
+Los 5 problemas más comunes para llevar datos sucios a limpios son
 
-La manipulación de datos es parte del ciclo de análisis de datos. 
+1. Los nombres de las columnas son valores, no nombres de variables.
+2. Múltiples variables se encuentran en la misma columna.
+3. Las variables están guardadas tanto en filas como en columnas.
+4. Muchos tipos de unidad observacional se encuentran en la misma tabla.
+5. Una sola unidad observarcional se guardó en varias tablas.
+
+Estos problemas pueden ser resueltos con solamente: *melting*, separación de 
+cadenas y *casting*. 
+
+## Los nombres de las columnas son valores, no nombres de variables
+
+```{r, echo=F, warning=F, error=F, message=F, results='hide'}
+source("pew.R")
+```
+
+La tabla siguiente muestra datos sucios con este problema. Se muestran 
+distintas religiones con el numero de personas que pertenecen a distintos
+niveles de ingreso. Dentro de un reporte, este tipo de representación tiene
+mucho sentido y permite visualizar muchas cosas rápidamente. 
+
+```{r, echo=F, warning=F, error=F, message=F, results='asis'}
+print(xtable(ptable(raw)), comment = F, include.rownames=F, table.placement="ht", 
+      size=getOption("xtable.size", "tiny"))
+```
+
+El conjunto de datos tiene 3 variables: *religion*, *ingreso* y *frecuencia*.
+Para arreglarlo, necesitamos *juntar* (melt) las columnas con nombres de 
+niveles de ingreso en una sola columna que contenga esos nombres como valores. 
+En otras palabras, debemos convertir de la columna 2 en adelante en filas. 
+
+Con el paquete **tidyr** esto se puede realizar en forma fácil con el comando 
+`gather`.
+
+```{r}
+limpios <- tidyr::gather(raw, key = income, value = freq, -religion)
+```
+
+```{r, echo=F, results='asis'}
+print(xtable(ptable(head(limpios))), comment = F, include.rownames=F, table.placement="ht")
+```
+
+Este tipo de forma de guardar datos es útil también cuando se capturan datos 
+al evitar la repetición de valores. 
+
+## Múltiples variables se encuentran en la misma columna
+
+Otra forma de datos sucios se encuentra cuando una columna con nombres de 
+variables tiene realmente varias variables dentro del nombre (como en el ejemplo
+siguiente).
+
+```{r, echo=F, results='asis'}
+source("tb.R")
+print(xtable(raw[1:10, 1:11]), comment = F, include.rownames=F, table.placement="ht")
+```
+
+El primer paso es pasar las columnas que son valores de variable a una sola
+variable
+
+```{r, echo=F, results='asis'}
+print(xtable(clean[1:15, ]), comment = F, include.rownames=F, table.placement="ht")
+```
+
+Posteriormente, debemos separar en las columnas apropiadas las variables que 
+estan contenidas en los antiguos nombres de variables.
+
+```{r, echo=F, results='asis'}
+print(xtable(clean2[1:15, ]), comment = F, include.rownames=F, table.placement="ht")
+
+## Las variables están guardadas tanto en filas como en columnas
+## Muchos tipos de unidad observacional se encuentran en la misma tabla
+## Una sola unidad observarcional se guardó en varias tablas
+```
 
 
 

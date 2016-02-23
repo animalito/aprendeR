@@ -1,0 +1,89 @@
+---
+title: "R: manipulación de datos"
+output:
+  pdf_document:
+    fig_caption: yes
+    latex_engine: pdflatex
+    keep_tex: yes
+    includes:
+      in_header: mypackages.sty
+---
+
+# Importación de datos
+
+Para aplicar las herramientas de R a nuestro trabajo, es necesario poder importar
+nuestros datos a R. R tiene conectores ya implementados para casi cualquier 
+tipo y formato de datos. Entre los más comunes están:
+
+- Archivos de texto plano (como csvs) con `readr`.
+- Datos desde una API con `httr`.
+- Binarios (como excel o sas) con `haven` y `readxl`.
+
+\footnote{Los materiales para readr, httr, haven y readxl están basados en el capítulo de importación de datos de \textcite{grolemund2016r}.}
+
+# Leer y escribir archivos de datos
+
+## Lectura
+
+Desde archivo
+
+Datos de muestra
+
+# Extracción de partes de los objetos
+
+## Escritura
+
+
+# Do's y don'ts de R
+
+## Vectoriza y pre-asigna estructuras de datos
+
+## Which
+
+## La familia apply
+
+# Arreglar 
+
+## tidyr
+
+# Transformación
+
+Existen muchas maneras de transformar los datos y una gran cantidad de paquetes
+que implementan distintas funciones útiles para realizar esta tarea. En particular,
+resaltamos `dplyr` y `data.table`.
+
+## dplyr
+
+El material que se presenta aquí está basado en los ejemplos y código presentado
+por [Wickham en su tutorial](https://www.dropbox.com/sh/i8qnluwmuieicxc/AAAgt9tIKoIm7WZKIyK25lh6a) de **useR** en el 2014.
+
+**5 verbos** fundamentales implementados en `dplyr`
+
+- `filter`: seleccionamos filas de acuerdo a los valores de las variables
+- `select`: seleccionamos un subconjunto de las columnas utilizando los nombres
+de las variables
+- `arrange`: reordenamos filas
+- `mutate`: generar nuevas variables a partir de las variables originales
+- `summarise`: reducir variables a valores
+
+Todos estos verbos funcionan de la misma manera (tienen la misma estructura):
+
+- El primer argumento de la función es un *data.frame*
+- Los argumentos subsecuentes indican qué es lo que se debe hacer a ese *data.frame*
+- Siempre regresa un *data.frame*
+
+```{r}
+data("crimtab")
+```
+
+
+
+### select
+
+### join
+
+### do
+
+La manipulación de datos es parte del ciclo de análisis de datos. 
+
+
