@@ -215,7 +215,7 @@ están relacionadas sean contiguas.
 
 # De sucio a limpio
 
-Los conjuntos de datos normalmente violan estos criterios. Es raro obtener un
+Los conjuntos de datos normalmente **no cumplen** con estos criterios. Es raro obtener un
 conjunto de datos con el cuál podemos trabajar de manera inmediata. 
 
 Los 5 problemas más comunes para llevar datos sucios a limpios son
@@ -226,7 +226,7 @@ Los 5 problemas más comunes para llevar datos sucios a limpios son
 4. Muchos tipos de unidad observacional se encuentran en la misma tabla.
 5. Una sola unidad observarcional se guardó en varias tablas.
 
-Estos problemas pueden ser resueltos con solamente: *melting*, separación de 
+Estos problemas pueden ser resueltos con 3 herramientas: *melting*, separación de 
 cadenas y *casting*. 
 
 ## Los nombres de las columnas son valores, no nombres de variables
@@ -235,13 +235,15 @@ cadenas y *casting*.
 source("pew.R")
 ```
 
-La tabla siguiente muestra datos sucios con este problema. Se muestran 
+La tabla \ref{tab:varsencols} muestra datos sucios con este problema. Se muestran 
 distintas religiones con el numero de personas que pertenecen a distintos
 niveles de ingreso. Dentro de un reporte, este tipo de representación tiene
 mucho sentido y permite visualizar muchas cosas rápidamente. 
 
 ```{r, echo=F, warning=F, error=F, message=F, results='asis'}
-print(xtable(ptable(raw)), comment = F, include.rownames=F, table.placement="ht", 
+print(xtable(raw, label = "tab:varsencols", 
+             caption = "Variable de ingreso en columnas."), 
+      comment = F, include.rownames=F, table.placement="ht", 
       size=getOption("xtable.size", "tiny"))
 ```
 
@@ -257,41 +259,228 @@ Con el paquete **tidyr** esto se puede realizar en forma fácil con el comando
 limpios <- tidyr::gather(raw, key = income, value = freq, -religion)
 ```
 
+Con este comando, obtenemos la tabla \ref{tab:ej1limpio}. Se especifica el *data.frame*
+como primer parámetro, la llave (parámetro *key*) será el nombre que tomará la
+variable con los nombres de las columnas a juntar, el valor (parámetro *value*)
+es el nombre de la variable que contendrá los valores correspondientes a cada
+valor (la religión i-ésima, grupo de ingreso j-ésimo) y, por último, especificamos
+las variables que **NO** se deben de juntar (en este caso, religión).
+
 ```{r, echo=F, results='asis'}
-print(xtable(ptable(head(limpios))), comment = F, include.rownames=F, table.placement="ht")
+print(xtable(
+  ptable(dplyr::sample_n(limpios, size = 10)),
+  caption = "Datos limpios para religión, ingreso y frecuencia.",
+  label = "tab:ej1limpio"), comment = F, include.rownames=F, table.placement="ht")
 ```
 
-Este tipo de forma de guardar datos es útil también cuando se capturan datos 
-al evitar la repetición de valores. 
+\begin{nota}[Nota] 
+Esta forma es limpia pues cada columan es una variable, cada fila es una observación
+y no se mezclan unidades observacionales.
+\end{nota}
+
+
+Este tipo de formato de datos (poner valores de variables en las columnas) 
+es útil también cuando se capturan datos al evitar la repetición de valores. 
+
+Por ejemplo, pensemos en un experimento clínico en el que seguimos a sujetos
+a lo largo de un tratamiento midiendo su IMC. Una forma muy
+sencilla de guardar los datos del experimento es utilizando un procesador
+de texto común. El capturista no querrá seguir criterios de datos limpios
+al llenar la información pues implicaría repetir el nombre de la persona,
+el día de la captura y el nivel de colesterol. Supongamos un experimento con
+16 sujetos a lo largo de un año en donde se mide el colesterol una vez al mes (mes1, mes2, etc.). Los datos capturados se muestran en la tabla \ref{tab:sujetos}.
+
+```{r, echo=F, results='asis'}
+df <- data.frame(
+  sujetos = LETTERS[1:16],
+  grupo = sample(c("control", "tratamiento"), size = 16, replace = T, prob = c(0.5, 0.5))
+  # ,  meses = as.vector(sapply(paste0("mes",1:12), rep, 16))
+  )
+m <- t(sapply(runif(16, 16, 35), FUN = function(x){cumsum(c(x, rnorm(11, mean = 0.5, sd = 1)))}))
+colnames(m) <- paste0("mes",1:12)
+df <- cbind(df, m)
+print(xtable(df, label = "tab:sujetos", 
+             caption = "Mediciones de IMC en sujetos."), 
+      comment = F, include.rownames=F, table.placement="ht", 
+      size=getOption("xtable.size", "tiny"))
+```
+
+**Ejercicio**
+
+Nuevamente, queremos convertir la columan 3 a 14 en filas, es decir, observaciones.
+Utiliza el comando `gather` para realizar esto y obtener el resultado que se
+muestra en la tabla \ref{tab:sujetostidy}.
+
+```{r, echo=F, results='asis'}
+opcion1 <- tidyr::gather(df, key = mes, value = IMC, -sujetos, -grupo)
+opcion2 <- tidyr::gather(df, key = mes, value = IMC, mes1:mes12)
+
+print(xtable(sample_n(opcion2, size = 10), label = "tab:sujetostidy", 
+             caption = "Muestra de datos limpios para experimentos IMC."), 
+      comment = F, include.rownames=F, table.placement="ht"
+      )
+```
 
 ## Múltiples variables se encuentran en la misma columna
 
-Otra forma de datos sucios se encuentra cuando una columna con nombres de 
+Otra forma de datos sucios es cuando una columna con nombres de 
 variables tiene realmente varias variables dentro del nombre (como en el ejemplo
 siguiente).
 
 ```{r, echo=F, results='asis'}
+rm(list = ls())
 source("tb.R")
 print(xtable(raw[1:10, 1:11]), comment = F, include.rownames=F, table.placement="ht")
 ```
 
 El primer paso es pasar las columnas que son valores de variable a una sola
-variable
+columna (tabla \ref{tab:tbjuntar}).
 
 ```{r, echo=F, results='asis'}
-print(xtable(clean[1:15, ]), comment = F, include.rownames=F, table.placement="ht")
+print(
+  xtable(clean1[1:15, ], caption = "Paso 1. Juntar las columnas cuyos nombres son 2 variables.", label = "tab:tbjuntar"), comment = F, include.rownames=F, table.placement="ht")
 ```
 
 Posteriormente, debemos separar en las columnas apropiadas las variables que 
-estan contenidas en los antiguos nombres de variables.
+estan contenidas en los antiguos nombres de variables (tabla \ref{tab:tbseparar}).
 
 ```{r, echo=F, results='asis'}
-print(xtable(clean2[1:15, ]), comment = F, include.rownames=F, table.placement="ht")
-
-## Las variables están guardadas tanto en filas como en columnas
-## Muchos tipos de unidad observacional se encuentran en la misma tabla
-## Una sola unidad observarcional se guardó en varias tablas
+print(xtable(clean2[1:15, ], caption = "Paso 2. Separar las columnas.", label = "tab:tbseparar"), comment = F, include.rownames=F, table.placement="ht")
 ```
 
+\begin{nota}[stringr]
+Otro paquete muy útil para realizar tareas de limpieza con cadenas. 
+La \href{https://cran.r-project.org/web/packages/stringr/stringr.pdf}{documentación}
+detalla todas sus funciones.
+\end{nota}
+
+## Las variables están guardadas tanto en filas como en columnas
+
+El problema más difícil es cuando las variables están tanto en filas como en columnas. 
+Para ejemplificar este problema, se muestran los datos de temperatura máxima
+y mínima en algunas zonas de México.
+
+```{r, echo=F, results='asis'}
+rm(list = ls())
+source("weather.R")
+
+print(xtable(raw[, 1:15], label = "tab:clima", 
+             caption = "Mediciones de temperatura max y min."), 
+      comment = F, include.rownames=F, table.placement="ht", 
+      size=getOption("xtable.size", "tiny"))
+```
+
+Para limpiar, lo primero que debemos hacer es juntar los dias (que son valores
+de la variable dia) en una sola columna. Después utilizamos la nueva variable
+para crear la fecha. Asi, obtenemos la tabla \ref{tab:clima1}.
 
 
+```{r}
+# Tidy
+# Primero, juntamos la variable dias
+clean1 <- tidyr::gather(raw, key = variable, value = value, d1:d31, na.rm = T)
+clean1$day <- as.integer(str_replace(clean1$variable, "d", ""))
+clean1$date <- as.Date(ISOdate(clean1$year, clean1$month, clean1$day))
+clean1 <- dplyr::select_(clean1, "id", "date", "element", "value") %>%
+  dplyr::arrange(clean1, date, element) 
+```
+
+```{r, echo=F, results='asis'}
+print(
+  xtable(clean1, caption = "Paso 1. Juntar las columnas, limpiar dias, crear fecha.", label = "tab:clima1"), comment = F, include.rownames=F, table.placement="ht")
+```
+
+El segundo paso es transformar la variable element en dos columnas pues, en realidad,
+almacena dos variables: temperatura maxima y minima.
+
+```{r}
+# Cast: las temperaturas van a columnas
+clean2 <- tidyr::spread(clean1, key = element, value = value)
+
+```
+
+```{r, echo=F, results='asis'}
+print(
+  xtable(clean1, caption = "Paso 2. Enviar a columnas las mediciones de temperaturas.", label = "tab:clima1"), comment = F, include.rownames=F, table.placement="ht")
+```
+
+## Muchos tipos de unidad observacional se encuentran en la misma tabla
+
+En ocasiones las bases de datos involucran diferentes tipos de unidad observacional. 
+Para tener datos limpios, cada unidad observacional debe estar almacenada en su propia tabla.
+
+```{r}
+billboard <- read.csv("tidyr_datasets/billboard.csv", stringsAsFactors = F)
+billboard_long <- gather(billboard, week, rank, x1st.week:x76th.week, na.rm = TRUE)
+billboard_tidy <- billboard_long %>%
+  mutate(
+    week = extract_numeric(week),
+    date = as.Date(date.entered) + 7 * (week - 1)) %>%
+    select(-date.entered)
+head(billboard_tidy)
+```
+
+¿Cuáles son las unidades observacionales en esta tabla?
+
+Separemos esta base de datos en dos: la tabla canción que almacena artista, 
+nombre de la canción y duración; la tabla rango que almacena el 
+ranking de la canción en cada semana.
+
+```{r}
+cancion <- billboard_tidy %>% 
+  select(artist.inverted, track, year, time) %>%
+  unique() %>%
+  arrange(artist.inverted) %>%
+  mutate(song_id = row_number(artist.inverted))
+
+head(cancion)
+```
+
+```{r}
+rango <- billboard_tidy %>%
+  left_join(cancion, c("artist.inverted", "track", "year", "time")) %>%
+  select(song_id, date, week, rank) %>%
+  arrange(song_id, date) %>%
+  tbl_df
+rango
+```
+
+## Una sola unidad observarcional se guardó en varias tablas
+
+Este ejemplo y datos se toman de \url{https://dl.dropboxusercontent.com/u/1351973/tutoriales/intro_r_2.html}.
+
+Es común que los valores sobre una misma unidad observacional estén separados 
+en varios archivos. Muchas veces, cada archivo es una variable, e.g. el mes o
+el nombre del paciente, etc. Para limpiar estos datos debemos:
+
+1. Leemos los archivos en una lista de tablas.
+2. Para cada tabla agregamos una columna que registra el nombre del archivo original.
+3. Combinamos las tablas en un solo data frame.
+
+La carpeta tidyr_datasets/specdata contiene 332 archivos csv que 
+almacenan información de monitoreo de contaminación en 332 ubicaciones de EUA. 
+Cada archivo contiene información de una unidad de monitoreo y 
+el número de identificación del monitor es el nombre del archivo.
+
+Primero creamos un vector con los nombres de los archivos en un directoriocon 
+extension .csv.
+
+```{r}
+paths <- dir("tidyr_datasets/specdata", pattern = "\\.csv$", full.names = TRUE)
+names(paths) <- basename(paths)
+specdata_US <- tbl_df(ldply(paths, read.csv, stringsAsFactors = FALSE))
+specdata_US
+```
+
+Las variables quedaron un poco sucias... las limpiamos y seleccionamos solo 
+las de interes.
+
+
+```{r}
+specdata <- specdata_US %>%
+  mutate(
+    monitor = extract_numeric(.id),
+    date = as.Date(Date)) %>%
+    select(id = ID, monitor, date, sulfate, nitrate)
+specdata
+```

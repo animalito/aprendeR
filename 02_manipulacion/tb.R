@@ -3,6 +3,9 @@ library(plyr)
 library(stringr)
 options(stringsAsFactors = FALSE)
 
+## Codigo original: https://github.com/hadley/tidy-data/blob/master/data/tb.r#L27
+## Ejemplo de referencia en: http://vita.had.co.nz/papers/tidy-data.pdf
+
 # Load -----------------------------------------------------------------------
 raw <- read.csv("tidyr_datasets/tb.csv", na.strings = "")
 raw$new_sp <- NULL
@@ -17,11 +20,7 @@ raw$f514 <- NULL
 
 # Melt -----------------------------------------------------------------------
 
-clean <- melt(raw, id = c("country", "year"), na.rm = TRUE)
-names(clean)[3] <- "column"
-names(clean)[4] <- "cases"
-
-clean <- arrange(clean, country, column, year)
+clean <- tidyr::gather(raw, key = column, value = cases, -country, -year)
 
 clean1 <- clean
 

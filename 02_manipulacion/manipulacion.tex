@@ -439,9 +439,9 @@ Ordenamos éstas de forma que las que están relacionadas sean contiguas.
 
 \section{De sucio a limpio}\label{de-sucio-a-limpio}
 
-Los conjuntos de datos normalmente violan estos criterios. Es raro
-obtener un conjunto de datos con el cuál podemos trabajar de manera
-inmediata.
+Los conjuntos de datos normalmente \textbf{no cumplen} con estos
+criterios. Es raro obtener un conjunto de datos con el cuál podemos
+trabajar de manera inmediata.
 
 Los 5 problemas más comunes para llevar datos sucios a limpios son
 
@@ -460,14 +460,14 @@ Los 5 problemas más comunes para llevar datos sucios a limpios son
   Una sola unidad observarcional se guardó en varias tablas.
 \end{enumerate}
 
-Estos problemas pueden ser resueltos con solamente: \emph{melting},
+Estos problemas pueden ser resueltos con 3 herramientas: \emph{melting},
 separación de cadenas y \emph{casting}.
 
 \subsection{Los nombres de las columnas son valores, no nombres de
 variables}\label{los-nombres-de-las-columnas-son-valores-no-nombres-de-variables}
 
-La tabla siguiente muestra datos sucios con este problema. Se muestran
-distintas religiones con el numero de personas que pertenecen a
+La tabla \ref{tab:varsencols} muestra datos sucios con este problema. Se
+muestran distintas religiones con el numero de personas que pertenecen a
 distintos niveles de ingreso. Dentro de un reporte, este tipo de
 representación tiene mucho sentido y permite visualizar muchas cosas
 rápidamente.
@@ -475,31 +475,33 @@ rápidamente.
 \begin{table}[ht]
 \centering
 {\tiny
-\begin{tabular}{lllllllllll}
+\begin{tabular}{lrrrrrrrrrr}
   \hline
-Religion & X..10k & X.10.20k & X.20.30k & X.30.40k & X.40.50k & X.50.75k & X.75.100k & X.100.150k & X.150k & Don T Know Refused \\ 
+religion & $<$\$10k & \$10-20k & \$20-30k & \$30-40k & \$40-50k & \$50-75k & \$75-100k & \$100-150k & $>$150k & Don't know/refused \\ 
   \hline
-Agnostic & 27 & 34 & 60 & 81 & 76 & 137 & 122 & 109 & 84 & 96 \\ 
-  Atheist & 12 & 27 & 37 & 52 & 35 & 70 & 73 & 59 & 74 & 76 \\ 
-  Buddhist & 27 & 21 & 30 & 34 & 33 & 58 & 62 & 39 & 53 & 54 \\ 
-  Catholic & 418 & 617 & 732 & 670 & 638 & 1,116 & 949 & 792 & 633 & 1,489 \\ 
-  Don’t know/refused & 15 & 14 & 15 & 11 & 10 & 35 & 21 & 17 & 18 & 116 \\ 
-  Evangelical Prot & 575 & 869 & 1,064 & 982 & 881 & 1,486 & 949 & 723 & 414 & 1,529 \\ 
-  Hindu & 1 & 9 & 7 & 9 & 11 & 34 & 47 & 48 & 54 & 37 \\ 
-  Historically Black Prot & 228 & 244 & 236 & 238 & 197 & 223 & 131 & 81 & 78 & 339 \\ 
-  Jehovah's Witness & 20 & 27 & 24 & 24 & 21 & 30 & 15 & 11 & 6 & 37 \\ 
-  Jewish & 19 & 19 & 25 & 25 & 30 & 95 & 69 & 87 & 151 & 162 \\ 
-  Mainline Prot & 289 & 495 & 619 & 655 & 651 & 1,107 & 939 & 753 & 634 & 1,328 \\ 
-  Mormon & 29 & 40 & 48 & 51 & 56 & 112 & 85 & 49 & 42 & 69 \\ 
-  Muslim & 6 & 7 & 9 & 10 & 9 & 23 & 16 & 8 & 6 & 22 \\ 
-  Orthodox & 13 & 17 & 23 & 32 & 32 & 47 & 38 & 42 & 46 & 73 \\ 
-  Other Christian & 9 & 7 & 11 & 13 & 13 & 14 & 18 & 14 & 12 & 18 \\ 
-  Other Faiths & 20 & 33 & 40 & 46 & 49 & 63 & 46 & 40 & 41 & 71 \\ 
-  Other World Religions & 5 & 2 & 3 & 4 & 2 & 7 & 3 & 4 & 4 & 8 \\ 
+Agnostic &  27 &  34 &  60 &  81 &  76 & 137 & 122 & 109 &  84 &  96 \\ 
+  Atheist &  12 &  27 &  37 &  52 &  35 &  70 &  73 &  59 &  74 &  76 \\ 
+  Buddhist &  27 &  21 &  30 &  34 &  33 &  58 &  62 &  39 &  53 &  54 \\ 
+  Catholic & 418 & 617 & 732 & 670 & 638 & 1116 & 949 & 792 & 633 & 1489 \\ 
+  Don’t know/refused &  15 &  14 &  15 &  11 &  10 &  35 &  21 &  17 &  18 & 116 \\ 
+  Evangelical Prot & 575 & 869 & 1064 & 982 & 881 & 1486 & 949 & 723 & 414 & 1529 \\ 
+  Hindu &   1 &   9 &   7 &   9 &  11 &  34 &  47 &  48 &  54 &  37 \\ 
+  Historically Black Prot & 228 & 244 & 236 & 238 & 197 & 223 & 131 &  81 &  78 & 339 \\ 
+  Jehovah's Witness &  20 &  27 &  24 &  24 &  21 &  30 &  15 &  11 &   6 &  37 \\ 
+  Jewish &  19 &  19 &  25 &  25 &  30 &  95 &  69 &  87 & 151 & 162 \\ 
+  Mainline Prot & 289 & 495 & 619 & 655 & 651 & 1107 & 939 & 753 & 634 & 1328 \\ 
+  Mormon &  29 &  40 &  48 &  51 &  56 & 112 &  85 &  49 &  42 &  69 \\ 
+  Muslim &   6 &   7 &   9 &  10 &   9 &  23 &  16 &   8 &   6 &  22 \\ 
+  Orthodox &  13 &  17 &  23 &  32 &  32 &  47 &  38 &  42 &  46 &  73 \\ 
+  Other Christian &   9 &   7 &  11 &  13 &  13 &  14 &  18 &  14 &  12 &  18 \\ 
+  Other Faiths &  20 &  33 &  40 &  46 &  49 &  63 &  46 &  40 &  41 &  71 \\ 
+  Other World Religions &   5 &   2 &   3 &   4 &   2 &   7 &   3 &   4 &   4 &   8 \\ 
   Unaffiliated & 217 & 299 & 374 & 365 & 341 & 528 & 407 & 321 & 258 & 597 \\ 
    \hline
 \end{tabular}
 }
+\caption{Variable de ingreso en columnas.} 
+\label{tab:varsencols}
 \end{table}
 
 El conjunto de datos tiene 3 variables: \emph{religion}, \emph{ingreso}
@@ -517,31 +519,120 @@ el comando \texttt{gather}.
 \end{Highlighting}
 \end{Shaded}
 
+Con este comando, obtenemos la tabla \ref{tab:ej1limpio}. Se especifica
+el \emph{data.frame} como primer parámetro, la llave (parámetro
+\emph{key}) será el nombre que tomará la variable con los nombres de las
+columnas a juntar, el valor (parámetro \emph{value}) es el nombre de la
+variable que contendrá los valores correspondientes a cada valor (la
+religión i-ésima, grupo de ingreso j-ésimo) y, por último, especificamos
+las variables que \textbf{NO} se deben de juntar (en este caso,
+religión).
+
 \begin{table}[ht]
 \centering
 \begin{tabular}{lll}
   \hline
 Religion & Income & Freq \\ 
   \hline
-Agnostic & $<$\$10k & 27 \\ 
-  Atheist & $<$\$10k & 12 \\ 
-  Buddhist & $<$\$10k & 27 \\ 
-  Catholic & $<$\$10k & 418 \\ 
-  Don’t know/refused & $<$\$10k & 15 \\ 
-  Evangelical Prot & $<$\$10k & 575 \\ 
+Jewish & \$30-40k & 25 \\ 
+  Mormon & \$10-20k & 40 \\ 
+  Orthodox & Don't know/refused & 73 \\ 
+  Other World Religions & \$30-40k & 4 \\ 
+  Other Christian & \$30-40k & 13 \\ 
+  Atheist & \$30-40k & 52 \\ 
+  Mainline Prot & Don't know/refused & 1,328 \\ 
+  Hindu & \$50-75k & 34 \\ 
+  Other World Religions & \$10-20k & 2 \\ 
+  Evangelical Prot & \$10-20k & 869 \\ 
    \hline
 \end{tabular}
+\caption{Datos limpios para religión, ingreso y frecuencia.} 
+\label{tab:ej1limpio}
 \end{table}
 
-Este tipo de forma de guardar datos es útil también cuando se capturan
-datos al evitar la repetición de valores.
+\begin{nota}[Nota] 
+Esta forma es limpia pues cada columan es una variable, cada fila es una observación
+y no se mezclan unidades observacionales.
+\end{nota}
+
+Este tipo de formato de datos (poner valores de variables en las
+columnas) es útil también cuando se capturan datos al evitar la
+repetición de valores.
+
+Por ejemplo, pensemos en un experimento clínico en el que seguimos a
+sujetos a lo largo de un tratamiento midiendo su IMC. Una forma muy
+sencilla de guardar los datos del experimento es utilizando un
+procesador de texto común. El capturista no querrá seguir criterios de
+datos limpios al llenar la información pues implicaría repetir el nombre
+de la persona, el día de la captura y el nivel de colesterol. Supongamos
+un experimento con 16 sujetos a lo largo de un año en donde se mide el
+colesterol una vez al mes (mes1, mes2, etc.). Los datos capturados se
+muestran en la tabla \ref{tab:sujetos}.
+
+\begin{table}[ht]
+\centering
+{\tiny
+\begin{tabular}{llrrrrrrrrrrrr}
+  \hline
+sujetos & grupo & mes1 & mes2 & mes3 & mes4 & mes5 & mes6 & mes7 & mes8 & mes9 & mes10 & mes11 & mes12 \\ 
+  \hline
+A & control & 21.74 & 21.51 & 23.06 & 24.40 & 25.81 & 26.75 & 27.18 & 29.54 & 31.60 & 32.64 & 32.13 & 33.14 \\ 
+  B & control & 20.92 & 20.90 & 21.83 & 21.85 & 24.31 & 25.62 & 24.79 & 25.34 & 26.22 & 27.81 & 29.56 & 29.72 \\ 
+  C & control & 23.09 & 24.46 & 25.75 & 25.45 & 26.21 & 27.53 & 27.99 & 30.66 & 31.04 & 31.14 & 31.66 & 30.63 \\ 
+  D & tratamiento & 32.44 & 34.00 & 34.21 & 33.52 & 32.73 & 32.43 & 34.35 & 35.95 & 35.67 & 37.28 & 39.09 & 39.19 \\ 
+  E & tratamiento & 31.03 & 32.43 & 33.75 & 33.99 & 34.30 & 35.51 & 36.24 & 36.33 & 34.50 & 35.27 & 37.45 & 37.62 \\ 
+  F & control & 16.91 & 17.05 & 16.84 & 17.49 & 18.04 & 17.10 & 17.71 & 17.30 & 19.09 & 20.83 & 21.55 & 20.99 \\ 
+  G & control & 30.60 & 33.37 & 35.63 & 37.26 & 38.07 & 38.99 & 39.32 & 39.40 & 40.50 & 39.39 & 39.97 & 40.44 \\ 
+  H & control & 26.37 & 26.27 & 27.61 & 27.87 & 27.46 & 26.49 & 27.65 & 27.52 & 27.98 & 29.62 & 29.61 & 30.08 \\ 
+  I & tratamiento & 26.41 & 25.73 & 26.21 & 25.91 & 26.55 & 26.62 & 28.56 & 30.16 & 29.33 & 29.54 & 31.25 & 30.11 \\ 
+  J & tratamiento & 34.10 & 33.29 & 34.64 & 35.43 & 35.29 & 34.15 & 35.16 & 36.73 & 36.77 & 38.43 & 38.74 & 38.71 \\ 
+  K & control & 26.33 & 27.55 & 28.51 & 29.31 & 30.04 & 29.90 & 30.76 & 32.62 & 32.98 & 32.44 & 32.85 & 33.45 \\ 
+  L & tratamiento & 24.58 & 26.10 & 27.76 & 28.05 & 29.45 & 30.95 & 31.90 & 32.73 & 33.77 & 34.09 & 35.50 & 35.67 \\ 
+  M & tratamiento & 22.77 & 23.83 & 23.13 & 21.55 & 22.07 & 23.57 & 22.00 & 20.89 & 21.67 & 21.54 & 22.95 & 22.59 \\ 
+  N & tratamiento & 32.45 & 35.28 & 34.69 & 35.37 & 35.53 & 35.64 & 35.31 & 36.32 & 36.96 & 35.46 & 34.78 & 35.83 \\ 
+  O & control & 18.38 & 17.50 & 18.11 & 18.17 & 18.41 & 18.62 & 17.54 & 17.18 & 19.00 & 20.86 & 23.57 & 23.83 \\ 
+  P & control & 31.64 & 32.62 & 32.55 & 30.61 & 29.65 & 32.44 & 32.93 & 35.36 & 36.51 & 38.63 & 40.48 & 39.80 \\ 
+   \hline
+\end{tabular}
+}
+\caption{Mediciones de IMC en sujetos.} 
+\label{tab:sujetos}
+\end{table}
+
+\textbf{Ejercicio}
+
+Nuevamente, queremos convertir la columan 3 a 14 en filas, es decir,
+observaciones. Utiliza el comando \texttt{gather} para realizar esto y
+obtener el resultado que se muestra en la tabla \ref{tab:sujetostidy}.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lllr}
+  \hline
+sujetos & grupo & mes & IMC \\ 
+  \hline
+G & control & mes8 & 39.40 \\ 
+  B & control & mes9 & 26.22 \\ 
+  C & control & mes8 & 30.66 \\ 
+  P & control & mes1 & 31.64 \\ 
+  D & tratamiento & mes7 & 34.35 \\ 
+  K & control & mes6 & 29.90 \\ 
+  F & control & mes1 & 16.91 \\ 
+  M & tratamiento & mes6 & 23.57 \\ 
+  O & control & mes11 & 23.57 \\ 
+  G & control & mes7 & 39.32 \\ 
+   \hline
+\end{tabular}
+\caption{Muestra de datos limpios para experimentos IMC.} 
+\label{tab:sujetostidy}
+\end{table}
 
 \subsection{Múltiples variables se encuentran en la misma
 columna}\label{multiples-variables-se-encuentran-en-la-misma-columna}
 
-Otra forma de datos sucios se encuentra cuando una columna con nombres
-de variables tiene realmente varias variables dentro del nombre (como en
-el ejemplo siguiente).
+Otra forma de datos sucios es cuando una columna con nombres de
+variables tiene realmente varias variables dentro del nombre (como en el
+ejemplo siguiente).
 
 \begin{table}[ht]
 \centering
@@ -564,35 +655,38 @@ AD & 2000 &   0 &   0 &   1 &   0 &   0 &   0 &   0 &  &  \\
 \end{table}
 
 El primer paso es pasar las columnas que son valores de variable a una
-sola variable
+sola columna (tabla \ref{tab:tbjuntar}).
 
 \begin{table}[ht]
 \centering
-\begin{tabular}{lrllr}
+\begin{tabular}{lrlr}
   \hline
-country & year & sex & age & cases \\ 
+country & year & column & cases \\ 
   \hline
-AD & 2000 & m & 0-14 &   0 \\ 
-  AD & 2000 & m & 15-24 &   0 \\ 
-  AD & 2000 & m & 25-34 &   1 \\ 
-  AD & 2000 & m & 35-44 &   0 \\ 
-  AD & 2000 & m & 45-54 &   0 \\ 
-  AD & 2000 & m & 55-64 &   0 \\ 
-  AD & 2000 & m & 65+ &   0 \\ 
-  AE & 2000 & m & 0-14 &   2 \\ 
-  AE & 2000 & m & 15-24 &   4 \\ 
-  AE & 2000 & m & 25-34 &   4 \\ 
-  AE & 2000 & m & 35-44 &   6 \\ 
-  AE & 2000 & m & 45-54 &   5 \\ 
-  AE & 2000 & m & 55-64 &  12 \\ 
-  AE & 2000 & m & 65+ &  10 \\ 
-  AE & 2000 & f & 0-14 &   3 \\ 
+AD & 2000 & m014 &   0 \\ 
+  AE & 2000 & m014 &   2 \\ 
+  AF & 2000 & m014 &  52 \\ 
+  AG & 2000 & m014 &   0 \\ 
+  AL & 2000 & m014 &   2 \\ 
+  AM & 2000 & m014 &   2 \\ 
+  AN & 2000 & m014 &   0 \\ 
+  AO & 2000 & m014 & 186 \\ 
+  AR & 2000 & m014 &  97 \\ 
+  AS & 2000 & m014 &  \\ 
+  AT & 2000 & m014 &   1 \\ 
+  AU & 2000 & m014 &   3 \\ 
+  AZ & 2000 & m014 &   0 \\ 
+  BA & 2000 & m014 &   4 \\ 
+  BB & 2000 & m014 &   0 \\ 
    \hline
 \end{tabular}
+\caption{Paso 1. Juntar las columnas cuyos nombres son 2 variables.} 
+\label{tab:tbjuntar}
 \end{table}
 
 Posteriormente, debemos separar en las columnas apropiadas las variables
-que estan contenidas en los antiguos nombres de variables.
+que estan contenidas en los antiguos nombres de variables (tabla
+\ref{tab:tbseparar}).
 
 \begin{table}[ht]
 \centering
@@ -601,22 +695,349 @@ que estan contenidas en los antiguos nombres de variables.
 country & year & sex & age & cases \\ 
   \hline
 AD & 2000 & m & 0-14 &   0 \\ 
-  AD & 2000 & m & 15-24 &   0 \\ 
-  AD & 2000 & m & 25-34 &   1 \\ 
-  AD & 2000 & m & 35-44 &   0 \\ 
-  AD & 2000 & m & 45-54 &   0 \\ 
-  AD & 2000 & m & 55-64 &   0 \\ 
-  AD & 2000 & m & 65+ &   0 \\ 
   AE & 2000 & m & 0-14 &   2 \\ 
-  AE & 2000 & m & 15-24 &   4 \\ 
-  AE & 2000 & m & 25-34 &   4 \\ 
-  AE & 2000 & m & 35-44 &   6 \\ 
-  AE & 2000 & m & 45-54 &   5 \\ 
-  AE & 2000 & m & 55-64 &  12 \\ 
-  AE & 2000 & m & 65+ &  10 \\ 
-  AE & 2000 & f & 0-14 &   3 \\ 
+  AF & 2000 & m & 0-14 &  52 \\ 
+  AG & 2000 & m & 0-14 &   0 \\ 
+  AL & 2000 & m & 0-14 &   2 \\ 
+  AM & 2000 & m & 0-14 &   2 \\ 
+  AN & 2000 & m & 0-14 &   0 \\ 
+  AO & 2000 & m & 0-14 & 186 \\ 
+  AR & 2000 & m & 0-14 &  97 \\ 
+  AS & 2000 & m & 0-14 &  \\ 
+  AT & 2000 & m & 0-14 &   1 \\ 
+  AU & 2000 & m & 0-14 &   3 \\ 
+  AZ & 2000 & m & 0-14 &   0 \\ 
+  BA & 2000 & m & 0-14 &   4 \\ 
+  BB & 2000 & m & 0-14 &   0 \\ 
    \hline
 \end{tabular}
+\caption{Paso 2. Separar las columnas.} 
+\label{tab:tbseparar}
 \end{table}
+
+\begin{nota}[stringr]
+Otro paquete muy útil para realizar tareas de limpieza con cadenas. 
+La \href{https://cran.r-project.org/web/packages/stringr/stringr.pdf}{documentación}
+detalla todas sus funciones.
+\end{nota}
+
+\subsection{Las variables están guardadas tanto en filas como en
+columnas}\label{las-variables-estan-guardadas-tanto-en-filas-como-en-columnas}
+
+El problema más difícil es cuando las variables están tanto en filas
+como en columnas. Para ejemplificar este problema, se muestran los datos
+de temperatura máxima y mínima en algunas zonas de México.
+
+\begin{table}[ht]
+\centering
+{\tiny
+\begin{tabular}{lrrlrrrrrrrrrrr}
+  \hline
+id & year & month & element & d1 & d2 & d3 & d4 & d5 & d6 & d7 & d8 & d9 & d10 & d11 \\ 
+  \hline
+MX17004 & 2010 &   1 & tmax &  &  &  &  &  &  &  &  &  &  &  \\ 
+  MX17004 & 2010 &   1 & tmin &  &  &  &  &  &  &  &  &  &  &  \\ 
+  MX17004 & 2010 &   2 & tmax &  & 27.30 & 24.10 &  &  &  &  &  &  &  & 29.70 \\ 
+  MX17004 & 2010 &   2 & tmin &  & 14.40 & 14.40 &  &  &  &  &  &  &  & 13.40 \\ 
+  MX17004 & 2010 &   3 & tmax &  &  &  &  & 32.10 &  &  &  &  & 34.50 &  \\ 
+  MX17004 & 2010 &   3 & tmin &  &  &  &  & 14.20 &  &  &  &  & 16.80 &  \\ 
+  MX17004 & 2010 &   4 & tmax &  &  &  &  &  &  &  &  &  &  &  \\ 
+  MX17004 & 2010 &   4 & tmin &  &  &  &  &  &  &  &  &  &  &  \\ 
+  MX17004 & 2010 &   5 & tmax &  &  &  &  &  &  &  &  &  &  &  \\ 
+  MX17004 & 2010 &   5 & tmin &  &  &  &  &  &  &  &  &  &  &  \\ 
+  MX17004 & 2010 &   6 & tmax &  &  &  &  &  &  &  &  &  &  &  \\ 
+  MX17004 & 2010 &   6 & tmin &  &  &  &  &  &  &  &  &  &  &  \\ 
+  MX17004 & 2010 &   7 & tmax &  &  & 28.60 &  &  &  &  &  &  &  &  \\ 
+  MX17004 & 2010 &   7 & tmin &  &  & 17.50 &  &  &  &  &  &  &  &  \\ 
+  MX17004 & 2010 &   8 & tmax &  &  &  &  & 29.60 &  &  & 29.00 &  &  &  \\ 
+  MX17004 & 2010 &   8 & tmin &  &  &  &  & 15.80 &  &  & 17.30 &  &  &  \\ 
+  MX17004 & 2010 &  10 & tmax &  &  &  &  & 27.00 &  & 28.10 &  &  &  &  \\ 
+  MX17004 & 2010 &  10 & tmin &  &  &  &  & 14.00 &  & 12.90 &  &  &  &  \\ 
+  MX17004 & 2010 &  11 & tmax &  & 31.30 &  & 27.20 & 26.30 &  &  &  &  &  &  \\ 
+  MX17004 & 2010 &  11 & tmin &  & 16.30 &  & 12.00 & 7.90 &  &  &  &  &  &  \\ 
+  MX17004 & 2010 &  12 & tmax & 29.90 &  &  &  &  & 27.80 &  &  &  &  &  \\ 
+  MX17004 & 2010 &  12 & tmin & 13.80 &  &  &  &  & 10.50 &  &  &  &  &  \\ 
+   \hline
+\end{tabular}
+}
+\caption{Mediciones de temperatura max y min.} 
+\label{tab:clima}
+\end{table}
+
+Para limpiar, lo primero que debemos hacer es juntar los dias (que son
+valores de la variable dia) en una sola columna. Después utilizamos la
+nueva variable para crear la fecha. Asi, obtenemos la tabla
+\ref{tab:clima1}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Tidy}
+\CommentTok{# Primero, juntamos la variable dias}
+\NormalTok{clean1 <-}\StringTok{ }\NormalTok{tidyr::}\KeywordTok{gather}\NormalTok{(raw, }\DataTypeTok{key =} \NormalTok{variable, }\DataTypeTok{value =} \NormalTok{value, d1:d31, }\DataTypeTok{na.rm =} \NormalTok{T)}
+\NormalTok{clean1$day <-}\StringTok{ }\KeywordTok{as.integer}\NormalTok{(}\KeywordTok{str_replace}\NormalTok{(clean1$variable, }\StringTok{"d"}\NormalTok{, }\StringTok{""}\NormalTok{))}
+\NormalTok{clean1$date <-}\StringTok{ }\KeywordTok{as.Date}\NormalTok{(}\KeywordTok{ISOdate}\NormalTok{(clean1$year, clean1$month, clean1$day))}
+\NormalTok{clean1 <-}\StringTok{ }\NormalTok{dplyr::}\KeywordTok{select_}\NormalTok{(clean1, }\StringTok{"id"}\NormalTok{, }\StringTok{"date"}\NormalTok{, }\StringTok{"element"}\NormalTok{, }\StringTok{"value"}\NormalTok{) %>%}
+\StringTok{  }\NormalTok{dplyr::}\KeywordTok{arrange}\NormalTok{(clean1, date, element) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in formatC(x = structure(c(14642, 14643, 14642, 14643, 14915,
+## 14915, : class of 'x' was discarded
+\end{verbatim}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrlr}
+  \hline
+id & date & element & value \\ 
+  \hline
+MX17004 & 14642.00 & tmax & 27.30 \\ 
+  MX17004 & 14643.00 & tmax & 24.10 \\ 
+  MX17004 & 14642.00 & tmin & 14.40 \\ 
+  MX17004 & 14643.00 & tmin & 14.40 \\ 
+  MX17004 & 14915.00 & tmax & 31.30 \\ 
+  MX17004 & 14915.00 & tmin & 16.30 \\ 
+  MX17004 & 14944.00 & tmax & 29.90 \\ 
+  MX17004 & 14944.00 & tmin & 13.80 \\ 
+   \hline
+\end{tabular}
+\caption{Paso 1. Juntar las columnas, limpiar dias, crear fecha.} 
+\label{tab:clima1}
+\end{table}
+
+El segundo paso es transformar la variable element en dos columnas pues,
+en realidad, almacena dos variables: temperatura maxima y minima.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Cast: las temperaturas van a columnas}
+\NormalTok{clean2 <-}\StringTok{ }\NormalTok{tidyr::}\KeywordTok{spread}\NormalTok{(clean1, }\DataTypeTok{key =} \NormalTok{element, }\DataTypeTok{value =} \NormalTok{value)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in formatC(x = structure(c(14642, 14643, 14642, 14643, 14915,
+## 14915, : class of 'x' was discarded
+\end{verbatim}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrlr}
+  \hline
+id & date & element & value \\ 
+  \hline
+MX17004 & 14642.00 & tmax & 27.30 \\ 
+  MX17004 & 14643.00 & tmax & 24.10 \\ 
+  MX17004 & 14642.00 & tmin & 14.40 \\ 
+  MX17004 & 14643.00 & tmin & 14.40 \\ 
+  MX17004 & 14915.00 & tmax & 31.30 \\ 
+  MX17004 & 14915.00 & tmin & 16.30 \\ 
+  MX17004 & 14944.00 & tmax & 29.90 \\ 
+  MX17004 & 14944.00 & tmin & 13.80 \\ 
+   \hline
+\end{tabular}
+\caption{Paso 2. Enviar a columnas las mediciones de temperaturas.} 
+\label{tab:clima1}
+\end{table}
+
+\subsection{Muchos tipos de unidad observacional se encuentran en la
+misma
+tabla}\label{muchos-tipos-de-unidad-observacional-se-encuentran-en-la-misma-tabla}
+
+En ocasiones las bases de datos involucran diferentes tipos de unidad
+observacional. Para tener datos limpios, cada unidad observacional debe
+estar almacenada en su propia tabla.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{billboard <-}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{"tidyr_datasets/billboard.csv"}\NormalTok{, }\DataTypeTok{stringsAsFactors =} \NormalTok{F)}
+\NormalTok{billboard_long <-}\StringTok{ }\KeywordTok{gather}\NormalTok{(billboard, week, rank, x1st.week:x76th.week, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{)}
+\NormalTok{billboard_tidy <-}\StringTok{ }\NormalTok{billboard_long %>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}
+    \DataTypeTok{week =} \KeywordTok{extract_numeric}\NormalTok{(week),}
+    \DataTypeTok{date =} \KeywordTok{as.Date}\NormalTok{(date.entered) +}\StringTok{ }\DecValTok{7} \NormalTok{*}\StringTok{ }\NormalTok{(week -}\StringTok{ }\DecValTok{1}\NormalTok{)) %>%}
+\StringTok{    }\KeywordTok{select}\NormalTok{(-date.entered)}
+\KeywordTok{head}\NormalTok{(billboard_tidy)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   year     artist.inverted                                 track time
+## 1 2000     Destiny's Child              Independent Women Part I 3:38
+## 2 2000             Santana                          Maria, Maria 4:18
+## 3 2000       Savage Garden                    I Knew I Loved You 4:07
+## 4 2000             Madonna                                 Music 3:45
+## 5 2000 Aguilera, Christina Come On Over Baby (All I Want Is You) 3:38
+## 6 2000               Janet                 Doesn't Really Matter 4:17
+##   genre date.peaked week rank       date
+## 1  Rock  2000-11-18    1   78 2000-09-23
+## 2  Rock  2000-04-08    1   15 2000-02-12
+## 3  Rock  2000-01-29    1   71 1999-10-23
+## 4  Rock  2000-09-16    1   41 2000-08-12
+## 5  Rock  2000-10-14    1   57 2000-08-05
+## 6  Rock  2000-08-26    1   59 2000-06-17
+\end{verbatim}
+
+¿Cuáles son las unidades observacionales en esta tabla?
+
+Separemos esta base de datos en dos: la tabla canción que almacena
+artista, nombre de la canción y duración; la tabla rango que almacena el
+ranking de la canción en cada semana.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cancion <-}\StringTok{ }\NormalTok{billboard_tidy %>%}\StringTok{ }
+\StringTok{  }\KeywordTok{select}\NormalTok{(artist.inverted, track, year, time) %>%}
+\StringTok{  }\KeywordTok{unique}\NormalTok{() %>%}
+\StringTok{  }\KeywordTok{arrange}\NormalTok{(artist.inverted) %>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{song_id =} \KeywordTok{row_number}\NormalTok{(artist.inverted))}
+
+\KeywordTok{head}\NormalTok{(cancion)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   artist.inverted
+## 1           2 Pac
+## 2         2Ge+her
+## 3    3 Doors Down
+## 4    3 Doors Down
+## 5        504 Boyz
+## 6          98\xa1
+##                                                          track year time
+## 1                          Baby Don't Cry (Keep Ya Head Up II) 2000 4:22
+## 2 The Hardest Part Of Breaking Up (Is Getting Back Your Stuff) 2000 3:15
+## 3                                                   Kryptonite 2000 3:53
+## 4                                                        Loser 2000 4:24
+## 5                                                Wobble Wobble 2000 3:35
+## 6                           Give Me Just One Night (Una Noche) 2000 3:24
+##   song_id
+## 1       1
+## 2       2
+## 3       3
+## 4       4
+## 5       5
+## 6       6
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{rango <-}\StringTok{ }\NormalTok{billboard_tidy %>%}
+\StringTok{  }\KeywordTok{left_join}\NormalTok{(cancion, }\KeywordTok{c}\NormalTok{(}\StringTok{"artist.inverted"}\NormalTok{, }\StringTok{"track"}\NormalTok{, }\StringTok{"year"}\NormalTok{, }\StringTok{"time"}\NormalTok{)) %>%}
+\StringTok{  }\KeywordTok{select}\NormalTok{(song_id, date, week, rank) %>%}
+\StringTok{  }\KeywordTok{arrange}\NormalTok{(song_id, date) %>%}
+\StringTok{  }\NormalTok{tbl_df}
+\NormalTok{rango}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Source: local data frame [5,307 x 4]
+## 
+##    song_id       date  week  rank
+##      (int)     (date) (dbl) (int)
+## 1        1 2000-02-26     1    87
+## 2        1 2000-03-04     2    82
+## 3        1 2000-03-11     3    72
+## 4        1 2000-03-18     4    77
+## 5        1 2000-03-25     5    87
+## 6        1 2000-04-01     6    94
+## 7        1 2000-04-08     7    99
+## 8        2 2000-09-02     1    91
+## 9        2 2000-09-09     2    87
+## 10       2 2000-09-16     3    92
+## ..     ...        ...   ...   ...
+\end{verbatim}
+
+\subsection{Una sola unidad observarcional se guardó en varias
+tablas}\label{una-sola-unidad-observarcional-se-guardo-en-varias-tablas}
+
+Este ejemplo y datos se toman de
+\url{https://dl.dropboxusercontent.com/u/1351973/tutoriales/intro_r_2.html}.
+
+Es común que los valores sobre una misma unidad observacional estén
+separados en varios archivos. Muchas veces, cada archivo es una
+variable, e.g.~el mes o el nombre del paciente, etc. Para limpiar estos
+datos debemos:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  Leemos los archivos en una lista de tablas.
+\item
+  Para cada tabla agregamos una columna que registra el nombre del
+  archivo original.
+\item
+  Combinamos las tablas en un solo data frame.
+\end{enumerate}
+
+La carpeta tidyr\_datasets/specdata contiene 332 archivos csv que
+almacenan información de monitoreo de contaminación en 332 ubicaciones
+de EUA. Cada archivo contiene información de una unidad de monitoreo y
+el número de identificación del monitor es el nombre del archivo.
+
+Primero creamos un vector con los nombres de los archivos en un
+directoriocon extension .csv.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{paths <-}\StringTok{ }\KeywordTok{dir}\NormalTok{(}\StringTok{"tidyr_datasets/specdata"}\NormalTok{, }\DataTypeTok{pattern =} \StringTok{"}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{.csv$"}\NormalTok{, }\DataTypeTok{full.names =} \OtherTok{TRUE}\NormalTok{)}
+\KeywordTok{names}\NormalTok{(paths) <-}\StringTok{ }\KeywordTok{basename}\NormalTok{(paths)}
+\NormalTok{specdata_US <-}\StringTok{ }\KeywordTok{tbl_df}\NormalTok{(}\KeywordTok{ldply}\NormalTok{(paths, read.csv, }\DataTypeTok{stringsAsFactors =} \OtherTok{FALSE}\NormalTok{))}
+\NormalTok{specdata_US}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Source: local data frame [772,087 x 5]
+## 
+##        .id       Date sulfate nitrate    ID
+##      (chr)      (chr)   (dbl)   (dbl) (int)
+## 1  001.csv 2003-01-01      NA      NA     1
+## 2  001.csv 2003-01-02      NA      NA     1
+## 3  001.csv 2003-01-03      NA      NA     1
+## 4  001.csv 2003-01-04      NA      NA     1
+## 5  001.csv 2003-01-05      NA      NA     1
+## 6  001.csv 2003-01-06      NA      NA     1
+## 7  001.csv 2003-01-07      NA      NA     1
+## 8  001.csv 2003-01-08      NA      NA     1
+## 9  001.csv 2003-01-09      NA      NA     1
+## 10 001.csv 2003-01-10      NA      NA     1
+## ..     ...        ...     ...     ...   ...
+\end{verbatim}
+
+Las variables quedaron un poco sucias\ldots{} las limpiamos y
+seleccionamos solo las de interes.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{specdata <-}\StringTok{ }\NormalTok{specdata_US %>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}
+    \DataTypeTok{monitor =} \KeywordTok{extract_numeric}\NormalTok{(.id),}
+    \DataTypeTok{date =} \KeywordTok{as.Date}\NormalTok{(Date)) %>%}
+\StringTok{    }\KeywordTok{select}\NormalTok{(}\DataTypeTok{id =} \NormalTok{ID, monitor, date, sulfate, nitrate)}
+\NormalTok{specdata}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Source: local data frame [772,087 x 5]
+## 
+##       id monitor       date sulfate nitrate
+##    (int)   (dbl)     (date)   (dbl)   (dbl)
+## 1      1       1 2003-01-01      NA      NA
+## 2      1       1 2003-01-02      NA      NA
+## 3      1       1 2003-01-03      NA      NA
+## 4      1       1 2003-01-04      NA      NA
+## 5      1       1 2003-01-05      NA      NA
+## 6      1       1 2003-01-06      NA      NA
+## 7      1       1 2003-01-07      NA      NA
+## 8      1       1 2003-01-08      NA      NA
+## 9      1       1 2003-01-09      NA      NA
+## 10     1       1 2003-01-10      NA      NA
+## ..   ...     ...        ...     ...     ...
+\end{verbatim}
 
 \end{document}

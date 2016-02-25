@@ -38,9 +38,6 @@ Datos de muestra
 
 ## Vectoriza y pre-asigna estructuras de datos
 
-## Which
-
-## La familia apply
 
 # Arreglar 
 
