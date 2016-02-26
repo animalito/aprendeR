@@ -23,7 +23,7 @@ Primero es necesario **importar** nuestros datos a R. Los datos pueden estar en
 una gran cantidad de formatos o lugares.
 
 Después, normalmente es necesario **arreglar** nuestros datos, es decir, seguir
-criterios de datos limpios de manera que la manera en la que guardemos los datos
+criterios de datos limpios de tal forma que como guardemos los datos
 equivalga a la semántica de los datos que tenemos. Es muy importante primero
 limpiar porque esto provee de consistencia a lo largo del análisis.
 
@@ -41,7 +41,7 @@ a los datos, encontrar patrones, respuestas, plantear hipótesis. Sin embargo,
 aceptamos sus supuestos generan los resultados que esperamos o contestan la 
 pregunta planteada.
 
-Por último, necestamos **comunicar** los resultados. 
+Por último, necesitamos **comunicar** los resultados. 
 
 
 # Datos limpios
@@ -62,7 +62,7 @@ tabla.
 Esta actividad incluye una gran cantidad de elementos: desde revisar los outliers, 
 hasta extraer variables de cadenas en datos no estrucutrados, imputación de 
 valores perdidos. Los datos limpios son tan solo un subconjunto de este proceso y
-lidian como el cómo estructurar los datos de manera que se facilite el análisis.
+lidian con el cómo estructurar los datos de manera que se facilite el análisis.
 
 El estándar de datos limpios está diseñado para facilitar la exploración inicial y
 el análisis de datos así como simplificar el desarrollo de herramientas para el 
@@ -88,7 +88,7 @@ compuestas por filas y columnas. Las columnas casi siempre están etiquetadas
 *colnames* y las filas a veces lo están. 
 
 Tomamos el ejemplo de datos de la figura \ref{fig:estructura} en donde se presentan datos de un experimento. La tabla contiene dos columas y tres filas, 
-ambas etiquetaadas.
+ambas etiquetadas.
 
 \begin{figure}[h]
     \centering
@@ -97,8 +97,8 @@ ambas etiquetaadas.
     \label{fig:estructura}
 \end{figure}
 
-Podemos estructurar los datos de diferentes manera pero la abstracción de filas
-y columnas solamnete nos permite pensar en la representación transpuesta que
+Podemos estructurar los datos de diferentes maneras pero la abstracción de filas
+y columnas solamente nos permite pensar en la representación transpuesta que
 se muestra en la figura \ref{fig:estructurat}. El layout cambia pero los datos
 son los mismos. Con columnas y filas, no podemos decir esto de manera apropiada.
 Además de la simple apariencia, debemos poder describir la semántica -el significado- 
@@ -274,7 +274,7 @@ print(xtable(
 ```
 
 \begin{nota}[Nota] 
-Esta forma es limpia pues cada columan es una variable, cada fila es una observación
+Esta forma es limpia pues cada columna es una variable, cada fila es una observación
 y no se mezclan unidades observacionales.
 \end{nota}
 
