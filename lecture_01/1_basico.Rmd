@@ -36,7 +36,7 @@ Con lo que acabamos de hacer, R buscará archivos o guardará archivos en el
 folder `/home/animalito/study/`. En R también es posible navegar a partir de 
 el directorio de trabajo. Como siempre, 
 
-- "../un\_archivo.R" le indica a R que busque un folder arriva del actual 
+- "../un\_archivo.R" le indica a R que busque un folder arriba del actual 
 directorio de trabajo por el archivo *un\_archivo.R*.
 - "datos/otro\_archivo.R" hace que se busque en el directorio de trabajo, dentro 
 del folder *datos* por el archivo *otro\_archivo.R*
@@ -902,7 +902,7 @@ Este ciclo itera sobre los valores del 1 al 20 e imprime los valores impares.
 R no es muy eficiente cuando se combina con estructuras de control tipo for o 
 while. Sin embargo, estas estructuras son muy comunes y es útil conocerlas. 
 
-Normalmente, se recomienda utilizar estrucutras vectorizadas (como ifelse) pues,
+Normalmente, se recomienda utilizar estructuras vectorizadas (como ifelse) pues,
 de esta manera, R es mucho más eficiente. 
 \end{nota}
 
@@ -1051,7 +1051,7 @@ el *orden* en el que los llamaste.
 
 Esto es **muy** importante. Hay contribuidores de paquetes en todo el
 mundo y es muy común que utilicen el mismo nombre para implementaciones
-distintas de cosas y, por lo tanto, a veces nuestros resultados no son
+de distintas cosas y, por lo tanto, a veces nuestros resultados no son
 lo que esperábamos.
 
 ```{r}
