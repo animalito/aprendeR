@@ -25,23 +25,115 @@ tipo y formato de datos. Entre los más comunes están:
 
 ## Lectura
 
-Desde archivo
+Para leer un archivo, recordemos el comando `getwd()` para encontrar la carpeta
+a la cual R esta dirigido en este momento. Una buena practica es considerar 
+el directorio de trabajo como el lugar en donde esta guardado el archivo o `sript` en el que se trabaja y "moverse" desde ahi hasta el archivo que se quiere
+leer.
 
-Datos de muestra
+R tiene conexion con basicamente todos los tipos de archivo. Veremos algunos 
+de los mas relevantes.
 
-# Extracción de partes de los objetos
+**Desde archivo separado por comas**
+
+```
+misdatos <- read.table("c:/misdatos.csv", header=TRUE,
+   sep=",", row.names="id")
+misdatos <- read.csv("c:/misdatos.csv")
+```
+
+**Desde archivo de texto plano**
+
+`read.table` es mucho mas amplio que `read.csv` pues nos permite especificar
+casi cualquier particularidad en un archivo de texto plano.
+
+```
+misdatos <- 
+  read.table("C:/misdatos", header = FALSE, sep = "", quote = "\"'",
+           dec = ".", numerals = c("allow.loss", "warn.loss", "no.loss"),
+           row.names, col.names, as.is = !stringsAsFactors,
+           na.strings = "NA", colClasses = NA, nrows = -1,
+           skip = 0, check.names = TRUE, fill = !blank.lines.skip,
+           strip.white = FALSE, blank.lines.skip = TRUE,
+           comment.char = "#",
+           allowEscapes = FALSE, flush = FALSE,
+           stringsAsFactors = default.stringsAsFactors(),
+           fileEncoding = "", encoding = "unknown", text, skipNul = FALSE)
+```
+
+**Desde excel**
+
+Dentro del paquete `readxl` se encuentra la funcion `read_excel` que es muy util
+en este caso.
+
+```
+misdatos <- read_excel("C:/misdatos.xlsx", sheet = 1, col_names = TRUE, 
+col_types = NULL, na = "", skip = 0)
+```
+
+**Desde spss**
+
+SPSS guarda los datos bastante bien: si uno les pone etiquetas entonces tiene
+el valor y las etiquetas para factores, etc. Este tipo de cosas, si ya fueron
+realizados por alguien mas, es una pena perderlos al convertirlo en un csv o 
+un excel.
+
+El paquete `foreign` permite leer archivos desde spss. (extension .sav)
+
+```
+misdatos <- read.spss("C:/misdatos.sav", use.value.labels = TRUE, 
+          max.value.labels = Inf, trim.factor.names = FALSE,
+          trim_values = TRUE, reencode = NA)
+```
+
+**Desde stata**
+
+No desperdiciar esos *do files*.
+
+```
+misdatos <- read.dta("C:/misdatos.dta", convert.dates = TRUE, convert.factors = TRUE,
+         missing.type = FALSE,
+         convert.underscore = FALSE, warn.missing.labels = TRUE)
+```
+
 
 ## Escritura
 
+El mas comun es `write.table`
 
-# Do's y don'ts de R
+```
+write.table(misdatos, file = "C:/misdatos", append = FALSE, 
+            quote = TRUE, sep = " ",
+            eol = "\n", na = "NA", dec = ".", row.names = TRUE,
+            col.names = TRUE, qmethod = c("escape", "double"),
+            fileEncoding = "")
+write.csv(misdatos, file = "C:/misdatos.csv")
+```
 
-## Vectoriza y pre-asigna estructuras de datos
+Tambien pueden guardar objetos especificos del ambiente dentro de un formato 
+especial con extension `rdata` o `RData`. Esto es muy util cuando no han acabado
+o quieren seguir trabajando con algo.
 
+```
+save(..., list = character(),
+     file = stop("'file' must be specified"),
+     ascii = FALSE, version = NULL, envir = parent.frame(),
+     compress = isTRUE(!ascii), compression_level,
+     eval.promises = TRUE, precheck = TRUE)
+```
 
-# Arreglar 
+O pueden guardar un solo dataframe dentro de un archivo comprimido que R lee
+facilmente y mantiene toda la limpieza que han realizado sobre un dataframe
 
-## tidyr
+```
+saveRDS(misdatos, file = "C:/misdatos.rds", ascii = FALSE, version = NULL,
+        compress = TRUE, refhook = NULL)
+```
+
+Para leerlos
+
+```
+misdatos <- readRDS("C:/misdatos.rds")
+```
 
 # Transformación
 
@@ -69,18 +161,207 @@ Todos estos verbos funcionan de la misma manera (tienen la misma estructura):
 - Los argumentos subsecuentes indican qué es lo que se debe hacer a ese *data.frame*
 - Siempre regresa un *data.frame*
 
+Para ejemplicar el uso de cada uno de los verbos, utilizaremos los siguientes
+conjuntos de datos de muestra.
+
+```{r, echo=F, warning=F, message=F, error=F}
+library(dplyr)
+library(readr)
+```
+
+Nota como utilizamos la funcion del paquete `readr` `read_csv`. Esta es una 
+nueva implementacion de `read.csv` pero mucho mas rapida.
+
 ```{r}
-data("crimtab")
+flights <- read_csv("data/flights.csv")
+flights
+
+# weather <- read_csv("data/weather.csv")
+# weather
+
+planes <- read_csv("data/planes.csv")
+planes
+
+airports <- read_csv("data/airports.csv")
+airports
+```
+
+### filter
+
+Ya habiamos visto muchas maneras de extraer datos especificos de una base de 
+datos de acuerdo a condiciones logicas impuestas en los valores de las filas
+de columnas especificas. `filter` nos permite poner tantas condiciones como 
+queramos de manera muy facil y entendible por cualquiera que lea nuestro codigo.
+
+Ejemplos
+
+Busquemos todos los vuelos hacia SFO o OAK
+
+```{r}
+filter(flights, dest == "SFO" | dest == "OAK")
+```
+
+Los vuelos con retraso mayor a 5 horas
+
+```{r}
+filter(flights, arr_delay > 5)
+```
+
+Podemos juntar las preguntas: vuelos con retraso mayor a 5 horas con destino a 
+SFO o OAK
+
+```{r}
+filter(flights, dest == "SFO" | dest == "OAK", arr_delay > 5)
+```
+
+### select
+
+Podemos ahora, mas facilmente, quedarnos con unicamente ciertas variables. 
+`select` esta implementado de tal manera que funciona *nombrando* las variables
+que se quieren utilizar.
+
+```{r}
+select(flights, flight, dest)
+```
+
+Tambien podemos especificar que queremos todas las variables *menos* algunas.
+
+```{r}
+select(flights, -date, -hour, -minute, -dep, -arr, -carrier, -flight)
+```
+
+Podemos pedir las variables que empiezan con algun caracter.
+
+```{r}
+select(flights, starts_with("d"))
+```
+
+O las que contienen algun patron
+
+```{r}
+select(flights, contains("dep"))
+```
+
+## arrange
+
+`order` habiamos visto que es la implementacion del base para ordenar vectores o
+en su defecto, dataframes de acuerdo a valores de vectores en esta. Sin embargo,
+es engorrosa la manera de llamarlo.
+
+Podemos arreglar los valores de las tablas, facilmente con `arrange`. Por ejemplo,
+podemos ver los 5 vuelos con mayor retraso de llegada.
+
+```{r}
+head(arrange(flights, desc(arr_delay)), n=5)
+```
+
+O los 5 con menor atraso de llegada
+
+```{r}
+head(arrange(flights, arr_delay), n=5)
+```
+
+Podemos arreglar primero por destino y luego por retraso de llegada.
+
+```{r}
+arrange(flights, dest, arr_delay)
+```
+
+## mutate
+
+Muchas veces lo que se desea es generar nuevas variables utilizando funciones sobre
+las variables de la tabla.
+
+Por ejemplo, queremos saber cual fue el vuelo mas rapido. Para esto queremos
+calcular la velocidad promedio del vuelo.
+
+```{r}
+select(arrange(mutate(flights, velocidad = dist/time), desc(velocidad)),
+       flight, dest, velocidad)
+```
+
+Esta manera de transformar a los datos (utilizando varios de los verbos) es 
+confusa y dificil de leer. Es mas sencillo uilizar el operador pipe de R implementado
+en el paquete `magrittr`, es decir, `%>%`.
+
+```{r}
+flights2 <- mutate(flights, velocidad = dist/time) %>%
+              arrange(., desc(velocidad)) %>%
+              select(., flight, dest, velocidad)
+flights2
+```
+
+La lectura es mucho mas sencilla de esta forma. Recuerden, muchas veces los
+lectores de su codigo seran ustedes en el futuro.
+
+## summarise 
+
+Ahora, si queremos saber el promedio de velocidad de los vuelos por destino,
+podemos calcularlo facilmente con `group_by` y `summarise`.
+
+```{r}
+flights2 %>% group_by(dest) %>%
+  summarise(vel_prom = mean(velocidad, na.rm = T))
 ```
 
 
 
-### select
+# Joins
 
-### join
+Muchas veces la informacion se tiene repartida entre diferentes tablas pero es
+necesario juntar las variables de las diferentes observaciones en una sola
+tabla para modelarlas o describirlas. Es muy estandar, en el lenguaje SQL, el
+tipo de joins que se pueden utilizar. La figura \ref{fig:joins} muestra un 
+resumen del tipo de joins que pueden realizarse.
 
-### do
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{../img/02_joins.PNG}
+    \caption{Joins en el lenguaje SQL}.
+    \label{fig:joins}
+\end{figure}
 
-La manipulación de datos es parte del ciclo de análisis de datos. 
+El paquete `dplyr` implementa estos joins de manera natural, utlizando la 
+logica de SQL.
 
+- `inner_join`: regresa todas las filas de x en donde hay valores correspondientes para y, junto con todas las columnas.
+- `left_join`: regresa todas las filas de x, rellenando con NA para valores que no encontro en y.
+- `right_join`: regresa todas las filas de y, rellenando con NA para valores que no encontro en y.
+- `full_join`: regresa todas las filas y todas las columnas para x y y. Donde no hay valores en alguno de los dos, rellena con NA.
+- `semi_join`: regresa todas las filas de x para las que hay valores en y regresando unicamente las columnas de x.
+- `anti_join`: regresa todas las filas de x donde no hay valores en y, manteniendo solo las columnas de x.
+
+Ahora, supongamos que quermos saber la velocidad promedio de los aviones que
+tenemos en nuestros datos para todos sus vuelos.
+
+```{r}
+# base de aviones con velocidad
+
+vel_aviones <- flights %>% group_by(plane) %>%
+  summarise(vel_prom = mean(dist/time, na.rm = T))
+  
+inner_join(
+  planes,
+  vel_aviones
+)  %>%
+  select(plane, year, vel_prom) %>%
+  arrange(desc(vel_prom))
+```
+
+Ahora, queremos saber los destinos con mayores retrasos.
+
+```{r}
+destinos <- flights %>% group_by(dest) %>%
+  summarise(retraso = mean(arr_delay, na.rm = T))
+
+inner_join(
+  airports, 
+  destinos,
+  by = c("iata" = "dest")
+) %>%
+  arrange(desc(retraso))
+```
+
+Cuales son los aeropuertos que SI estan en la base de destinos?
+Cuales son los aeropuertos que NO estan en la base de destinos?
 
