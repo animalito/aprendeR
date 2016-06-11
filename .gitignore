@@ -27,6 +27,7 @@ vignettes/*.pdf
 **/*.log
 **/*.out
 **/*.xml
+**/*.tex
 
 # Emacs
 **/*.*~

@@ -55,7 +55,7 @@ sentido).
 34 <= 34
 234 < 345
 "hola" == "hola"
-
+"buu" != "yay"
 # modulo
 10 %% 4 
 ```
@@ -510,6 +510,7 @@ simplemente "agregarle" una dimensión a un vector para construir una matriz.
 
 ```{r}
 m <- 1:10
+m
 dim(m) <- c(2, 5)
 m
 ```
@@ -675,6 +676,7 @@ utliizan necesitan una estructura de datos tabular.
 Los dataframes tienen atributos adicionales a los que tienen los vectores:
 
 - `rownames()` 
+- `colnames()`
 - `names()`
 - `head()` te enseña las primeras 6 lineas.
 - `tail()` te enseña las últimas 6 líneas.
