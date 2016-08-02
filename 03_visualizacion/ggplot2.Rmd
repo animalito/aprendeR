@@ -1,0 +1,284 @@
+---
+title: "Visualización en ggplot2"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T, warning = F, error = F, message = F)
+library(ggplot2)
+```
+
+# La gramática de las gráficas
+
+Es una herramienta que nos permite:
+
+- Describir los componentes de una gráfica en forma concisa
+- Ir más allá de los nombres de la gráfica (e.g. scatterplot, boxplot, etc.)
+- Entender la estructura detrás de los gráficos estadísticos
+   
+Héroes de trabajos en la gramática de las gráficas:
+
+- [Wickham, 2010. A layered grammar of graphics.](http://vita.had.co.nz/papers/layered-grammar.pdf)
+- [Wilkinson, 2005. The grammar of graphics](https://www.cs.uic.edu/~wilkinson/TheGrammarOfGraphics/GOG.html)
+- Bertin, 1983. Semiology of Graphics. [Update a] 2010!(https://www.amazon.es/Semiology-Graphics-Diagrams-Networks-Maps/dp/1589482611)
+    
+## ¿Qué es?
+
+Es una abstracción que nos permite describir cómo crear gráficos ricos e informativos.
+Una gramática permite que pensemos que dos gráficos distintos comparten una 
+estructura común. Además, tenerlo en un paquete permite que los usuarios no se
+limiten únicamente a los gráficos específicos que se implementan paquete a paquete.
+
+## Características importantes
+
+Los componentes de una gráfica son ortogonales:
+
+    - Cambiar uno no debe romper los otros
+    - Una configuración distinta de componentes es válida
+    - Puedes construir mayor complejidad agregando capas
+
+# ggplot
+
+**Aquí empieza el pocheo necesario. Es más fácil si saben cómo se llama en inglés**.
+
+Los componentes de la gramática de gráficas específica para ggplot son:
+
+1. Una o más capas:
+    a. Datos y *aesthetic mappings*
+    b. UNa transformación estadística
+    c. Un objeto geométrico
+    d. Ajustes en las posiciones de los objetos
+2. Una escala para cada estética
+3. Un sistema de coordenadas
+4. Una especificación de facetas
+
+## Base plotting
+
+```{r}
+str(diamonds)
+
+plot(diamonds$carat, diamonds$price)
+```
+
+Buen primer intento pero... algo feo... y limitado.
+
+## Primer ejemplo en ggplot
+
+```{r, echo = T}
+ggplot() +
+  layer(
+    data = diamonds,
+    mapping = aes(x = carat, y = price),
+    geom = "point",
+    stat = "identity",
+    position = "identity") +
+  scale_y_continuous() + 
+  scale_x_continuous() +
+  coord_cartesian()
+```
+
+Si conoces los `defaults` del paquete, puedes escribir las cosas de manera aun 
+mas simple...
+
+```{r}
+ggplot(diamonds, aes(carat, price)) + geom_point()
+```
+
+o aun mas abreviado... con el magnifico `qplot`
+
+```{r}
+qplot(data = diamonds, x = carat, y = price, geom = "point")
+```
+
+# Las capas
+
+`ggplot` produce un objeto que se puede convertir en una gráfica. Es decir, `R` 
+sabe cómo convertirlo en una gráfica.
+
+Este objeto está formado por capas, mismas que tienen sus entradas (*inputs*) particulares
+y que comparten argumentos del gráfico `base` generado por `ggplot()`. Con el operador
+`+` se van agregando las distintas capas al mismo objeto.
+
+Así como en otros casos, el objeto en `R` puede ser guardado en una variable, se
+le puede imprimir, se le puede guardar como imagen de diferentes formatos, o se
+puede guardar en una lista o en un `Rdata`.
+
+## Componentes de una capa
+
+### Datos y mapa estético
+
+Permite mapear las columnas del `data.frame` de entrada a los aspectos de la grafica.
+
+Es decir,
+
+- las coordenadas x, y
+- el tamaño
+- el color
+- el relleno 
+- las agrupaciones
+
+```{r}
+mix2norm <- data.frame(x  = c(rnorm(1000), rnorm(1000, 3)), 
+                       grp = as.factor(rep(c(1,2),each=1000)))
+
+ggplot(mix2norm, aes(x=x, color = grp)) + geom_density(adjust = 1/2)
+```
+
+### Transformaciones estadísticas
+
+Ésta puede ser, por ejemplo, un resumen del input recibido; se especifica 
+vía el comando `stat`. Ejemplos:
+
+- binning
+- smoothing
+- boxplot
+- identity
+
+```{r}
+ggplot(mix2norm, aes(x=x, color = grp, fill= grp)) + 
+  geom_density(alpha = .4, size = 2, stat = "bin") +
+  scale_color_manual(values = c("1" = "magenta", "2" = "blue"))
+```
+
+Horrible pero... ¡ilustra el control que te da!
+
+### El objeto geométrico
+
+Esto permite especificar el tipo de gráfico a crear. Se especifica a partir vía la
+`geom`. Se define de acuerdo a su dimensión, es decir,
+
+- `0-dim`: puntos, texto
+- `1-dim`: líneas
+- `2-dim`: polígonos, intervalos
+
+Otras geometrías incluyen:
+
+- `geom_hist`
+- `geom_bar`
+- `geom_contour`
+- `geom_line`
+- `geom_density`
+
+`geom_density` por ejemplo utiliza `ribbon` o una cosa que a veces encontrarán en
+español como violín (no pun intended).
+
+```{r}
+ggplot(diamonds, aes(x = price)) +
+  stat_density(aes(ymax = ..density..,  ymin = -..density..),
+    fill = "grey50", colour = "grey50",
+    geom = "ribbon", position = "identity") +
+  facet_grid(. ~ cut) +
+  coord_flip()
+```
+
+Además, se puede cambiar la transformación estadística manteniendo la geometría
+fijada.
+
+```{r}
+ggplot(mix2norm, aes(x = x, color = grp)) + geom_density(adjust = 1/2)
+```
+
+Viceversa, puede cambiarse la geometría pero mantener la transformación estadística.
+
+```{r}
+ggplot(mix2norm, aes(x = x, color = grp)) + stat_density(adjust = 1/2)
+```
+
+Revisa el comando `position` y `geometry`.
+
+Revisa sus defaults y juega con los ejemplos!
+
+### Posición
+
+Es posible especificar la posición de cada una de las capas en relación a otras. 
+Ejemplos:
+
+- `dodge`
+- `identity`
+- `jitter`
+
+
+```{r}
+ggplot(mix2norm, aes(x=x, color = grp)) + 
+  stat_density(adjust=1/2, size=2, position ="identity",geom ="line")
+```
+
+### Escalas
+
+Determina cuál valor de entrada mapea a qué estética específica. Se escribe 
+usando `scale`. Hay de todo:
+
+- `continous`
+- `logarithmic`
+- `values to shapes`
+- `what limits`
+- `what labels`
+- `what marks`
+
+
+```{r}
+ggplot(mix2norm, aes(x=x, color = grp)) + 
+  stat_density(adjust=1/2, size=2, position ="identity", geom ="line") +
+  scale_y_log10(limits = c(1e-5,1))
+```
+
+### Coordenadas
+
+Te permite especificar las posiciones de las cosas y cómo mapean a las posiciones 
+en la pantalla. Antes todo era entorno a cómo le dices las cosas a R pero 
+también importa cómo las ves. Coordenadas distintas pueden afectar a los objetos
+geométricos. Ejemplos:
+
+- `cartesian`
+- `polar`
+- `map-projection`
+
+```{r}
+ggplot(mix2norm, aes(x=x, color = grp)) + 
+  stat_density(adjust=1/2, size=2, position ="identity",geom ="line") +
+  coord_polar()
+```
+
+### Facetas
+
+Permite arreglar diferentes gráficas en un grid o panel.
+
+```{r}
+ggplot(mix2norm, aes(x=x, color = grp)) + 
+  stat_density(adjust = 1/2, size = 2, position = "identity", geom = "line") +
+  facet_grid(grp~.)
+```
+
+Ve el help de `facet_wrap`
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
