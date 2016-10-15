@@ -280,5 +280,7 @@ Ve el help de `facet_wrap`
 ```
 
 ```{r}
-
+#http://www.stat.purdue.edu/~varao/STAT598Z/lect7.pdf
+#http://docs.ggplot2.org/0.9.3.1/stat_density.html
+#http://vita.had.co.nz/papers/layered-grammar.pdf
 ```
