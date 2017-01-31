@@ -9,6 +9,12 @@ output:
       in_header: mypackages.sty
 ---
 
+# Manipulación de datos
+
+```{r setup, include=F}
+knitr::opts_chunk$set(echo = T, error = F, message = F, warning = F)
+```
+
 Un proyecto de datos tiene una gran cantidad de componentes. Sin embargo, en 
 básicamente todos se necesita iterar sobre el ciclo que se muestra en la figura \ref{fig:ciclo}.
 
@@ -44,7 +50,7 @@ pregunta planteada.
 Por último, necesitamos **comunicar** los resultados. 
 
 
-# Datos limpios
+## Datos limpios
 
 Mucho del esfuerzo en analítica lidia con la limpieza de datos. Tomar datos de 
 diferentes fuentes y poderlas poner en la forma en la que uno los necesita para
@@ -57,7 +63,7 @@ modelarlos y visualizarlos. Además, tienen una estructura específica: cada var
 columna, cada observación una fila y cada tipo de unidad observacional es una
 tabla.
 
-## Preparación de datos
+### Preparación de datos
 
 Esta actividad incluye una gran cantidad de elementos: desde revisar los outliers, 
 hasta extraer variables de cadenas en datos no estrucutrados, imputación de 
@@ -76,12 +82,12 @@ Básicamente, están creados para lidear con conjuntos de datos que se encuentra
 en el mundo real. Los criterios de datos limpios proporcionan un marco mental a través
 del cual la intuición es explícita. 
 
-## Definición de datos limpios
+### Definición de datos limpios
 
 Los datos limpios proporcionan una manera estándar de ligar la estructura de un
 dataset (es decir su layout físico) con su semántica (su significado).
 
-### Estructura de datos
+#### Estructura de datos
 
 La mayoría de los datos estadísticos están conformados por tablas rectangulares 
 compuestas por filas y columnas. Las columnas casi siempre están etiquetadas 
@@ -111,7 +117,7 @@ de los valores que se muestran en una tabla.
     \label{fig:estructurat}
 \end{figure}
 
-## Semántica
+### Semántica
 
 Un conjunto de datos es una colección de **valores** (normalmente cuantitativos/números o cualitativos/caracteres).
 
@@ -158,7 +164,7 @@ En general, es más fácil describir las relaciones funcionales entre las variab
 más fácil hacer comparaciones entre grupos que entre columnas (la suma, el
 promedio, la varianza, la moda).
 
-## Datos limpios
+### Datos limpios
 
 Éstos mapean de forma estándar el significado y la estructura de los datos.
 Un conjunto de datos se considera sucio o limpio dependendiendo en cómo las
@@ -213,7 +219,7 @@ Por convención, las variables se acomodan de una forma particular. Las variable
 posteriormente las variables *medidas*. Ordenamos éstas de forma que las que 
 están relacionadas sean contiguas. 
 
-# De sucio a limpio
+## De sucio a limpio
 
 Los conjuntos de datos normalmente **no cumplen** con estos criterios. Es raro obtener un
 conjunto de datos con el cuál podemos trabajar de manera inmediata. 
@@ -229,7 +235,7 @@ Los 5 problemas más comunes para llevar datos sucios a limpios son
 Estos problemas pueden ser resueltos con 3 herramientas: *melting*, separación de 
 cadenas y *casting*. 
 
-## Los nombres de las columnas son valores, no nombres de variables
+### Los nombres de las columnas son valores, no nombres de variables
 
 ```{r, echo=F, warning=F, error=F, message=F, results='hide'}
 source("pew.R")
@@ -321,7 +327,7 @@ print(xtable(sample_n(opcion2, size = 10), label = "tab:sujetostidy",
       )
 ```
 
-## Múltiples variables se encuentran en la misma columna
+### Múltiples variables se encuentran en la misma columna
 
 Otra forma de datos sucios es cuando una columna con nombres de 
 variables tiene realmente varias variables dentro del nombre (como en el ejemplo
@@ -354,7 +360,7 @@ La \href{https://cran.r-project.org/web/packages/stringr/stringr.pdf}{documentac
 detalla todas sus funciones.
 \end{nota}
 
-## Las variables están guardadas tanto en filas como en columnas
+### Las variables están guardadas tanto en filas como en columnas
 
 El problema más difícil es cuando las variables están tanto en filas como en columnas. 
 Para ejemplificar este problema, se muestran los datos de temperatura máxima
@@ -404,7 +410,7 @@ print(
   xtable(clean1, caption = "Paso 2. Enviar a columnas las mediciones de temperaturas.", label = "tab:clima1"), comment = F, include.rownames=F, table.placement="ht")
 ```
 
-## Muchos tipos de unidad observacional se encuentran en la misma tabla
+### Muchos tipos de unidad observacional se encuentran en la misma tabla
 
 En ocasiones las bases de datos involucran diferentes tipos de unidad observacional. 
 Para tener datos limpios, cada unidad observacional debe estar almacenada en su propia tabla.
@@ -445,7 +451,7 @@ rango <- billboard_tidy %>%
 rango
 ```
 
-## Una sola unidad observarcional se guardó en varias tablas
+### Una sola unidad observarcional se guardó en varias tablas
 
 Este ejemplo y datos se toman de \url{https://dl.dropboxusercontent.com/u/1351973/tutoriales/intro_r_2.html}.
 

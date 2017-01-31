@@ -9,6 +9,10 @@ output:
       in_header: mypackages.sty
 ---
 
+```{r setup, include=F}
+knitr::opts_chunk$set(echo = T, error = F, message = F, warning = F)
+```
+
 # El espacio de trabajo (Workspace)
 
 ## Directorio de trabajo

@@ -9,6 +9,12 @@ output:
       in_header: mypackages.sty
 ---
 
+# Importación de datos
+
+```{r setup, include=F}
+knitr::opts_chunk$set(echo = T, error = F, message = F, warning = F)
+```
+
 Para aplicar las herramientas de R a nuestro trabajo, es necesario poder importar
 nuestros datos a R. R tiene conectores ya implementados para casi cualquier 
 tipo y formato de datos. Entre los más comunes están\footnote{Los materiales para readr, httr, haven y readxl están basados en el capítulo de importación de datos de \textcite{grolemund2016r}.}:
@@ -17,7 +23,7 @@ tipo y formato de datos. Entre los más comunes están\footnote{Los materiales p
 - Datos desde una API con `httr`.
 - Binarios (como excel o sas) con `haven` y `readxl`.
 
-# Lectura
+## Lectura
 
 Para leer un archivo, recordemos el comando `getwd()` para encontrar la carpeta
 a la cual R esta dirigido en este momento. Una buena practica es considerar 
@@ -27,7 +33,7 @@ leer.
 R tiene conexion con basicamente todos los tipos de archivo. Veremos algunos 
 de los mas relevantes.
 
-## csv (archivo separado por comas)
+### csv (archivo separado por comas)
 
 ```
 misdatos <- read.table("c:/misdatos.csv", header=TRUE,
@@ -35,7 +41,7 @@ misdatos <- read.table("c:/misdatos.csv", header=TRUE,
 misdatos <- read.csv("c:/misdatos.csv")
 ```
 
-## Archivo de texto plano (txt, tsv, psv, etc)
+### Archivo de texto plano (txt, tsv, psv, etc)
 
 `read.table` es mucho mas amplio que `read.csv` pues nos permite especificar
 casi cualquier particularidad en un archivo de texto plano.
@@ -54,7 +60,7 @@ misdatos <-
            fileEncoding = "", encoding = "unknown", text, skipNul = FALSE)
 ```
 
-## Excel
+### Excel
 
 Dentro del paquete `readxl` se encuentra la funcion `read_excel` que es muy util
 en este caso.
@@ -64,7 +70,7 @@ misdatos <- read_excel("C:/misdatos.xlsx", sheet = 1, col_names = TRUE,
 col_types = NULL, na = "", skip = 0)
 ```
 
-## SPSS
+### SPSS
 
 SPSS guarda los datos bastante bien: si uno les pone etiquetas entonces tiene
 el valor y las etiquetas para factores, etc. Este tipo de cosas, si ya fueron
@@ -79,7 +85,7 @@ misdatos <- read.spss("C:/misdatos.sav", use.value.labels = TRUE,
           trim_values = TRUE, reencode = NA)
 ```
 
-## Stata
+### Stata
 
 No desperdiciar esos *do files*.
 
@@ -90,7 +96,7 @@ misdatos <- read.dta("C:/misdatos.dta", convert.dates = TRUE, convert.factors = 
 ```
 
 
-# Escritura 
+## Escritura 
 
 El mas comun es `write.table`
 
@@ -103,7 +109,7 @@ write.table(misdatos, file = "C:/misdatos", append = FALSE,
 write.csv(misdatos, file = "C:/misdatos.csv")
 ```
 
-## Propios de R
+### Propios de R
 
 Tambien pueden guardar objetos especificos del ambiente dentro de un formato 
 especial con extension `rdata` o `RData`. Esto es muy util cuando no han acabado

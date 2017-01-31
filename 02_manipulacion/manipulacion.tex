@@ -47,6 +47,15 @@
 \newcommand{\RegionMarkerTok}[1]{{#1}}
 \newcommand{\ErrorTok}[1]{\textbf{{#1}}}
 \newcommand{\NormalTok}[1]{{#1}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
 \ifxetex
   \usepackage[setpagesize=false, % page size defined by xetex
               unicode=false, % unicode breaks when used with xetex
@@ -102,7 +111,7 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage[spanish]{babel}
-
+\usepackage{float}
 %%%% Frames
 \ifxetex
     \makeatletter % undo the wrong changes made by mathspec
@@ -198,11 +207,12 @@
   },
 }
 
-
 \begin{document}
 
-\maketitle
 
+
+
+\section{Manipulación de datos}\label{manipulacion-de-datos}
 
 Un proyecto de datos tiene una gran cantidad de componentes. Sin
 embargo, en básicamente todos se necesita iterar sobre el ciclo que se
@@ -219,10 +229,10 @@ Primero es necesario \textbf{importar} nuestros datos a R. Los datos
 pueden estar en una gran cantidad de formatos o lugares.
 
 Después, normalmente es necesario \textbf{arreglar} nuestros datos, es
-decir, seguir criterios de datos limpios de manera que la manera en la
-que guardemos los datos equivalga a la semántica de los datos que
-tenemos. Es muy importante primero limpiar porque esto provee de
-consistencia a lo largo del análisis.
+decir, seguir criterios de datos limpios de tal forma que como guardemos
+los datos equivalga a la semántica de los datos que tenemos. Es muy
+importante primero limpiar porque esto provee de consistencia a lo largo
+del análisis.
 
 Posteriormente, en casi todo proyecto, será necesario
 \textbf{transformar} los datos. A veces esto implica enfocarse en un
@@ -239,9 +249,9 @@ no escalan de la misma manera que los modelos pues estos, una vez que
 aceptamos sus supuestos generan los resultados que esperamos o contestan
 la pregunta planteada.
 
-Por último, necestamos \textbf{comunicar} los resultados.
+Por último, necesitamos \textbf{comunicar} los resultados.
 
-\section{Datos limpios}\label{datos-limpios}
+\subsection{Datos limpios}\label{datos-limpios}
 
 Mucho del esfuerzo en analítica lidia con la limpieza de datos. Tomar
 datos de diferentes fuentes y poderlas poner en la forma en la que uno
@@ -254,12 +264,12 @@ manipularlos fácilmente, modelarlos y visualizarlos. Además, tienen una
 estructura específica: cada variable es una columna, cada observación
 una fila y cada tipo de unidad observacional es una tabla.
 
-\subsection{Preparación de datos}\label{preparacion-de-datos}
+\subsubsection{Preparación de datos}\label{preparacion-de-datos}
 
 Esta actividad incluye una gran cantidad de elementos: desde revisar los
 outliers, hasta extraer variables de cadenas en datos no estrucutrados,
 imputación de valores perdidos. Los datos limpios son tan solo un
-subconjunto de este proceso y lidian como el cómo estructurar los datos
+subconjunto de este proceso y lidian con el cómo estructurar los datos
 de manera que se facilite el análisis.
 
 El estándar de datos limpios está diseñado para facilitar la exploración
@@ -276,14 +286,14 @@ Básicamente, están creados para lidear con conjuntos de datos que se
 encuentran en el mundo real. Los criterios de datos limpios proporcionan
 un marco mental a través del cual la intuición es explícita.
 
-\subsection{Definición de datos
+\subsubsection{Definición de datos
 limpios}\label{definicion-de-datos-limpios}
 
 Los datos limpios proporcionan una manera estándar de ligar la
 estructura de un dataset (es decir su layout físico) con su semántica
 (su significado).
 
-\subsubsection{Estructura de datos}\label{estructura-de-datos}
+\paragraph{Estructura de datos}\label{estructura-de-datos}
 
 La mayoría de los datos estadísticos están conformados por tablas
 rectangulares compuestas por filas y columnas. Las columnas casi siempre
@@ -291,7 +301,7 @@ están etiquetadas \emph{colnames} y las filas a veces lo están.
 
 Tomamos el ejemplo de datos de la figura \ref{fig:estructura} en donde
 se presentan datos de un experimento. La tabla contiene dos columas y
-tres filas, ambas etiquetaadas.
+tres filas, ambas etiquetadas.
 
 \begin{figure}[h]
     \centering
@@ -300,8 +310,8 @@ tres filas, ambas etiquetaadas.
     \label{fig:estructura}
 \end{figure}
 
-Podemos estructurar los datos de diferentes manera pero la abstracción
-de filas y columnas solamnete nos permite pensar en la representación
+Podemos estructurar los datos de diferentes maneras pero la abstracción
+de filas y columnas solamente nos permite pensar en la representación
 transpuesta que se muestra en la figura \ref{fig:estructurat}. El layout
 cambia pero los datos son los mismos. Con columnas y filas, no podemos
 decir esto de manera apropiada. Además de la simple apariencia, debemos
@@ -315,7 +325,7 @@ muestran en una tabla.
     \label{fig:estructurat}
 \end{figure}
 
-\subsection{Semántica}\label{semantica}
+\subsubsection{Semántica}\label{semantica}
 
 Un conjunto de datos es una colección de \textbf{valores} (normalmente
 cuantitativos/números o cualitativos/caracteres).
@@ -375,7 +385,7 @@ variables que entre las filas (el radio, una combinación lineal).
 También es más fácil hacer comparaciones entre grupos que entre columnas
 (la suma, el promedio, la varianza, la moda).
 
-\subsection{Datos limpios}\label{datos-limpios-1}
+\subsubsection{Datos limpios}\label{datos-limpios-1}
 
 Éstos mapean de forma estándar el significado y la estructura de los
 datos. Un conjunto de datos se considera sucio o limpio dependendiendo
@@ -437,7 +447,7 @@ variables \emph{fijas}, en este ejemplo, las propias al diseño
 experimental, van primero y posteriormente las variables \emph{medidas}.
 Ordenamos éstas de forma que las que están relacionadas sean contiguas.
 
-\section{De sucio a limpio}\label{de-sucio-a-limpio}
+\subsection{De sucio a limpio}\label{de-sucio-a-limpio}
 
 Los conjuntos de datos normalmente \textbf{no cumplen} con estos
 criterios. Es raro obtener un conjunto de datos con el cuál podemos
@@ -463,7 +473,7 @@ Los 5 problemas más comunes para llevar datos sucios a limpios son
 Estos problemas pueden ser resueltos con 3 herramientas: \emph{melting},
 separación de cadenas y \emph{casting}.
 
-\subsection{Los nombres de las columnas son valores, no nombres de
+\subsubsection{Los nombres de las columnas son valores, no nombres de
 variables}\label{los-nombres-de-las-columnas-son-valores-no-nombres-de-variables}
 
 La tabla \ref{tab:varsencols} muestra datos sucios con este problema. Se
@@ -474,7 +484,7 @@ rápidamente.
 
 \begin{table}[ht]
 \centering
-{\tiny
+\begingroup\tiny
 \begin{tabular}{lrrrrrrrrrr}
   \hline
 religion & $<$\$10k & \$10-20k & \$20-30k & \$30-40k & \$40-50k & \$50-75k & \$75-100k & \$100-150k & $>$150k & Don't know/refused \\ 
@@ -499,7 +509,7 @@ Agnostic &  27 &  34 &  60 &  81 &  76 & 137 & 122 & 109 &  84 &  96 \\
   Unaffiliated & 217 & 299 & 374 & 365 & 341 & 528 & 407 & 321 & 258 & 597 \\ 
    \hline
 \end{tabular}
-}
+\endgroup
 \caption{Variable de ingreso en columnas.} 
 \label{tab:varsencols}
 \end{table}
@@ -534,16 +544,16 @@ religión).
   \hline
 Religion & Income & Freq \\ 
   \hline
-Jewish & \$30-40k & 25 \\ 
-  Mormon & \$10-20k & 40 \\ 
-  Orthodox & Don't know/refused & 73 \\ 
-  Other World Religions & \$30-40k & 4 \\ 
-  Other Christian & \$30-40k & 13 \\ 
-  Atheist & \$30-40k & 52 \\ 
+Atheist & Don't know/refused & 76 \\ 
   Mainline Prot & Don't know/refused & 1,328 \\ 
-  Hindu & \$50-75k & 34 \\ 
+  Jehovah's Witness & \$10-20k & 27 \\ 
+  Mainline Prot & \$40-50k & 651 \\ 
   Other World Religions & \$10-20k & 2 \\ 
-  Evangelical Prot & \$10-20k & 869 \\ 
+  Hindu & $<$\$10k & 1 \\ 
+  Muslim & $<$\$10k & 6 \\ 
+  Historically Black Prot & \$30-40k & 238 \\ 
+  Orthodox & \$30-40k & 32 \\ 
+  Mainline Prot & \$100-150k & 753 \\ 
    \hline
 \end{tabular}
 \caption{Datos limpios para religión, ingreso y frecuencia.} 
@@ -551,7 +561,7 @@ Jewish & \$30-40k & 25 \\
 \end{table}
 
 \begin{nota}[Nota] 
-Esta forma es limpia pues cada columan es una variable, cada fila es una observación
+Esta forma es limpia pues cada columna es una variable, cada fila es una observación
 y no se mezclan unidades observacionales.
 \end{nota}
 
@@ -571,30 +581,30 @@ muestran en la tabla \ref{tab:sujetos}.
 
 \begin{table}[ht]
 \centering
-{\tiny
+\begingroup\tiny
 \begin{tabular}{llrrrrrrrrrrrr}
   \hline
 sujetos & grupo & mes1 & mes2 & mes3 & mes4 & mes5 & mes6 & mes7 & mes8 & mes9 & mes10 & mes11 & mes12 \\ 
   \hline
-A & control & 21.74 & 21.51 & 23.06 & 24.40 & 25.81 & 26.75 & 27.18 & 29.54 & 31.60 & 32.64 & 32.13 & 33.14 \\ 
-  B & control & 20.92 & 20.90 & 21.83 & 21.85 & 24.31 & 25.62 & 24.79 & 25.34 & 26.22 & 27.81 & 29.56 & 29.72 \\ 
-  C & control & 23.09 & 24.46 & 25.75 & 25.45 & 26.21 & 27.53 & 27.99 & 30.66 & 31.04 & 31.14 & 31.66 & 30.63 \\ 
-  D & tratamiento & 32.44 & 34.00 & 34.21 & 33.52 & 32.73 & 32.43 & 34.35 & 35.95 & 35.67 & 37.28 & 39.09 & 39.19 \\ 
-  E & tratamiento & 31.03 & 32.43 & 33.75 & 33.99 & 34.30 & 35.51 & 36.24 & 36.33 & 34.50 & 35.27 & 37.45 & 37.62 \\ 
-  F & control & 16.91 & 17.05 & 16.84 & 17.49 & 18.04 & 17.10 & 17.71 & 17.30 & 19.09 & 20.83 & 21.55 & 20.99 \\ 
-  G & control & 30.60 & 33.37 & 35.63 & 37.26 & 38.07 & 38.99 & 39.32 & 39.40 & 40.50 & 39.39 & 39.97 & 40.44 \\ 
-  H & control & 26.37 & 26.27 & 27.61 & 27.87 & 27.46 & 26.49 & 27.65 & 27.52 & 27.98 & 29.62 & 29.61 & 30.08 \\ 
-  I & tratamiento & 26.41 & 25.73 & 26.21 & 25.91 & 26.55 & 26.62 & 28.56 & 30.16 & 29.33 & 29.54 & 31.25 & 30.11 \\ 
-  J & tratamiento & 34.10 & 33.29 & 34.64 & 35.43 & 35.29 & 34.15 & 35.16 & 36.73 & 36.77 & 38.43 & 38.74 & 38.71 \\ 
-  K & control & 26.33 & 27.55 & 28.51 & 29.31 & 30.04 & 29.90 & 30.76 & 32.62 & 32.98 & 32.44 & 32.85 & 33.45 \\ 
-  L & tratamiento & 24.58 & 26.10 & 27.76 & 28.05 & 29.45 & 30.95 & 31.90 & 32.73 & 33.77 & 34.09 & 35.50 & 35.67 \\ 
-  M & tratamiento & 22.77 & 23.83 & 23.13 & 21.55 & 22.07 & 23.57 & 22.00 & 20.89 & 21.67 & 21.54 & 22.95 & 22.59 \\ 
-  N & tratamiento & 32.45 & 35.28 & 34.69 & 35.37 & 35.53 & 35.64 & 35.31 & 36.32 & 36.96 & 35.46 & 34.78 & 35.83 \\ 
-  O & control & 18.38 & 17.50 & 18.11 & 18.17 & 18.41 & 18.62 & 17.54 & 17.18 & 19.00 & 20.86 & 23.57 & 23.83 \\ 
-  P & control & 31.64 & 32.62 & 32.55 & 30.61 & 29.65 & 32.44 & 32.93 & 35.36 & 36.51 & 38.63 & 40.48 & 39.80 \\ 
+A & control & 16.93 & 18.42 & 18.86 & 18.69 & 18.72 & 19.47 & 19.61 & 21.16 & 21.13 & 22.65 & 23.79 & 23.56 \\ 
+  B & tratamiento & 33.01 & 35.07 & 35.09 & 37.97 & 38.79 & 36.95 & 38.61 & 38.29 & 38.36 & 39.33 & 38.37 & 39.48 \\ 
+  C & tratamiento & 26.14 & 26.51 & 27.09 & 27.70 & 27.95 & 27.80 & 28.85 & 27.66 & 27.23 & 29.32 & 30.43 & 32.38 \\ 
+  D & control & 23.34 & 22.61 & 22.70 & 24.24 & 25.12 & 27.28 & 26.84 & 26.97 & 28.01 & 30.42 & 31.48 & 31.36 \\ 
+  E & control & 21.46 & 23.09 & 23.55 & 23.69 & 25.93 & 26.05 & 26.93 & 27.09 & 27.72 & 29.44 & 30.13 & 32.67 \\ 
+  F & tratamiento & 17.22 & 17.61 & 17.13 & 19.15 & 20.79 & 21.81 & 22.97 & 23.42 & 25.30 & 25.23 & 24.94 & 25.71 \\ 
+  G & tratamiento & 31.67 & 31.86 & 31.22 & 31.73 & 32.44 & 32.87 & 32.50 & 33.68 & 34.18 & 33.42 & 33.31 & 34.31 \\ 
+  H & tratamiento & 28.26 & 28.54 & 31.38 & 32.22 & 32.32 & 32.63 & 33.13 & 34.67 & 35.17 & 36.71 & 38.28 & 38.78 \\ 
+  I & control & 17.02 & 18.08 & 19.12 & 20.04 & 20.01 & 19.48 & 20.16 & 22.07 & 23.77 & 24.87 & 26.70 & 26.13 \\ 
+  J & control & 27.91 & 26.31 & 28.00 & 28.47 & 30.14 & 31.72 & 30.96 & 32.08 & 32.54 & 36.22 & 37.61 & 38.34 \\ 
+  K & control & 28.25 & 25.82 & 26.64 & 28.60 & 28.27 & 28.43 & 30.77 & 29.93 & 31.13 & 30.18 & 29.32 & 29.64 \\ 
+  L & tratamiento & 32.88 & 34.32 & 36.81 & 38.79 & 40.10 & 40.85 & 41.74 & 41.56 & 42.16 & 42.73 & 43.16 & 44.99 \\ 
+  M & tratamiento & 18.14 & 19.44 & 21.51 & 20.55 & 22.66 & 23.57 & 23.76 & 24.28 & 24.79 & 24.99 & 25.92 & 25.71 \\ 
+  N & tratamiento & 19.84 & 20.46 & 21.52 & 22.49 & 22.84 & 22.56 & 23.30 & 25.97 & 26.65 & 26.07 & 25.86 & 25.73 \\ 
+  O & tratamiento & 29.15 & 30.09 & 31.97 & 30.79 & 30.45 & 30.93 & 30.20 & 31.24 & 32.12 & 29.99 & 28.61 & 30.75 \\ 
+  P & tratamiento & 34.09 & 34.56 & 36.81 & 36.37 & 37.23 & 37.54 & 38.10 & 38.29 & 39.38 & 39.66 & 40.08 & 40.40 \\ 
    \hline
 \end{tabular}
-}
+\endgroup
 \caption{Mediciones de IMC en sujetos.} 
 \label{tab:sujetos}
 \end{table}
@@ -611,23 +621,23 @@ obtener el resultado que se muestra en la tabla \ref{tab:sujetostidy}.
   \hline
 sujetos & grupo & mes & IMC \\ 
   \hline
-G & control & mes8 & 39.40 \\ 
-  B & control & mes9 & 26.22 \\ 
-  C & control & mes8 & 30.66 \\ 
-  P & control & mes1 & 31.64 \\ 
-  D & tratamiento & mes7 & 34.35 \\ 
-  K & control & mes6 & 29.90 \\ 
-  F & control & mes1 & 16.91 \\ 
-  M & tratamiento & mes6 & 23.57 \\ 
-  O & control & mes11 & 23.57 \\ 
-  G & control & mes7 & 39.32 \\ 
+I & control & mes10 & 24.87 \\ 
+  K & control & mes10 & 30.18 \\ 
+  J & control & mes1 & 27.91 \\ 
+  C & tratamiento & mes5 & 27.95 \\ 
+  C & tratamiento & mes1 & 26.14 \\ 
+  N & tratamiento & mes3 & 21.52 \\ 
+  K & control & mes12 & 29.64 \\ 
+  N & tratamiento & mes9 & 26.65 \\ 
+  P & tratamiento & mes10 & 39.66 \\ 
+  L & tratamiento & mes7 & 41.74 \\ 
    \hline
 \end{tabular}
 \caption{Muestra de datos limpios para experimentos IMC.} 
 \label{tab:sujetostidy}
 \end{table}
 
-\subsection{Múltiples variables se encuentran en la misma
+\subsubsection{Múltiples variables se encuentran en la misma
 columna}\label{multiples-variables-se-encuentran-en-la-misma-columna}
 
 Otra forma de datos sucios es cuando una columna con nombres de
@@ -721,7 +731,7 @@ La \href{https://cran.r-project.org/web/packages/stringr/stringr.pdf}{documentac
 detalla todas sus funciones.
 \end{nota}
 
-\subsection{Las variables están guardadas tanto en filas como en
+\subsubsection{Las variables están guardadas tanto en filas como en
 columnas}\label{las-variables-estan-guardadas-tanto-en-filas-como-en-columnas}
 
 El problema más difícil es cuando las variables están tanto en filas
@@ -730,7 +740,7 @@ de temperatura máxima y mínima en algunas zonas de México.
 
 \begin{table}[ht]
 \centering
-{\tiny
+\begingroup\tiny
 \begin{tabular}{lrrlrrrrrrrrrrr}
   \hline
 id & year & month & element & d1 & d2 & d3 & d4 & d5 & d6 & d7 & d8 & d9 & d10 & d11 \\ 
@@ -759,7 +769,7 @@ MX17004 & 2010 &   1 & tmax &  &  &  &  &  &  &  &  &  &  &  \\
   MX17004 & 2010 &  12 & tmin & 13.80 &  &  &  &  & 10.50 &  &  &  &  &  \\ 
    \hline
 \end{tabular}
-}
+\endgroup
 \caption{Mediciones de temperatura max y min.} 
 \label{tab:clima}
 \end{table}
@@ -780,11 +790,6 @@ nueva variable para crear la fecha. Asi, obtenemos la tabla
 \StringTok{  }\NormalTok{dplyr::}\KeywordTok{arrange}\NormalTok{(clean1, date, element) }
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-## Warning in formatC(x = structure(c(14642, 14643, 14642, 14643, 14915,
-## 14915, : class of 'x' was discarded
-\end{verbatim}
 
 \begin{table}[ht]
 \centering
@@ -816,11 +821,6 @@ en realidad, almacena dos variables: temperatura maxima y minima.
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-## Warning in formatC(x = structure(c(14642, 14643, 14642, 14643, 14915,
-## 14915, : class of 'x' was discarded
-\end{verbatim}
-
 \begin{table}[ht]
 \centering
 \begin{tabular}{lrlr}
@@ -841,7 +841,7 @@ MX17004 & 14642.00 & tmax & 27.30 \\
 \label{tab:clima1}
 \end{table}
 
-\subsection{Muchos tipos de unidad observacional se encuentran en la
+\subsubsection{Muchos tipos de unidad observacional se encuentran en la
 misma
 tabla}\label{muchos-tipos-de-unidad-observacional-se-encuentran-en-la-misma-tabla}
 
@@ -933,10 +933,9 @@ ranking de la canción en cada semana.
 \end{Shaded}
 
 \begin{verbatim}
-## Source: local data frame [5,307 x 4]
-## 
+## # A tibble: 5,307 × 4
 ##    song_id       date  week  rank
-##      (int)     (date) (dbl) (int)
+##      <int>     <date> <dbl> <int>
 ## 1        1 2000-02-26     1    87
 ## 2        1 2000-03-04     2    82
 ## 3        1 2000-03-11     3    72
@@ -947,10 +946,10 @@ ranking de la canción en cada semana.
 ## 8        2 2000-09-02     1    91
 ## 9        2 2000-09-09     2    87
 ## 10       2 2000-09-16     3    92
-## ..     ...        ...   ...   ...
+## # ... with 5,297 more rows
 \end{verbatim}
 
-\subsection{Una sola unidad observarcional se guardó en varias
+\subsubsection{Una sola unidad observarcional se guardó en varias
 tablas}\label{una-sola-unidad-observarcional-se-guardo-en-varias-tablas}
 
 Este ejemplo y datos se toman de
@@ -991,10 +990,9 @@ directoriocon extension .csv.
 \end{Shaded}
 
 \begin{verbatim}
-## Source: local data frame [772,087 x 5]
-## 
+## # A tibble: 772,087 × 5
 ##        .id       Date sulfate nitrate    ID
-##      (chr)      (chr)   (dbl)   (dbl) (int)
+##      <chr>      <chr>   <dbl>   <dbl> <int>
 ## 1  001.csv 2003-01-01      NA      NA     1
 ## 2  001.csv 2003-01-02      NA      NA     1
 ## 3  001.csv 2003-01-03      NA      NA     1
@@ -1005,7 +1003,7 @@ directoriocon extension .csv.
 ## 8  001.csv 2003-01-08      NA      NA     1
 ## 9  001.csv 2003-01-09      NA      NA     1
 ## 10 001.csv 2003-01-10      NA      NA     1
-## ..     ...        ...     ...     ...   ...
+## # ... with 772,077 more rows
 \end{verbatim}
 
 Las variables quedaron un poco sucias\ldots{} las limpiamos y
@@ -1023,10 +1021,9 @@ seleccionamos solo las de interes.
 \end{Shaded}
 
 \begin{verbatim}
-## Source: local data frame [772,087 x 5]
-## 
+## # A tibble: 772,087 × 5
 ##       id monitor       date sulfate nitrate
-##    (int)   (dbl)     (date)   (dbl)   (dbl)
+##    <int>   <dbl>     <date>   <dbl>   <dbl>
 ## 1      1       1 2003-01-01      NA      NA
 ## 2      1       1 2003-01-02      NA      NA
 ## 3      1       1 2003-01-03      NA      NA
@@ -1037,7 +1034,7 @@ seleccionamos solo las de interes.
 ## 8      1       1 2003-01-08      NA      NA
 ## 9      1       1 2003-01-09      NA      NA
 ## 10     1       1 2003-01-10      NA      NA
-## ..   ...     ...        ...     ...     ...
+## # ... with 772,077 more rows
 \end{verbatim}
 
 \end{document}

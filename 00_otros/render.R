@@ -1,0 +1,4 @@
+library(rmarkdown)
+rmarkdown::render("markdown.Rmd")
+rmarkdown::render("0_instalacion.Rmd")
+rmarkdown::render("control.Rmd")

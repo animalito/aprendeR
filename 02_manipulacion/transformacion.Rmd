@@ -9,11 +9,17 @@ output:
       in_header: mypackages.sty
 ---
 
+# Transformación de datos
+
+```{r setup, include=F}
+knitr::opts_chunk$set(echo = T, error = F, message = F, warning = F)
+```
+
 Existen muchas maneras de transformar los datos y una gran cantidad de paquetes
 que implementan distintas funciones útiles para realizar esta tarea. En particular,
 resaltamos `dplyr` y `data.table`.
 
-# dplyr
+## dplyr
 
 El material que se presenta aquí está basado en los ejemplos y código presentado
 por [Wickham en su tutorial](https://www.dropbox.com/sh/i8qnluwmuieicxc/AAAgt9tIKoIm7WZKIyK25lh6a) de **useR** en el 2014.
@@ -58,7 +64,7 @@ airports <- read_csv("data/airports.csv")
 airports
 ```
 
-## filter
+### filter
 
 Ya habiamos visto muchas maneras de extraer datos especificos de una base de 
 datos de acuerdo a condiciones logicas impuestas en los valores de las filas
@@ -86,7 +92,7 @@ SFO o OAK
 filter(flights, dest == "SFO" | dest == "OAK", arr_delay > 5)
 ```
 
-## select
+### select
 
 Podemos ahora, mas facilmente, quedarnos con unicamente ciertas variables. 
 `select` esta implementado de tal manera que funciona *nombrando* las variables
@@ -114,7 +120,7 @@ O las que contienen algun patron
 select(flights, contains("dep"))
 ```
 
-## arrange
+### arrange
 
 `order` habiamos visto que es la implementacion del base para ordenar vectores o
 en su defecto, dataframes de acuerdo a valores de vectores en esta. Sin embargo,
@@ -139,7 +145,7 @@ Podemos arreglar primero por destino y luego por retraso de llegada.
 arrange(flights, dest, arr_delay)
 ```
 
-## mutate
+### mutate
 
 Muchas veces lo que se desea es generar nuevas variables utilizando funciones sobre
 las variables de la tabla.
@@ -166,7 +172,7 @@ flights2
 La lectura es mucho mas sencilla de esta forma. Recuerden, muchas veces los
 lectores de su codigo seran ustedes en el futuro.
 
-## summarise 
+### summarise 
 
 Ahora, si queremos saber el promedio de velocidad de los vuelos por destino,
 podemos calcularlo facilmente con `group_by` y `summarise`.
@@ -178,7 +184,7 @@ flights2 %>% group_by(dest) %>%
 
 
 
-# Joins
+## Joins
 
 Muchas veces la informacion se tiene repartida entre diferentes tablas pero es
 necesario juntar las variables de las diferentes observaciones en una sola

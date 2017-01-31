@@ -9,7 +9,8 @@ output:
       in_header: mypackages.sty
 ---
 
-```{r, echo = F, warning=F, error=F, message=F}
+```{r setup, include=F}
+knitr::opts_chunk$set(echo = T, error = F, message = F, warning = F)
 library(rformat)
 library(xtable)
 ```
@@ -790,7 +791,7 @@ library(ggplot2)
 head(diamonds)
 
 res <- by(diamonds[, c("carat")], 
-          list(cut = as.factor(diamonds[, c("cut")]), color = as.factor(diamonds$color))
+          list(cut = as.factor(diamonds$cut), color = as.factor(diamonds$color))
           , mean, simplify = T)
 ```
 

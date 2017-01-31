@@ -47,6 +47,15 @@
 \newcommand{\RegionMarkerTok}[1]{{#1}}
 \newcommand{\ErrorTok}[1]{\textbf{{#1}}}
 \newcommand{\NormalTok}[1]{{#1}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
 \ifxetex
   \usepackage[setpagesize=false, % page size defined by xetex
               unicode=false, % unicode breaks when used with xetex
@@ -119,6 +128,8 @@
 
 \definecolor{bgblue}{RGB}{245,243,253}
 \definecolor{ttblue}{RGB}{91,194,224}
+\definecolor{llred}{RGB}{255,228,225}
+\definecolor{bbblack}{RGB}{0,0,0}
 
 \mdfdefinestyle{mystyle}{%
   rightline=true,
@@ -196,10 +207,9 @@
   },
 }
 
-
 \begin{document}
 
-\maketitle
+
 
 
 \section{El espacio de trabajo
@@ -222,7 +232,7 @@ Para saber en qué directorio te encuentras, se usa el comando
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "/home/animalito/study/aprendeR/lecture_01"
+## [1] "/home/animalito/study/aprendeR/01_programacion_basica"
 \end{verbatim}
 
 Para especificar el directorio de trabajo, se utiliza el comando
@@ -300,6 +310,16 @@ tiene sentido).
 \begin{Shaded}
 \begin{Highlighting}[]
 \StringTok{"hola"} \NormalTok{==}\StringTok{ "hola"}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\StringTok{"buu"} \NormalTok{!=}\StringTok{ "yay"}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1143,10 +1163,6 @@ veces no tiene sentido)
 \end{Shaded}
 
 \begin{verbatim}
-## Warning: NAs introduced by coercion
-\end{verbatim}
-
-\begin{verbatim}
 ## [1] NA NA NA
 \end{verbatim}
 
@@ -1185,6 +1201,16 @@ construir una matriz.
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{m <-}\StringTok{ }\DecValTok{1}\NormalTok{:}\DecValTok{10}
+\NormalTok{m}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1]  1  2  3  4  5  6  7  8  9 10
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
 \KeywordTok{dim}\NormalTok{(m) <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{5}\NormalTok{)}
 \NormalTok{m}
 \end{Highlighting}
@@ -1209,11 +1235,11 @@ columnas de una matriz \texttt{cbind} o como si fueran filas
 \end{Shaded}
 
 \begin{verbatim}
-##               x           y
-## [1,] 0.66987984 -0.60483592
-## [2,] 0.80821763 -0.02817149
-## [3,] 0.80911319  0.46896507
-## [4,] 0.04933215  0.10052081
+##              x           y
+## [1,] 0.5683125 -0.05011993
+## [2,] 0.8483975  1.12209519
+## [3,] 0.5256897 -0.39195735
+## [4,] 0.2581897 -0.32410376
 \end{verbatim}
 
 \begin{Shaded}
@@ -1223,9 +1249,9 @@ columnas de una matriz \texttt{cbind} o como si fueran filas
 \end{Shaded}
 
 \begin{verbatim}
-##         [,1]        [,2]      [,3]       [,4]
-## x  0.6698798  0.80821763 0.8091132 0.04933215
-## y -0.6048359 -0.02817149 0.4689651 0.10052081
+##          [,1]      [,2]       [,3]       [,4]
+## x  0.56831254 0.8483975  0.5256897  0.2581897
+## y -0.05011993 1.1220952 -0.3919573 -0.3241038
 \end{verbatim}
 
 Le agregamos atributos para accesar más fácilmente a los objetos.
@@ -1240,11 +1266,11 @@ Le agregamos atributos para accesar más fácilmente a los objetos.
 \end{Shaded}
 
 \begin{verbatim}
-##            col1        col2
-## row1  0.6698798  0.80821763
-## row2  0.8091132  0.04933215
-## row3 -0.6048359 -0.02817149
-## row4  0.4689651  0.10052081
+##             col1       col2
+## row1  0.56831254  0.8483975
+## row2  0.52568970  0.2581897
+## row3 -0.05011993  1.1220952
+## row4 -0.39195735 -0.3241038
 \end{verbatim}
 
 \begin{Shaded}
@@ -1578,6 +1604,8 @@ vectores:
 \itemsep1pt\parskip0pt\parsep0pt
 \item
   \texttt{rownames()}
+\item
+  \texttt{colnames()}
 \item
   \texttt{names()}
 \item
@@ -1940,7 +1968,7 @@ impares.
 R no es muy eficiente cuando se combina con estructuras de control tipo for o 
 while. Sin embargo, estas estructuras son muy comunes y es útil conocerlas. 
 
-Normalmente, se recomienda utilizar estrucutras vectorizadas (como ifelse) pues,
+Normalmente, se recomienda utilizar estructuras vectorizadas (como ifelse) pues,
 de esta manera, R es mucho más eficiente. 
 \end{nota}
 
@@ -2228,51 +2256,13 @@ momento en el \emph{orden} en el que los llamaste.
 
 Esto es \textbf{muy} importante. Hay contribuidores de paquetes en todo
 el mundo y es muy común que utilicen el mismo nombre para
-implementaciones distintas de cosas y, por lo tanto, a veces nuestros
+implementaciones de distintas cosas y, por lo tanto, a veces nuestros
 resultados no son lo que esperábamos.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(dplyr)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## 
-## Attaching package: 'dplyr'
-## 
-## The following objects are masked from 'package:stats':
-## 
-##     filter, lag
-## 
-## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(plyr)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## -------------------------------------------------------------------------
-## You have loaded plyr after dplyr - this is likely to cause problems.
-## If you need functions from both plyr and dplyr, please load plyr first, then dplyr:
-## library(plyr); library(dplyr)
-## -------------------------------------------------------------------------
-## 
-## Attaching package: 'plyr'
-## 
-## The following objects are masked from 'package:dplyr':
-## 
-##     arrange, count, desc, failwith, id, mutate, rename, summarise,
-##     summarize
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \NormalTok{is.discrete}
 \end{Highlighting}
 \end{Shaded}
@@ -2317,7 +2307,7 @@ resultados no son lo que esperábamos.
 \end{Shaded}
 
 \begin{verbatim}
-## R version 3.2.2 (2015-08-14)
+## R version 3.3.1 (2016-06-21)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 15.04
 ## 
@@ -2333,13 +2323,13 @@ resultados no son lo que esperábamos.
 ## [1] stats     graphics  grDevices utils     datasets  base     
 ## 
 ## other attached packages:
-## [1] plyr_1.8.3      dplyr_0.4.3     rmarkdown_0.8.1
+## [1] plyr_1.8.4         dplyr_0.5.0.9000   rmarkdown_1.0.9016
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_0.12.2.2   digest_0.6.8    assertthat_0.1  R6_2.1.1       
-##  [5] DBI_0.3.1.9008  formatR_1.2.1   magrittr_1.5    evaluate_0.8   
-##  [9] stringi_1.0-1   tools_3.2.2     stringr_1.0.0   yaml_2.1.13    
-## [13] parallel_3.2.2  htmltools_0.2.6 knitr_1.11      methods_3.2.2
+##  [1] Rcpp_0.12.7     digest_0.6.10   assertthat_0.1  R6_2.1.3       
+##  [5] DBI_0.5         formatR_1.4     magrittr_1.5    evaluate_0.9   
+##  [9] stringi_1.1.1   tools_3.3.1     stringr_1.1.0   yaml_2.1.13    
+## [13] htmltools_0.3.5 knitr_1.14      methods_3.3.1   tibble_1.2
 \end{verbatim}
 
 \end{document}
