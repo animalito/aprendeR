@@ -9,12 +9,10 @@
 \else % if luatex or xelatex
   \ifxetex
     \usepackage{mathspec}
-    \usepackage{xltxtra,xunicode}
   \else
     \usepackage{fontspec}
   \fi
-  \defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
-  \newcommand{\euro}{€}
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
 \fi
 % use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -24,6 +22,12 @@
 \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
 \usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={R: lo básico},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
 \usepackage{color}
 \usepackage{fancyvrb}
 \newcommand{\VerbBar}{|}
@@ -38,16 +42,33 @@
 \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{{#1}}}
 \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{{#1}}}
 \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{{#1}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{{#1}}}
 \newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{{#1}}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{{#1}}}
 \newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{{#1}}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{{#1}}}
+\newcommand{\ImportTok}[1]{{#1}}
 \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{{#1}}}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{{#1}}}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{{#1}}}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{{#1}}}}}
 \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{{#1}}}
-\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{{#1}}}
 \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{{#1}}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{{#1}}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{{#1}}}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{{#1}}}}
+\newcommand{\BuiltInTok}[1]{{#1}}
+\newcommand{\ExtensionTok}[1]{{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{{#1}}}
 \newcommand{\RegionMarkerTok}[1]{{#1}}
-\newcommand{\ErrorTok}[1]{\textbf{{#1}}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{{#1}}}}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{{#1}}}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{{#1}}}}
 \newcommand{\NormalTok}[1]{{#1}}
-\usepackage{graphicx}
+\usepackage{graphicx,grffile}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
 \def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
@@ -56,27 +77,25 @@
 % margins by default, and it is still possible to overwrite the defaults
 % using explicit options in \includegraphics[width, height, ...]{}
 \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
-\ifxetex
-  \usepackage[setpagesize=false, % page size defined by xetex
-              unicode=false, % unicode breaks when used with xetex
-              xetex]{hyperref}
-\else
-  \usepackage[unicode=true]{hyperref}
-\fi
-\hypersetup{breaklinks=true,
-            bookmarks=true,
-            pdfauthor={},
-            pdftitle={R: lo básico},
-            colorlinks=true,
-            citecolor=blue,
-            urlcolor=blue,
-            linkcolor=magenta,
-            pdfborder={0 0 0}}
-\urlstyle{same}  % don't use monospace font for urls
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
 \setlength{\emergencystretch}{3em}  % prevent overfull lines
-\setcounter{secnumdepth}{0}
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
 
 %%% Use protect on footnotes to avoid problems with footnotes in titles
 \let\rmarkdownfootnote\footnote%
@@ -208,22 +227,34 @@
 }
 
 \begin{document}
-
-
-
+\maketitle
 
 \section{El espacio de trabajo
 (Workspace)}\label{el-espacio-de-trabajo-workspace}
 
+El \emph{espacio de trabajo} es el ambiente actual de trabajo en
+\texttt{R}. Incluye todos los objetos definidos por el usuario
+(vectores, matrices, funciones, dataframes, listas).
+
+Una sesión de R inicia cuando abres la consola. Al terminar el trabajo
+se puede guardar la imagen del espacio de trabajo tal cual está, de
+manera que sea posible continuar \emph{desde donde te quedaste}
+\parencite[][p. 11]{kabacoff2015r}.
+
 \subsection{Directorio de trabajo}\label{directorio-de-trabajo}
 
-El directorio de trabajo o \emph{working directory} es el folder en tu
-computadora en el que estás trabajando en ese momento. Cuando se le pide
-a R que abra un archivo o guarde ciertos datos, R lo hará a partir del
-directorio de trabajo que le hayas fijado.
+El directorio de trabajo (\emph{working directory}) es el directorio en
+tu computadora en el que estás trabajando en ese momento. Cuando se le
+pide a R que abra un archivo o guarde ciertos datos, R lo hará a partir
+del directorio de trabajo que le hayas fijado.
 
 Para saber en qué directorio te encuentras, se usa el comando
 \texttt{getwd()}.
+
+\begin{curiosidad} 
+Usa la mnemotécnica del inglés: \textit{get working directory} $\equiv$ \textit{getwd}. 
+Notarás como muchas funciones tienen un nombre que acorta lo que hacen.
+\end{curiosidad}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -236,7 +267,8 @@ Para saber en qué directorio te encuentras, se usa el comando
 \end{verbatim}
 
 Para especificar el directorio de trabajo, se utiliza el comando
-\texttt{setwd()} en la consola. Y volvemos a
+\texttt{setwd()} (\emph{set working directory}) en la consola. Y
+volvemos a
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -245,12 +277,35 @@ Para especificar el directorio de trabajo, se utiliza el comando
 \end{Highlighting}
 \end{Shaded}
 
+\textbf{Ejercicio}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Abre tu consola de \texttt{R} y escribe *setwd(``/*.
+\item
+  Utiliza la tecla \texttt{tab}
+  \includegraphics[scale=0.5]{../img/tab_key.jpg} para autocompletar las
+  posibles rutas desde donde quiera que estes.
+\item
+  Escoge alguna (nuevamente usando la tecla tab para moverte entre las
+  opciones). Si esto no funciona, teclea textualmente alguna de las
+  rutas que ves.
+\item
+  Cierra la doble comilla y el paréntesis.
+\item
+  Teclea enter.
+\item
+  Debes encontrarte en la ruta elegida cuando tecleas \texttt{getwd()}.
+\end{enumerate}
+
 Con lo que acabamos de hacer, R buscará archivos o guardará archivos en
 el folder \texttt{/home/animalito/study/}. En R también es posible
 navegar a partir de el directorio de trabajo. Como siempre,
 
 \begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
+\tightlist
 \item
   ``../un\_archivo.R'' le indica a R que busque un folder arriba del
   actual directorio de trabajo por el archivo \emph{un\_archivo.R}.
@@ -259,6 +314,29 @@ navegar a partir de el directorio de trabajo. Como siempre,
   trabajo, dentro del folder \emph{datos} por el archivo
   \emph{otro\_archivo.R}
 \end{itemize}
+
+\begin{nota}
+\textbf{Rutas relativas vs. Rutas absolutas\\}
+
+El resultado que se muestra aquí al usar el comando \texttt{getwd()} depende de la computadora en la que se esta 
+trabajando debido a que es una \textit{ruta absoluta}. Nota como es diferente la ruta 
+que obtienes al correr el comando en tu consola de \texttt{R}. Eso es porque se trata 
+de una ruta absoluta, es decir, es tal que da la ruta (\textit{path}) completo
+al directorio en cuestión. Puedes accesar todos los directorios o archivos usando su ruta absoluta.\\
+
+En investigación reproducible (\textit{reproducible research}), en investigación colaborativa o
+incluso cuando trabajas en varias computadoras es una buena idea usar rutas relativas
+en lugar de absolutas. Esto hace que el código sea menos dependiente de una estructura
+de archivos o computadora en particular \parencite[][p. 67]{gandrud2013}. \\
+
+En general, es \textit{buena práctica} configurar el código de un proyecto con rutas relativas.
+En \texttt{R} en particular, cuando guardas un \texttt{Rmarkdown} y lo corres desde la línea de
+comandos (o lo \textit{tejes} desde \texttt{RStudio}), la ruta que está fija -como si hubieras usado el comando \texttt{setwd()} es
+en donde \textit{vive} ese archivo, es decir, el directorio en donde está guardado el mismo.\\
+
+Desde cualquier \texttt{script} puedes llamar a otros usando este tipo de ruta como en 
+el ejemplo anterior.
+\end{nota}
 
 \subsection{Ejemplos básicos}\label{ejemplos-basicos}
 
@@ -329,7 +407,7 @@ tiene sentido).
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{# modulo}
+\CommentTok{# módulo}
 \DecValTok{10} \NormalTok{%%}\StringTok{ }\DecValTok{4} 
 \end{Highlighting}
 \end{Shaded}
@@ -338,11 +416,15 @@ tiene sentido).
 ## [1] 2
 \end{verbatim}
 
-Estas operaciones también pueden ser realizadas entre vectores
+Estas operaciones también pueden ser realizadas entre vectores\footnote{Revisaremos
+  más adelante con detalle la definición de vectores en la sección
+  \ref{estructuras-de-datos}.}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\CommentTok{# Creamos un vector con entradas del -1 al 12 y lo asignamos a la variable x}
 \NormalTok{x <-}\StringTok{ }\NormalTok{-}\DecValTok{1}\NormalTok{:}\DecValTok{12}
+\CommentTok{# Lo vemos}
 \NormalTok{x}
 \end{Highlighting}
 \end{Shaded}
@@ -353,6 +435,7 @@ Estas operaciones también pueden ser realizadas entre vectores
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\CommentTok{# Le sumamos 1 a todas las entradas}
 \NormalTok{x +}\StringTok{ }\DecValTok{1}
 \end{Highlighting}
 \end{Shaded}
@@ -363,6 +446,7 @@ Estas operaciones también pueden ser realizadas entre vectores
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\CommentTok{# Multiplicamos por 2 cada entrada y le sumamos 3}
 \DecValTok{2} \NormalTok{*}\StringTok{ }\NormalTok{x +}\StringTok{ }\DecValTok{3}
 \end{Highlighting}
 \end{Shaded}
@@ -373,7 +457,8 @@ Estas operaciones también pueden ser realizadas entre vectores
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{x %%}\StringTok{ }\DecValTok{5} \CommentTok{#-- is periodic}
+\CommentTok{# Sacamos el módulo de cada entrada}
+\NormalTok{x %%}\StringTok{ }\DecValTok{5} 
 \end{Highlighting}
 \end{Shaded}
 
@@ -381,19 +466,9 @@ Estas operaciones también pueden ser realizadas entre vectores
 ##  [1] 4 0 1 2 3 4 0 1 2 3 4 0 1 2
 \end{verbatim}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{x %/%}\StringTok{ }\DecValTok{5}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-##  [1] -1  0  0  0  0  0  1  1  1  1  1  2  2  2
-\end{verbatim}
-
 \subsection{Comandos útiles}\label{comandos-utiles}
 
-Para enlistar lso objetos que están en el espacio de trabajo
+Para enlistar los objetos que están en el espacio de trabajo
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -409,7 +484,7 @@ Para eliminar todos los objetos en un workspace
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{rm(list = ls(}\ErrorTok{))} \CommentTok{# se puede borrar solo uno, por ejemplo, nombrándolo}
+\KeywordTok{rm}\NormalTok{(}\DataTypeTok{list =} \KeywordTok{ls}\NormalTok{()) }\CommentTok{# se puede borrar solo uno, por ejemplo, nombrándolo}
 \KeywordTok{ls}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
@@ -430,7 +505,8 @@ También se puede utilizar/guardar la historia de comandos utilizados
 \KeywordTok{savehistory}\NormalTok{(}\DataTypeTok{file =} \StringTok{"mihistoria"}\NormalTok{) }\CommentTok{# Por default, R ya hace esto }
 \CommentTok{# en un archivo ".Rhistory"}
 
-\CommentTok{# Cargar al current workspace una historia de comandos en particular}
+\CommentTok{# Cargar al espacio de trabajo actual (current workspace) una }
+\CommentTok{# historia de comandos en particular}
 \KeywordTok{loadhistory}\NormalTok{(}\DataTypeTok{file =} \StringTok{"mihistoria"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -444,7 +520,7 @@ archivo \emph{.RData}. Por ejemplo:
 \begin{Highlighting}[]
 \NormalTok{x <-}\StringTok{ }\DecValTok{1}\NormalTok{:}\DecValTok{12}
 \NormalTok{y <-}\StringTok{ }\DecValTok{3}\NormalTok{:}\DecValTok{45}
-\NormalTok{save(x, y, file = }\StringTok{"ejemplo.RData"}\ErrorTok{)} \CommentTok{#la extensión puede ser arbitraria.}
+\KeywordTok{save}\NormalTok{(x, y, }\DataTypeTok{file =} \StringTok{"ejemplo.RData"}\NormalTok{) }\CommentTok{#la extensión puede ser arbitraria.}
 \end{Highlighting}
 \end{Shaded}
 
@@ -453,7 +529,7 @@ Después puedo cargar ese archivo. Prueba hacer:
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{rm}\NormalTok{(}\DataTypeTok{list =} \KeywordTok{ls}\NormalTok{()) }\CommentTok{# limpiamos workspace}
-\NormalTok{load(file = }\StringTok{"ejemplo.RData"}\ErrorTok{)} \CommentTok{#la extensión puede ser arbitraria.}
+\KeywordTok{load}\NormalTok{(}\DataTypeTok{file =} \StringTok{"ejemplo.RData"}\NormalTok{) }\CommentTok{#la extensión puede ser arbitraria.}
 \KeywordTok{ls}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
@@ -465,23 +541,24 @@ Nota como los objetos preservan el nombre con el que fueron guardados.
 R puede hacer muchos análisis estadísticos y de datos. Las diferentes
 capacidades están organizadas en paquetes o librerías. Con la
 \href{https://github.com/animalito/aprendeR/blob/master/lecture_01/0_instalacion.pdf}{instalación
-estándar} se instalan también las librerías más comunes. Para obtener
-una lista de todos los paquetes instalados se puede utilizar el comando
-\texttt{library()} en la consola.
+estándar} se instalan también los paquetes más comunes. Para obtener una
+lista de todos los paquetes instalados se puede utilizar el comando
+\texttt{library()} en la consola o en un script.
 
 Existen una gran cantidad de paquetes disponibles además de los
-incluidos por default.
+incluidos por omisión (\emph{default}).
 
 \subsection{CRAN}\label{cran}
 
-CRAN o \emph{Comprehensive R Archive Network} es una colección de sitios
-que contienen exactamente el mismo material, es decir, las
-distribuciones de R, las extensiones, la documentación y los binarios.
-El master de CRAN está en Wirtschaftsuniversität Wien en Austria. Éste
-se ``espeja'' (\emph{mirrors}) en forma diaria a muchos sitios alrededor
-del mundo. En la \href{https://cran.r-project.org/mirrors.html}{lista de
-espejos} se puede ver que para México están disponibles el espejo del
-ITAM, del Colegio de Postgraduados (Texcoco) y Jellyfish Foundation.
+\emph{Comprehensive R Archive Network} {[}@cran{]} es una colección de
+sitios que contienen exactamente el mismo material, es decir, son
+espejos (\emph{mirrors}) de las distribuciones de R, las extensiones, la
+documentación y los binarios. El master de CRAN está en
+Wirtschaftsuniversität Wien en Austria. Éste se ``espeja''
+(\emph{mirrors}) en forma diaria a muchos sitios alrededor del mundo. En
+la \href{https://cran.r-project.org/mirrors.html}{lista de espejos} se
+puede ver que para México están disponibles el espejo del ITAM, del
+Colegio de Postgraduados (Texcoco) y Jellyfish Foundation {[}@cran{]}.
 
 Los espejos son importantes pues, cada vez que busquen instalar
 paquetes, se les preguntará qué espejo quieren utilizar para la sesión
@@ -528,10 +605,104 @@ software para la comprensión de datos del genoma humano.
 
 Hay muchísimas librerías y lo recomendable es, dado un problema y un
 modelo para resolverlo, revisar si alguien ya implementó el método en
-algunas de las fuentes de paquetes mencionadas antes. Para una lista de
-paquetes que son de mucha utilidad ver
-\href{https://github.com/Skalas/massive-adventure-ubuntu/blob/master/Rpackages/data_manipulation.R}{estas
-recomendaciones}.
+algunas de las fuentes de paquetes mencionadas antes.
+
+Para mantener orden en los paquetes descargados puede ser útil utilizar
+el \textcite{pacman} pues provee de herramientas para instalar paquetes
+en una forma un poco más sencilla que usando la función
+\texttt{install.packages}.
+
+En particular, la función \texttt{p\_load} permite instalar, cargar y
+actualizar uno o varios paquetes.
+
+Si queremos instalar varios paquetes usando las herramientas del R
+básico (\emph{base}) {[}@rbase{]} haríamos algo como
+\parencite[ejemplo tomado de][en la viñeta de intrducción al paquete]{pacman}:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{packs <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"XML"}\NormalTok{, }\StringTok{"devtools"}\NormalTok{, }\StringTok{"RCurl"}\NormalTok{, }\StringTok{"fakePackage"}\NormalTok{, }\StringTok{"SPSSemulate"}\NormalTok{)}
+\NormalTok{success <-}\StringTok{ }\KeywordTok{suppressWarnings}\NormalTok{(}\KeywordTok{sapply}\NormalTok{(packs, require, }\DataTypeTok{character.only =} \OtherTok{TRUE}\NormalTok{))}
+\KeywordTok{install.packages}\NormalTok{(}\KeywordTok{names}\NormalTok{(success)[!success])}
+\KeywordTok{sapply}\NormalTok{(}\KeywordTok{names}\NormalTok{(success)[!success], require, }\DataTypeTok{character.only =} \OtherTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Con \texttt{pacman::p\_load} la tarea se reduce a:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pacman::}\KeywordTok{p_load}\NormalTok{(XML, devtools, RCurl, fakePackage, SPSSemulate)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{curiosidad}
+Nota como se puede llamar a una función por su nombre \texttt{p\_load} una vez que 
+ya cargamos el paquete en el cuál esa función está guardada con el comando \texttt{library(pacman)}
+o podemos llamarla directamente utilizando la convención \texttt{paquete::funcion}, en este caso,
+\texttt{pacman::p\_load}.
+\end{curiosidad}
+
+Para instalar \texttt{pacman} escribe:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{install.packages}\NormalTok{(}\StringTok{"pacman"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Algunos paquetes se encuentran en desarrollo. En particular, si se
+encuentran en \texttt{github} pueden descargarse usando la función
+\texttt{pacman::p\_install\_gh(\textquotesingle{}usuario/repositorio\textquotesingle{})}.
+
+A continuación, hay una lista de paquetes que se recomienda descargar
+para tener a la mano herramientas diversas útiles para el trabajo del
+científico de datos. La lista no es comprensiva pues hay un gran número
+de paquetes útiles.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Para cargar datos al ambiente de trabajo (data load)}
+\NormalTok{pacman::}\KeywordTok{p_load}\NormalTok{(RODBC, RMySQL, RPostgreSQL, RSQLite, foreign, Rpostgres, haven}
+               \NormalTok{, readr)}
+\NormalTok{pacman::}\KeywordTok{p_install_gh}\NormalTok{(}\StringTok{"hadley/readxl"}\NormalTok{)}
+\NormalTok{pacman::}\KeywordTok{p_install_gh}\NormalTok{(}\StringTok{"rstats-db/RPostgres"}\NormalTok{)}
+
+\CommentTok{# Para manipular datos (data manipulation)}
+\NormalTok{pacman::}\KeywordTok{p_load}\NormalTok{(plyr, dplyr, data.table, tidyr, stringr, lubridate, gsubfn)}
+
+\CommentTok{# Para visualizar datos (data visualization)}
+\NormalTok{pacman::}\KeywordTok{p_load}\NormalTok{(ggplot2, graphics, ggvis)}
+\NormalTok{pacman::}\KeywordTok{p_install_gh}\NormalTok{(}\StringTok{"RcppCore/Rcpp"}\NormalTok{)}
+\NormalTok{pacman::}\KeywordTok{p_install_gh}\NormalTok{(}\StringTok{"rstats-db/DBI"}\NormalTok{)}
+\NormalTok{pacman::}\KeywordTok{p_install_gh}\NormalTok{(}\StringTok{'ramnathv/htmlwidgets'}\NormalTok{)}
+\NormalTok{pacman::}\KeywordTok{p_install_gh}\NormalTok{(}\StringTok{'rstudio/leaflet'}\NormalTok{)}
+\NormalTok{pacman::}\KeywordTok{p_install_gh}\NormalTok{(}\StringTok{'bwlewis/rthreejs'}\NormalTok{)}
+\NormalTok{pacman::}\KeywordTok{p_install_gh}\NormalTok{(}\StringTok{'htmlwidgets/sparkline'}\NormalTok{)}
+\NormalTok{pacman::}\KeywordTok{p_load}\NormalTok{(dygraphs, DT, DiagrammeR, networkD3, googleVis)}
+
+\CommentTok{# Para modelar (data modelling)}
+\NormalTok{pacman::}\KeywordTok{p_load}\NormalTok{(car, mgcv, lme4, nlme, randomForest, multcomp, vcd, glmnet, survival, caret)}
+
+\CommentTok{# Para generar reportes (reports)}
+\NormalTok{pacman::}\KeywordTok{p_load}\NormalTok{(shiny, xtable, knitr, rmarkdown)}
+
+\CommentTok{# Para trabajar con datos espaciales (spatial data)}
+\NormalTok{pacman::}\KeywordTok{p_load}\NormalTok{(sp, maptools, maps, ggmap, rgdal)}
+
+\CommentTok{# Para trabajo con series de tiempo (time series)}
+\NormalTok{pacman::}\KeywordTok{p_load}\NormalTok{(zoo, quantmod)}
+
+\CommentTok{# Para escribir código de alto rendimiento en R (High performance R code)}
+\NormalTok{pacman::}\KeywordTok{p_load}\NormalTok{(Rcpp, parallel)}
+
+\CommentTok{# Trabajar con la web }
+\NormalTok{pacman::}\KeywordTok{p_load}\NormalTok{(XML, jsonlite, httr)}
+
+\CommentTok{# Para escribir paquetes en R}
+\NormalTok{pacman::}\KeywordTok{p_load}\NormalTok{(devtools, testthat, roxygen2)}
+\end{Highlighting}
+\end{Shaded}
 
 \section{Scripting}\label{scripting}
 
@@ -543,12 +714,12 @@ el mouse o menús.
 Aunque los comandos pueden ser ejecutados directamente en consola una
 única vez, también es posible guardarlos en archivos conocidos como
 \emph{scripts}. Típicamente, utilizamos la extensión \textbf{.R} o
-\textbf{.r}. En RStudio, \texttt{CTRL + SHIFT + N} abre inmediatamente
-un nuevo editor en el panel superior izquierdo.
+\textbf{.r}. En RStudio, \texttt{CTRL\ +\ SHIFT\ +\ N} abre
+inmediatamente un nuevo editor en el panel superior izquierdo.
 
 Se puede \emph{ir editando} el script y corriendo los comandos línea por
-línea con \texttt{CTRL + ENTER}. Esto también aplica para \emph{correr}
-una selección del texto editable.
+línea con \texttt{CTRL\ +\ ENTER}. Esto también aplica para
+\emph{correr} una selección del texto editable.
 
 Es posible también correr todo el script
 
@@ -558,14 +729,14 @@ Es posible también correr todo el script
 \end{Highlighting}
 \end{Shaded}
 
-O con el atajo \texttt{CTRL + SHIFT + S} en RStudio.
+O con el atajo \texttt{CTRL\ +\ SHIFT\ +\ S} en RStudio.
 
 Para enlistar algunos shortcuts comunes en RStudio presiona
-\texttt{ALT + SHIFT + K}. De la misma manera, si utilizas Emacs + ESS,
-existen múltiples atajos de teclado para realizar todo mucho más
+\texttt{ALT\ +\ SHIFT\ +\ K}. De la misma manera, si utilizas Emacs +
+ESS, existen múltiples atajos de teclado para realizar todo mucho más
 eficientemente. Estudiarlos no es tiempo perdido.
 
-\section{Ayuda \& documentación}\label{ayuda-documentacion}
+\section{Ayuda y documentación}\label{ayuda-y-documentacion}
 
 R tiene mucha documentación. Desde la consola se puede accesar a la
 misma.
@@ -640,7 +811,7 @@ classes)}\label{clases-atomicas-atomic-classes}
 R tiene 6 clases atómicas.
 
 \begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
+\tightlist
 \item
   character (\emph{caracter})
 \item
@@ -688,7 +859,7 @@ Algunos comandos importantes para las clases atómicas son su tipo
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{length(x}\ErrorTok{)} \CommentTok{# tamaño: cuántas cadenas son?}
+\KeywordTok{length}\NormalTok{(x) }\CommentTok{# tamaño: cuántas cadenas son?}
 \end{Highlighting}
 \end{Shaded}
 
@@ -698,7 +869,7 @@ Algunos comandos importantes para las clases atómicas son su tipo
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{nchar(x}\ErrorTok{)} \CommentTok{# Número de caracteres}
+\KeywordTok{nchar}\NormalTok{(x) }\CommentTok{# Número de caracteres}
 \end{Highlighting}
 \end{Shaded}
 
@@ -922,7 +1093,7 @@ Aritmética: por default, se realizan componente a componente.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{c <- sqrt(b}\ErrorTok{)} \CommentTok{# square root = raíz}
+\NormalTok{c <-}\StringTok{ }\KeywordTok{sqrt}\NormalTok{(b) }\CommentTok{# square root = raíz}
 \NormalTok{c}
 \end{Highlighting}
 \end{Shaded}
@@ -1055,7 +1226,7 @@ importantes atributos como los nombres
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{calificaciones <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{6}\NormalTok{, }\DecValTok{5}\NormalTok{, }\DecValTok{8}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{10}\NormalTok{)}
-\NormalTok{names(calificaciones}\ErrorTok{)} \NormalTok{<- c(}\StringTok{"Maria"}\NormalTok{, }\StringTok{"Jorge"}\NormalTok{, }\StringTok{"Miguel"}\NormalTok{, }\StringTok{"Raúl"}\NormalTok{, }\StringTok{"Carla"}\ErrorTok{)}
+\KeywordTok{names}\NormalTok{(calificaciones) <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Maria"}\NormalTok{, }\StringTok{"Jorge"}\NormalTok{, }\StringTok{"Miguel"}\NormalTok{, }\StringTok{"Raúl"}\NormalTok{, }\StringTok{"Carla"}\NormalTok{)}
 \KeywordTok{attributes}\NormalTok{(calificaciones)}
 \end{Highlighting}
 \end{Shaded}
@@ -1137,7 +1308,7 @@ no sabes cuál decisión tomará R por \emph{default}).
 ## [1] FALSE
 \end{verbatim}
 
-En este ejemplo, cuando declaramos $x$ no especificamos su clase y R
+En este ejemplo, cuando declaramos \(x\) no especificamos su clase y R
 decidió que era entero. Al coercionar al objeto para que fuese numérico,
 R no considera a los dos objetos iguales. R te protege -no te permite
 hacer o te advierte- de algunas cosas
@@ -1235,11 +1406,11 @@ columnas de una matriz \texttt{cbind} o como si fueran filas
 \end{Shaded}
 
 \begin{verbatim}
-##              x           y
-## [1,] 0.5683125 -0.05011993
-## [2,] 0.8483975  1.12209519
-## [3,] 0.5256897 -0.39195735
-## [4,] 0.2581897 -0.32410376
+##               x          y
+## [1,] 0.18681273 -1.1640959
+## [2,] 0.02267067 -2.3134259
+## [3,] 0.91348432  0.3100017
+## [4,] 0.99191958  0.2299862
 \end{verbatim}
 
 \begin{Shaded}
@@ -1249,9 +1420,9 @@ columnas de una matriz \texttt{cbind} o como si fueran filas
 \end{Shaded}
 
 \begin{verbatim}
-##          [,1]      [,2]       [,3]       [,4]
-## x  0.56831254 0.8483975  0.5256897  0.2581897
-## y -0.05011993 1.1220952 -0.3919573 -0.3241038
+##         [,1]        [,2]      [,3]      [,4]
+## x  0.1868127  0.02267067 0.9134843 0.9919196
+## y -1.1640959 -2.31342586 0.3100017 0.2299862
 \end{verbatim}
 
 Le agregamos atributos para accesar más fácilmente a los objetos.
@@ -1266,11 +1437,11 @@ Le agregamos atributos para accesar más fácilmente a los objetos.
 \end{Shaded}
 
 \begin{verbatim}
-##             col1       col2
-## row1  0.56831254  0.8483975
-## row2  0.52568970  0.2581897
-## row3 -0.05011993  1.1220952
-## row4 -0.39195735 -0.3241038
+##            col1        col2
+## row1  0.1868127  0.02267067
+## row2  0.9134843  0.99191958
+## row3 -1.1640959 -2.31342586
+## row4  0.3100017  0.22998623
 \end{verbatim}
 
 \begin{Shaded}
@@ -1601,7 +1772,7 @@ Los dataframes tienen atributos adicionales a los que tienen los
 vectores:
 
 \begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
+\tightlist
 \item
   \texttt{rownames()}
 \item
@@ -1749,7 +1920,7 @@ utilizadas en un script o dentro de funciones. Entre las más comunes se
 encuentran:
 
 \begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
+\tightlist
 \item
   if, else
 \item
@@ -1991,7 +2162,7 @@ casi siempre estas en realidad llamando a una función.
 función}\label{componentes-de-una-funcion}
 
 \begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
+\tightlist
 \item
   El \texttt{body()} o cuerpo de la función es el código dentro de la
   misma.
@@ -2239,9 +2410,9 @@ El orden en el que busca se puede encontrar utilizando el comando
 \end{Shaded}
 
 \begin{verbatim}
-## [1] ".GlobalEnv"        "package:rmarkdown" "package:stats"    
-## [4] "package:graphics"  "package:grDevices" "package:utils"    
-## [7] "package:datasets"  "Autoloads"         "package:base"
+## [1] ".GlobalEnv"        "package:stats"     "package:graphics" 
+## [4] "package:grDevices" "package:utils"     "package:datasets" 
+## [7] "package:methods"   "Autoloads"         "package:base"
 \end{verbatim}
 
 Los paquetes recien llamados acaban en la posición número 2 y todo lo
@@ -2320,16 +2491,18 @@ resultados no son lo que esperábamos.
 ## [11] LC_MEASUREMENT=es_MX.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## attached base packages:
-## [1] stats     graphics  grDevices utils     datasets  base     
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] plyr_1.8.4         dplyr_0.5.0.9000   rmarkdown_1.0.9016
+## [1] plyr_1.8.4       dplyr_0.5.0.9000
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_0.12.7     digest_0.6.10   assertthat_0.1  R6_2.1.3       
-##  [5] DBI_0.5         formatR_1.4     magrittr_1.5    evaluate_0.9   
-##  [9] stringi_1.1.1   tools_3.3.1     stringr_1.1.0   yaml_2.1.13    
-## [13] htmltools_0.3.5 knitr_1.14      methods_3.3.1   tibble_1.2
+##  [1] Rcpp_0.12.9     digest_0.6.11   rprojroot_1.2   assertthat_0.1 
+##  [5] R6_2.2.0        DBI_0.5-14      backports_1.0.5 magrittr_1.5   
+##  [9] evaluate_0.10   stringi_1.1.2   rmarkdown_1.3   tools_3.3.1    
+## [13] stringr_1.1.0   yaml_2.1.14     htmltools_0.3.5 knitr_1.15.1   
+## [17] tibble_1.2
 \end{verbatim}
+
 
 \end{document}

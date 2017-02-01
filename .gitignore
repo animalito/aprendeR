@@ -29,5 +29,14 @@ vignettes/*.pdf
 **/*.xml
 **/*.tex
 
+**/*.lof
+**/*.lot
+**/*.synctex.gz
+**/*.toc
+
 # Emacs
 **/*.*~
+
+# Intermediate files
+**/*.pdf
+**/*.html

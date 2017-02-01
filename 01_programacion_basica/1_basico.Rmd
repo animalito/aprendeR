@@ -5,6 +5,7 @@ output:
     fig_caption: yes
     latex_engine: pdflatex
     keep_tex: yes
+    number_sections: true
     includes:
       in_header: mypackages.sty
 ---
@@ -15,26 +16,50 @@ knitr::opts_chunk$set(echo = T, error = F, message = F, warning = F)
 
 # El espacio de trabajo (Workspace)
 
+El *espacio de trabajo* es el ambiente actual de trabajo en `R`. Incluye 
+todos los objetos definidos por el usuario (vectores, matrices, funciones, dataframes, listas).
+
+Una sesión de R inicia cuando abres la consola. Al terminar el trabajo se
+puede guardar la imagen del espacio de trabajo tal cual está, de manera que sea
+posible continuar *desde donde te quedaste* \parencite[][p. 11]{kabacoff2015r}.
+
 ## Directorio de trabajo
 
-El directorio de trabajo o *working directory* es el folder en tu computadora en
+El directorio de trabajo (*working directory*) es el directorio en tu computadora en
 el que estás trabajando en ese momento. Cuando se le pide a R que abra un archivo
 o guarde ciertos datos, R lo hará a partir del directorio de trabajo que le hayas
 fijado.
 
-Para saber en qué directorio te encuentras, se usa el comando `getwd()`.
+Para saber en qué directorio te encuentras, se usa el comando `getwd()`. 
+
+\begin{curiosidad} 
+Usa la mnemotécnica del inglés: \textit{get working directory} $\equiv$ \textit{getwd}. 
+Notarás como muchas funciones tienen un nombre que acorta lo que hacen.
+\end{curiosidad}
 
 ```{r}
 getwd()
 ```
 
-Para especificar el directorio de trabajo, se utiliza el comando `setwd()` en 
+Para especificar el directorio de trabajo, se utiliza el comando `setwd()` (*set working directory*) en 
 la consola. Y volvemos a 
 
 ```{r, eval=F}
 setwd("/home/animalito/study/")
 getwd()
 ```
+
+**Ejercicio** 
+
+1. Abre tu consola de `R` y escribe *setwd("/*. 
+2. Utiliza la tecla `tab` 
+\includegraphics[scale=0.5]{../img/tab_key.jpg}
+para autocompletar las posibles rutas desde donde quiera que estes.
+3. Escoge alguna (nuevamente usando la tecla tab para moverte entre las opciones). Si esto no funciona, teclea textualmente alguna de las rutas que ves.
+4. Cierra la doble comilla y el paréntesis.
+5. Teclea enter.
+6. Debes encontrarte en la ruta elegida cuando tecleas `getwd()`.
+
 
 Con lo que acabamos de hacer, R buscará archivos o guardará archivos en el 
 folder `/home/animalito/study/`. En R también es posible navegar a partir de 
@@ -44,6 +69,30 @@ el directorio de trabajo. Como siempre,
 directorio de trabajo por el archivo *un\_archivo.R*.
 - "datos/otro\_archivo.R" hace que se busque en el directorio de trabajo, dentro 
 del folder *datos* por el archivo *otro\_archivo.R*
+
+
+\begin{nota}
+\textbf{Rutas relativas vs. Rutas absolutas\\}
+
+El resultado que se muestra aquí al usar el comando \texttt{getwd()} depende de la computadora en la que se esta 
+trabajando debido a que es una \textit{ruta absoluta}. Nota como es diferente la ruta 
+que obtienes al correr el comando en tu consola de \texttt{R}. Eso es porque se trata 
+de una ruta absoluta, es decir, es tal que da la ruta (\textit{path}) completo
+al directorio en cuestión. Puedes accesar todos los directorios o archivos usando su ruta absoluta.\\
+
+En investigación reproducible (\textit{reproducible research}), en investigación colaborativa o
+incluso cuando trabajas en varias computadoras es una buena idea usar rutas relativas
+en lugar de absolutas. Esto hace que el código sea menos dependiente de una estructura
+de archivos o computadora en particular \parencite[][p. 67]{gandrud2013}. \\
+
+En general, es \textit{buena práctica} configurar el código de un proyecto con rutas relativas.
+En \texttt{R} en particular, cuando guardas un \texttt{Rmarkdown} y lo corres desde la línea de
+comandos (o lo \textit{tejes} desde \texttt{RStudio}), la ruta que está fija -como si hubieras usado el comando \texttt{setwd()} es
+en donde \textit{vive} ese archivo, es decir, el directorio en donde está guardado el mismo.\\
+
+Desde cualquier \texttt{script} puedes llamar a otros usando este tipo de ruta como en 
+el ejemplo anterior.
+\end{nota}
 
 ## Ejemplos básicos
 
@@ -60,24 +109,28 @@ sentido).
 234 < 345
 "hola" == "hola"
 "buu" != "yay"
-# modulo
+# módulo
 10 %% 4 
 ```
 
-Estas operaciones también pueden ser realizadas entre vectores
+Estas operaciones también pueden ser realizadas entre vectores^[Revisaremos más adelante con detalle la definición de vectores en la sección \ref{estructuras-de-datos}.]. 
 
 ```{r}
+# Creamos un vector con entradas del -1 al 12 y lo asignamos a la variable x
 x <- -1:12
+# Lo vemos
 x
+# Le sumamos 1 a todas las entradas
 x + 1
+# Multiplicamos por 2 cada entrada y le sumamos 3
 2 * x + 3
-x %% 5 #-- is periodic
-x %/% 5
+# Sacamos el módulo de cada entrada
+x %% 5 
 ```
 
 ## Comandos útiles
 
-Para enlistar lso objetos que están en el espacio de trabajo
+Para enlistar los objetos que están en el espacio de trabajo
 
 ```{r}
 ls()
@@ -101,7 +154,8 @@ history(max.show = Inf) # Muestra toda la historia
 savehistory(file = "mihistoria") # Por default, R ya hace esto 
 # en un archivo ".Rhistory"
 
-# Cargar al current workspace una historia de comandos en particular
+# Cargar al espacio de trabajo actual (current workspace) una 
+# historia de comandos en particular
 loadhistory(file = "mihistoria")
 ```
 
@@ -130,20 +184,20 @@ Nota como los objetos preservan el nombre con el que fueron guardados.
 R puede hacer muchos análisis estadísticos y de datos. Las diferentes capacidades
 están organizadas en paquetes o librerías. Con la 
 [instalación estándar](https://github.com/animalito/aprendeR/blob/master/lecture_01/0_instalacion.pdf)
-se instalan también las librerías más comunes. Para obtener una lista de
-todos los paquetes instalados se puede utilizar el comando `library()` en la consola.
+se instalan también los paquetes más comunes. Para obtener una lista de
+todos los paquetes instalados se puede utilizar el comando `library()` en la consola o en un script.
 
-Existen una gran cantidad de paquetes disponibles además de los incluidos por default.
+Existen una gran cantidad de paquetes disponibles además de los incluidos por omisión (*default*).
 
 ## CRAN
 
-CRAN o *Comprehensive R Archive Network* es una colección de sitios que contienen
-exactamente el mismo material, es decir, las distribuciones de R, las extensiones,
+*Comprehensive R Archive Network* [@cran] es una colección de sitios que contienen
+exactamente el mismo material, es decir, son espejos (*mirrors*) de las distribuciones de R, las extensiones,
 la documentación y los binarios. El master de CRAN está en Wirtschaftsuniversität Wien
 en Austria. Éste se "espeja" (*mirrors*) en forma diaria a muchos sitios alrededor
 del mundo. En la [lista de espejos](https://cran.r-project.org/mirrors.html) se puede
 ver que para México están disponibles el espejo del ITAM, del Colegio de Postgraduados (Texcoco) y
-Jellyfish Foundation. 
+Jellyfish Foundation [@cran]. 
 
 Los espejos son importantes pues, cada vez que busquen instalar paquetes, se les
 preguntará qué espejo quieren utilizar para la sesión en cuestión. Del espejo que 
@@ -183,8 +237,92 @@ un projecto de software para la comprensión de datos del genoma humano.
 
 Hay muchísimas librerías y lo recomendable es, dado un problema y un modelo para
 resolverlo, revisar si alguien ya implementó el método en algunas de las fuentes
-de paquetes mencionadas antes. Para una lista de paquetes que son de mucha utilidad ver
-[estas recomendaciones](https://github.com/Skalas/massive-adventure-ubuntu/blob/master/Rpackages/data_manipulation.R).
+de paquetes mencionadas antes. 
+
+Para mantener orden en los paquetes descargados puede ser útil utilizar el 
+\textcite{pacman} pues provee de herramientas para instalar paquetes en una forma
+un poco más sencilla que usando la función `install.packages`.
+
+En particular, la función `p_load` permite instalar, cargar y actualizar uno o 
+varios paquetes.
+
+Si queremos instalar varios paquetes usando las herramientas del R básico (*base*) [@rbase]
+haríamos algo como \parencite[ejemplo tomado de][en la viñeta de intrducción al paquete]{pacman}:
+
+```{r, eval = F}
+packs <- c("XML", "devtools", "RCurl", "fakePackage", "SPSSemulate")
+success <- suppressWarnings(sapply(packs, require, character.only = TRUE))
+install.packages(names(success)[!success])
+sapply(names(success)[!success], require, character.only = TRUE)
+```
+
+Con `pacman::p_load` la tarea se reduce a:
+
+```{r, eval = F}
+pacman::p_load(XML, devtools, RCurl, fakePackage, SPSSemulate)
+```
+
+\begin{curiosidad}
+Nota como se puede llamar a una función por su nombre \texttt{p\_load} una vez que 
+ya cargamos el paquete en el cuál esa función está guardada con el comando \texttt{library(pacman)}
+o podemos llamarla directamente utilizando la convención \texttt{paquete::funcion}, en este caso,
+\texttt{pacman::p\_load}.
+\end{curiosidad}
+
+Para instalar `pacman` escribe:
+
+```{r, eval = F}
+install.packages("pacman")
+```
+
+Algunos paquetes se encuentran en desarrollo. En particular, si se encuentran
+en `github` pueden descargarse usando la función `pacman::p_install_gh('usuario/repositorio')`.
+
+A continuación, hay una lista de paquetes que se recomienda descargar para
+tener a la mano herramientas diversas útiles para el trabajo del científico de 
+datos. La lista no es comprensiva pues hay un gran número de paquetes útiles.
+
+```{r, eval = F}
+# Para cargar datos al ambiente de trabajo (data load)
+pacman::p_load(RODBC, RMySQL, RPostgreSQL, RSQLite, foreign, Rpostgres, haven
+               , readr)
+pacman::p_install_gh("hadley/readxl")
+pacman::p_install_gh("rstats-db/RPostgres")
+
+# Para manipular datos (data manipulation)
+pacman::p_load(plyr, dplyr, data.table, tidyr, stringr, lubridate, gsubfn)
+
+# Para visualizar datos (data visualization)
+pacman::p_load(ggplot2, graphics, ggvis)
+pacman::p_install_gh("RcppCore/Rcpp")
+pacman::p_install_gh("rstats-db/DBI")
+pacman::p_install_gh('ramnathv/htmlwidgets')
+pacman::p_install_gh('rstudio/leaflet')
+pacman::p_install_gh('bwlewis/rthreejs')
+pacman::p_install_gh('htmlwidgets/sparkline')
+pacman::p_load(dygraphs, DT, DiagrammeR, networkD3, googleVis)
+
+# Para modelar (data modelling)
+pacman::p_load(car, mgcv, lme4, nlme, randomForest, multcomp, vcd, glmnet, survival, caret)
+
+# Para generar reportes (reports)
+pacman::p_load(shiny, xtable, knitr, rmarkdown)
+
+# Para trabajar con datos espaciales (spatial data)
+pacman::p_load(sp, maptools, maps, ggmap, rgdal)
+
+# Para trabajo con series de tiempo (time series)
+pacman::p_load(zoo, quantmod)
+
+# Para escribir código de alto rendimiento en R (High performance R code)
+pacman::p_load(Rcpp, parallel)
+
+# Trabajar con la web 
+pacman::p_load(XML, jsonlite, httr)
+
+# Para escribir paquetes en R
+pacman::p_load(devtools, testthat, roxygen2)
+```
 
 # Scripting
 
@@ -212,7 +350,7 @@ Para enlistar algunos shortcuts comunes en RStudio presiona `ALT + SHIFT + K`.
 De la misma manera, si utilizas Emacs + ESS, existen múltiples atajos de teclado
 para realizar todo mucho más eficientemente. Estudiarlos no es tiempo perdido.
 
-# Ayuda \& documentación
+# Ayuda y documentación
 
 R tiene mucha documentación. Desde la consola se puede accesar a la misma. 
 
