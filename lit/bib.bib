@@ -1,3 +1,10 @@
+@book{adler2010r,
+  title={R in a nutshell: A desktop quick reference},
+  author={Adler, Joseph},
+  year={2010},
+  publisher={" O'Reilly Media, Inc."}
+}
+
 @book{burns2011r,
   title={The R inferno},
   author={Burns, Patrick},
@@ -12,6 +19,13 @@
   address = {Vienna, Austria},
   year = {2016},
   url = {https://cran.r-project.org/},
+}
+
+@article{eddelbuettel2010,
+  title={Benchmarking single-and multi-core BLAS implementations and GPUs for use with R},
+  author={Eddelbuettel, Dirk},
+  journal={Mathematica},
+  year={2010}
 }
 
 @book{gandrud2013,
@@ -30,11 +44,29 @@
   publisher={O'Reilly Media, Incorporated}
 }
 
+@book{hunt2000,
+  title={The pragmatic programmer},
+  author={Hunt, Andrew and Thomas, David},
+  year={1999},
+  publisher={Addison Wesley}
+}
+
 @book{kabacoff2015r,
   title={R in action: data analysis and graphics with R},
   author={Kabacoff, Robert},
   year={2015},
   publisher={Manning Publications Co.}
+}
+
+@article{rossini2004ess,
+  title={Emacs speaks statistics: A multiplatform, multipackage development environment for statistical analysis},
+  author={Rossini, Anthony J and Heiberger, Richard M and Sparapani, Rodney A and Maechler, Martin and Hornik, Kurt},
+  journal={Journal of Computational and Graphical Statistics},
+  volume={13},
+  number={1},
+  pages={247--261},
+  year={2004},
+  publisher={Taylor \& Francis}
 }
 
 @book{wickham2014advanced,
@@ -59,17 +91,38 @@
   publisher={Github books, en pycon 2014} 
 }
 
-
-% paquetes
-@Manual{rbase,
-  title = {R: A Language and Environment for Statistical Computing},
-  author = {{R Core Team}},
-  organization = {R Foundation for Statistical Computing},
-  address = {Vienna, Austria},
-  year = {2016},
-  url = {https://www.R-project.org/},
+% Blogs y páginas de internet
+@misc{blasinr,
+  author = {Klamer, Brett},
+  title = {Faster BLAS in R},
+  type = {Blog},  
+  year = {2014},
+  month = {11},
+  day = {16},
+  howpublished = {\url{http://brettklamer.com/diversions/statistical/faster-blas-in-r/}
 }
 
+@misc{optimizedr,
+  author = {Nguyen, Vinh},
+  title = {Optimized R and Python: standard BLAS vs. ATLAS vs. OpenBLAS vs. MKL},
+  type = {Blog},  
+  year = {2014},
+  month = {11},
+  day = {10},
+  howpublished = {\url{http://blog.nguyenvq.com/blog/2014/11/10/optimized-r-and-python-standard-blas-vs-atlas-vs-openblas-vs-mkl/}
+}
+
+
+% paquetes
+
+@Manual{gcbd,
+  title = {gcbd: 'GPU'/CPU Benchmarking in Debian-Based Systems},
+  author = {Dirk Eddelbuettel},
+  year = {2016},
+  note = {R package version 0.2.6},
+  url = {https://CRAN.R-project.org/package=gcbd},
+}
+  
 @Manual{pacman,
   title = {{pacman}: {P}ackage Management for {R}},
   author = {Tyler W. Rinker and Dason Kurkiewicz},
@@ -79,3 +132,31 @@
   year = {2015},
   url = {http://github.com/trinker/pacman},
 }
+
+@Manual{rbase,
+  title = {R: A Language and Environment for Statistical Computing},
+  author = {{R Core Team}},
+  organization = {R Foundation for Statistical Computing},
+  address = {Vienna, Austria},
+  year = {2016},
+  url = {https://www.R-project.org/},
+}
+
+@Manual{rmanual,
+  title = {R Language Definition, manual for R version 3.3.2},
+  author = {{R Core Team}},
+  organization = {R Foundation for Statistical Computing},
+  address = {Vienna, Austria},
+  year = {2016},
+  url = {https://www.R-project.org/},
+}
+
+@Manual{rstudio,
+  title = {RStudio: Integrated Development Environment for R},
+  author = {{RStudio Team}},
+  organization = {RStudio, Inc.},
+  address = {Boston, MA},
+  year = {2016},
+  url = {http://www.rstudio.com/},
+}
+

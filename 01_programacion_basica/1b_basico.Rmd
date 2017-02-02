@@ -1,0 +1,904 @@
+---
+title: "Estructuras y funciones"
+output:
+  pdf_document:
+    fig_caption: yes
+    latex_engine: pdflatex
+    keep_tex: yes
+    number_sections: true
+    includes:
+      in_header: mypackages.sty
+---
+
+```{r setup, include=F}
+knitr::opts_chunk$set(echo = T, error = F, message = F, warning = F)
+```
+
+
+
+\renewcommand\bcStyleTitre[1]{\large\textcolor{ttblue}{#1}}
+\begin{bclogo}[
+  couleur=bgblue,
+  arrondi=0,
+  logo=\bcattention,
+  barre=none,
+  noborder=true]{En R}
+\begin{itemize}
+\item Todo lo que existe es un objeto.
+\item Todo lo que sucede es una llamada a una función.
+\end{itemize}
+\end{bclogo}
+
+
+Todo lenguaje de programación provee de una forma de accesar los datos guardados 
+en memoria. R no permite un acceso directo a la memoria de la ocmputadora pero 
+ofrece varias estructuras de datos especializadas para realizar esa tarea. A
+estas estructuras, se les da el nombre de objetos [@rmanual; ver sección 2 "objetos"]. 
+Estos objetos son referidos a través de símbolos o variables, sin embargo, los 
+símbolos son también objetos y pueden ser manipulados de la misma manera.
+
+Todos los objetos tienen un *tipo*, mismo que se le puede preguntar a los objetos
+con la función `typeof`
+
+```{r}
+typeof("hola")
+```
+
+Esta función puede reconocer muchos tipos, entre ellos algunos de los que veremos
+con mayor detalle a continuación. Comenzaremos con las funciones que, regresando
+al cuadro anterior, *todo lo que sucede es una llamada a una función*. Posteriormente,
+se revisarán las estructuras de datos más básicas en R y, por último, se
+verán estructuras de control básicas que permitirán mezclar el uso de objetos
+de manera que se operen bajo ciertas condiciones lógicas.
+
+
+# Funciones 
+
+Hay una regla de oro en programación en general: *DRY code*^[El concepto es mucho más general que esto pero lo reduciremos a una de sus capas más bajas primero para introducirlo y, segundo, porque el concepto general cobra sentido al avanzar en las tareas de programación a las que se enfrenta el usuario.] (acrónimo de 
+"Don't repeat yourself") [@hunt2000]. Básicamente esto
+se reduce a *no te repitas*. Cuando tienes las mismas líneas de código varias 
+veces (cuando estas copiando y pegando mucho) entonces lo que necesitas es escribir
+una función que realice esa tarea.
+
+En R las funciones son los *building blocks* de básicamente todo. Como todo lo 
+demás en R, las funciones son también objetos. Cuando llamas a 
+un objeto en R, casi siempre estas en realidad llamando a una función.
+
+## Componentes de una función
+
+- El `body()` o cuerpo de la función es el código dentro de la misma.
+- `formals()` o el listado de argumentos formales de la función, controla cómo se puede llamar a una función.
+- El ambiente `environment()` determina cómo son referidas las variables dentro de
+la función.
+- La lista de argumentos se obtiene con `args()`
+
+```{r}
+# Ejecuto la función
+f <- function(x) x
+# Imprimo el objeto f
+f
+# Al usar la función body, veo solo el cuerpo
+body(f)
+# Listo sus parámetros o argumentos
+formals(f)
+# Veo en qué ambiente está la función
+environment(f)
+# Elimino la función del espacio de trabajo
+rm(f)
+```
+
+Una vez definida una función, llamarla es muy sencillo: se le proporciona un 
+valor para los parámetros y nos regresa el resultado esperado. Una función puede
+regresar cualquier objeto, por ejemplo, una función o un valor. Llamamos a la
+función declarada arriba:
+
+```{r}
+f(4)
+```
+
+Por default, los argumentos de 
+una función son flojos (*lazy*), es decir, solamente son evaluados cuando se 
+utilizan (esto es importante pues si tienes un error en una función no te darás
+cuenta cuando ejecutes la misma sino cuando la mandes llamar).
+
+
+## El ambiente
+
+Las variables que se definen dentro de una función existen en un ambiente
+distinto al ambiente global de R. Si una variable **no** está definida
+dentro de la función, R busca en el nivel superior por esa variable.
+
+```{r}
+x <- 2
+g <- function() {
+    y <- 1
+    c(x, y)
+}
+g()
+rm(x, g)
+```
+
+Así como fuimos capaces de anidar ciclos for, también podemos anidar 
+funciones. Esta capacidad es muy útil pero hay que tener cuidado con los
+ambientes y la jerarquía en los mismos. 
+
+```{r}
+myfuncion <- function() {
+  print("Hola")
+}
+myfuncion()
+```
+
+Podemos generar funciones con mayor utilidad.
+
+```{r}
+suma <- function(x, y){
+  return(x + y)
+}
+vector <- c(1, 2, 3, 4)
+sapply(vector, suma, 2)
+```
+
+Toda función *regresa* un valor.
+
+```{r}
+x <- 10
+f <- function() {
+    y <- 25
+    g <- function() {
+        z <- 30
+        c(x = x, y = y, z = z)
+    }
+    g()
+}
+f()
+```
+
+```{r}
+f <- function(x) {
+  x * 2
+}
+g <- function(x) {
+  x + 2
+}
+f(g(2))
+g(f(2))
+```
+
+En este caso, utilizamos una función con parámetros que *recibe* cuando es llamada. También podemos generar funciones con valores predefinidos,
+es decir, defaults. Éstos son utilizados cuando se llama a la función 
+*a menos que* se especifique lo contrario (es decir, se *overide them*).
+
+```{r}
+f <- function(a = 2, b = 3) {
+  return(a + b)
+}
+f()
+f(4, 5)
+f(b = 4)
+```
+
+\begin{curiosidad}[Return]
+No es necesario especificar lo que regresa la función. Las funciones por
+default regresan el último elemento o valor computado.
+\end{curiosidad}
+
+## Reglas de visibilidad (scoping)
+
+Sabemos que existe la función *c* que nos permite concatenar vectores o 
+elementos a vectores. Sin embargo, es posible asignar un valor a una
+variable llamada *c* y que la función *c* siga funcionando. 
+
+```{r}
+c <- 1000
+c + 1
+x <- c(1:4)
+x
+```
+
+Esto es debido a que R tienen namespaces separados para funciones y no-funciones. Cuando R intenta concatenar los valores del 1 al 4, busca
+primero en el ambiente global y, en caso de no encontrarlo, busca en los 
+*namespaces* de cada uno de los paquetes que tiene cargados.
+
+El orden en el que busca se puede encontrar utilizando el comando `search()`.
+
+```{r}
+search()
+```
+
+Los paquetes recien llamados acaban en la posición número 2 y todo lo 
+demás se recorre en el orden de la lista. Nota como el *base* (que se
+carga por default en toda sesión) está hasta el final.
+
+`.GlobalEnv` es el workspace del que hablamos antes. Si hay un símbolo
+que corresponde a tu petición entonces tomará el valor en tu workspace para poder ejecutar tu petición. Si no encuentra nada, busca en el 
+namespace de cada uno de los paquetes que has cargado hasta el momento en
+el *orden* en el que los llamaste.
+
+Esto es **muy** importante. Hay contribuidores de paquetes en todo el
+mundo y es muy común que utilicen el mismo nombre para implementaciones
+de distintas cosas y, por lo tanto, a veces nuestros resultados no son
+lo que esperábamos.
+
+```{r}
+library(dplyr)
+library(plyr)
+is.discrete
+```
+
+```{r}
+library(plyr)
+library(dplyr)
+rename
+```
+
+```{r, eval=F, echo=F}
+library(car)
+library(Hmisc)
+data(diamonds)
+modelo <- lm(price ~ carat + x + y + z, data = diamonds)
+
+summary(modelo)
+
+car::vif(modelo)
+rms::vif(modelo)
+
+```
+
+
+
+# Estructuras de datos
+
+R tiene diferentes tipos y estructuras de datos que permiten al 
+usuario aprovechar el lenguaje. La manipulación de estos objetos es algo que se
+hace diario y entender cómo operarlos o cómo convertir de una a otra es muy útil.
+
+## Clases atómicas (atomic classes)
+
+R tiene 6 clases atómicas.
+
+- character (*caracter*)
+- numeric (números reales o decimales)
+- integer (números enteros)
+- logical (booleanos, i.e. falsos-verdaderos)
+- complex (números complejos)
+
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{p{3cm}p{5cm}}
+  \hline
+Tipo & Ejemplo \\ 
+  \hline
+Caracter & "hola", "x" \\ 
+Numérico & 67, 45.5 \\
+Integer & 2L, 67L \\
+Lógico & TRUE, FALSE, T, F \\
+Complejo & 1 + 4i\\
+   \hline
+\end{tabular}
+\caption{Clases atómicas.}
+\end{table}
+
+Algunos comandos importantes para las clases atómicas son su tipo `typeof()`, su 
+tamaño `length()` y sus atributos `attributes()`, es decir, sus metadatos.
+
+```{r}
+############ Ejemplo 1
+
+x <- "una cadena"
+typeof(x)
+length(x) # tamaño: ¿cuántas cadenas son?
+nchar(x) # Número de caracteres
+attributes(x) # Le pusimos metadatos?
+
+############ Ejemplo 2
+
+y <- 1:10
+typeof(y)
+length(y)
+attributes(y)
+
+############ Ejemplo 3
+
+z <- c(1L, 2L, 3L) # Nota como para denotar enteros debes incluir una L al final
+typeof(z)
+length(z)
+```
+
+## Vectores
+
+Los vectores son la estructura de datos más común y básica de R. Hay dos tipos 
+de vectores: vectores atómicos y listas.
+
+Típicamente -en libros, blogs, manuales, cuando se mencionan vectores se refieren
+a los atómicos y no a las listas.
+
+### Vectores atómicos
+
+Un vector es un conjunto de elementos con alguna de las clases atómicas, 
+es decir, `character`, `logical`, `integer`, `numeric`. Se puede crear un vector
+vacío con el comando `vector()` así como especificar su tamaño y su clase.
+
+```{r}
+v <- vector()
+v 
+
+## Especifico clase y longitud
+vector("character", length = 10)
+
+## Lo mismo pero usando un wrapper
+character(10)
+
+## Numerico de tamaño 5
+numeric(5)
+
+## Lógico tamaño 5
+logical(5)
+```
+
+Realiza los siguientes ejemplos en la consola de R.
+
+```{r, eval = F}
+x <- rep(1, 5)
+x
+typeof(x)
+
+xi <- c(1L, 3L, 56L, 4L)
+xi
+typeof(xi)
+
+y <- c(T, F, T, F, F, T)
+
+z <- c("a", "aba", "andrea", "b", "bueno")
+class(z)
+str(z)
+```
+
+**Operaciones con vectores**
+
+Accesar partes del vector.
+
+```{r}
+a <- c(1:5)
+a
+a[1]
+a[2]
+a[4:5]
+```
+
+Aritmética: por default, se realizan componente a componente.
+
+```{r}
+b <- a + 10
+b
+
+c <- sqrt(b) # square root = raíz
+c
+
+a + c
+10 * (a + c)
+a^2
+a * c
+```
+
+Agregar elementos aun vector ya creado
+
+```{r}
+a <- c(a, 7)
+a
+```
+
+Para construir datos rápido, podemos usar comandos como `rep`, `seq` o distintas
+distribuciones, e.g., la normal `rnorm`, uniformes `runif` o cualquiera en 
+[esta lista](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/Distributions.html).
+
+Prueba lo siguiente:
+
+```{r, eval=F}
+# Dame un vector donde el minimo sea 0, maximo 1 en intervalos de 0.25
+seq(0, 1, 0.25)
+# Vector con 10 unos
+rep(1, 10)
+# 5 realizaciones de una normal(0,1)
+rnorm(5)
+# De una normal(10, 5)
+rnorm(5, mean = 10, sd = sqrt(5))
+# De una uniforme(0,1)
+runif(5)
+# De una uniforme(5, 15)
+runif(5, min = 5, max = 15)
+```
+
+#### Otros objetos importantes 
+
+`Inf` es como R denomina al infinito. En el mundo de R se permite también positivo
+o negativo.
+
+```{r}
+1/0
+1/Inf
+```
+
+`NaN` es como R denota a algo que no es un número (literal: *not a number*). 
+
+```{r}
+0/0
+```
+
+Cada objeto tiene atributos. Hay atributos específicos para vectores que, sin
+importar su clase, tienen en común. Ya revisamos algunos: tamaño (`length`), clase
+(`class`). También son importantes atributos como los nombres
+
+```{r}
+calificaciones <- c(6, 5, 8, 9, 10)
+names(calificaciones) <- c("Maria", "Jorge", "Miguel", "Raúl", "Carla")
+attributes(calificaciones)
+# O llamamos directo a los nombres
+names(calificaciones)
+```
+
+Mezclar tipos no es una buena idea
+
+```{r}
+c(1.7, "a")
+c(TRUE, 2)
+c("a", TRUE)
+```
+
+R realiza una coerción implícita entre los objetos y "decide" cuál es la clase del vector.
+También hay coercioń explícita (*explicit coercion*) utilizando `as.<nombre_clase>`.
+
+```{r, eval = F}
+as.numeric()
+as.character()
+as.integer()
+as.logical()
+```
+
+Muchos problemas suceden cuando le permites a R decidir por ti (o cuando no sabes
+cuál decisión tomará R por *default*).
+
+```{r}
+x <- 0:5
+
+identical(x, as.numeric(x))
+```
+
+En este ejemplo, cuando declaramos $x$ no especificamos su clase y R decidió que
+era entero. Al coercionar al objeto para que fuese numérico, R no considera a 
+los dos objetos iguales. R te protege -no te permite hacer o te advierte- 
+de algunas cosas
+
+```{r}
+1 < "2"
+```
+
+Pero en otras, hace lo mejor que puede con lo que le das (cosa que a veces no
+tiene sentido)
+
+```{r}
+x <- c("a", "b", "c")
+as.numeric(x)
+as.logical(x)
+```
+
+### Matrices
+
+Las matrices son un tipo especial de vectores. Son un vector atómico con dimensión pues
+tienen filas y columnas.
+
+```{r}
+m <- matrix(c(1, 2, 3, 4), nrow = 2, ncol = 2)
+m
+```
+
+Como puedes notar, las matrices se llenan siguiendo las columnas. Podemos
+simplemente "agregarle" una dimensión a un vector para construir una matriz.
+
+```{r}
+m <- 1:10
+m
+dim(m) <- c(2, 5)
+m
+```
+
+También podemos pegar vectores de la misma longitud como si fueran columnas de
+una matriz `cbind` o como si fueran filas `rbind` (r \= row, c \= column).
+
+```{r}
+x <- runif(4)
+y <- rnorm(4)
+cbind(x, y)
+rbind(x, y)
+```
+
+Le agregamos atributos para accesar más fácilmente a los objetos.
+
+```{r}
+m <- matrix(c(x, y), nrow = 4, ncol = 2, byrow = T,
+            dimnames = list(paste0("row", 1:4),
+                            paste0("col", 1:2)))
+m
+
+m[1, 1] == m["row1", "col1"]
+
+dimnames(m)
+```
+  
+### Listas
+
+Es un tipo de vector en el cuál cada elemento puede ser de un tipo distinto.
+Mas aun, es posible incluir una lista como un elemento de otra lista y por eso 
+también se les conoce como vectores recursivos (*recursive vectors*).
+
+Para crear una lista vacía utilizas `list()` y para coercionar un objeto a una 
+lista usa `as.list()`.
+
+```{r}
+x <- list(3L, 3.56, 1 + 4i, TRUE, "hola", list("genial", 1))
+x
+
+length(x)
+class(x)
+class(x[1])
+class(x[[1]])
+
+y <- as.list(1:10)
+length(y)
+```
+
+Nota como muchas propiedades que tenían los vectores atómicos los tienen también 
+las listas. Por su propiedad recursiva, se navega diferente. Si pides `x[1]` te 
+devuelve una lista con lo que hayas puesto en ese contenedor.
+
+Para extraer el objeto (con la clase de ese objeto y no simplemente otra lista)
+necesitas usar `x[[1]]`, es decir, el `r class(x[[1]])` `r x[[1]]`.
+
+Las listas también pueden tener nombres
+
+```{r}
+# Lista vacia
+lista <- list()
+lista[["numeros"]] <- c(1, 34, 45.5, 34) 
+lista[["datos"]] <- head(iris)
+
+lista
+```
+
+
+\begin{curiosidad}
+R tiene muchos \href{https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/00Index.html}{datos de ejemplo}
+que son utilizados en muchos paquetes, blogs y libros. Utiliza {\bf help(iris)} para
+saber más del dataset usado arriba.
+\end{curiosidad}
+
+### Factores (factor)
+
+Otro tipo de vector pero que ayuda a representar datos del tipo categórico u 
+ordinal. Es muy importante decirle a R que algo debe ser tratado como factor 
+cuando se empieza a modelar o incluso para que los métodos de gráficos funcionen
+de manera apropiada. Sin embargo, hay que entender bien cómo tratarlos porque
+mal usados hacen que pasen muchas cosas muy raras que dan resultados que estan 
+*mal, mal, mal*.
+
+Los factores son enteros pero con etiquetas encima. 
+
+```{r}
+x <- factor(c("no", "si", "si", "no"))
+x
+```
+
+Lo que te deja utilizar métodos para factores como tablas de frecuencias
+
+```{r}
+table(x)
+```
+
+Los factores se van a ver 
+*como si fueran* vectores tipo caracter. A veces se comportan como character
+vectors pero *debemos* recordar que por abajo son integers y tenemos que ser 
+cuidadosos si los tratamos como caracteres. Algunos métodos que están hechos 
+para caracteres coersionan un factor a caracter mientras que otros arrojan  un error.
+Si usas métodos de caracteres, lo mejor es "castear" a 
+caracter tu factor `as.character(mifactor)`. Pierdes algunas cosas pero te 
+aseguras que las cosas funcionen como deben.
+
+```{r}
+summary(x)
+summary(as.character(x))
+```
+
+Los factores pueden contener únicamente valores predefinidos. Por eso la "unión"
+de factores puede tronar.
+
+```{r}
+y <- factor(c("si", "no", "tal vez"))
+c(x, y)
+class(c(x, y))
+```
+
+¿Cómo recuperas el valor de las etiquetas? R hizo lo que pudo y está mal. Para 
+hacerlo bien, debemos
+
+```{r}
+factor(c(as.character(x), as.character(y)))
+```
+
+Para datos ordinales como las respuestas en una pregunta de encuesta con escala
+likert, podemos usar
+
+```{r}
+set.seed(2887)
+respuestas <- sample(x = c(1:5), size = 5, replace =  T)
+respuestas 
+y <- factor(
+  x = respuestas,
+  levels = c("1", "2", "3", "4", "5"),
+  labels = c("muy en contra", "en contra", "indiferente", "a favor", "muy a favor"),
+  ordered = T)
+y
+```
+
+Nota como aunque no tengamos todos las respuestas, nuestro factor sabe que las 
+no ocurrencias son factibles (los niveles y las etiquetas las incluyen).
+
+```{r}
+table(y)
+```
+
+\begin{nota}[Nota]
+En R muchas cosas se reducen a utlizar la estructura de datos apropiada y darle
+todos los metadatos necesarios al objeto para que R no haga tonterias.
+\end{nota}
+
+## Data frames
+
+Los dataframes son uno de los objetos más importantes en R. Tanto así que muchos
+no dejarían R porque implica abandonar este objeto. En python, se intenta replicar
+este objeto con la librería `pandas`.
+
+Este objeto es tan importante porque muchos de los modelos estadísticos que se
+utliizan necesitan una estructura de datos tabular. 
+
+Los dataframes tienen atributos adicionales a los que tienen los vectores:
+
+- `rownames()` 
+- `colnames()`
+- `names()`
+- `head()` te enseña las primeras 6 lineas.
+- `tail()` te enseña las últimas 6 líneas.
+- `nrow()` te da el número de filas
+- `ncol()` te da el número de columnas
+- `str()` te dice el tipo de cada columna y te muestra ejemplos
+
+Podemos ver a los dataframes como un tipo de lista restringido a que todos los
+elementos de ésta tienen la misma longitud o tamaño.
+
+Los dataframes se pueden crear utilizando comandos como `read.table()` (que tiene
+como caso particular `read.csv()`.
+Para convertir un dataframe a una matriz se utiliza `data.matrix()`. La coerción 
+es forzada y no necesariamente da lo que uno espera.
+
+Se pueden crear data.frames con la función `data.frame()`.
+
+```{r}
+df <- data.frame(
+  x = rnorm(10),
+  y = runif(10),
+  n = LETTERS[1:10],
+  stringsAsFactors = F
+)
+
+head(df)
+dim(df)
+str(df)
+```
+
+\begin{curiosidad}
+¿Por qué usar la opción ``stringsAsFactors = F''?
+\end{curiosidad}
+
+Podemos "pegarle" columnas o filas:
+
+```{r}
+df <- cbind(df, data.frame(z = rexp(10)))
+df <- rbind(df, c(rnorm(1), runif(1), "K", rexp(1)))
+dim(df)
+```
+
+# Valores perdidos (missing values)
+
+En la página \pageref{otros-objetos-importantes} se habló de otros objetos en R.
+De particular importancia es `NA` para valores perdidos en general y `NaN` para 
+operaciones matemáticas no definidas. Lógicamente, podemos preguntar a R si un objeto
+es de este tipo
+
+```{r, eval=F}
+is.na()
+is.nan()
+```
+
+Los valores `NA` tienen una clase particular. Puede haber valores perdidos enteros
+`NA_integer_` o caracteres `NA_character_`. `NaN` es un `NA` pero no al revés.
+
+```{r}
+x <- c(1, 4, 6, NA, NaN, 45)
+is.nan(x)
+is.na(x)
+```
+
+Cuando tenemos un dataframe que tiene valores perdidos y lo queremos incorporar,
+por ejemplo, a un modelo de regresión, lo primero que hará el método es excluir
+todos los renglones que tengan *algún* valor perdido usando `na.exclude(datos)`.
+
+# Estructuras de control
+
+Las estructuras de control permiten controlar la ejecución. Pueden ser 
+utilizadas en un script o dentro de funciones. Entre las más comunes se 
+encuentran:
+
+- if, else 
+- for
+- while
+- repeat
+- break
+- next
+- return
+
+## If
+
+```{r, eval = F}
+if ( condicion ) {
+  # Cuando se cumple la condicion, ejecuta esto
+} else {
+  # Para todo lo que no se cumple la condicion, ejecuta esto
+}
+```
+
+Ejemplo,
+
+```{r}
+x <- 1:20
+if ( sample(x, 1) <= 10 ) {
+  print("x es menor o igual que 10")
+} else {
+  print("x es mayor que 10")
+}
+```
+
+O lo que es lo mismo pero un poco mas eficiente (vectorizado)
+
+```{r}
+ifelse(sample(x, 1) <= 10, "x es menor o igual que 10", "x es mayor que 10")
+```
+
+También es posible asignar variables a través condicionando a algo.
+
+```{r, eval = F}
+if ( sample(x, 1) <= 10 ){
+  y <- 0
+} else {
+  y <- 1
+}
+
+# o
+
+y <- if ( sample(x, 1) <= 10 ){
+    0
+  } else {
+    1
+  }
+```
+
+## For
+
+Un ciclo `for` itera una variable y va realizando, para cada iteración, la
+secuencia de comandos que se especifica dentro del mismo.
+
+```{r}
+for (i in 1:3 ){
+  print(paste0("i vale: ", i))
+}
+```
+
+Es posible también iterar directamente sobre vectores o partes de vectores.
+
+```{r}
+x <- c("Andrea", "Liz", "Edwin", "Miguel")
+
+for ( i in x ) {
+  print(x[i])
+}
+
+for ( e in x ) {
+  print(e)
+}
+```
+
+```{r, eval = F}
+
+for ( i in seq(x) ){
+  print(x[i])
+}
+
+for ( i in 1:length(x) ) print(x[i])
+```
+
+Podemos incluir `fors` dentro de `fors`.
+
+```{r, eval = F}
+m <- matrix(1:10, 2)
+
+for( i in seq(nrow(m)) ) {
+  for ( j in seq(ncol(m)) ) {
+    print(m[i, j])
+  }
+}
+```
+
+## Whiles
+
+Otra manera de iterar sobre comandos es con la estructura `while`. A diferencia
+del `for`, esta te permite iterar sobre la secuencia de comandos especificada
+hasta que se cumpla cierta condición. Esta última tiene que variar a lo largo 
+de las iteraciones o es posible generar ciclos infinitos. Esta estructrura da
+mucha flexibilidad.
+
+```{r, eval = F}
+x <- runif(1)
+
+while ( x < 0.20 | i <= 10 ) {
+  print(x)
+  x <- runif(1)
+  i <- i + 1
+}
+```
+
+\begin{nota}[Importante]
+Asegurate de especificar una manera de salir de un ciclo while.
+\end{nota}
+
+## Repeat - Break
+
+```{r, eval = F}
+x <- 1
+repeat {
+  # Haz algo
+  print(x)
+  x = x+1
+  # Hasta que se cumpla lo siguiente
+  if (x == 6){
+    break
+  }
+}
+```
+
+## Next
+
+```{r, eval = F}
+for (i in 1:20) {
+  if (i %% 2 == 0){
+    next
+  } else {
+    print(i)
+  }
+}
+```
+
+Este ciclo itera sobre los valores del 1 al 20 e imprime los valores impares.
+
+\begin{nota}[Importante]
+R no es muy eficiente cuando se combina con estructuras de control tipo for o 
+while. Sin embargo, estas estructuras son muy comunes y es útil conocerlas. 
+
+Normalmente, se recomienda utilizar estructuras vectorizadas (como ifelse) pues,
+de esta manera, R es mucho más eficiente. 
+\end{nota}
+
+
+\printbibliography
+
+```{r}
+sessionInfo()
+```
