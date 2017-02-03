@@ -14,8 +14,6 @@ output:
 knitr::opts_chunk$set(echo = T, error = F, message = F, warning = F)
 ```
 
-
-
 \renewcommand\bcStyleTitre[1]{\large\textcolor{ttblue}{#1}}
 \begin{bclogo}[
   couleur=bgblue,
@@ -83,8 +81,6 @@ body(f)
 formals(f)
 # Veo en qué ambiente está la función
 environment(f)
-# Elimino la función del espacio de trabajo
-rm(f)
 ```
 
 Una vez definida una función, llamarla es muy sencillo: se le proporciona un 
@@ -94,6 +90,8 @@ función declarada arriba:
 
 ```{r}
 f(4)
+# Elimino la función del espacio de trabajo
+rm(f)
 ```
 
 Por default, los argumentos de 
@@ -220,32 +218,30 @@ mundo y es muy común que utilicen el mismo nombre para implementaciones
 de distintas cosas y, por lo tanto, a veces nuestros resultados no son
 lo que esperábamos.
 
-```{r}
-library(dplyr)
-library(plyr)
-is.discrete
-```
+El orden en el que cargamos los paquetes importa:
 
-```{r}
-library(plyr)
-library(dplyr)
-rename
-```
-
-```{r, eval=F, echo=F}
+```{r, echo = F}
+library(VIF)
 library(car)
-library(Hmisc)
-data(diamonds)
-modelo <- lm(price ~ carat + x + y + z, data = diamonds)
+environment(vif)
 
-summary(modelo)
-
-car::vif(modelo)
-rms::vif(modelo)
-
+library(car)
+environment(vif)
+# Quito del ambiente el paquete car
+detach("package:car", unload=TRUE)
+library(VIF)
+environment(vif)
 ```
 
+La otra opción, sin quitar el paquete del ambiente, es especificar de que
+paquete tomarlo. En otras palabras, le pedimos explícitamente a `R` que 
+busque la función en el espacio de nombres de *un* paquete en específico y que no
+use su búsqueda normal.
 
+```{r}
+environment(VIF::vif)
+environment(car::vif)
+```
 
 # Estructuras de datos
 
@@ -255,26 +251,28 @@ hace diario y entender cómo operarlos o cómo convertir de una a otra es muy ú
 
 ## Clases atómicas (atomic classes)
 
-R tiene 6 clases atómicas.
+R tiene 6 clases atómicas^[Los tipos básicos son referidos como atómicos cuando es necesario excluir listas.][@rmanual].
 
-- character (*caracter*)
-- numeric (números reales o decimales)
-- integer (números enteros)
-- logical (booleanos, i.e. falsos-verdaderos)
-- complex (números complejos)
+- `character` (caracter)
+- `numeric` (números reales o decimales, a esta clase también se le llama `double`)
+- `integer` (números enteros)
+- `logical` (booleanos, i.e. falso-verdadero)
+- `complex` (números complejos)
+- `raw` (contiene bytes)
 
 
 \begin{table}[ht]
 \centering
-\begin{tabular}{p{3cm}p{5cm}}
+\begin{tabular}{p{2.5cm}p{2.5cm}p{5cm}}
   \hline
-Tipo & Ejemplo \\ 
+Type & Tipo & Ejemplo \\ 
   \hline
-Caracter & "hola", "x" \\ 
-Numérico & 67, 45.5 \\
-Integer & 2L, 67L \\
-Lógico & TRUE, FALSE, T, F \\
-Complejo & 1 + 4i\\
+\texttt{character} & Caracter & "hola", "x" \\ 
+\texttt{numeric} & Numérico & 67, 45.5 \\
+\texttt{integer} & Integer & 2L, 67L \\
+\texttt{logical} & Lógico & TRUE, FALSE, T, F \\
+\texttt{complex} & Complejo & 1 + 4i\\
+\texttt{raw} & Crudo & 01 - imprime hexadecimales\\
    \hline
 \end{tabular}
 \caption{Clases atómicas.}
@@ -308,7 +306,7 @@ length(z)
 
 ## Vectores
 
-Los vectores son la estructura de datos más común y básica de R. Hay dos tipos 
+Los vectores son la estructura de datos más básica de R [@wickham2014advanced]. Hay dos tipos 
 de vectores: vectores atómicos y listas.
 
 Típicamente -en libros, blogs, manuales, cuando se mencionan vectores se refieren
@@ -316,8 +314,9 @@ a los atómicos y no a las listas.
 
 ### Vectores atómicos
 
-Un vector es un conjunto de elementos con alguna de las clases atómicas, 
-es decir, `character`, `logical`, `integer`, `numeric`. Se puede crear un vector
+Los vectores pueden ser pensados como celdas contiguas que contienen 
+datos [@rmanual], es decir, elementos de alguna de las clases atómicas 
+(`character`, `logical`, `integer`, `numeric`).  Se puede crear un vector
 vacío con el comando `vector()` así como especificar su tamaño y su clase.
 
 ```{r}
@@ -337,6 +336,8 @@ numeric(5)
 logical(5)
 ```
 
+### Tipos de vectores
+
 Realiza los siguientes ejemplos en la consola de R.
 
 ```{r, eval = F}
@@ -351,25 +352,32 @@ typeof(xi)
 y <- c(T, F, T, F, F, T)
 
 z <- c("a", "aba", "andrea", "b", "bueno")
+
+```
+
+Dijimos que la función `typeof` permitía preguntarle a un objeto qué tipo de dato
+es. La función `class` permite hacer una pregunta similar. La diferencia radica
+en el punto de vista: el primero da el tipo del objeto como un objeto en `R`
+mientras que, el segundo identifica el tipo del objeto desde el punto de vista
+de la programación orientada a objetos en `R`. 
+
+```{r}
 class(z)
+```
+
+Otra función útil es `str` pues permite desplegar en forma compacta la estrucutra
+interna de un objeto en `R`:
+
+```{r}
 str(z)
 ```
 
-**Operaciones con vectores**
-
-Accesar partes del vector.
-
-```{r}
-a <- c(1:5)
-a
-a[1]
-a[2]
-a[4:5]
-```
+### Operaciones con vectores
 
 Aritmética: por default, se realizan componente a componente.
 
 ```{r}
+a <- c(1:5)
 b <- a + 10
 b
 
@@ -410,21 +418,7 @@ runif(5)
 runif(5, min = 5, max = 15)
 ```
 
-#### Otros objetos importantes 
-
-`Inf` es como R denomina al infinito. En el mundo de R se permite también positivo
-o negativo.
-
-```{r}
-1/0
-1/Inf
-```
-
-`NaN` es como R denota a algo que no es un número (literal: *not a number*). 
-
-```{r}
-0/0
-```
+### Atributos de un vector
 
 Cada objeto tiene atributos. Hay atributos específicos para vectores que, sin
 importar su clase, tienen en común. Ya revisamos algunos: tamaño (`length`), clase
@@ -438,16 +432,10 @@ attributes(calificaciones)
 names(calificaciones)
 ```
 
-Mezclar tipos no es una buena idea
+### Coerción
 
-```{r}
-c(1.7, "a")
-c(TRUE, 2)
-c("a", TRUE)
-```
-
-R realiza una coerción implícita entre los objetos y "decide" cuál es la clase del vector.
-También hay coercioń explícita (*explicit coercion*) utilizando `as.<nombre_clase>`.
+Los vectores solo permiten tener objetos del mismo tipo. Hay coercioń explícita 
+(*explicit coercion*, también llamada *cast*) utilizando `as.<nombre_clase>`.
 
 ```{r, eval = F}
 as.numeric()
@@ -456,26 +444,42 @@ as.integer()
 as.logical()
 ```
 
-Muchos problemas suceden cuando le permites a R decidir por ti (o cuando no sabes
-cuál decisión tomará R por *default*).
+Utilizando coerción explícita garantizamos siempre tener el resultado en
+cuanto a la clase del objeto.
 
 ```{r}
-x <- 0:5
-
-identical(x, as.numeric(x))
+c(c("a", "b", "c"), as.character(c(1, 2, 3)))
 ```
 
-En este ejemplo, cuando declaramos $x$ no especificamos su clase y R decidió que
-era entero. Al coercionar al objeto para que fuese numérico, R no considera a 
-los dos objetos iguales. R te protege -no te permite hacer o te advierte- 
-de algunas cosas
+Realizar coerción explícita implica trabajar extra y, a veces, no se puede
+realizar de manera directa:
+los datos pueden venir *sucios* con varios tipos de datos mezclados en una misma
+*variable*. 
+
+`R` mezcla distintos tipos de datos y realiza una 
+*coerción implícita* utilizando reglas razonables. En otras palabras, R realiza 
+una coerción explícita *por default* entre los objetos y "decide" cuál 
+es la clase del vector. 
 
 ```{r}
-1 < "2"
+# Número + caracter = caracter
+c(1.7, "a")
+# Lógico + número = número
+c(TRUE, 2)
+# Número + caracter = caracter
+c("a", TRUE)
 ```
 
-Pero en otras, hace lo mejor que puede con lo que le das (cosa que a veces no
-tiene sentido)
+En ese proceso, puede haber pérdidas de información, por ejemplo, al mezclar
+valores lógicos con numéricos, Se confunden valores *verdaderos* con un *uno*. Hay que tener cuidado particularmente
+cuando se limpian los datos:
+
+```{r}
+c(c(T, T, T), c(1, 2, 3))
+```
+
+
+Hay conversiones que no tienen sentido y generan pérdida de información total:
 
 ```{r}
 x <- c("a", "b", "c")
@@ -483,17 +487,91 @@ as.numeric(x)
 as.logical(x)
 ```
 
-### Matrices
+Normalmente, se obtiene un mensaje de advertencia (*warning*) cuando alguna
+coerción puede derivar en pérdida de información [@wickham2014advanced].
 
-Las matrices son un tipo especial de vectores. Son un vector atómico con dimensión pues
-tienen filas y columnas.
+La última consideración importante es que para R un objeto no es igual, 
+aunque no se pierda información, si su tipo no es el mismo
+
+```{r}
+x <- 0:5
+identical(x, as.numeric(x))
+```
+
+En este ejemplo, cuando declaramos $x$ no especificamos su clase y R decidió que
+era entero. Al coercionar al objeto para que fuese numérico, R no considera a 
+los dos objetos iguales. 
+
+En general, la coersión de R es muy útil pues permite incluso comparar objetos
+de distintas clases si el resultado tiene sentido
+
+```{r}
+1 < "2"
+```
+
+\begin{nota}
+Lo importante es recordar que es importante revisar las \textbf{advertencias}
+que \texttt{R} arroja a la consola y verificar que el resultado obtenido es el 
+deseado o que la pérdida de información no se puede evitar.
+\end{nota}
+
+### Acceder a partes del vector
+
+`R` tiene constructos que permite acceder a elementos individuales o subconjuntos
+de un vector a través de operaciones de indexación (*indexing*) [@rmanual; sección "Indexing"].
+
+Para los vectores, es posible acceder al i-ésimo elemento usando `x[i]`.
+
+```{r}
+x <- c(10, 20, 30, 40, 50)
+names(x) <- c("a", "b", "c", "d", "e")
+# Accedemos al 4to elemento
+x[4]
+```
+
+Además de la indexación con un entero, se puede
+
+```{r}
+# x[i] - caso anterior
+# x[[i]]
+x[[4]]
+# x["a"] - por nombre (cuando existen)
+x["a"]
+# Se puede extraer un subconjunto
+x[1:3]
+```
+
+\begin{nota}[\texttt{[]} vs. \texttt{[[]]}]
+Estas dos formas de acceder a los elementos de un vector (utilizados también 
+en otras estructuras de datos) suelen causar confusión.
+
+En vectores, \texttt{[[} casi no se utiliza, aunque son ligeramente diferentes. Como 
+vimos en el ejemplo, \texttt{[[} quita los nombres o atributos y permite extraer
+únicamente un elemento a la vez.
+\end{nota}
+
+## Matrices
+
+Las matrices son un tipo especial de vectores. Son un vector atómico con una 
+dimensión adicional pues tienen filas y columnas.
 
 ```{r}
 m <- matrix(c(1, 2, 3, 4), nrow = 2, ncol = 2)
 m
 ```
 
-Como puedes notar, las matrices se llenan siguiendo las columnas. Podemos
+En términos de sus atributos por *default*, la diferencia entre los vectores y 
+las matrices es:
+
+```{r}
+x <- c(1, 2, 3, 4)
+attributes(x)
+
+attributes(m)
+```
+
+Como puedes notar, las matrices se forman *por default* usando los elementos del
+vector para llenar columna por columna de izquierda a derecha. Podemos
 simplemente "agregarle" una dimensión a un vector para construir una matriz.
 
 ```{r}
@@ -503,8 +581,8 @@ dim(m) <- c(2, 5)
 m
 ```
 
-También podemos pegar vectores de la misma longitud como si fueran columnas de
-una matriz `cbind` o como si fueran filas `rbind` (r \= row, c \= column).
+También podemos pegar o concatenar vectores de la misma longitud como si fueran columnas de
+una matriz usando `cbind` o como si fueran filas `rbind` (r \= row, c \= column).
 
 ```{r}
 x <- runif(4)
@@ -521,23 +599,50 @@ m <- matrix(c(x, y), nrow = 4, ncol = 2, byrow = T,
                             paste0("col", 1:2)))
 m
 
-m[1, 1] == m["row1", "col1"]
-
 dimnames(m)
 ```
-  
-### Listas
 
-Es un tipo de vector en el cuál cada elemento puede ser de un tipo distinto.
-Mas aun, es posible incluir una lista como un elemento de otra lista y por eso 
-también se les conoce como vectores recursivos (*recursive vectors*).
+Acceder a elementos de una matriz puede hacerse de muchas formas
+
+```{r}
+# m[i] - quinto elemento, contando desde entrada 1,1 por columnas
+m[5]
+# m[[i]] - quinto elemento, quitando atributos
+m[[5]]
+# m[i, j] - mismo elemento que m[5] pero usando notacion fila, columna
+m[1, 2]
+# m[[i, j]] - mismo elemento, quitando atributos
+m[[1, 2]]
+# Puedo llamar por su nombre
+m["row1", "col2"]
+# Misma forma, quitando atributos
+m[["row1", "col2"]]
+# m[i, ] - toda la fila i-ésima
+m[1, ]
+# m[, j] - toda la columna j-ésima
+m[, 2]
+# Índices o nombres son equivalentes
+m[1, 1] == m["row1", "col1"]
+```
+
+\begin{nota}[\texttt{[]} vs. \texttt{[[]]}]
+En matrices, \texttt{[[} casi no se utiliza. Como 
+vimos en el ejemplo, \texttt{[[} quita los nombres o atributos y permite extraer
+únicamente un elemento a la vez.
+\end{nota}
+  
+## Listas
+
+Tiene características muy similares a un vector pero permite que cada elemento
+sea de un tipo distinto.
+Mas aún, es posible incluir una lista como un elemento de otra lista y por eso 
+también se les conoce como vectores recursivos (*recursive vectors*) [@wickham2014advanced, sección "lists"].
 
 Para crear una lista vacía utilizas `list()` y para coercionar un objeto a una 
 lista usa `as.list()`.
 
 ```{r}
 x <- list(3L, 3.56, 1 + 4i, TRUE, "hola", list("genial", 1))
-x
 
 length(x)
 class(x)
@@ -549,19 +654,17 @@ length(y)
 ```
 
 Nota como muchas propiedades que tenían los vectores atómicos los tienen también 
-las listas. Por su propiedad recursiva, se navega diferente. Si pides `x[1]` te 
-devuelve una lista con lo que hayas puesto en ese contenedor.
-
-Para extraer el objeto (con la clase de ese objeto y no simplemente otra lista)
-necesitas usar `x[[1]]`, es decir, el `r class(x[[1]])` `r x[[1]]`.
-
-Las listas también pueden tener nombres
+las listas. Las listas también pueden tener nombres
 
 ```{r}
 # Lista vacia
 lista <- list()
+# Concatenamos un vector
 lista[["numeros"]] <- c(1, 34, 45.5, 34) 
+# Concatenamos un objeto de datos
 lista[["datos"]] <- head(iris)
+# Concatenamos un número
+lista <- c(lista, 3) # ¡No le tuvimos que poner nombre!
 
 lista
 ```
@@ -573,44 +676,152 @@ que son utilizados en muchos paquetes, blogs y libros. Utiliza {\bf help(iris)} 
 saber más del dataset usado arriba.
 \end{curiosidad}
 
-### Factores (factor)
-
-Otro tipo de vector pero que ayuda a representar datos del tipo categórico u 
-ordinal. Es muy importante decirle a R que algo debe ser tratado como factor 
-cuando se empieza a modelar o incluso para que los métodos de gráficos funcionen
-de manera apropiada. Sin embargo, hay que entender bien cómo tratarlos porque
-mal usados hacen que pasen muchas cosas muy raras que dan resultados que estan 
-*mal, mal, mal*.
-
-Los factores son enteros pero con etiquetas encima. 
+Por su propiedad recursiva, se navega diferente. Repasamos las principales 
+maneras de extraer los elementos de la lista utilizando la lista $x$ declarada
+anteriormente:
 
 ```{r}
+# Recordamos a x
+x
+# x[i] - el i-ésimo elemento de la lista
+x[3]
+## Nota como la clase del objeto sigue siendo lista
+class(x[3])
+# x[[i]] - el i-ésimo elemento de la lista
+x[[3]]
+## La clase ahora es la del objeto dentro del "espacio" 3 en la lista original
+class(x[[3]])
+
+# Nombramos la lista
+names(x) <- c("entero", "numerico", "complejo"
+              , "booleano", "caracter", "lista")
+
+# Ganamos formas de accesar los objetos
+# x$a - llamamos al elemento con nombre "a"
+x$entero
+class(x$entero) # Es equivalente a [[]]
+# x$"a"
+x$"complejo"
+# x[["lista"]][i] - i-ésimo elemento de la lista dentro de la lista 
+x[["lista"]][1]
+# x[[j]][i] - Mismas reglas en la lista anidada
+x[[6]][1]
+# x[[j]][[i]] - i-ésimo elemento en la lista del j-ésimo elemento de x
+x[[6]][[1]]
+```
+
+
+\begin{nota}[\texttt{[]} vs. \texttt{[[]]}]
+En listas, \texttt{[[} es fundamental para accesar correctamente los objetos y 
+poder navegar la lista. 
+
+Como en vectores y matrices, \texttt{[[} quita los nombres o atributos y permite extraer
+únicamente un elemento a la vez. En listas, además, devuelve el objeto dentro 
+del i-ésimo elemento. Por el contrario, \texttt{[} devuelve una lista.
+
+Puedo poner listas dentro de listas, dentro de listas... Se navega en orden
+como en el ejemplo.
+\end{nota}
+
+
+Las longitudes de los objetos en la lista se pueden pensar *por niveles*, por
+su propiedad recursiva.
+
+```{r}
+# El tamaño es del "primer nivel".
+length(x)
+# Hay 6 elementos en x, todos de diferentes tipos
+names(x)
+# Para obtener la longitud dentro del i-ésimo elemento de la lista, debo
+length(x[[6]]) # La lista anidada tiene 2 elementos
+# que no es lo mismo que
+length(x[6]) # Donde hay un solo elemento: una lista
+```
+
+
+## Factores (factor)
+
+Los factores son otro tipo de vectores pero que ayuda a representar 
+datos del tipo categórico u ordinal, es decir, cuando los posibles valores
+de la variable tipo caracter es limitado. Por ejemplo, son útiles cuando 
+tenemos una variable como "sexo" donde, al menos por ahora, legalmente solo 
+puede tomar los valores *hombre* o *mujer*. Si, en cambio, se tiene un 
+vector de nombres es conveniente dejarlo como caracter.
+
+Un factor se guarda como un *enteros* pero con *etiquetas* encima tal que cada
+entero corresponde a una etiqueta (*label*). 
+
+```{r}
+y <- c("no", "si", "si", "no")
+class(y)
+# Debemos pedirle explícitamente que lo guarde como factor
 x <- factor(c("no", "si", "si", "no"))
 x
 ```
 
-Lo que te deja utilizar métodos para factores como tablas de frecuencias
+Al imprimir el objeto, se observa como los niveles fueron asignados. Éstos 
+corresponden al número de valores únicos en el vector de caracter y se asignan
+en orden alfabético los valores.
+
+Los factores se despliegan
+*como si fueran* vectores tipo caracter y algunas operaciones son análogas:
 
 ```{r}
 table(x)
 ```
 
-Los factores se van a ver 
-*como si fueran* vectores tipo caracter. A veces se comportan como character
-vectors pero *debemos* recordar que por abajo son integers y tenemos que ser 
-cuidadosos si los tratamos como caracteres. Algunos métodos que están hechos 
-para caracteres coersionan un factor a caracter mientras que otros arrojan  un error.
-Si usas métodos de caracteres, lo mejor es "castear" a 
-caracter tu factor `as.character(mifactor)`. Pierdes algunas cosas pero te 
-aseguras que las cosas funcionen como deben.
+La ganancia es que son más rápidas. Aunque a veces los factores se comportan como vectores tipo
+caracter pero *debemos* recordar que por debajo son enteros y tenemos que ser 
+cuidadosos si los tratamos como caracteres. 
+
+Supongamos por ejemplo que tenemos un factor con valores 5, 6 o 7. Lo tenemos 
+guardado como factor.
+
+```{r}
+ej <- factor(c("7", "6", "5", "7", "5", "7", "6", "5", "5", "6","5"))
+ej
+```
+
+Dado que los valores son números, conceptualmente tiene sentido operarlos como tal:
+
+```{r}
+as.integer(ej)
+```
+
+Obtuvimos los enteros a los que las etiquetas originales habían sido asignados.
+Para recuperar los valores originales, debemos hacer
+
+```{r}
+as.integer(as.character(ej))
+```
+
+Algunos métodos que están hechos 
+para caracteres coercionan un factor a caracter mientras que otros arrojan un error.
+Si usas métodos de caracteres, lo mejor es "castear" (coerción explícita) a 
+caracter tu factor utilizando `as.character(mifactor)`. De esta manera se 
+pierden algunas cosas pero te aseguras que las cosas funcionen como deben.
+
 
 ```{r}
 summary(x)
 summary(as.character(x))
 ```
 
-Los factores pueden contener únicamente valores predefinidos. Por eso la "unión"
-de factores puede tronar.
+\begin{curiosidad}[Summary]
+\texttt{R} funciona mejor gracias a sus convenciones, es decir, porque
+los contribuyentes se ponen de acuerdo en seguir ciertas 
+reglas de manera que sea más fácil utilizar los paquetes de otros
+(con sus objetos y funciones).
+
+La función `summary` es la función genérica que produce resumenes para objetos
+de muchas clases. La función invoca métodos que dependen de la clase
+del argumento enviado (en estos ejemplos, el resumen para un factor y para un 
+caracter respectivamente).
+\end{curiosidad}
+
+Los factores pueden incluir únicamente los niveles con los que fueron definidos.
+Por esa razón, la unión de dos factores ddeclarados en forma independiente
+puede dar resultados no deseados.
 
 ```{r}
 y <- factor(c("si", "no", "tal vez"))
@@ -618,38 +829,92 @@ c(x, y)
 class(c(x, y))
 ```
 
-¿Cómo recuperas el valor de las etiquetas? R hizo lo que pudo y está mal. Para 
-hacerlo bien, debemos
+No es posible entonces recuperar el valor de las etiquetas. `R` hizo las 
+operaciones posibles pero hubo pérdida de información. Para concatenar dos 
+factores correctamente, es necesario:
 
 ```{r}
 factor(c(as.character(x), as.character(y)))
 ```
 
+En general, se recomienda incluir el valor de u nnivel posible, independientemente
+de si se tiene o no esa respuesta. Sin embargo, el problema al concatenar persiste.
+
+```{r}
+x <- factor(c("no", "si", "si", "no"), levels = c("no", "si", "tal vez"))
+c(x, "tal vez")
+```
+
+
 Para datos ordinales como las respuestas en una pregunta de encuesta con escala
-likert, podemos usar
+likert^[Se denomina así por su autor quien en [@likert1932] describe su uso.]
+los factores son también objetos útiles.
+
+Veamos un ejemplo en donde tenemos 500 respuestas a la pregunta "este tutorial
+es muy útil":
 
 ```{r}
 set.seed(2887)
-respuestas <- sample(x = c(1:5), size = 5, replace =  T)
-respuestas 
+respuestas <- sample(x = c(1:5), size = 500, replace =  T, prob = c(0.1, 0.15, 0.2, 0.4, 0.15))
 y <- factor(
   x = respuestas,
   levels = c("1", "2", "3", "4", "5"),
-  labels = c("muy en contra", "en contra", "indiferente", "a favor", "muy a favor"),
+  labels = c("totalmente en desacuerdo", "en desacuerdo"
+             , "ni de acuerdo ni en desacuerdo"
+             , "de acuerdo", "totalmente de acuerdo"),
   ordered = T)
-y
+table(y)
 ```
 
-Nota como aunque no tengamos todos las respuestas, nuestro factor sabe que las 
-no ocurrencias son factibles (los niveles y las etiquetas las incluyen).
+Nota como la tabla está ordenada de izquierda a derecha con la respuesta más 
+en desacuerdo a la más de acuerdo pues introducimos la opción `ordered = T` en 
+la definición del factor debido a que las respuestas están en una escala ordinal.
+
+\begin{curiosidad}[Otras funciones útiles]
+En el ejemplo anterior, introducimos las funciones:
+\begin{itemize}
+\item \texttt{set.seed}: sirve para fijar la semilla con la que se generan números aleatorios. Esto es importante pues al fijarla se puede reproducir exactamente el mismo vector de respuestas cuantas veces sea necesario.
+\item \texttt{sample}: permite extraer muestras de un vector \texttt{x} especificando el tamaño de la muestra, si es muestreo con reemplazo y permite establecer pesos para el muestreo.
+\end{itemize}
+\end{curiosidad}
 
 ```{r}
 table(y)
 ```
 
+Por último, al utilizar factores (y más aún, declarar un orden cuando
+es conceptualmente pertinente) es más fácil visualizar correctamente los datos
+con menor desgaste. Si graficamos las respuestas como caracter recibimos:
+
+```{r, fig.height=5, fig.width=8}
+library(ggplot2)
+df <- data.frame(como.caracter = as.character(y), como.factor = y) 
+ggplot(df, aes(x = como.caracter)) + geom_bar() + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+Si utilizamos el factor ordenado obtenemos:
+
+```{r, fig.height=5, fig.width=8}
+ggplot(df, aes(x = como.factor)) + geom_bar() + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
 \begin{nota}[Nota]
-En R muchas cosas se reducen a utlizar la estructura de datos apropiada y darle
-todos los metadatos necesarios al objeto para que R no haga tonterias.
+En R muchas cosas son más fáciles si se utliza la estructura de datos apropiada 
+y se establecen correctamente todos los metadatos necesarios al objeto para 
+que los defaults de R faciliten el trabajo.
+
+Al utilizar factores cuando es pertinente se gana, al menos, lo siguiente:
+
+\begin{itemize}
+\item Se almacenan los datos usando menos memoria. Esto es importante pues R trabaja en ram.
+\item El rendimiento es mejor que usando caracteres.
+\item Por \textit{default} R utiliza los métodos apropiados para el tipo de variable. Por ejemplo, si se introduce un factor como variable dependiente en un modelo de regresión, automáticamente aplica un logit y no un ols.
+\item Se pueden especificar elementos, como el orden de los niveles, que son útiles para el análisis y presentación de resultados.
+\end{itemize}
+
+A pesar de sus ventajas, si son incorrectamente utilizados las estructuras de datos pueden resultar en pérdidas de información o comportamientos indeseados.
 \end{nota}
 
 ## Data frames
@@ -707,7 +972,28 @@ df <- rbind(df, c(rnorm(1), runif(1), "K", rexp(1)))
 dim(df)
 ```
 
-# Valores perdidos (missing values)
+## Otros objetos importantes 
+
+### Infinito
+
+`Inf` es como R denomina al infinito. En el mundo de R se permite también positivo
+o negativo.
+
+```{r}
+1/0
+1/Inf
+```
+
+### No es un número
+
+`NaN` es como R denota a algo que no es un número (literal: *not a number*). 
+
+```{r}
+0/0
+```
+
+
+### Valores perdidos (missing values)
 
 En la página \pageref{otros-objetos-importantes} se habló de otros objetos en R.
 De particular importancia es `NA` para valores perdidos en general y `NaN` para 
