@@ -9,46 +9,24 @@ output:
       in_header: mypackages.sty
 ---
 
-# Manipulación de datos
-
 ```{r setup, include=F}
 knitr::opts_chunk$set(echo = T, error = F, message = F, warning = F)
 ```
 
-Un proyecto de datos tiene una gran cantidad de componentes. Sin embargo, en 
-básicamente todos se necesita iterar sobre el ciclo que se muestra en la figura \ref{fig:ciclo}.
+# Manipulación de datos
+
+Esta sección resume algunas de las funciones existentes para **limpiar** 
+datos de distintos formatos a `R`. En particular, se utiliza la conceptualización 
+de datos limpios presentada en \textcite{wickham2014tidy} e implementada en el paquete `tidyr`
+\parencite{tidyr}. En la figura \ref{fig:ciclo2} podemos ver la etapa del
+análisis de datos correspondiente.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.75\textwidth]{../img/02_ciclo.png}
-    \caption{Modelo de las herramientas que se necesitan en un proyecto de datos según \textcite[Introducción]{grolemund2016r}.}
-    \label{fig:ciclo}
+    \includegraphics[width=0.75\textwidth]{../img/02_ciclo_2.png}
+    \caption{Limpieza de datos \textcite[Introducción]{grolemund2016r}.}
+    \label{fig:ciclo2}
 \end{figure}
-
-Primero es necesario **importar** nuestros datos a R. Los datos pueden estar en 
-una gran cantidad de formatos o lugares.
-
-Después, normalmente es necesario **arreglar** nuestros datos, es decir, seguir
-criterios de datos limpios de tal forma que como guardemos los datos
-equivalga a la semántica de los datos que tenemos. Es muy importante primero
-limpiar porque esto provee de consistencia a lo largo del análisis.
-
-Posteriormente, en casi todo proyecto, será necesario **transformar** los datos. 
-A veces esto implica enfocarse en un subconjunto de los datos, generar nuevas
-variables, calcular estadísticos, arreglar los datos de cierta manera, entre
-muchos otros.
-
-Solamente después de estas etapas podemos empezar a generar conocimiento a partir 
-de los datos. Para esto tenemos dos herramientas fundamentales: la estadística 
-descriptiva (en el diagrama reducido a **visualización**) y la generación de 
-**modelos**. La primera es fundamental pues permite derivar preguntas pertinentes
-a los datos, encontrar patrones, respuestas, plantear hipótesis. Sin embargo,
-éstas no escalan de la misma manera que los modelos pues estos, una vez que 
-aceptamos sus supuestos generan los resultados que esperamos o contestan la 
-pregunta planteada.
-
-Por último, necesitamos **comunicar** los resultados. 
-
 
 ## Datos limpios
 

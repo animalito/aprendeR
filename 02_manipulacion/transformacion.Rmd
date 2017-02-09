@@ -9,11 +9,23 @@ output:
       in_header: mypackages.sty
 ---
 
-# Transformación de datos
-
 ```{r setup, include=F}
 knitr::opts_chunk$set(echo = T, error = F, message = F, warning = F)
 ```
+
+# Transformación de datos
+
+Esta sección resume algunas de las funciones existentes para **transformar** 
+datos en `R`. En particular, se utiliza la estrategia **SAC** (*split-apply-combine*)
+implementada en el paquete `dplyr` \parencite{dplyr}. En la figura \ref{fig:ciclo3} podemos ver la etapa del
+análisis de datos correspondiente.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{../img/02_ciclo_3.png}
+    \caption{Transformación de datos \textcite[Introducción]{grolemund2016r}.}
+    \label{fig:ciclo3}
+\end{figure}
 
 Existen muchas maneras de transformar los datos y una gran cantidad de paquetes
 que implementan distintas funciones útiles para realizar esta tarea. En particular,
@@ -40,7 +52,7 @@ Todos estos verbos funcionan de la misma manera (tienen la misma estructura):
 - Siempre regresa un *data.frame*
 
 Para ejemplicar el uso de cada uno de los verbos, utilizaremos los siguientes
-conjuntos de datos de muestra.
+conjuntos de datos de muestra, todos disponibles en el paquete `nycflights13` \parencite{flights}.
 
 ```{r, echo=F, warning=F, message=F, error=F}
 library(dplyr)

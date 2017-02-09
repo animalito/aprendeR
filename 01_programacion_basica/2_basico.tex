@@ -839,7 +839,7 @@ asignar \textbf{nada} mencionada anteriormente.
 Asignar utilizando el operador de suconjunto a nada nos permite
 preservar la estructura del objeto original así como su clase.
 
-En el caso de listas, si combinamos un operador de sunjunto mas
+En el caso de listas, si combinamos un operador de subconjunto mas
 asignación a nulo, podemos remover objetos de ésta.
 
 \begin{Shaded}
@@ -890,7 +890,7 @@ $<$ & menor que \\
 \end{table}
 
 \textbf{Ejemplo}: Supongamos que queremos saber qué elementos de $x$ son
-menores que $5$ y mayores que $8$.
+menores que $5$ ó mayores que $8$.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1097,7 +1097,7 @@ resultado final.
 \end{verbatim}
 
 Esto nos permite pegar un vector a una base de datos de acuerdo a una
-condicion.
+condición.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1287,7 +1287,39 @@ Junto con which, puedes usar intersect y union.
 \end{Highlighting}
 \end{Shaded}
 
+\newpage
+
 \section{Split-apply-combine}\label{split-apply-combine}
+
+Muchos problemas en el análisis de datos pueden ser resueltos aplicando
+la estrategia separa, aplica y combina (SAC) en donde divides un
+problema en pequeños pedazos manejables, operas en forma independiente
+cada uno de éstos y después combinas los resultados obtenidos
+\parencite{wickham2011split}.
+
+Esta estrategia se utiliza en diversas etapas del análisis de datos, por
+ejemplo \parencite{wickham2011split}:
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \textbf{Preparación de datos.} Cuando se crean nuevas variables según
+  grupos, cuando se realizan ordenamientos por grupos, cuando se
+  estandariza o normaliza variables.
+\item
+  \textbf{Estadística descriptiva.} Cuando se crean agregados por grupos
+  como sus medias o medianas.
+\item
+  \textbf{Modelado}. Cuando se calculan modelos separados para cada
+  panel en un estudio de este tipo. Estos modelos pueden examinarse por
+  separado o unificarse para construir modelos más sofisticados que los
+  conjuguen.
+\end{itemize}
+
+Esta estrategia se utiliza en muchas herramientas: en las tablas
+dinámicas de \texttt{Microsoft Excel}, el operador \texttt{group by} de
+\texttt{SQL}, el argumento \texttt{by} disponible en algunos
+procedimientos de \texttt{SAS} \parencite{wickham2011split}.
 
 El paradigma split-apply-combine se resume en la figura \ref{fig:sac}.
 
@@ -1298,86 +1330,83 @@ El paradigma split-apply-combine se resume en la figura \ref{fig:sac}.
     \label{fig:sac}
 \end{figure}
 
-Entendamos mejor:
+Replicamos los vectores $x$ y $y$ de la figura en un \emph{dataframe}:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{letras <-}\StringTok{ }\KeywordTok{sample}\NormalTok{(letters, }\DecValTok{3}\NormalTok{)}
+\NormalTok{letras <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"a"}\NormalTok{, }\StringTok{"b"}\NormalTok{, }\StringTok{"c"}\NormalTok{)}
 \NormalTok{df <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}
-  \DataTypeTok{letra =} \NormalTok{letras[}\KeywordTok{rep}\NormalTok{(}\KeywordTok{seq}\NormalTok{(letras), }\DecValTok{4}\NormalTok{)],}
-  \DataTypeTok{valor =} \KeywordTok{sample}\NormalTok{(}\DecValTok{1}\NormalTok{:}\DecValTok{10}\NormalTok{, }\DataTypeTok{size =} \DecValTok{12}\NormalTok{, }\DataTypeTok{replace =} \NormalTok{T)}
+  \DataTypeTok{x =} \KeywordTok{sort}\NormalTok{(letras[}\KeywordTok{rep}\NormalTok{(}\KeywordTok{seq}\NormalTok{(letras), }\DecValTok{2}\NormalTok{)]),}
+  \DataTypeTok{y =} \KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{5}\NormalTok{, }\DecValTok{5}\NormalTok{, }\DecValTok{10}\NormalTok{)}
 \NormalTok{)}
-\NormalTok{df <-}\StringTok{ }\NormalTok{df[}\KeywordTok{order}\NormalTok{(df$letra), ]}
 \NormalTok{df}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-##    letra valor
-## 3      h     5
-## 6      h     5
-## 9      h     4
-## 12     h     9
-## 1      j     5
-## 4      j    10
-## 7      j     3
-## 10     j     6
-## 2      w     5
-## 5      w     2
-## 8      w     2
-## 11     w     7
+##   x  y
+## 1 a  2
+## 2 a  4
+## 3 b  0
+## 4 b  5
+## 5 c  5
+## 6 c 10
 \end{verbatim}
 
-Queremos estimar la media del valor para cada tipo de letra.
+Queremos estimar la \textbf{media} de los valores en el vector $y$ para
+cada tipo de letra en el vector $x$. Esto lo podemos hacer utilizando la
+estrategia \textbf{SAC}, como en la figura.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{# Dividimos}
-\NormalTok{for (l in }\KeywordTok{unique}\NormalTok{(df$letra) )\{}
-  \KeywordTok{print}\NormalTok{(df[l ==}\StringTok{ }\NormalTok{df$letra, ])}
+\NormalTok{for (l in }\KeywordTok{unique}\NormalTok{(df$x) )\{}
+  \KeywordTok{print}\NormalTok{(}\KeywordTok{paste0}\NormalTok{(}\StringTok{"Grupo con letra: "}\NormalTok{, l))}
+  \KeywordTok{print}\NormalTok{(df[l ==}\StringTok{ }\NormalTok{df$x, ])}
 \NormalTok{\}}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-##    letra valor
-## 3      h     5
-## 6      h     5
-## 9      h     4
-## 12     h     9
-##    letra valor
-## 1      j     5
-## 4      j    10
-## 7      j     3
-## 10     j     6
-##    letra valor
-## 2      w     5
-## 5      w     2
-## 8      w     2
-## 11     w     7
+## [1] "Grupo con letra: a"
+##   x y
+## 1 a 2
+## 2 a 4
+## [1] "Grupo con letra: b"
+##   x y
+## 3 b 0
+## 4 b 5
+## [1] "Grupo con letra: c"
+##   x  y
+## 5 c  5
+## 6 c 10
 \end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{# Aplicamos}
-\NormalTok{for (l in }\KeywordTok{unique}\NormalTok{(df$letra) )\{}
-  \KeywordTok{print}\NormalTok{(}\KeywordTok{mean}\NormalTok{(df[l ==}\StringTok{ }\NormalTok{df$letra, ]$valor))}
+\NormalTok{for (l in }\KeywordTok{unique}\NormalTok{(df$x) )\{}
+  \KeywordTok{print}\NormalTok{(}\KeywordTok{paste0}\NormalTok{(}\StringTok{"Media para valores de letra: "}\NormalTok{, l))}
+  \KeywordTok{print}\NormalTok{(}\KeywordTok{mean}\NormalTok{(df[l ==}\StringTok{ }\NormalTok{df$x, ]$y))}
 \NormalTok{\}}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 5.75
-## [1] 6
-## [1] 4
+## [1] "Media para valores de letra: a"
+## [1] 3
+## [1] "Media para valores de letra: b"
+## [1] 2.5
+## [1] "Media para valores de letra: c"
+## [1] 7.5
 \end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{# Combinamos}
 \NormalTok{medias <-}\StringTok{ }\KeywordTok{list}\NormalTok{()}
-\NormalTok{for (l in }\KeywordTok{unique}\NormalTok{(df$letra) )\{}
-  \NormalTok{medias[[l]] <-}\StringTok{ }\KeywordTok{mean}\NormalTok{(df[l ==}\StringTok{ }\NormalTok{df$letra, ]$valor)}
+\NormalTok{for (l in }\KeywordTok{unique}\NormalTok{(df$x) )\{}
+  \NormalTok{medias[[l]] <-}\StringTok{ }\KeywordTok{mean}\NormalTok{(df[l ==}\StringTok{ }\NormalTok{df$x, ]$y)}
 \NormalTok{\}}
 \KeywordTok{as.data.frame}\NormalTok{(}\KeywordTok{list}\NormalTok{(}\DataTypeTok{letras =} \KeywordTok{names}\NormalTok{(medias), }\DataTypeTok{medias =} \KeywordTok{unname}\NormalTok{(}\KeywordTok{unlist}\NormalTok{(medias))))}
 \end{Highlighting}
@@ -1385,18 +1414,34 @@ Queremos estimar la media del valor para cada tipo de letra.
 
 \begin{verbatim}
 ##   letras medias
-## 1      h   5.75
-## 2      j   6.00
-## 3      w   4.00
+## 1      a    3.0
+## 2      b    2.5
+## 3      c    7.5
 \end{verbatim}
 
-R tiene muchas funciones que facilitan realizar este tipo de
+\texttt{R} tiene muchas funciones que facilitan realizar este tipo de
 operaciones. En particular, la familia \texttt{apply} fue pensada para
-realizar ese tipo de operaciones.
+realizarlas. Cada una de las funciones en esta familia recibe una
+estructura de datos en particular, aplica de determinada manera la
+función que se le especifica y combina los resultados de una forma
+específica.
 
 \subsection{apply}\label{apply}
 
 \texttt{apply} aplica una función a cada fila o columna en una matriz.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \textbf{Separa}: por columna o fila según se especifica en el
+  parámetro \texttt{MARGIN} (1 para filas, 2 para columnas).
+\item
+  \textbf{Aplica}: la función que se especifica en el parámetro
+  \texttt{FUN}.
+\item
+  \textbf{Combina}: regresa un vector con los resultados.
+\end{enumerate}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1435,9 +1480,36 @@ realizar ese tipo de operaciones.
 ## [1] 15 40
 \end{verbatim}
 
-\textbf{Ejercicio} Haz una función que reciba un vector y devuelva la
-suma de la posición $v_i + v_{i + 1}$. Para el n-esimo elemento, suma el
-primero. Aplica esa función a las columnas y filas de la matriz m.
+\renewcommand\bcStyleTitre[1]{\large\textcolor{bbblack}{#1}}
+
+\begin{bclogo}[
+  couleur=llred,
+  arrondi=0,
+  logo=\bcstop,
+  barre=none,
+  noborder=true]{Ejercicio}
+Haz una función que reciba un vector y devuelva la suma de la 
+posición $v_i + v_{i + 1}$. Para el n-esimo elemento, suma el primero.
+Aplica esa función a las columnas y filas de la matriz m.
+\end{bclogo}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Respuesta}
+\NormalTok{suma.rec <-}\StringTok{ }\NormalTok{function(v)\{}
+  \NormalTok{resultado <-}\StringTok{ }\KeywordTok{c}\NormalTok{()}
+  \NormalTok{for (e in }\KeywordTok{seq}\NormalTok{(}\KeywordTok{length}\NormalTok{(v) -}\StringTok{ }\DecValTok{1}\NormalTok{))\{}
+    \NormalTok{resultado[e] <-}\StringTok{ }\NormalTok{v[e] +}\StringTok{ }\NormalTok{v[e +}\StringTok{ }\DecValTok{1}\NormalTok{]}
+  \NormalTok{\}}
+  \NormalTok{resultado[}\KeywordTok{length}\NormalTok{(v)] <-}\StringTok{ }\NormalTok{v[}\KeywordTok{length}\NormalTok{(v)] +}\StringTok{ }\NormalTok{v[}\DecValTok{1}\NormalTok{]}
+  \KeywordTok{return}\NormalTok{(resultado)}
+\NormalTok{\}}
+
+\NormalTok{m}
+\KeywordTok{apply}\NormalTok{(m, }\DecValTok{1}\NormalTok{, suma.rec)}
+\KeywordTok{apply}\NormalTok{(m, }\DecValTok{2}\NormalTok{, suma.rec)}
+\end{Highlighting}
+\end{Shaded}
 
 \subsection{lapply}\label{lapply}
 
@@ -1477,16 +1549,42 @@ de un \texttt{data.frame}.
 ## [1] 15.5
 \end{verbatim}
 
-El \texttt{summary} de un data.frame genera un resumen para los vectores
-que la conforman de acuerdo a la clase de la misma. Genera una función
-que regrese una tabla de frecuencias para factores y caracteres o una
-lista con media, desviación estándar para vectores numéricos o enteros.
-Aplícalo a la base diamonds usando lapply.
+\renewcommand\bcStyleTitre[1]{\large\textcolor{bbblack}{#1}}
+
+\begin{bclogo}[
+  couleur=llred,
+  arrondi=0,
+  logo=\bcstop,
+  barre=none,
+  noborder=true]{Ejercicio}
+El \texttt{summary} de un \texttt{data.frame} genera un resumen para los vectores que la 
+conforman de acuerdo a la clase de la misma. Genera una función que regrese
+una tabla de frecuencias para factores y caracteres o una lista con media, 
+desviación estándar para vectores numéricos o enteros. Aplícalo a la base diamonds
+usando lapply.
+
+\end{bclogo}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Respuesta}
+\NormalTok{mi.resumen <-}\StringTok{ }\NormalTok{function(vector)\{}
+  \NormalTok{if( }\KeywordTok{class}\NormalTok{(vector) ==}\StringTok{ "factor"} \NormalTok{||}\StringTok{ }\KeywordTok{class}\NormalTok{(vector) ==}\StringTok{ "character"}\NormalTok{)\{}
+    \KeywordTok{table}\NormalTok{(vector)}
+  \NormalTok{\} else if ( }\KeywordTok{class}\NormalTok{(vector) ==}\StringTok{ "numeric"} \NormalTok{||}\StringTok{ }\KeywordTok{class}\NormalTok{(vector) ==}\StringTok{ "integer"}\NormalTok{) \{}
+    \KeywordTok{list}\NormalTok{(}\DataTypeTok{media =} \KeywordTok{mean}\NormalTok{(vector), }\DataTypeTok{de =} \KeywordTok{sqrt}\NormalTok{(}\KeywordTok{var}\NormalTok{(vector)))}
+  \NormalTok{\}}
+\NormalTok{\}}
+
+\KeywordTok{lapply}\NormalTok{(}\KeywordTok{names}\NormalTok{(diamonds), }\DataTypeTok{FUN =} \NormalTok{function(c) }\KeywordTok{mi.resumen}\NormalTok{(diamonds[, c]))}
+\end{Highlighting}
+\end{Shaded}
 
 \subsection{sapply}\label{sapply}
 
 \texttt{sapply} es otra versión de \texttt{lapply} que regresa una lista
-de una matriz cuando es apropiado.
+o un vector, dependiendo si se especifica el parámetro
+\texttt{simplify = T} y si la función aplicada regresa un único valor.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1515,16 +1613,53 @@ de una matriz cuando es apropiado.
 ##  5.5 11.0
 \end{verbatim}
 
-\textbf{Ejercicio} Obtén un vector tipo caracter con los nombres de las
-clases de las columnas de iris.
+\renewcommand\bcStyleTitre[1]{\large\textcolor{bbblack}{#1}}
 
-\textbf{Ejercicio} Repite el ejercicio de la suma rara pero usa
-\texttt{sapply}.
+\begin{bclogo}[
+  couleur=llred,
+  arrondi=0,
+  logo=\bcstop,
+  barre=none,
+  noborder=true]{Ejercicio}
+Obtén un vector tipo caracter con los nombres de las clases de 
+las columnas de iris.
+\end{bclogo}
 
-\emph{Recuerda la instrucción}: Haz una función que reciba un vector y
-devuelva la suma de la posición $v_i + v_{i + 1}$. Para el n-esimo
-elemento, suma el primero. Utiliza \texttt{sapply} para realizar esta
-operacion.
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Respuesta}
+\KeywordTok{sapply}\NormalTok{(iris, class)}
+\end{Highlighting}
+\end{Shaded}
+
+\renewcommand\bcStyleTitre[1]{\large\textcolor{bbblack}{#1}}
+
+\begin{bclogo}[
+  couleur=llred,
+  arrondi=0,
+  logo=\bcstop,
+  barre=none,
+  noborder=true]{Ejercicio}
+Repite el ejercicio de la suma rara pero usa \texttt{sapply}.\\
+
+\textit{Recuerda la instrucción}: Haz una función que reciba un vector y devuelva 
+la suma de la posición $v_i + v_{i + 1}$. Para el n-esimo elemento, 
+suma el primero. Utiliza \texttt{sapply} para realizar esta operacion.
+\end{bclogo}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Respuesta}
+\NormalTok{x <-}\StringTok{ }\DecValTok{1}\NormalTok{:}\DecValTok{10}
+\KeywordTok{sapply}\NormalTok{(}\KeywordTok{seq}\NormalTok{(x), }\DataTypeTok{FUN =} \NormalTok{function(i)\{}
+  \NormalTok{if( i ==}\StringTok{ }\KeywordTok{length}\NormalTok{(x) )\{}
+    \NormalTok{x[}\DecValTok{1}\NormalTok{] +}\StringTok{ }\NormalTok{x[i]}
+  \NormalTok{\} else \{}
+    \NormalTok{x[i] +}\StringTok{ }\NormalTok{x[i +}\StringTok{ }\DecValTok{1}\NormalTok{]}
+  \NormalTok{\}}
+\NormalTok{\})}
+\end{Highlighting}
+\end{Shaded}
 
 \subsection{mapply}\label{mapply}
 
@@ -1582,6 +1717,29 @@ argumento.
 ## [1] 34
 \end{verbatim}
 
+\renewcommand\bcStyleTitre[1]{\large\textcolor{bbblack}{#1}}
+
+\begin{bclogo}[
+  couleur=llred,
+  arrondi=0,
+  logo=\bcstop,
+  barre=none,
+  noborder=true]{Ejercicio}
+Crea una matriz de 4 x 4 donde el primer renglón sea de unos, el segundo de dos,
+el tercero de 3 y el cuarto de 4. Usa \texttt{mapply} para hacerlo.
+\end{bclogo}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Respuesta}
+\NormalTok{m <-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\KeywordTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{4}\NormalTok{), }\KeywordTok{rep}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{4}\NormalTok{), }\KeywordTok{rep}\NormalTok{(}\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{), }\KeywordTok{rep}\NormalTok{(}\DecValTok{4}\NormalTok{, }\DecValTok{4}\NormalTok{)), }\DataTypeTok{nrow =} \DecValTok{4}\NormalTok{, }\DataTypeTok{byrow =} \NormalTok{T)}
+\NormalTok{m}
+
+\NormalTok{me <-}\StringTok{ }\KeywordTok{t}\NormalTok{(}\KeywordTok{mapply}\NormalTok{(rep, }\DecValTok{1}\NormalTok{:}\DecValTok{4}\NormalTok{, }\DecValTok{4}\NormalTok{))}
+\NormalTok{me}
+\end{Highlighting}
+\end{Shaded}
+
 \subsection{tapply}\label{tapply}
 
 \texttt{tapply} le aplica una función a subconjuntos de un vector.
@@ -1629,7 +1787,31 @@ argumento.
 ##    B 28.22222 28.77778 18.77778
 \end{verbatim}
 
-\textbf{Ejercicio}
+\renewcommand\bcStyleTitre[1]{\large\textcolor{bbblack}{#1}}
+
+\begin{bclogo}[
+  couleur=llred,
+  arrondi=0,
+  logo=\bcstop,
+  barre=none,
+  noborder=true]{Ejercicio}
+Utiliza la función \texttt{tapply} y la base de datos \texttt{diamonds} (que está
+dentro del paquete \texttt{ggplot2}) para obtener las medias de la 
+variable \texttt{carat} para los grupos
+formados por la variable categórica \texttt{cut} y la variable categórica
+\texttt{color}.
+\end{bclogo}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Respuesta}
+\KeywordTok{library}\NormalTok{(ggplot2)}
+\KeywordTok{with}\NormalTok{(diamonds,}
+     \KeywordTok{tapply}\NormalTok{(carat,}
+            \KeywordTok{list}\NormalTok{(cut, color),}
+            \NormalTok{mean))}
+\end{Highlighting}
+\end{Shaded}
 
 \subsection{by}\label{by}
 
@@ -1715,20 +1897,29 @@ Posteriormente, se pueden combinar los elementos.
 ## 3  virginica 478.1
 \end{verbatim}
 
-\textbf{Ejercicio} Vuelve a utilizar la base de diamonds para calcular
-el promedio de carat según cut y color.
+\renewcommand\bcStyleTitre[1]{\large\textcolor{bbblack}{#1}}
 
-\begin{verbatim}
-## # A tibble: 6 × 10
-##   carat       cut color clarity depth table price     x     y     z
-##   <dbl>     <ord> <ord>   <ord> <dbl> <dbl> <int> <dbl> <dbl> <dbl>
-## 1  0.23     Ideal     E     SI2  61.5    55   326  3.95  3.98  2.43
-## 2  0.21   Premium     E     SI1  59.8    61   326  3.89  3.84  2.31
-## 3  0.23      Good     E     VS1  56.9    65   327  4.05  4.07  2.31
-## 4  0.29   Premium     I     VS2  62.4    58   334  4.20  4.23  2.63
-## 5  0.31      Good     J     SI2  63.3    58   335  4.34  4.35  2.75
-## 6  0.24 Very Good     J    VVS2  62.8    57   336  3.94  3.96  2.48
-\end{verbatim}
+\begin{bclogo}[
+  couleur=llred,
+  arrondi=0,
+  logo=\bcstop,
+  barre=none,
+  noborder=true]{Ejercicio}
+Vuelve a utilizar la base de diamonds para calcular el promedio 
+de carat según cut y color.
+\end{bclogo}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Respuesta}
+\KeywordTok{library}\NormalTok{(ggplot2)}
+\KeywordTok{head}\NormalTok{(diamonds)}
+
+\NormalTok{res <-}\StringTok{ }\KeywordTok{by}\NormalTok{(diamonds[, }\KeywordTok{c}\NormalTok{(}\StringTok{"carat"}\NormalTok{)], }
+          \KeywordTok{list}\NormalTok{(}\DataTypeTok{cut =} \KeywordTok{as.factor}\NormalTok{(diamonds$cut), }\DataTypeTok{color =} \KeywordTok{as.factor}\NormalTok{(diamonds$color))}
+          \NormalTok{, mean, }\DataTypeTok{simplify =} \NormalTok{T)}
+\end{Highlighting}
+\end{Shaded}
 
 \subsection{replicate}\label{replicate}
 
@@ -1743,19 +1934,19 @@ simulación.
 
 \begin{verbatim}
 ## [[1]]
-## [1] -1.48174362  0.66978164 -0.78426278 -0.45197092  1.02655102  0.02008344
+## [1] -0.3347941 -0.5013782 -0.1745357  1.8090374 -0.2301050 -1.1304182
 ## 
 ## [[2]]
-## [1] -0.5126506 -0.4285076  0.5632417  0.1028410  0.1923036  1.1650204
+## [1]  0.21598889  1.23223729  1.60935871  0.40155063 -0.27298403 -0.03615234
 ## 
 ## [[3]]
-## [1] -0.18038327  0.33794788  0.08232277 -0.10389078 -1.14011737 -0.61650967
+## [1] -0.1503112  3.7688104 -1.6524960 -1.1351451  0.2276702 -0.1833185
 ## 
 ## [[4]]
-## [1]  0.7039886 -2.2066521 -0.8376586  1.7216593  0.4360063  0.7571990
+## [1] -0.41351862 -0.43759528 -0.02618435 -0.85983418  0.16654458  1.47549073
 ## 
 ## [[5]]
-## [1]  1.5398858  1.5393945  2.1829996 -0.9953758 -0.3013422  0.6005107
+## [1]  0.1954229  0.1594218 -0.7201933 -0.9355025  0.2854323 -0.7392351
 \end{verbatim}
 
 \begin{Shaded}
@@ -1765,11 +1956,11 @@ simulación.
 \end{Shaded}
 
 \begin{verbatim}
-##            [,1]       [,2]       [,3]       [,4]      [,5]       [,6]
-## [1,] -0.3633049  0.8675148 -1.3168208  1.5543102 0.6130339  0.5737528
-## [2,] -0.2211350 -0.1700282 -0.6075526  0.3306465 0.7158021  0.2225771
-## [3,] -0.1981113  1.1900491 -0.9454914  0.2031200 0.6501763  1.1414076
-## [4,]  0.6676305  0.9188715  1.2493954 -2.5829970 0.7201334 -0.6722725
+##           [,1]       [,2]      [,3]       [,4]        [,5]       [,6]
+## [1,]  0.429149  0.2459699 0.4778276 -0.3504094  0.20234597  2.1874601
+## [2,]  2.733984 -0.7459894 0.7311985  1.1475974  0.11149061 -0.0709549
+## [3,] -1.333403 -1.4841380 0.1721051  1.3500840 -1.52799033  1.2929966
+## [4,]  1.860095  0.2220485 1.1866920  1.1161494  0.05750731  0.3768750
 \end{verbatim}
 
 \begin{Shaded}
@@ -1778,19 +1969,43 @@ simulación.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{2_basico_files/figure-latex/unnamed-chunk-46-1.pdf}
+\includegraphics{2_basico_files/figure-latex/unnamed-chunk-47-1.pdf}
 
-\textbf{Ejercicio} Replica el ejercicio de muestras bootstrap utilizando
-replicate.
+\renewcommand\bcStyleTitre[1]{\large\textcolor{bbblack}{#1}}
 
-Recordando:
+\begin{bclogo}[
+  couleur=llred,
+  arrondi=0,
+  logo=\bcstop,
+  barre=none,
+  noborder=true]{Ejercicio}
+Replica el ejercicio de muestras bootstrap utilizando la función \texttt{replicate}.\\
+
+\textit{Recordando las instrucciones}:
 
 \begin{enumerate}
-\item Genera un vector x de tamaño 1000 con realizaciones de una normal media 10, varianza 3. 
-\item Crea 100 muestras bootstrap del vector x.
-\item Calcula la media para cada una de tus muestras.
-\item Grafica con la función hist() el vector de medias de tus muestras.
+\item Genera un vector \texttt{x} de tamaño $1000$ con realizaciones de una normal media $10$, varianza $3$. 
+\item Crea $100$ muestras bootstrap del vector $x$.
+\item Calcula la \textit{media} para cada una de tus muestras.
+\item Grafica con la función \texttt{hist()} el vector de medias de tus muestras.
 \end{enumerate}
+
+\end{bclogo}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Respuesta}
+\CommentTok{# 1}
+\NormalTok{x <-}\StringTok{ }\KeywordTok{rnorm}\NormalTok{(}\DecValTok{1000}\NormalTok{, }\DataTypeTok{mean =} \DecValTok{10}\NormalTok{, }\DataTypeTok{sd =} \KeywordTok{sqrt}\NormalTok{(}\DecValTok{3}\NormalTok{))}
+\KeywordTok{hist}\NormalTok{( }\CommentTok{# 4}
+  \KeywordTok{replicate}\NormalTok{(}\DecValTok{100}\NormalTok{, }\CommentTok{# 2}
+            \KeywordTok{mean}\NormalTok{(}\KeywordTok{sample}\NormalTok{(x, }\DataTypeTok{size =} \DecValTok{1000}\NormalTok{, }\DataTypeTok{replace =} \NormalTok{T))), }\CommentTok{# 3}
+  \DataTypeTok{main =} \StringTok{"Muestras bootstrap"}\NormalTok{,}
+  \DataTypeTok{xlab =} \StringTok{"media"}\NormalTok{,}
+  \DataTypeTok{ylab =} \StringTok{"frecuencia"}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
 
 \subsection{¿Puede ser más fácil?}\label{puede-ser-mas-facil}
 
@@ -1799,23 +2014,22 @@ implementaciones excelentes del paradigma split-apply-combine:
 \texttt{plyr}, \texttt{dplyr} y \texttt{data.table}.
 
 Si la familia apply es poderosa, se queda corta comparada con estos
-tres. \texttt{plyr} es la primera versión de s-a-c de Wickham.
-Posteriormente, mejoró muchas de las funciones en \texttt{dplyr}
-sobretodo entorno a velocidad y facilidad de uso. \texttt{plyr} no
-termina de ser relevante pues varias de sus funciones aun no están en
-\texttt{dplyr}.
+tres. \texttt{plyr} es la primera versión de SAC de Wickham
+\parencite{wickham2011split}. Posteriormente, mejoró muchas de las
+funciones en \texttt{dplyr} \parencite{dplyr} sobretodo entorno a
+velocidad y facilidad de uso. \texttt{plyr} no termina de ser relevante
+pues varias de sus funciones aun no están en \texttt{dplyr} pero está
+por ser sustituido.
 
-\texttt{data.table}, es una implementación con una tradición muy
-diferente y tiene también funciones muy poderosas aunque con una
-sintaxis muy distinta a \texttt{dplyr}. Es absurdamente eficiente y
-tiene múltiples aplicaciones.
+\texttt{data.table} \parencite{datatable}, es una implementación con una
+tradición muy diferente y tiene también funciones muy poderosas aunque
+con una sintaxis muy distinta a \texttt{dplyr}. Es absurdamente
+eficiente y tiene múltiples aplicaciones.
 
 Muchas de las funciones en \texttt{dplyr} también están implementadas en
-\texttt{data.table}. Cuál usar es cuestión de gustos. Depende de con qué
-se acomoda cada quién pero, para algunas cosas uno es superior al otro y
-viceversa.
-
-\printbibliography
+\texttt{data.table}. Ambos paquetes son útiles pero priorizan distintos
+elementos. En el capítulo siguiente se repasarán los verbos en
+\texttt{dplyr}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1840,17 +2054,13 @@ viceversa.
 ## [1] stats     graphics  grDevices utils     datasets  base     
 ## 
 ## other attached packages:
-## [1] ggplot2_2.2.1 xtable_1.8-2  rformat_0.1   rmarkdown_1.3
+## [1] xtable_1.8-2  rformat_0.1   rmarkdown_1.3
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_0.12.9         assertthat_0.1      digest_0.6.11      
-##  [4] rprojroot_1.2       plyr_1.8.4          grid_3.3.1         
-##  [7] gtable_0.2.0        backports_1.0.5     magrittr_1.5       
-## [10] scales_0.4.1        evaluate_0.10       stringi_1.1.2      
-## [13] lazyeval_0.2.0.9000 tools_3.3.1         stringr_1.1.0      
-## [16] munsell_0.4.3       yaml_2.1.14         colorspace_1.2-6   
-## [19] htmltools_0.3.5     knitr_1.15.1        tibble_1.2         
-## [22] methods_3.3.1
+##  [1] backports_1.0.5 magrittr_1.5    rprojroot_1.2   tools_3.3.1    
+##  [5] htmltools_0.3.5 yaml_2.1.14     Rcpp_0.12.9     stringi_1.1.2  
+##  [9] knitr_1.15.1    methods_3.3.1   stringr_1.1.0   digest_0.6.11  
+## [13] evaluate_0.10
 \end{verbatim}
 
 \end{document}

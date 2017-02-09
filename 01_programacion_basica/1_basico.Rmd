@@ -41,7 +41,7 @@ Puedes descargar [RStudio](https://www.rstudio.com/products/rstudio/download/)
 siguiendo las instrucciones para cada sistema operativo. RStudio es un IDE (integrated
 development environment) para R que incluye consola, editor de texto, memoria de 
 gráficos, vista de objetos en el ambiente y otras herramientas útiles para 
-desarrollar [@rstudio]. En su versión más reciente, también autocompleta código 
+desarrollar \parencite{rstudio}. En su versión más reciente, también autocompleta código 
 y depura (*debugging*) "al vuelo", es decir, al mismo tiempo que se escribe, señala
 potenciales errores de código. 
 
@@ -54,7 +54,7 @@ crear las funciones, lógica, algoritmos, con una muestra de los datos.
 ## ESS
 
 [Emacs speaks statistics](http://ess.r-project.org/) es el add-on favorito para
-los usuarios de `emacs` y `R` [@rossini2004ess]. Soporta la edición de scripts para R, S-plus, SAS,
+los usuarios de `emacs` y `R` \parencite{rossini2004ess}. Soporta la edición de scripts para R, S-plus, SAS,
 Stata, OPenBUGS/JAGS. Para los que además ya están acostumbrados al enorme poder
 de Emacs, ésta será la mejor opción.
 
@@ -238,13 +238,13 @@ Existen una gran cantidad de paquetes disponibles además de los incluidos por o
 
 ## CRAN
 
-*Comprehensive R Archive Network* [@cran] es una colección de sitios que contienen
+*Comprehensive R Archive Network* \parencite{cran} es una colección de sitios que contienen
 exactamente el mismo material, es decir, son espejos (*mirrors*) de las distribuciones de R, las extensiones,
 la documentación y los binarios. El master de CRAN está en Wirtschaftsuniversität Wien
 en Austria. Éste se "espeja" (*mirrors*) en forma diaria a muchos sitios alrededor
 del mundo. En la [lista de espejos](https://cran.r-project.org/mirrors.html) se puede
 ver que para México están disponibles el espejo del ITAM, del Colegio de Postgraduados (Texcoco) y
-Jellyfish Foundation [@cran]. 
+Jellyfish Foundation \parencite{cran}. 
 
 Los espejos son importantes pues, cada vez que busquen instalar paquetes, se les
 preguntará qué espejo quieren utilizar para la sesión en cuestión. Del espejo que 
@@ -293,7 +293,7 @@ un poco más sencilla que usando la función `install.packages`.
 En particular, la función `p_load` permite instalar, cargar y actualizar uno o 
 varios paquetes.
 
-Si queremos instalar varios paquetes usando las herramientas del R básico (*base*) [@rbase]
+Si queremos instalar varios paquetes usando las herramientas del R básico (*base*) \parencite{rbase}
 haríamos algo como \parencite[ejemplo tomado de][en la viñeta de intrducción al paquete]{pacman}:
 
 ```{r, eval = F}
@@ -379,7 +379,7 @@ de otras herramientas en donde es posible utlizar el mouse o menús.
 
 Aunque los comandos pueden ser ejecutados directamente en consola una única vez,
 también es posible guardarlos en archivos conocidos como *scripts*. Típicamente,
-utilizamos la extensión **.R** o **.r**. En RStudio [@rstudio], `CTRL + SHIFT + N` abre 
+utilizamos la extensión **.R** o **.r**. En RStudio \parencite{rstudio}, `CTRL + SHIFT + N` abre 
 inmediatamente un nuevo editor en el panel superior izquierdo.
 
 En RStudio, por ejemplo, se puede *ir editando* el script y corriendo los comandos línea por línea con `CTRL + ENTER`. 
@@ -395,7 +395,7 @@ O con el atajo `CTRL + SHIFT + S` en RStudio.
 
 Para enlistar algunos shortcuts comunes en RStudio presiona `ALT + SHIFT + K`. 
 
-De la misma manera, si utilizas `Emacs + ESS`[@rossini2004ess], existen múltiples atajos de teclado
+De la misma manera, si utilizas `Emacs + ESS` \parencite{rossini2004ess}, existen múltiples atajos de teclado
 para realizar todo mucho más eficientemente. Estudiarlos no es tiempo perdido.
 
 # Ayuda y documentación
@@ -463,7 +463,8 @@ que se desplegaron:
 getAnywhere(plot.density)
 ```
 
-Nota como el método `plot.density` viene del paquete `stats`^[Hay otro tipo de funciones en las accesar al código fuente no se pueda con los métodos descritos. Para ello, es útil revisar la sección "old-school object-oriented programming in R" [@adler2010r; p. 131-133] o las secciones dedicadas a los objetos S3 y S4 en @wickham2014advanced.].
+Nota como el método `plot.density` viene del paquete `stats`
+\footnote{Hay otro tipo de funciones en las accesar al código fuente no se pueda con los métodos descritos. Para ello, es útil revisar la sección "old-school object-oriented programming in R" \parencite[][p.131-133]{adler2010r} o las secciones dedicadas a los objetos S3 y S4 en \textcite{wickham2014advanced}.}.
 
 
 La documentación normalmente se acompaña de **ejemplos**. Para *correr* los ejemplos
@@ -498,8 +499,8 @@ al paquete del mismo autor \textcite{gcbd}.
 
 Para la parte práctica de todo esto, referirse a 
 [este blog](http://brettklamer.com/diversions/statistical/faster-blas-in-r/)
-para instalar las librerías apropiadas para BLAS y Lapack [@blasinr]. Para una comparación
+para instalar las librerías apropiadas para BLAS y Lapack \parencite{blasinr}. Para una comparación
 bastante práctica de las diferentes versiones de esas librerías, ver
-[aquí](http://blog.nguyenvq.com/blog/2014/11/10/optimized-r-and-python-standard-blas-vs-atlas-vs-openblas-vs-mkl/) [@optimizedr].
+[aquí](http://blog.nguyenvq.com/blog/2014/11/10/optimized-r-and-python-standard-blas-vs-atlas-vs-openblas-vs-mkl/) \parencite{optimizedr}.
 
 

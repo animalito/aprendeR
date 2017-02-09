@@ -239,10 +239,10 @@ Puedes descargar
 siguiendo las instrucciones para cada sistema operativo. RStudio es un
 IDE (integrated development environment) para R que incluye consola,
 editor de texto, memoria de gráficos, vista de objetos en el ambiente y
-otras herramientas útiles para desarrollar {[}@rstudio{]}. En su versión
-más reciente, también autocompleta código y depura (\emph{debugging})
-``al vuelo'', es decir, al mismo tiempo que se escribe, señala
-potenciales errores de código.
+otras herramientas útiles para desarrollar \parencite{rstudio}. En su
+versión más reciente, también autocompleta código y depura
+(\emph{debugging}) ``al vuelo'', es decir, al mismo tiempo que se
+escribe, señala potenciales errores de código.
 
 Hay que tener cuidad con el uso de la memoria RAM de este editor pues
 utiliza muchos recursos de la computadora y -cuando están usando una
@@ -256,9 +256,9 @@ algoritmos, con una muestra de los datos.
 
 \href{http://ess.r-project.org/}{Emacs speaks statistics} es el add-on
 favorito para los usuarios de \texttt{emacs} y \texttt{R}
-{[}@rossini2004ess{]}. Soporta la edición de scripts para R, S-plus,
-SAS, Stata, OPenBUGS/JAGS. Para los que además ya están acostumbrados al
-enorme poder de Emacs, ésta será la mejor opción.
+\parencite{rossini2004ess}. Soporta la edición de scripts para R,
+S-plus, SAS, Stata, OPenBUGS/JAGS. Para los que además ya están
+acostumbrados al enorme poder de Emacs, ésta será la mejor opción.
 
 El editor interactivo es muy bueno y casi no tiene overhead de memoria.
 
@@ -584,15 +584,16 @@ incluidos por omisión (\emph{default}).
 
 \subsection{CRAN}\label{cran}
 
-\emph{Comprehensive R Archive Network} {[}@cran{]} es una colección de
-sitios que contienen exactamente el mismo material, es decir, son
+\emph{Comprehensive R Archive Network} \parencite{cran} es una colección
+de sitios que contienen exactamente el mismo material, es decir, son
 espejos (\emph{mirrors}) de las distribuciones de R, las extensiones, la
 documentación y los binarios. El master de CRAN está en
 Wirtschaftsuniversität Wien en Austria. Éste se ``espeja''
 (\emph{mirrors}) en forma diaria a muchos sitios alrededor del mundo. En
 la \href{https://cran.r-project.org/mirrors.html}{lista de espejos} se
 puede ver que para México están disponibles el espejo del ITAM, del
-Colegio de Postgraduados (Texcoco) y Jellyfish Foundation {[}@cran{]}.
+Colegio de Postgraduados (Texcoco) y Jellyfish Foundation
+\parencite{cran}.
 
 Los espejos son importantes pues, cada vez que busquen instalar
 paquetes, se les preguntará qué espejo quieren utilizar para la sesión
@@ -650,7 +651,7 @@ En particular, la función \texttt{p\_load} permite instalar, cargar y
 actualizar uno o varios paquetes.
 
 Si queremos instalar varios paquetes usando las herramientas del R
-básico (\emph{base}) {[}@rbase{]} haríamos algo como
+básico (\emph{base}) \parencite{rbase} haríamos algo como
 \parencite[ejemplo tomado de][en la viñeta de intrducción al paquete]{pacman}:
 
 \begin{Shaded}
@@ -748,8 +749,8 @@ el mouse o menús.
 Aunque los comandos pueden ser ejecutados directamente en consola una
 única vez, también es posible guardarlos en archivos conocidos como
 \emph{scripts}. Típicamente, utilizamos la extensión \textbf{.R} o
-\textbf{.r}. En RStudio {[}@rstudio{]}, \texttt{CTRL + SHIFT + N} abre
-inmediatamente un nuevo editor en el panel superior izquierdo.
+\textbf{.r}. En RStudio \parencite{rstudio}, \texttt{CTRL + SHIFT + N}
+abre inmediatamente un nuevo editor en el panel superior izquierdo.
 
 En RStudio, por ejemplo, se puede \emph{ir editando} el script y
 corriendo los comandos línea por línea con \texttt{CTRL + ENTER}. Esto
@@ -771,10 +772,10 @@ O con el atajo \texttt{CTRL + SHIFT + S} en RStudio.
 Para enlistar algunos shortcuts comunes en RStudio presiona
 \texttt{ALT + SHIFT + K}.
 
-De la misma manera, si utilizas
-\texttt{Emacs + ESS}{[}@rossini2004ess{]}, existen múltiples atajos de
-teclado para realizar todo mucho más eficientemente. Estudiarlos no es
-tiempo perdido.
+De la misma manera, si utilizas \texttt{Emacs + ESS}
+\parencite{rossini2004ess}, existen múltiples atajos de teclado para
+realizar todo mucho más eficientemente. Estudiarlos no es tiempo
+perdido.
 
 \section{Ayuda y documentación}\label{ayuda-y-documentacion}
 
@@ -926,16 +927,13 @@ desplegaron:
 ##         abline(h = 0, lwd = 0.1, col = "gray")
 ##     invisible(NULL)
 ## }
-## <bytecode: 0x2f60698>
+## <bytecode: 0x1ea9370>
 ## <environment: namespace:stats>
 \end{verbatim}
 
 Nota como el método \texttt{plot.density} viene del paquete
-\texttt{stats}\footnote{Hay otro tipo de funciones en las accesar al
-  código fuente no se pueda con los métodos descritos. Para ello, es
-  útil revisar la sección ``old-school object-oriented programming in
-  R'' {[}@adler2010r; p.~131-133{]} o las secciones dedicadas a los
-  objetos S3 y S4 en @wickham2014advanced.}.
+\texttt{stats}
+\footnote{Hay otro tipo de funciones en las accesar al código fuente no se pueda con los métodos descritos. Para ello, es útil revisar la sección "old-school object-oriented programming in R" \parencite[][p.131-133]{adler2010r} o las secciones dedicadas a los objetos S3 y S4 en \textcite{wickham2014advanced}.}.
 
 La documentación normalmente se acompaña de \textbf{ejemplos}. Para
 \emph{correr} los ejemplos sin necesidad de copiar y pegar, prueba
@@ -977,9 +975,9 @@ autor \textcite{gcbd}.
 Para la parte práctica de todo esto, referirse a
 \href{http://brettklamer.com/diversions/statistical/faster-blas-in-r/}{este
 blog} para instalar las librerías apropiadas para BLAS y Lapack
-{[}@blasinr{]}. Para una comparación bastante práctica de las diferentes
-versiones de esas librerías, ver
+\parencite{blasinr}. Para una comparación bastante práctica de las
+diferentes versiones de esas librerías, ver
 \href{http://blog.nguyenvq.com/blog/2014/11/10/optimized-r-and-python-standard-blas-vs-atlas-vs-openblas-vs-mkl/}{aquí}
-{[}@optimizedr{]}.
+\parencite{optimizedr}.
 
 \end{document}

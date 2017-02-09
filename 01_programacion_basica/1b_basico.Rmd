@@ -12,6 +12,7 @@ output:
 
 ```{r setup, include=F}
 knitr::opts_chunk$set(echo = T, error = F, message = F, warning = F)
+library(knitr)
 ```
 
 \renewcommand\bcStyleTitre[1]{\large\textcolor{ttblue}{#1}}
@@ -29,9 +30,9 @@ knitr::opts_chunk$set(echo = T, error = F, message = F, warning = F)
 
 
 Todo lenguaje de programación provee de una forma de accesar los datos guardados 
-en memoria. R no permite un acceso directo a la memoria de la ocmputadora pero 
+en memoria. R no permite un acceso directo a la memoria de la computadora pero 
 ofrece varias estructuras de datos especializadas para realizar esa tarea. A
-estas estructuras, se les da el nombre de objetos [@rmanual; ver sección 2 "objetos"]. 
+estas estructuras, se les da el nombre de objetos \parencite[][ver sección 2 ``objetos'']{rmanual}. 
 Estos objetos son referidos a través de símbolos o variables, sin embargo, los 
 símbolos son también objetos y pueden ser manipulados de la misma manera.
 
@@ -53,7 +54,7 @@ de manera que se operen bajo ciertas condiciones lógicas.
 # Funciones 
 
 Hay una regla de oro en programación en general: *DRY code*^[El concepto es mucho más general que esto pero lo reduciremos a una de sus capas más bajas primero para introducirlo y, segundo, porque el concepto general cobra sentido al avanzar en las tareas de programación a las que se enfrenta el usuario.] (acrónimo de 
-"Don't repeat yourself") [@hunt2000]. Básicamente esto
+"Don't repeat yourself") \parencite{hunt2000}. Básicamente esto
 se reduce a *no te repitas*. Cuando tienes las mismas líneas de código varias 
 veces (cuando estas copiando y pegando mucho) entonces lo que necesitas es escribir
 una función que realice esa tarea.
@@ -251,7 +252,7 @@ hace diario y entender cómo operarlos o cómo convertir de una a otra es muy ú
 
 ## Clases atómicas (atomic classes)
 
-R tiene 6 clases atómicas^[Los tipos básicos son referidos como atómicos cuando es necesario excluir listas.][@rmanual].
+R tiene 6 clases atómicas^[Los tipos básicos son referidos como atómicos cuando es necesario excluir listas.] \parencite{rmanual}.
 
 - `character` (caracter)
 - `numeric` (números reales o decimales, a esta clase también se le llama `double`)
@@ -306,7 +307,7 @@ length(z)
 
 ## Vectores
 
-Los vectores son la estructura de datos más básica de R [@wickham2014advanced]. Hay dos tipos 
+Los vectores son la estructura de datos más básica de R \parencite{wickham2014advanced}. Hay dos tipos 
 de vectores: vectores atómicos y listas.
 
 Típicamente -en libros, blogs, manuales, cuando se mencionan vectores se refieren
@@ -315,7 +316,7 @@ a los atómicos y no a las listas.
 ### Vectores atómicos
 
 Los vectores pueden ser pensados como celdas contiguas que contienen 
-datos [@rmanual], es decir, elementos de alguna de las clases atómicas 
+datos \parencite{rmanual}, es decir, elementos de alguna de las clases atómicas 
 (`character`, `logical`, `integer`, `numeric`).  Se puede crear un vector
 vacío con el comando `vector()` así como especificar su tamaño y su clase.
 
@@ -488,7 +489,7 @@ as.logical(x)
 ```
 
 Normalmente, se obtiene un mensaje de advertencia (*warning*) cuando alguna
-coerción puede derivar en pérdida de información [@wickham2014advanced].
+coerción puede derivar en pérdida de información \parencite{wickham2014advanced}.
 
 La última consideración importante es que para R un objeto no es igual, 
 aunque no se pierda información, si su tipo no es el mismo
@@ -518,7 +519,7 @@ deseado o que la pérdida de información no se puede evitar.
 ### Acceder a partes del vector
 
 `R` tiene constructos que permite acceder a elementos individuales o subconjuntos
-de un vector a través de operaciones de indexación (*indexing*) [@rmanual; sección "Indexing"].
+de un vector a través de operaciones de indexación (*indexing*) \parencite[][sección ``Indexing'']{rmanual}.
 
 Para los vectores, es posible acceder al i-ésimo elemento usando `x[i]`.
 
@@ -543,7 +544,7 @@ x[1:3]
 
 \begin{nota}[\texttt{[]} vs. \texttt{[[]]}]
 Estas dos formas de acceder a los elementos de un vector (utilizados también 
-en otras estructuras de datos) suelen causar confusión.
+en otras estructuras de datos) suelen causar confusión.\\
 
 En vectores, \texttt{[[} casi no se utiliza, aunque son ligeramente diferentes. Como 
 vimos en el ejemplo, \texttt{[[} quita los nombres o atributos y permite extraer
@@ -636,7 +637,7 @@ vimos en el ejemplo, \texttt{[[} quita los nombres o atributos y permite extraer
 Tiene características muy similares a un vector pero permite que cada elemento
 sea de un tipo distinto.
 Mas aún, es posible incluir una lista como un elemento de otra lista y por eso 
-también se les conoce como vectores recursivos (*recursive vectors*) [@wickham2014advanced, sección "lists"].
+también se les conoce como vectores recursivos (*recursive vectors*) \parencite[][sección ``lists'']{wickham2014advanced.
 
 Para crear una lista vacía utilizas `list()` y para coercionar un objeto a una 
 lista usa `as.list()`.
@@ -713,11 +714,10 @@ x[[6]][[1]]
 
 \begin{nota}[\texttt{[]} vs. \texttt{[[]]}]
 En listas, \texttt{[[} es fundamental para accesar correctamente los objetos y 
-poder navegar la lista. 
+poder navegar la lista. \\
 
-Como en vectores y matrices, \texttt{[[} quita los nombres o atributos y permite extraer
-únicamente un elemento a la vez. En listas, además, devuelve el objeto dentro 
-del i-ésimo elemento. Por el contrario, \texttt{[} devuelve una lista.
+Como en vectores y matrices, \texttt{[[} quita los nombres o atributos y permite extraer únicamente un elemento a la vez. En listas, además, devuelve el objeto dentro 
+del i-ésimo elemento. Por el contrario, \texttt{[} devuelve una lista.\\
 
 Puedo poner listas dentro de listas, dentro de listas... Se navega en orden
 como en el ejemplo.
@@ -811,9 +811,9 @@ summary(as.character(x))
 \texttt{R} funciona mejor gracias a sus convenciones, es decir, porque
 los contribuyentes se ponen de acuerdo en seguir ciertas 
 reglas de manera que sea más fácil utilizar los paquetes de otros
-(con sus objetos y funciones).
+(con sus objetos y funciones).\\
 
-La función `summary` es la función genérica que produce resumenes para objetos
+La función \texttt{summary} es la función genérica que produce resumenes para objetos
 de muchas clases. La función invoca métodos que dependen de la clase
 del argumento enviado (en estos ejemplos, el resumen para un factor y para un 
 caracter respectivamente).
@@ -847,7 +847,7 @@ c(x, "tal vez")
 
 
 Para datos ordinales como las respuestas en una pregunta de encuesta con escala
-likert^[Se denomina así por su autor quien en [@likert1932] describe su uso.]
+likert \footnote{Se denomina así por su autor quien en \parencite{likert1932} describe su uso.}
 los factores son también objetos útiles.
 
 Veamos un ejemplo en donde tenemos 500 respuestas a la pregunta "este tutorial
@@ -919,9 +919,11 @@ A pesar de sus ventajas, si son incorrectamente utilizados las estructuras de da
 
 ## Data frames
 
-Los dataframes son uno de los objetos más importantes en R. Tanto así que muchos
-no dejarían R porque implica abandonar este objeto. En python, se intenta replicar
-este objeto con la librería `pandas`.
+Los dataframes son una de las estructuras de datos más importantes para guardar
+datos en R \parencite[][sección ``Data frames'']{wickham2014advanced}. En `python`, existe
+una estructura similar en la librería `pandas` creado para facilitar el análisis de
+datos en este lenguaje sin la necesidad de cambiar a un lenguaje de dominio
+específico como `R` \parencite[][sección ``What problem does pandas solve?'']{pandas}.
 
 Este objeto es tan importante porque muchos de los modelos estadísticos que se
 utliizan necesitan una estructura de datos tabular. 
@@ -937,11 +939,18 @@ Los dataframes tienen atributos adicionales a los que tienen los vectores:
 - `ncol()` te da el número de columnas
 - `str()` te dice el tipo de cada columna y te muestra ejemplos
 
-Podemos ver a los dataframes como un tipo de lista restringido a que todos los
-elementos de ésta tienen la misma longitud o tamaño.
+Podemos ver a los dataframes como un tipo de lista con algunas restricciones 
+\parencite[][sección ``Data frames'']{rmanual}:
+
+- Los componentes deben ser vectores, factores, matrices numéricas, listas u otros dataframes.
+- Las matrices, listaa y otros data frames proveen de tantas columnas, elementos o variables como las originales, respectivamente.
+- Los vectores numéricos, lógicos y factores se incluyen en el dataframe sin transformaciones adicionales. Los vectores tipo caracter se coercionan a factores.
+- Todos los elementos (las columnas) deben tener la misma longitud o tamaño.
 
 Los dataframes se pueden crear utilizando comandos como `read.table()` (que tiene
-como caso particular `read.csv()`.
+como caso particular `read.csv()`. Se verá con detalle el uso de estas funciones
+en la sección \ref{importacion-de-datos}.
+
 Para convertir un dataframe a una matriz se utiliza `data.matrix()`. La coerción 
 es forzada y no necesariamente da lo que uno espera.
 
@@ -952,7 +961,7 @@ df <- data.frame(
   x = rnorm(10),
   y = runif(10),
   n = LETTERS[1:10],
-  stringsAsFactors = F
+  stringsAsFactors = F # F = FALSE, T = TRUE
 )
 
 head(df)
@@ -960,11 +969,19 @@ dim(df)
 str(df)
 ```
 
-\begin{curiosidad}
-¿Por qué usar la opción ``stringsAsFactors = F''?
+
+\begin{curiosidad}[¿Por qué usar la opción \texttt{stringsAsFactors = F}?]
+
+Por \textit{default} las columnas tipo caracter en un \texttt{dataframe} son
+convertidas a factor. Esto es útil cuando se tienen los datos limpios y se va 
+a proceder a modelas sin realizar mayores transformaciones o limpiezas a los
+datos. Sin embargo, cuando se realizarán manipulaciones a los mismos, es 
+recomendable cambiar la opción por \textit{default} para leer columnas
+como caracter, de esta forma se evitan los problemas mencionados en la sección
+de factores.
 \end{curiosidad}
 
-Podemos "pegarle" columnas o filas:
+Es posible concatenar columnas o filas:
 
 ```{r}
 df <- cbind(df, data.frame(z = rexp(10)))
@@ -972,9 +989,210 @@ df <- rbind(df, c(rnorm(1), runif(1), "K", rexp(1)))
 dim(df)
 ```
 
-## Otros objetos importantes 
+Repasamos las principales maneras de extraer los elementos de un dataframe 
+utilizando el objeto $df$:
 
-### Infinito
+```{r}
+df <- data.frame(
+  x = rnorm(4),
+  y = runif(4),
+  n = LETTERS[1:4],
+  stringsAsFactors = F # F = FALSE, T = TRUE
+)
+
+# df[i]
+df[1] # La primera columna
+class(df[1]) # Regresa un dataframe
+# df[[i]]
+df[[1]] # La primera columna
+class(df[[1]]) # Regresa un vector 
+# df[i, j]
+df[1,2] # elemento en la primera fila, segunda columna
+# df[[i, j]]
+df[[1, 2]] # mismo resultado
+# df$columna 
+df$x # La columna llamada x
+# df$"columna"
+df$"x"
+
+df[["n"]][1] # Podemos navegar igual que en una lista
+```
+
+
+\begin{nota}[\texttt{[]} vs. \texttt{[[]]}]
+Debido a que los \textit{dataframes} son un caso particular de las listas,
+\texttt{[[} es también fundamental para accesar correctamente los objetos.\\ 
+
+\texttt{[[} quita los nombres o atributos, permite extraer
+únicamente un elemento a la vez y devuelve el objeto dentro 
+del i-ésimo elemento. \\
+
+\texttt{[} devuelve un data frame con la columna(s) que sea nombradas o los índices
+que sean utilizados.
+\end{nota}
+
+Cuando se declara un `dataframe` automáticamente se verifican que los nombres
+sean sintácticamente válidos con la función `make.names`
+
+```{r}
+data.frame("2000" = c(100:104)
+           , "una-variable" = c(200:204)
+           , ".2000" = c(300:304)
+)
+```
+
+
+\begin{curiosidad}[Nombres sintácticamente válidos]
+Los \texttt{dataframes} pueden tener únicamente nombres sintácticamente 
+válidos \parencite[][sección \textit{What are valid names?}]{rfaq}:
+\begin{itemize}
+\item Está compuesto por letras, números, puntos o guiones bajos. 
+\item No deben empezar con números. Tampoco pueden empezar con un punto seguido de un número.
+\item No se permiten palabras reservadas (if, else, repeat, next, TRUE, FALSE, entre otras).
+\end{itemize}
+\end{curiosidad}
+
+# Estructuras de datos fuera de R-básico
+
+Fuera del \textcite{rbase}, se han desarrollado otras estructuras de datos particularmente
+útiles para hacer análisis de datos. Hay paquetes compatibles con este tipo 
+de estructuras que facilitan el trabajo. A continuación presentaremos `data.tables`
+y `tibbles` que sustituyen el `data.frame`. Ambos se coercionan a *dataframe*
+de manera automática cuando se llama a una función que contiene únicamente 
+métodos para *dataframe*. 
+
+## Data tables
+
+`data.table` provee una versión de alto rendimiento para los *dataframes* del
+\textcite{rbase}. Está implementado en el paquete del mismo nombre \parencite{datatable}.
+
+Un `data.table` se crea en forma análoga a un `data.frame`. En la sección anterior,
+creamos un objeto llamado $df$
+
+```{r, eval = F}
+df <- data.frame(
+  x = rnorm(4),
+  y = runif(4),
+  n = LETTERS[1:4],
+  stringsAsFactors = F 
+)
+```
+
+Usamos la función `data.table()`:
+
+```{r}
+library(data.table)
+dt <- data.table(
+  x = rnorm(4),
+  y = runif(4),
+  n = LETTERS[1:4]
+)
+str(dt)
+class(dt)
+```
+
+Por *default* los vectores tipo caracter son leidos *as-is*, es decir, sin
+coercionar a factor. El objeto con clase *data.table* retiene todos los atributos 
+del *data.frame*. Podemos usar las funciones: `head`, `names`, 
+
+Para crear `data.tables` se puede coercionar cualquier `data.frame` con
+
+```{r}
+as.data.table(diamonds)
+```
+
+Nota como los `datatables` tienen por *default* una impresión diferente que 
+un `dataframe` pues imprimen los primeros y los últimos 6 renglones. 
+
+Los *data.tables* incorporan nuevas maneras de extraer objetos, agruparlos y 
+juntarlos con otras tablas. Para más detalles, se pueden revisar las
+viñetas del paquete:
+
+```{r, echo = F}
+vl <- vignette(package = "data.table")
+kable(vl$results[, 3:4])
+```
+
+Para ver una viñeta en específico se puede usar `vignette("datatable-faq", package = "data.table")`.
+
+\begin{curiosidad}[Viñetas]
+Todos los paquetes tienen viñetas en donde se documentan en forma más detallada
+sus funciones, clases y métodos.
+\end{curiosidad}
+
+## Tibbles
+
+Los `tibbles` son escencialmente `dataframes` pero con algunas modificaciones
+a los *defaults* para facilitar el trabajo \parencite[][ver sección ``tibbles'']{wickham2016r}. 
+
+Un `tibble` se crea en forma análoga a un `data.frame`. En la sección \ref{},
+creamos un objeto llamado $df$
+
+```{r, eval = F}
+df <- data.frame(
+  x = rnorm(4),
+  y = runif(4),
+  n = LETTERS[1:4],
+)
+```
+
+Usamos la función `tibble()` del paquete \textcite{tibble}:
+
+```{r}
+library(tibble)
+tb <- tibble(
+  x = rnorm(4),
+  y = runif(4),
+  n = LETTERS[1:4]
+)
+str(tb)
+class(tb)
+```
+
+Para crear `tibbles` se puede coercionar cualquier `data.frame` con
+
+```{r}
+as_tibble(diamonds)
+```
+
+Los `tibbles`, como los `datatables` tienen una impresión diferente que un 
+`dataframe`. En este caso, se imprime la dimensión y los primeros 10 renglones.
+
+Al crear un `tibble` nunca hay conversión de tipos (no se convierte de caracter
+a factor), no se cambian los nombres de las variables y no se crean nombres para
+las filas. Se permite también tener nombres de variables que no son sintácticamente
+válidos, para utilizar estos nombres, se declaran con acento invertido \texttt{`}
+
+```{r}
+tibble(
+  `2000` = c(100:104)
+  , `una-variable` = c(200:204)
+  , `año` = c(300:304)
+)
+```
+
+Para utilizar nombres no sintácticamente válidos es necesario conjugarlos con el
+acento invertido al nombrarlos en otros paquetes como `dplyr`, `ggplot2`, entre
+otros que son compatibles con el objeto `tibble`.
+
+La otra diferencia importante entre los `tibbles` y los `data.frames` es que
+pueden incorporar elementos de listas en una columna en forma sencilla \parencite{wickhammx}.
+
+```{r}
+try(df <- data.frame(x = list(1:2, 3:5)))
+
+df<- data.frame(x = I(list(1:2, 3:5)))
+df
+
+tb <- tibble(x = list(1:2, 3:5))
+tb
+
+```
+
+
+# Objetos importantes 
+
+## Infinito
 
 `Inf` es como R denomina al infinito. En el mundo de R se permite también positivo
 o negativo.
@@ -984,7 +1202,7 @@ o negativo.
 1/Inf
 ```
 
-### No es un número
+## No es un número
 
 `NaN` es como R denota a algo que no es un número (literal: *not a number*). 
 
@@ -993,7 +1211,7 @@ o negativo.
 ```
 
 
-### Valores perdidos (missing values)
+## Valores perdidos (missing values)
 
 En la página \pageref{otros-objetos-importantes} se habló de otros objetos en R.
 De particular importancia es `NA` para valores perdidos en general y `NaN` para 
@@ -1017,6 +1235,8 @@ is.na(x)
 Cuando tenemos un dataframe que tiene valores perdidos y lo queremos incorporar,
 por ejemplo, a un modelo de regresión, lo primero que hará el método es excluir
 todos los renglones que tengan *algún* valor perdido usando `na.exclude(datos)`.
+Normalmente, este **no** es el tratamiento deseado para valores perdidos pero 
+es el comportamiento por *default*.
 
 # Estructuras de control
 
@@ -1093,7 +1313,7 @@ Es posible también iterar directamente sobre vectores o partes de vectores.
 ```{r}
 x <- c("Andrea", "Liz", "Edwin", "Miguel")
 
-for ( i in x ) {
+for ( i in seq(x) ) {
   print(x[i])
 }
 
@@ -1127,9 +1347,9 @@ for( i in seq(nrow(m)) ) {
 
 Otra manera de iterar sobre comandos es con la estructura `while`. A diferencia
 del `for`, esta te permite iterar sobre la secuencia de comandos especificada
-hasta que se cumpla cierta condición. Esta última tiene que variar a lo largo 
+hasta que se cumpla cierta condición lógica. Esta última tiene que variar a lo largo
 de las iteraciones o es posible generar ciclos infinitos. Esta estructrura da
-mucha flexibilidad.
+mucha flexibilidad. 
 
 ```{r, eval = F}
 x <- runif(1)
@@ -1182,8 +1402,6 @@ Normalmente, se recomienda utilizar estructuras vectorizadas (como ifelse) pues,
 de esta manera, R es mucho más eficiente. 
 \end{nota}
 
-
-\printbibliography
 
 ```{r}
 sessionInfo()

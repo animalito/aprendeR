@@ -214,42 +214,19 @@
 
 \section{Manipulación de datos}\label{manipulacion-de-datos}
 
-Un proyecto de datos tiene una gran cantidad de componentes. Sin
-embargo, en básicamente todos se necesita iterar sobre el ciclo que se
-muestra en la figura \ref{fig:ciclo}.
+Esta sección resume algunas de las funciones existentes para
+\textbf{limpiar} datos de distintos formatos a \texttt{R}. En
+particular, se utiliza la conceptualización de datos limpios presentada
+en \textcite{wickham2014tidy} e implementada en el paquete
+\texttt{tidyr} \parencite{tidyr}. En la figura \ref{fig:ciclo2} podemos
+ver la etapa del análisis de datos correspondiente.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.75\textwidth]{../img/02_ciclo.png}
-    \caption{Modelo de las herramientas que se necesitan en un proyecto de datos según \textcite[Introducción]{grolemund2016r}.}
-    \label{fig:ciclo}
+    \includegraphics[width=0.75\textwidth]{../img/02_ciclo_2.png}
+    \caption{Limpieza de datos \textcite[Introducción]{grolemund2016r}.}
+    \label{fig:ciclo2}
 \end{figure}
-
-Primero es necesario \textbf{importar} nuestros datos a R. Los datos
-pueden estar en una gran cantidad de formatos o lugares.
-
-Después, normalmente es necesario \textbf{arreglar} nuestros datos, es
-decir, seguir criterios de datos limpios de tal forma que como guardemos
-los datos equivalga a la semántica de los datos que tenemos. Es muy
-importante primero limpiar porque esto provee de consistencia a lo largo
-del análisis.
-
-Posteriormente, en casi todo proyecto, será necesario
-\textbf{transformar} los datos. A veces esto implica enfocarse en un
-subconjunto de los datos, generar nuevas variables, calcular
-estadísticos, arreglar los datos de cierta manera, entre muchos otros.
-
-Solamente después de estas etapas podemos empezar a generar conocimiento
-a partir de los datos. Para esto tenemos dos herramientas fundamentales:
-la estadística descriptiva (en el diagrama reducido a
-\textbf{visualización}) y la generación de \textbf{modelos}. La primera
-es fundamental pues permite derivar preguntas pertinentes a los datos,
-encontrar patrones, respuestas, plantear hipótesis. Sin embargo, éstas
-no escalan de la misma manera que los modelos pues estos, una vez que
-aceptamos sus supuestos generan los resultados que esperamos o contestan
-la pregunta planteada.
-
-Por último, necesitamos \textbf{comunicar} los resultados.
 
 \subsection{Datos limpios}\label{datos-limpios}
 
@@ -544,16 +521,16 @@ religión).
   \hline
 Religion & Income & Freq \\ 
   \hline
-Other Faiths & \$100-150k & 40 \\ 
-  Other Christian & \$40-50k & 13 \\ 
-  Historically Black Prot & \$40-50k & 197 \\ 
-  Don’t know/refused & \$50-75k & 35 \\ 
-  Don’t know/refused & \$75-100k & 21 \\ 
-  Jehovah's Witness & \$30-40k & 24 \\ 
-  Buddhist & \$20-30k & 30 \\ 
-  Historically Black Prot & \$75-100k & 131 \\ 
-  Jewish & \$50-75k & 95 \\ 
-  Mainline Prot & \$100-150k & 753 \\ 
+Jehovah's Witness & \$30-40k & 24 \\ 
+  Other Christian & Don't know/refused & 18 \\ 
+  Atheist & \$40-50k & 35 \\ 
+  Buddhist & \$40-50k & 33 \\ 
+  Agnostic & Don't know/refused & 96 \\ 
+  Jewish & $>$150k & 151 \\ 
+  Jewish & \$30-40k & 25 \\ 
+  Muslim & \$50-75k & 23 \\ 
+  Hindu & $>$150k & 54 \\ 
+  Other Christian & \$10-20k & 7 \\ 
    \hline
 \end{tabular}
 \caption{Datos limpios para religión, ingreso y frecuencia.} 
@@ -586,22 +563,22 @@ muestran en la tabla \ref{tab:sujetos}.
   \hline
 sujetos & grupo & mes1 & mes2 & mes3 & mes4 & mes5 & mes6 & mes7 & mes8 & mes9 & mes10 & mes11 & mes12 \\ 
   \hline
-A & tratamiento & 16.64 & 16.19 & 15.98 & 16.51 & 15.91 & 16.43 & 16.39 & 16.33 & 16.39 & 16.05 & 15.52 & 16.59 \\ 
-  B & control & 17.09 & 16.19 & 15.70 & 12.55 & 13.11 & 14.04 & 14.19 & 14.26 & 16.07 & 15.59 & 17.06 & 18.40 \\ 
-  C & control & 27.55 & 26.38 & 28.05 & 27.42 & 27.60 & 27.25 & 26.80 & 27.22 & 26.20 & 26.20 & 26.90 & 27.39 \\ 
-  D & tratamiento & 31.04 & 31.49 & 31.54 & 33.30 & 34.09 & 33.49 & 34.42 & 35.26 & 35.16 & 37.44 & 38.32 & 40.61 \\ 
-  E & tratamiento & 17.51 & 18.96 & 18.53 & 18.35 & 18.61 & 19.35 & 20.47 & 20.44 & 22.05 & 22.36 & 24.09 & 25.53 \\ 
-  F & control & 34.83 & 35.73 & 36.81 & 36.24 & 37.68 & 38.37 & 38.34 & 39.37 & 40.07 & 39.51 & 41.40 & 41.97 \\ 
-  G & tratamiento & 18.14 & 17.59 & 19.33 & 19.50 & 20.39 & 22.39 & 23.10 & 24.81 & 25.37 & 25.89 & 26.11 & 27.71 \\ 
-  H & control & 22.17 & 23.16 & 23.42 & 24.90 & 23.86 & 24.74 & 24.88 & 29.70 & 31.18 & 33.48 & 34.09 & 33.97 \\ 
-  I & tratamiento & 19.12 & 19.82 & 18.75 & 19.58 & 19.52 & 20.96 & 21.34 & 22.68 & 23.51 & 22.70 & 23.44 & 23.85 \\ 
-  J & tratamiento & 34.96 & 35.02 & 37.66 & 36.45 & 36.84 & 36.98 & 36.36 & 36.71 & 37.01 & 37.74 & 37.29 & 37.13 \\ 
-  K & control & 20.82 & 23.25 & 22.48 & 21.31 & 20.13 & 19.46 & 21.18 & 21.59 & 23.25 & 23.62 & 25.06 & 25.16 \\ 
-  L & control & 22.96 & 25.50 & 23.87 & 24.36 & 23.95 & 25.41 & 25.91 & 26.05 & 28.06 & 27.98 & 27.64 & 27.61 \\ 
-  M & control & 25.28 & 25.53 & 27.46 & 27.49 & 28.30 & 28.14 & 29.90 & 32.10 & 32.05 & 31.79 & 31.37 & 32.63 \\ 
-  N & control & 27.08 & 25.76 & 28.81 & 30.29 & 29.90 & 30.16 & 31.33 & 31.52 & 32.03 & 30.89 & 31.50 & 30.76 \\ 
-  O & tratamiento & 32.31 & 32.29 & 33.01 & 33.65 & 34.18 & 33.21 & 34.17 & 34.65 & 37.09 & 36.37 & 36.85 & 38.04 \\ 
-  P & control & 32.55 & 33.40 & 35.94 & 35.35 & 34.98 & 35.12 & 34.00 & 36.72 & 38.13 & 38.73 & 40.54 & 40.26 \\ 
+A & tratamiento & 19.65 & 20.24 & 20.98 & 21.23 & 22.42 & 23.37 & 25.29 & 24.73 & 25.93 & 27.81 & 27.02 & 27.47 \\ 
+  B & tratamiento & 26.87 & 27.54 & 29.29 & 30.27 & 31.85 & 31.67 & 32.02 & 31.73 & 32.06 & 32.64 & 33.40 & 34.50 \\ 
+  C & control & 18.64 & 18.60 & 18.65 & 19.60 & 19.42 & 20.18 & 21.15 & 22.43 & 24.42 & 24.70 & 24.77 & 26.30 \\ 
+  D & control & 21.92 & 22.18 & 21.93 & 21.33 & 22.11 & 22.22 & 23.71 & 23.22 & 25.78 & 26.12 & 26.93 & 27.56 \\ 
+  E & tratamiento & 25.79 & 24.94 & 25.89 & 25.84 & 27.18 & 27.08 & 27.28 & 28.49 & 27.97 & 28.03 & 27.60 & 26.68 \\ 
+  F & tratamiento & 25.23 & 25.48 & 25.95 & 25.86 & 25.79 & 25.35 & 25.47 & 25.25 & 27.16 & 26.80 & 28.19 & 28.60 \\ 
+  G & tratamiento & 34.81 & 37.07 & 38.30 & 39.05 & 39.03 & 39.58 & 42.27 & 43.18 & 43.43 & 43.03 & 44.32 & 46.72 \\ 
+  H & tratamiento & 30.20 & 29.76 & 30.39 & 29.66 & 29.98 & 30.37 & 29.89 & 30.97 & 31.78 & 33.11 & 33.41 & 33.12 \\ 
+  I & control & 30.56 & 33.26 & 34.66 & 36.65 & 35.08 & 38.28 & 37.90 & 37.78 & 38.13 & 39.16 & 39.09 & 39.33 \\ 
+  J & tratamiento & 19.16 & 19.54 & 18.15 & 19.56 & 18.43 & 19.96 & 20.46 & 22.29 & 22.14 & 22.20 & 23.81 & 22.84 \\ 
+  K & control & 18.07 & 19.07 & 20.45 & 21.14 & 22.74 & 23.10 & 23.71 & 24.68 & 24.13 & 23.61 & 24.45 & 26.05 \\ 
+  L & tratamiento & 22.45 & 22.19 & 22.43 & 21.27 & 19.71 & 18.83 & 18.70 & 20.83 & 20.51 & 19.71 & 20.82 & 21.48 \\ 
+  M & control & 19.87 & 18.59 & 21.40 & 20.30 & 22.18 & 21.71 & 21.37 & 19.52 & 18.82 & 19.94 & 21.78 & 21.53 \\ 
+  N & tratamiento & 22.71 & 24.97 & 25.18 & 26.33 & 24.35 & 24.70 & 26.06 & 26.03 & 26.61 & 27.89 & 27.39 & 27.64 \\ 
+  O & tratamiento & 25.96 & 26.87 & 26.89 & 29.27 & 29.70 & 29.58 & 29.57 & 30.32 & 29.21 & 30.75 & 30.89 & 30.89 \\ 
+  P & tratamiento & 32.37 & 33.23 & 33.09 & 33.75 & 34.02 & 36.06 & 36.53 & 36.63 & 37.86 & 38.80 & 37.69 & 38.20 \\ 
    \hline
 \end{tabular}
 \endgroup
@@ -621,16 +598,16 @@ obtener el resultado que se muestra en la tabla \ref{tab:sujetostidy}.
   \hline
 sujetos & grupo & mes & IMC \\ 
   \hline
-D & tratamiento & mes4 & 33.30 \\ 
-  J & tratamiento & mes8 & 36.71 \\ 
-  I & tratamiento & mes10 & 22.70 \\ 
-  N & control & mes7 & 31.33 \\ 
-  K & control & mes9 & 23.25 \\ 
-  O & tratamiento & mes11 & 36.85 \\ 
-  D & tratamiento & mes12 & 40.61 \\ 
-  C & control & mes5 & 27.60 \\ 
-  K & control & mes11 & 25.06 \\ 
-  F & control & mes4 & 36.24 \\ 
+E & tratamiento & mes4 & 25.84 \\ 
+  D & control & mes10 & 26.12 \\ 
+  B & tratamiento & mes7 & 32.02 \\ 
+  J & tratamiento & mes4 & 19.56 \\ 
+  A & tratamiento & mes7 & 25.29 \\ 
+  P & tratamiento & mes8 & 36.63 \\ 
+  P & tratamiento & mes10 & 38.80 \\ 
+  H & tratamiento & mes2 & 29.76 \\ 
+  C & control & mes9 & 24.42 \\ 
+  N & tratamiento & mes4 & 26.33 \\ 
    \hline
 \end{tabular}
 \caption{Muestra de datos limpios para experimentos IMC.} 
