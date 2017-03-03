@@ -513,7 +513,7 @@ Copia el identificador de tu proyecto para que puedas realizar `queries`
 Leemos la base de datos pública de natalidad en Estados Unidos.
 
 ```{r, eval = F}
-project <- "focus-healer-159122" # put your projectID here
+project <- "focus-healer-159122" # pon tu projectID aquí
  
 sql <- 'SELECT year, count(*) as babies, avg(mother_age) as mother_age_avg
 FROM[publicdata:samples.natality] 

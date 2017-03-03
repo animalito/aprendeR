@@ -9,12 +9,10 @@
 \else % if luatex or xelatex
   \ifxetex
     \usepackage{mathspec}
-    \usepackage{xltxtra,xunicode}
   \else
     \usepackage{fontspec}
   \fi
-  \defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
-  \newcommand{\euro}{€}
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
 \fi
 % use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -24,6 +22,12 @@
 \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
 \usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={R: manipulación de datos},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
 \usepackage{color}
 \usepackage{fancyvrb}
 \newcommand{\VerbBar}{|}
@@ -38,16 +42,33 @@
 \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{{#1}}}
 \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{{#1}}}
 \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{{#1}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{{#1}}}
 \newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{{#1}}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{{#1}}}
 \newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{{#1}}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{{#1}}}
+\newcommand{\ImportTok}[1]{{#1}}
 \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{{#1}}}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{{#1}}}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{{#1}}}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{{#1}}}}}
 \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{{#1}}}
-\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{{#1}}}
 \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{{#1}}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{{#1}}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{{#1}}}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{{#1}}}}
+\newcommand{\BuiltInTok}[1]{{#1}}
+\newcommand{\ExtensionTok}[1]{{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{{#1}}}
 \newcommand{\RegionMarkerTok}[1]{{#1}}
-\newcommand{\ErrorTok}[1]{\textbf{{#1}}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{{#1}}}}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{{#1}}}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{{#1}}}}
 \newcommand{\NormalTok}[1]{{#1}}
-\usepackage{graphicx}
+\usepackage{graphicx,grffile}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
 \def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
@@ -56,27 +77,25 @@
 % margins by default, and it is still possible to overwrite the defaults
 % using explicit options in \includegraphics[width, height, ...]{}
 \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
-\ifxetex
-  \usepackage[setpagesize=false, % page size defined by xetex
-              unicode=false, % unicode breaks when used with xetex
-              xetex]{hyperref}
-\else
-  \usepackage[unicode=true]{hyperref}
-\fi
-\hypersetup{breaklinks=true,
-            bookmarks=true,
-            pdfauthor={},
-            pdftitle={R: manipulación de datos},
-            colorlinks=true,
-            citecolor=blue,
-            urlcolor=blue,
-            linkcolor=magenta,
-            pdfborder={0 0 0}}
-\urlstyle{same}  % don't use monospace font for urls
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
 \setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
 
 %%% Use protect on footnotes to avoid problems with footnotes in titles
 \let\rmarkdownfootnote\footnote%
@@ -208,9 +227,7 @@
 }
 
 \begin{document}
-
-
-
+\maketitle
 
 \section{Manipulación de datos}\label{manipulacion-de-datos}
 
@@ -232,7 +249,7 @@ ver la etapa del análisis de datos correspondiente.
 
 Mucho del esfuerzo en analítica lidia con la limpieza de datos. Tomar
 datos de diferentes fuentes y poderlas poner en la forma en la que uno
-los necesita para realizar analítica toma mucho tiempo y esfuezo.
+los necesita para realizar analítica toma mucho tiempo y esfuerzo.
 Existen herramientas que permiten que esta parte sea más fácil y
 eficiente. Entre éstas se encuentran los criterios de datos limpios.
 
@@ -321,7 +338,7 @@ variables:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
-\itemsep1pt\parskip0pt\parsep0pt
+\tightlist
 \item
   \emph{persona} con tres posibles valores (John, Jane, Mary)
 \item
@@ -371,7 +388,7 @@ tipos. En \textbf{datos limpios}:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
-\itemsep1pt\parskip0pt\parsep0pt
+\tightlist
 \item
   Cada \emph{variable} es una columna.
 \item
@@ -434,7 +451,7 @@ Los 5 problemas más comunes para llevar datos sucios a limpios son
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
-\itemsep1pt\parskip0pt\parsep0pt
+\tightlist
 \item
   Los nombres de las columnas son valores, no nombres de variables.
 \item
@@ -453,132 +470,139 @@ separación de cadenas y \emph{casting}.
 \subsubsection{Los nombres de las columnas son valores, no nombres de
 variables}\label{los-nombres-de-las-columnas-son-valores-no-nombres-de-variables}
 
-La tabla \ref{tab:varsencols} muestra datos sucios con este problema. Se
-muestran distintas religiones con el numero de personas que pertenecen a
-distintos niveles de ingreso. Dentro de un reporte, este tipo de
-representación tiene mucho sentido y permite visualizar muchas cosas
-rápidamente.
+La tabla \ref{tab:varsencols} muestra datos sucios con este problema. La
+base acompaña al paquete \texttt{tidyr} {[}@tidyr{]} y es una muestra de
+los datos del reporte sobre tuberculosis de la organización mundial de
+la salud. Contiene observaciones anuales por país para casos de
+tuberculosis según distintos grupos.
+
+Dentro de un reporte, la representación que se tiene de las variables
+tiene sentido. Por ejemplo, en la tabla \ref{tab:varsencols} vemos los
+casos de tuberculosis para distintos grupos de edad de hombres en México
+para cierto tipo de diagnóstico.
+
+\begin{table}[H]
+\centering
+\begingroup\tiny
+\begin{tabular}{lrrrrrrrr}
+  \hline
+country & year & new\_sp\_m014 & new\_sp\_m1524 & new\_sp\_m2534 & new\_sp\_m3544 & new\_sp\_m4554 & new\_sp\_m5564 & new\_sp\_m65 \\ 
+  \hline
+Mexico & 2000 & 214 & 1079 & 1387 & 1162 & 1235 & 972 & 1126 \\ 
+  Mexico & 2001 & 130 & 1448 & 1639 & 1683 & 1606 & 1229 & 1566 \\ 
+  Mexico & 2002 & 154 & 1090 & 1292 & 1301 & 1146 & 986 & 1144 \\ 
+  Mexico & 2003 & 187 & 1207 & 1461 & 1417 & 1313 & 1005 & 1352 \\ 
+  Mexico & 2004 &  86 & 1053 & 1276 & 1181 & 1201 & 958 & 1209 \\ 
+  Mexico & 2005 & 100 & 1095 & 1376 & 1314 & 1238 & 1042 & 1288 \\ 
+  Mexico & 2006 & 129 & 986 & 1320 & 1333 & 1275 & 1012 & 1215 \\ 
+  Mexico & 2007 & 145 & 981 & 1286 & 1286 & 1266 & 942 & 1226 \\ 
+  Mexico & 2008 & 124 & 966 & 1292 & 1314 & 1267 & 1004 & 1213 \\ 
+  Mexico & 2009 & 103 & 1030 & 1262 & 1401 & 1360 & 1024 & 1252 \\ 
+  Mexico & 2010 & 125 & 1081 & 1375 & 1380 & 1392 & 1119 & 1303 \\ 
+   \hline
+\end{tabular}
+\endgroup
+\caption{Casos de tuberculosis para México del 2000 al 2010 para hombres con diagnóstico por lesiones de pulmón.} 
+\label{tab:varsencols}
+\end{table}
+
+En las columnas tenemos varias variables: método de diagnóstico, género
+y categorías de edad. Para arreglarlo, necesitamos \emph{juntar} (melt)
+las columnas con valores de variables en una sola columna que contenga
+esos nombres como valores. En otras palabras, debemos convertir de la
+columna 5 en adelante en filas.
+
+Con el paquete \textbf{tidyr} esto se puede realizar en forma fácil con
+el comando \texttt{gather} de manera que obtenemos una tabla como la que
+se muestra en la tabla \ref{tab:varsjuntadas}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{junta <-}\StringTok{ }\NormalTok{tidyr::}\KeywordTok{gather}\NormalTok{(who, }\DataTypeTok{key =} \NormalTok{variables, }\DataTypeTok{value =} \NormalTok{casos}
+                       \NormalTok{, -country, -iso2, -iso3, -year, }\DataTypeTok{na.rm =} \NormalTok{T)}
+\end{Highlighting}
+\end{Shaded}
+
+Se especifica el \emph{data.frame} como primer parámetro, la llave
+(parámetro \emph{key}) será el nombre que tomará la variable con los
+nombres de las columnas a juntar, el valor (parámetro \emph{value}) es
+el nombre de la variable que contendrá los valores correspondientes a
+cada valor (el diagnóstico i-ésima, el j-ésimo género y el k-ésimo grupo
+de edad) y, por último, especificamos las variables que \textbf{NO} se
+deben de juntar (en este caso, el país, su iso2, su iso3 y el año).
+
+Hay parámetros adicionales en la función. Para estos datos en
+particular, es conveniente remover los grupos para los que no se tiene
+el dato con el parámetro \texttt{na.rm\ =\ TRUE}.
 
 \begin{table}[ht]
 \centering
 \begingroup\tiny
-\begin{tabular}{lrrrrrrrrrr}
+\begin{tabular}{lllrlr}
   \hline
-religion & $<$\$10k & \$10-20k & \$20-30k & \$30-40k & \$40-50k & \$50-75k & \$75-100k & \$100-150k & $>$150k & Don't know/refused \\ 
+country & iso2 & iso3 & year & variables & casos \\ 
   \hline
-Agnostic &  27 &  34 &  60 &  81 &  76 & 137 & 122 & 109 &  84 &  96 \\ 
-  Atheist &  12 &  27 &  37 &  52 &  35 &  70 &  73 &  59 &  74 &  76 \\ 
-  Buddhist &  27 &  21 &  30 &  34 &  33 &  58 &  62 &  39 &  53 &  54 \\ 
-  Catholic & 418 & 617 & 732 & 670 & 638 & 1116 & 949 & 792 & 633 & 1489 \\ 
-  Don’t know/refused &  15 &  14 &  15 &  11 &  10 &  35 &  21 &  17 &  18 & 116 \\ 
-  Evangelical Prot & 575 & 869 & 1064 & 982 & 881 & 1486 & 949 & 723 & 414 & 1529 \\ 
-  Hindu &   1 &   9 &   7 &   9 &  11 &  34 &  47 &  48 &  54 &  37 \\ 
-  Historically Black Prot & 228 & 244 & 236 & 238 & 197 & 223 & 131 &  81 &  78 & 339 \\ 
-  Jehovah's Witness &  20 &  27 &  24 &  24 &  21 &  30 &  15 &  11 &   6 &  37 \\ 
-  Jewish &  19 &  19 &  25 &  25 &  30 &  95 &  69 &  87 & 151 & 162 \\ 
-  Mainline Prot & 289 & 495 & 619 & 655 & 651 & 1107 & 939 & 753 & 634 & 1328 \\ 
-  Mormon &  29 &  40 &  48 &  51 &  56 & 112 &  85 &  49 &  42 &  69 \\ 
-  Muslim &   6 &   7 &   9 &  10 &   9 &  23 &  16 &   8 &   6 &  22 \\ 
-  Orthodox &  13 &  17 &  23 &  32 &  32 &  47 &  38 &  42 &  46 &  73 \\ 
-  Other Christian &   9 &   7 &  11 &  13 &  13 &  14 &  18 &  14 &  12 &  18 \\ 
-  Other Faiths &  20 &  33 &  40 &  46 &  49 &  63 &  46 &  40 &  41 &  71 \\ 
-  Other World Religions &   5 &   2 &   3 &   4 &   2 &   7 &   3 &   4 &   4 &   8 \\ 
-  Unaffiliated & 217 & 299 & 374 & 365 & 341 & 528 & 407 & 321 & 258 & 597 \\ 
+Afghanistan & AF & AFG & 1997 & new\_sp\_m014 &   0 \\ 
+  Afghanistan & AF & AFG & 1998 & new\_sp\_m014 &  30 \\ 
+  Afghanistan & AF & AFG & 1999 & new\_sp\_m014 &   8 \\ 
+  Afghanistan & AF & AFG & 2000 & new\_sp\_m014 &  52 \\ 
+  Afghanistan & AF & AFG & 2001 & new\_sp\_m014 & 129 \\ 
+  Afghanistan & AF & AFG & 2002 & new\_sp\_m014 &  90 \\ 
    \hline
 \end{tabular}
 \endgroup
-\caption{Variable de ingreso en columnas.} 
-\label{tab:varsencols}
+\caption{Valores de variables en una sola variable.} 
+\label{tab:varsjuntadas}
 \end{table}
 
-El conjunto de datos tiene 3 variables: \emph{religion}, \emph{ingreso}
-y \emph{frecuencia}. Para arreglarlo, necesitamos \emph{juntar} (melt)
-las columnas con nombres de niveles de ingreso en una sola columna que
-contenga esos nombres como valores. En otras palabras, debemos convertir
-de la columna 2 en adelante en filas.
+\renewcommand\bcStyleTitre[1]{\large\textcolor{bbblack}{#1}}
 
-Con el paquete \textbf{tidyr} esto se puede realizar en forma fácil con
-el comando \texttt{gather}.
+\begin{bclogo}[
+  couleur=llred,
+  arrondi=0,
+  logo=\bcstop,
+  barre=none,
+  noborder=true]{Ejercicio}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{limpios <-}\StringTok{ }\NormalTok{tidyr::}\KeywordTok{gather}\NormalTok{(raw, }\DataTypeTok{key =} \NormalTok{income, }\DataTypeTok{value =} \NormalTok{freq, -religion)}
-\end{Highlighting}
-\end{Shaded}
+Este tipo de formato de datos (poner valores de variables en las columnas) 
+es útil también cuando se capturan datos al evitar la repetición de valores. \\
 
-Con este comando, obtenemos la tabla \ref{tab:ej1limpio}. Se especifica
-el \emph{data.frame} como primer parámetro, la llave (parámetro
-\emph{key}) será el nombre que tomará la variable con los nombres de las
-columnas a juntar, el valor (parámetro \emph{value}) es el nombre de la
-variable que contendrá los valores correspondientes a cada valor (la
-religión i-ésima, grupo de ingreso j-ésimo) y, por último, especificamos
-las variables que \textbf{NO} se deben de juntar (en este caso,
-religión).
+Por ejemplo, pensemos en un experimento clínico en el que seguimos a sujetos
+a lo largo de un tratamiento midiendo su IMC. Una forma muy
+sencilla de guardar los datos del experimento es utilizando un procesador
+de texto común. El capturista no querrá seguir criterios de datos limpios
+al llenar la información pues implicaría repetir el nombre de la persona,
+el día de la captura y el nivel de colesterol. Supongamos un experimento con
+16 sujetos a lo largo de un año en donde se mide el colesterol una vez al mes (mes1, mes2, etc.). Los datos capturados se muestran en la tabla \ref{tab:sujetos}. \\
 
-\begin{table}[ht]
-\centering
-\begin{tabular}{lll}
-  \hline
-Religion & Income & Freq \\ 
-  \hline
-Unaffiliated & Don't know/refused & 597 \\ 
-  Historically Black Prot & \$10-20k & 244 \\ 
-  Muslim & Don't know/refused & 22 \\ 
-  Agnostic & $<$\$10k & 27 \\ 
-  Other Faiths & \$75-100k & 46 \\ 
-  Mormon & Don't know/refused & 69 \\ 
-  Other Christian & \$100-150k & 14 \\ 
-  Mormon & $>$150k & 42 \\ 
-  Orthodox & \$10-20k & 17 \\ 
-  Muslim & $>$150k & 6 \\ 
-   \hline
-\end{tabular}
-\caption{Datos limpios para religión, ingreso y frecuencia.} 
-\label{tab:ej1limpio}
-\end{table}
+Nuevamente, queremos convertir la columan 3 a 14 en filas, es decir, observaciones.
+Utiliza el comando `gather` para realizar esto y obtener el resultado que se
+muestra en la tabla \ref{tab:sujetostidy}.
+\end{bclogo}
 
-\begin{nota}[Nota] 
-Esta forma es limpia pues cada columna es una variable, cada fila es una observación
-y no se mezclan unidades observacionales.
-\end{nota}
-
-Este tipo de formato de datos (poner valores de variables en las
-columnas) es útil también cuando se capturan datos al evitar la
-repetición de valores.
-
-Por ejemplo, pensemos en un experimento clínico en el que seguimos a
-sujetos a lo largo de un tratamiento midiendo su IMC. Una forma muy
-sencilla de guardar los datos del experimento es utilizando un
-procesador de texto común. El capturista no querrá seguir criterios de
-datos limpios al llenar la información pues implicaría repetir el nombre
-de la persona, el día de la captura y el nivel de colesterol. Supongamos
-un experimento con 16 sujetos a lo largo de un año en donde se mide el
-colesterol una vez al mes (mes1, mes2, etc.). Los datos capturados se
-muestran en la tabla \ref{tab:sujetos}.
-
-\begin{table}[ht]
+\begin{table}[H]
 \centering
 \begingroup\tiny
 \begin{tabular}{llrrrrrrrrrrrr}
   \hline
 sujetos & grupo & mes1 & mes2 & mes3 & mes4 & mes5 & mes6 & mes7 & mes8 & mes9 & mes10 & mes11 & mes12 \\ 
   \hline
-A & control & 16.68 & 18.43 & 19.24 & 17.16 & 18.26 & 17.86 & 17.26 & 17.10 & 16.75 & 16.95 & 16.62 & 15.72 \\ 
-  B & tratamiento & 24.64 & 25.77 & 26.33 & 26.69 & 27.91 & 27.89 & 29.12 & 29.65 & 29.41 & 28.97 & 27.69 & 29.20 \\ 
-  C & control & 32.16 & 35.19 & 36.63 & 36.38 & 36.00 & 36.98 & 38.31 & 38.10 & 38.55 & 38.19 & 37.05 & 38.20 \\ 
-  D & tratamiento & 22.95 & 22.53 & 25.01 & 25.47 & 26.22 & 27.01 & 28.36 & 30.51 & 31.95 & 33.21 & 34.58 & 35.06 \\ 
-  E & tratamiento & 26.96 & 27.76 & 28.62 & 28.27 & 28.72 & 29.66 & 30.11 & 30.72 & 29.87 & 30.59 & 31.38 & 32.64 \\ 
-  F & tratamiento & 16.54 & 16.95 & 19.48 & 20.59 & 21.30 & 24.29 & 24.37 & 23.82 & 23.37 & 23.91 & 24.19 & 26.18 \\ 
-  G & control & 29.34 & 30.51 & 32.43 & 32.70 & 31.21 & 31.86 & 32.29 & 31.65 & 31.94 & 33.53 & 32.50 & 32.17 \\ 
-  H & tratamiento & 23.98 & 23.30 & 21.76 & 22.33 & 23.61 & 23.98 & 24.56 & 25.21 & 25.33 & 27.21 & 27.73 & 27.84 \\ 
-  I & control & 30.23 & 30.30 & 29.40 & 30.48 & 28.97 & 30.22 & 32.11 & 33.17 & 31.56 & 33.04 & 35.39 & 34.69 \\ 
-  J & control & 26.92 & 26.85 & 27.40 & 28.07 & 28.84 & 28.90 & 30.48 & 31.88 & 33.28 & 33.18 & 34.35 & 35.38 \\ 
-  K & control & 26.13 & 25.72 & 25.96 & 26.10 & 24.71 & 25.24 & 25.26 & 27.85 & 27.23 & 27.16 & 29.12 & 30.51 \\ 
-  L & control & 27.59 & 28.37 & 29.84 & 28.83 & 29.20 & 29.72 & 30.39 & 30.24 & 30.23 & 31.08 & 31.82 & 32.51 \\ 
-  M & tratamiento & 20.78 & 22.79 & 23.95 & 24.38 & 26.99 & 27.86 & 28.57 & 29.12 & 29.76 & 29.56 & 30.58 & 31.42 \\ 
-  N & tratamiento & 24.31 & 24.32 & 23.52 & 26.01 & 25.97 & 25.56 & 26.88 & 26.94 & 29.28 & 29.24 & 29.67 & 27.90 \\ 
-  O & tratamiento & 21.28 & 19.60 & 20.14 & 21.34 & 22.06 & 22.88 & 22.43 & 22.81 & 24.64 & 26.04 & 27.10 & 27.66 \\ 
-  P & tratamiento & 24.05 & 24.48 & 26.38 & 26.52 & 27.91 & 28.56 & 28.62 & 30.38 & 31.15 & 31.60 & 33.44 & 34.01 \\ 
+A & tratamiento & 29.21 & 30.15 & 29.54 & 28.81 & 26.94 & 27.74 & 26.08 & 27.50 & 28.05 & 26.76 & 25.38 & 26.53 \\ 
+  B & control & 19.37 & 19.10 & 18.26 & 17.22 & 18.22 & 19.01 & 17.00 & 16.09 & 16.37 & 15.82 & 15.48 & 16.31 \\ 
+  C & control & 30.49 & 30.83 & 31.55 & 32.58 & 32.60 & 32.72 & 33.99 & 35.98 & 38.03 & 37.95 & 37.98 & 38.66 \\ 
+  D & tratamiento & 32.39 & 32.09 & 31.54 & 32.16 & 31.56 & 31.73 & 32.92 & 33.07 & 33.45 & 34.65 & 34.19 & 34.67 \\ 
+  E & control & 16.63 & 17.99 & 18.08 & 18.29 & 18.50 & 17.95 & 19.10 & 20.55 & 20.65 & 19.86 & 20.19 & 20.34 \\ 
+  F & tratamiento & 31.61 & 32.47 & 32.40 & 31.90 & 32.67 & 32.94 & 32.03 & 32.69 & 34.29 & 36.95 & 38.79 & 39.68 \\ 
+  G & control & 23.77 & 24.45 & 24.46 & 27.27 & 27.70 & 27.78 & 30.05 & 30.32 & 30.48 & 31.18 & 29.69 & 29.41 \\ 
+  H & control & 31.41 & 30.04 & 30.64 & 30.11 & 29.21 & 29.70 & 29.24 & 29.06 & 30.98 & 32.41 & 34.40 & 35.89 \\ 
+  I & tratamiento & 16.03 & 16.02 & 17.04 & 18.51 & 19.46 & 19.79 & 19.66 & 21.77 & 21.83 & 22.00 & 22.31 & 23.22 \\ 
+  J & control & 29.18 & 31.32 & 31.02 & 31.39 & 31.58 & 31.19 & 32.50 & 32.34 & 32.28 & 32.12 & 32.84 & 33.17 \\ 
+  K & tratamiento & 24.09 & 25.04 & 26.55 & 26.63 & 26.37 & 26.50 & 27.17 & 27.98 & 29.59 & 29.08 & 28.97 & 31.10 \\ 
+  L & tratamiento & 26.36 & 27.07 & 26.96 & 27.67 & 28.63 & 27.01 & 26.49 & 27.41 & 28.64 & 29.56 & 30.01 & 31.41 \\ 
+  M & control & 16.19 & 16.96 & 17.61 & 16.46 & 17.41 & 18.73 & 17.97 & 17.62 & 21.01 & 23.11 & 22.33 & 22.37 \\ 
+  N & tratamiento & 22.45 & 22.53 & 23.62 & 23.38 & 23.16 & 23.75 & 23.43 & 24.48 & 23.80 & 24.37 & 24.35 & 25.21 \\ 
+  O & control & 22.23 & 23.59 & 24.44 & 25.67 & 26.60 & 28.12 & 30.28 & 31.45 & 32.93 & 33.95 & 34.36 & 34.79 \\ 
+  P & control & 20.53 & 19.75 & 19.45 & 21.07 & 21.37 & 24.16 & 24.27 & 25.24 & 26.07 & 26.15 & 26.15 & 26.53 \\ 
    \hline
 \end{tabular}
 \endgroup
@@ -586,33 +610,46 @@ A & control & 16.68 & 18.43 & 19.24 & 17.16 & 18.26 & 17.86 & 17.26 & 17.10 & 16
 \label{tab:sujetos}
 \end{table}
 
-\textbf{Ejercicio}
-
-Nuevamente, queremos convertir la columan 3 a 14 en filas, es decir,
-observaciones. Utiliza el comando \texttt{gather} para realizar esto y
-obtener el resultado que se muestra en la tabla \ref{tab:sujetostidy}.
-
-\begin{table}[ht]
+\begin{table}[H]
 \centering
 \begin{tabular}{lllr}
   \hline
 sujetos & grupo & mes & IMC \\ 
   \hline
-B & tratamiento & mes6 & 27.89 \\ 
-  N & tratamiento & mes2 & 24.32 \\ 
-  A & control & mes6 & 17.86 \\ 
-  F & tratamiento & mes12 & 26.18 \\ 
-  L & control & mes4 & 28.83 \\ 
-  K & control & mes11 & 29.12 \\ 
-  H & tratamiento & mes9 & 25.33 \\ 
-  O & tratamiento & mes1 & 21.28 \\ 
-  D & tratamiento & mes10 & 33.21 \\ 
-  J & control & mes3 & 27.40 \\ 
+F & tratamiento & mes4 & 31.90 \\ 
+  O & control & mes10 & 33.95 \\ 
+  D & tratamiento & mes8 & 33.07 \\ 
+  M & control & mes4 & 16.46 \\ 
+  G & control & mes1 & 23.77 \\ 
+  H & control & mes7 & 29.24 \\ 
+  G & control & mes4 & 27.27 \\ 
+  D & tratamiento & mes1 & 32.39 \\ 
+  L & tratamiento & mes12 & 31.41 \\ 
+  K & tratamiento & mes4 & 26.63 \\ 
    \hline
 \end{tabular}
 \caption{Muestra de datos limpios para experimentos IMC.} 
 \label{tab:sujetostidy}
 \end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Creamos los datos}
+\NormalTok{df <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}
+  \DataTypeTok{sujetos =} \NormalTok{LETTERS[}\DecValTok{1}\NormalTok{:}\DecValTok{16}\NormalTok{],}
+  \DataTypeTok{grupo =} \KeywordTok{sample}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"control"}\NormalTok{, }\StringTok{"tratamiento"}\NormalTok{), }\DataTypeTok{size =} \DecValTok{16}\NormalTok{, }\DataTypeTok{replace =} \NormalTok{T, }\DataTypeTok{prob =} \KeywordTok{c}\NormalTok{(}\FloatTok{0.5}\NormalTok{, }\FloatTok{0.5}\NormalTok{))}
+  \CommentTok{# ,  meses = as.vector(sapply(paste0("mes",1:12), rep, 16))}
+  \NormalTok{)}
+\NormalTok{m <-}\StringTok{ }\KeywordTok{t}\NormalTok{(}\KeywordTok{sapply}\NormalTok{(}\KeywordTok{runif}\NormalTok{(}\DecValTok{16}\NormalTok{, }\DecValTok{16}\NormalTok{, }\DecValTok{35}\NormalTok{), }\DataTypeTok{FUN =} \NormalTok{function(x)\{}\KeywordTok{cumsum}\NormalTok{(}\KeywordTok{c}\NormalTok{(x, }\KeywordTok{rnorm}\NormalTok{(}\DecValTok{11}\NormalTok{, }\DataTypeTok{mean =} \FloatTok{0.5}\NormalTok{, }\DataTypeTok{sd =} \DecValTok{1}\NormalTok{)))\}))}
+\KeywordTok{colnames}\NormalTok{(m) <-}\StringTok{ }\KeywordTok{paste0}\NormalTok{(}\StringTok{"mes"}\NormalTok{,}\DecValTok{1}\NormalTok{:}\DecValTok{12}\NormalTok{)}
+\NormalTok{df <-}\StringTok{ }\KeywordTok{cbind}\NormalTok{(df, m)}
+
+\CommentTok{# Respuesta: opción 1}
+\NormalTok{tidyr::}\KeywordTok{gather}\NormalTok{(df, }\DataTypeTok{key =} \NormalTok{mes, }\DataTypeTok{value =} \NormalTok{IMC, -sujetos, -grupo)}
+\CommentTok{# opción 2}
+\NormalTok{tidyr::}\KeywordTok{gather}\NormalTok{(df, }\DataTypeTok{key =} \NormalTok{mes, }\DataTypeTok{value =} \NormalTok{IMC, mes1:mes12)}
+\end{Highlighting}
+\end{Shaded}
 
 \subsubsection{Múltiples variables se encuentran en la misma
 columna}\label{multiples-variables-se-encuentran-en-la-misma-columna}
@@ -621,99 +658,77 @@ Otra forma de datos sucios es cuando una columna con nombres de
 variables tiene realmente varias variables dentro del nombre (como en el
 ejemplo siguiente).
 
-\begin{table}[ht]
-\centering
-\begin{tabular}{lrrrrrrrrrr}
-  \hline
-country & year & m014 & m1524 & m2534 & m3544 & m4554 & m5564 & m65 & mu & f014 \\ 
-  \hline
-AD & 2000 &   0 &   0 &   1 &   0 &   0 &   0 &   0 &  &  \\ 
-  AE & 2000 &   2 &   4 &   4 &   6 &   5 &  12 &  10 &  &   3 \\ 
-  AF & 2000 &  52 & 228 & 183 & 149 & 129 &  94 &  80 &  &  93 \\ 
-  AG & 2000 &   0 &   0 &   0 &   0 &   0 &   0 &   1 &  &   1 \\ 
-  AL & 2000 &   2 &  19 &  21 &  14 &  24 &  19 &  16 &  &   3 \\ 
-  AM & 2000 &   2 & 152 & 130 & 131 &  63 &  26 &  21 &  &   1 \\ 
-  AN & 2000 &   0 &   0 &   1 &   2 &   0 &   0 &   0 &  &   0 \\ 
-  AO & 2000 & 186 & 999 & 1003 & 912 & 482 & 312 & 194 &  & 247 \\ 
-  AR & 2000 &  97 & 278 & 594 & 402 & 419 & 368 & 330 &  & 121 \\ 
-  AS & 2000 &  &  &  &  &   1 &   1 &  &  &  \\ 
-   \hline
-\end{tabular}
-\end{table}
+Si regresamos al ejemplo de la sección anterior, podemos notar que
+todavía no se tienen datos limpios. Primero, notamos una inconsistencia:
+todos los valores tienen el sufijo ``new\_'' o ``new'' pero éste no
+tiene significado. Eliminamos ese pedazo de texto de los valores con la
+función \texttt{gsub}.
 
-El primer paso es pasar las columnas que son valores de variable a una
-sola columna (tabla \ref{tab:tbjuntar}).
+Segundo, debemos extraer los valores de las variables métdodo de
+diagnóstico, género y categoría de edad de la columna que acabamos de
+construir (que llamamos ``variables''). Para eso, utilizamos la función
+\texttt{extract} del paquete \texttt{tidyr}. A esta función, debemos
+decirle cuál es el nombre de la variable que contiene varios valores
+(parámetro \emph{col}), los nuevos nombres de columnas (parámtro
+\emph{into}) y la expresión regular con la que irá capturando los
+pedazos y asignándolos a la columna correcta (parámetro \emph{regex}).
 
-\begin{table}[ht]
-\centering
-\begin{tabular}{lrlr}
-  \hline
-country & year & column & cases \\ 
-  \hline
-AD & 2000 & m014 &   0 \\ 
-  AE & 2000 & m014 &   2 \\ 
-  AF & 2000 & m014 &  52 \\ 
-  AG & 2000 & m014 &   0 \\ 
-  AL & 2000 & m014 &   2 \\ 
-  AM & 2000 & m014 &   2 \\ 
-  AN & 2000 & m014 &   0 \\ 
-  AO & 2000 & m014 & 186 \\ 
-  AR & 2000 & m014 &  97 \\ 
-  AS & 2000 & m014 &  \\ 
-  AT & 2000 & m014 &   1 \\ 
-  AU & 2000 & m014 &   3 \\ 
-  AZ & 2000 & m014 &   0 \\ 
-  BA & 2000 & m014 &   4 \\ 
-  BB & 2000 & m014 &   0 \\ 
-   \hline
-\end{tabular}
-\caption{Paso 1. Juntar las columnas cuyos nombres son 2 variables.} 
-\label{tab:tbjuntar}
-\end{table}
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{limpios <-}\StringTok{ }\NormalTok{junta %>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{variables =} \KeywordTok{gsub}\NormalTok{(}\StringTok{"new_|new"}\NormalTok{, }\StringTok{""}\NormalTok{, variables)) %>%}
+\StringTok{  }\KeywordTok{extract}\NormalTok{(., }\DataTypeTok{col =} \NormalTok{variables}
+          \NormalTok{, }\DataTypeTok{into =} \KeywordTok{c}\NormalTok{(}\StringTok{"diagnostico"}\NormalTok{, }\StringTok{"genero"}\NormalTok{, }\StringTok{"edad"}\NormalTok{)}
+          \NormalTok{, }\DataTypeTok{regex =} \StringTok{"([[:alnum:]]+)_([a-z])([[0-9]]+)"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
 
-Posteriormente, debemos separar en las columnas apropiadas las variables
-que estan contenidas en los antiguos nombres de variables (tabla
-\ref{tab:tbseparar}).
+De esta forma, obtenemos los datos como se ven en la tabla
+\ref{tab:varslimpios} donde tenemos una variable para el método de
+diagnóstico, una para el género, otra para la edad y una última con el
+número de casos observados.
 
 \begin{table}[ht]
 \centering
-\begin{tabular}{lrllr}
+\begingroup\tiny
+\begin{tabular}{lllrlr}
   \hline
-country & year & sex & age & cases \\ 
+country & iso2 & iso3 & year & variables & casos \\ 
   \hline
-AD & 2000 & m & 0-14 &   0 \\ 
-  AE & 2000 & m & 0-14 &   2 \\ 
-  AF & 2000 & m & 0-14 &  52 \\ 
-  AG & 2000 & m & 0-14 &   0 \\ 
-  AL & 2000 & m & 0-14 &   2 \\ 
-  AM & 2000 & m & 0-14 &   2 \\ 
-  AN & 2000 & m & 0-14 &   0 \\ 
-  AO & 2000 & m & 0-14 & 186 \\ 
-  AR & 2000 & m & 0-14 &  97 \\ 
-  AS & 2000 & m & 0-14 &  \\ 
-  AT & 2000 & m & 0-14 &   1 \\ 
-  AU & 2000 & m & 0-14 &   3 \\ 
-  AZ & 2000 & m & 0-14 &   0 \\ 
-  BA & 2000 & m & 0-14 &   4 \\ 
-  BB & 2000 & m & 0-14 &   0 \\ 
+Afghanistan & AF & AFG & 1997 & new\_sp\_m014 &   0 \\ 
+  Afghanistan & AF & AFG & 1998 & new\_sp\_m014 &  30 \\ 
+  Afghanistan & AF & AFG & 1999 & new\_sp\_m014 &   8 \\ 
+  Afghanistan & AF & AFG & 2000 & new\_sp\_m014 &  52 \\ 
+  Afghanistan & AF & AFG & 2001 & new\_sp\_m014 & 129 \\ 
+  Afghanistan & AF & AFG & 2002 & new\_sp\_m014 &  90 \\ 
    \hline
 \end{tabular}
-\caption{Paso 2. Separar las columnas.} 
-\label{tab:tbseparar}
+\endgroup
+\caption{Cada columna es una variable.} 
+\label{tab:varslimpios}
 \end{table}
 
-\begin{nota}[stringr]
-Otro paquete muy útil para realizar tareas de limpieza con cadenas. 
-La \href{https://cran.r-project.org/web/packages/stringr/stringr.pdf}{documentación}
-detalla todas sus funciones.
+\begin{nota}[Nota] 
+Esta forma es limpia pues cada columna es una variable, cada fila es una observación
+y no se mezclan unidades observacionales.
 \end{nota}
 
 \subsubsection{Las variables están guardadas tanto en filas como en
 columnas}\label{las-variables-estan-guardadas-tanto-en-filas-como-en-columnas}
 
-El problema más difícil es cuando las variables están tanto en filas
-como en columnas. Para ejemplificar este problema, se muestran los datos
-de temperatura máxima y mínima en algunas zonas de México.
+Uno de los problemas más difíciles es cuando las variables están tanto
+en filas como en columnas.
+
+Para ejemplificar este problema, se muestran los datos de temperatura
+máxima y mínima en algunas zonas de México
+\parencite[][archivo data/weather.txt]{tidydata}. Los datos que
+limpiaremos se ven en la tabla \ref{tab:clima}. Como se puede ver,
+tenemos valores del día del mes de la observación como nombres de
+variables: d1 (día 1), d2 (día 2), etc. Esto es homógolo al problema 1
+visto anteriormente.
+
+También tenemos variables en las filas: la temperatura máxima y la
+temperatura mínima deberían ser el nombre de las columnas.
 
 \begin{table}[ht]
 \centering
@@ -767,6 +782,13 @@ nueva variable para crear la fecha. Asi, obtenemos la tabla
 \StringTok{  }\NormalTok{dplyr::}\KeywordTok{arrange}\NormalTok{(clean1, date, element) }
 \end{Highlighting}
 \end{Shaded}
+
+\begin{nota}[stringr]
+Otro paquete muy útil para realizar tareas de limpieza con cadenas. 
+La \href{https://cran.r-project.org/web/packages/stringr/stringr.pdf}{documentación}
+detalla todas sus funciones. En este caso, utilizamos la función \texttt{str\_replace}
+que nos permite reemplazar una cadena de caracteres por otra.
+\end{nota}
 
 \begin{table}[ht]
 \centering
@@ -826,8 +848,13 @@ En ocasiones las bases de datos involucran diferentes tipos de unidad
 observacional. Para tener datos limpios, cada unidad observacional debe
 estar almacenada en su propia tabla.
 
+Para este ejemplo, utilizamos la base de datos \texttt{billboard}
+\parencite[][archivo: data/billboard.csv]{tidydata}
+
 \begin{Shaded}
 \begin{Highlighting}[]
+\NormalTok{if (!}\KeywordTok{file.exists}\NormalTok{(}\StringTok{"tidyr_datasets/billboard.csv"}\NormalTok{)) }\KeywordTok{download.file}\NormalTok{(}\StringTok{"https://raw.githubusercontent.com/hadley/tidy-data/master/data/billboard.csv"}\NormalTok{,}
+                \StringTok{"tidyr_datasets/billboard.csv"}\NormalTok{)}
 \NormalTok{billboard <-}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{"tidyr_datasets/billboard.csv"}\NormalTok{, }\DataTypeTok{stringsAsFactors =} \NormalTok{F)}
 \NormalTok{billboard_long <-}\StringTok{ }\KeywordTok{gather}\NormalTok{(billboard, week, rank, x1st.week:x76th.week, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{)}
 \NormalTok{billboard_tidy <-}\StringTok{ }\NormalTok{billboard_long %>%}
@@ -856,7 +883,17 @@ estar almacenada en su propia tabla.
 ## 6  Rock  2000-08-26    1   59 2000-06-17
 \end{verbatim}
 
+\renewcommand\bcStyleTitre[1]{\large\textcolor{bbblack}{#1}}
+
+\begin{bclogo}[
+  couleur=llred,
+  arrondi=0,
+  logo=\bcstop,
+  barre=none,
+  noborder=true]{Ejercicio}
+  
 ¿Cuáles son las unidades observacionales en esta tabla?
+\end{bclogo}
 
 Separemos esta base de datos en dos: la tabla canción que almacena
 artista, nombre de la canción y duración; la tabla rango que almacena el
@@ -939,7 +976,7 @@ datos debemos:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
-\itemsep1pt\parskip0pt\parsep0pt
+\tightlist
 \item
   Leemos los archivos en una lista de tablas.
 \item
@@ -1013,5 +1050,6 @@ seleccionamos solo las de interes.
 ## 10     1       1 2003-01-10      NA      NA
 ## # ... with 772,077 more rows
 \end{verbatim}
+
 
 \end{document}
