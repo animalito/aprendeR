@@ -1,10 +1,16 @@
 ---
 title: "Visualización en ggplot2"
-output: 
+output:
+  pdf_document:
+    fig_caption: yes
+    includes:
+      in_header: mypackages.sty
+    keep_tex: yes
+    latex_engine: pdflatex
   html_document:
-    toc: true
+    toc: yes
     toc_depth: 3
-    toc_float: true
+    toc_float: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -12,7 +18,9 @@ knitr::opts_chunk$set(echo = T, warning = F, error = F, message = F)
 library(ggplot2)
 ```
 
-# La gramática de las gráficas
+# Visualización
+
+## La gramática de las gráficas
 
 Es una herramienta que nos permite:
 
@@ -41,7 +49,7 @@ Los componentes de una gráfica son ortogonales:
     - Una configuración distinta de componentes es válida
     - Puedes construir mayor complejidad agregando capas
 
-# ggplot
+## ggplot
 
 **Aquí empieza el pocheo necesario. Es más fácil si saben cómo se llama en inglés**.
 
@@ -56,7 +64,7 @@ Los componentes de la gramática de gráficas específica para ggplot son:
 3. Un sistema de coordenadas
 4. Una especificación de facetas
 
-## Base plotting
+### Base plotting
 
 ```{r}
 str(diamonds)
@@ -66,7 +74,7 @@ plot(diamonds$carat, diamonds$price)
 
 Buen primer intento pero... algo feo... y limitado.
 
-## Primer ejemplo en ggplot
+### Primer ejemplo en ggplot
 
 ```{r, echo = T}
 ggplot() +
@@ -94,7 +102,7 @@ o aun mas abreviado... con el magnifico `qplot`
 qplot(data = diamonds, x = carat, y = price, geom = "point")
 ```
 
-# Las capas
+## Las capas
 
 `ggplot` produce un objeto que se puede convertir en una gráfica. Es decir, `R` 
 sabe cómo convertirlo en una gráfica.
@@ -107,9 +115,9 @@ Así como en otros casos, el objeto en `R` puede ser guardado en una variable, s
 le puede imprimir, se le puede guardar como imagen de diferentes formatos, o se
 puede guardar en una lista o en un `Rdata`.
 
-## Componentes de una capa
+### Componentes de una capa
 
-### Datos y mapa estético
+#### Datos y mapa estético
 
 Permite mapear las columnas del `data.frame` de entrada a los aspectos de la grafica.
 
@@ -128,7 +136,7 @@ mix2norm <- data.frame(x  = c(rnorm(1000), rnorm(1000, 3)),
 ggplot(mix2norm, aes(x=x, color = grp)) + geom_density(adjust = 1/2)
 ```
 
-### Transformaciones estadísticas
+#### Transformaciones estadísticas
 
 Ésta puede ser, por ejemplo, un resumen del input recibido; se especifica 
 vía el comando `stat`. Ejemplos:
@@ -146,7 +154,7 @@ ggplot(mix2norm, aes(x=x, color = grp, fill= grp)) +
 
 Horrible pero... ¡ilustra el control que te da!
 
-### El objeto geométrico
+#### El objeto geométrico
 
 Esto permite especificar el tipo de gráfico a crear. Se especifica a partir vía la
 `geom`. Se define de acuerdo a su dimensión, es decir,
@@ -192,7 +200,7 @@ Revisa el comando `position` y `geometry`.
 
 Revisa sus defaults y juega con los ejemplos!
 
-### Posición
+#### Posición
 
 Es posible especificar la posición de cada una de las capas en relación a otras. 
 Ejemplos:
@@ -207,7 +215,7 @@ ggplot(mix2norm, aes(x=x, color = grp)) +
   stat_density(adjust=1/2, size=2, position ="identity",geom ="line")
 ```
 
-### Escalas
+#### Escalas
 
 Determina cuál valor de entrada mapea a qué estética específica. Se escribe 
 usando `scale`. Hay de todo:
@@ -226,7 +234,7 @@ ggplot(mix2norm, aes(x=x, color = grp)) +
   scale_y_log10(limits = c(1e-5,1))
 ```
 
-### Coordenadas
+#### Coordenadas
 
 Te permite especificar las posiciones de las cosas y cómo mapean a las posiciones 
 en la pantalla. Antes todo era entorno a cómo le dices las cosas a R pero 
@@ -243,7 +251,7 @@ ggplot(mix2norm, aes(x=x, color = grp)) +
   coord_polar()
 ```
 
-### Facetas
+#### Facetas
 
 Permite arreglar diferentes gráficas en un grid o panel.
 

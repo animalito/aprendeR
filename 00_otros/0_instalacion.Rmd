@@ -1,9 +1,18 @@
 ---
 title: "Instalación"
-output: pdf_document
+output: 
+  pdf_document:
+    fig_caption: yes
+    latex_engine: pdflatex
+    keep_tex: yes
+    includes:
+      in_header: mypackages.sty
 ---
 
-# R 
+```{r setup, include=F}
+knitr::opts_chunk$set(echo = T, error = F, message = F, warning = F)
+```
+
 
 Para los usuario de Linux recomiendo 
 [este link](https://github.com/Skalas/massive-adventure-ubuntu/blob/master/i_R.sh) 

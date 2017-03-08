@@ -9,7 +9,8 @@ output:
       in_header: mypackages.sty
 ---
 
-```{r, echo = F, warning=F, error=F, message=F}
+```{r setup, include=F}
+knitr::opts_chunk$set(echo = T, error = F, message = F, warning = F)
 library(rformat)
 library(xtable)
 ```
@@ -282,7 +283,7 @@ dim(mtcars)
 Asignar utilizando el operador de suconjunto a nada nos permite preservar la 
 estructura del objeto original así como su clase.
 
-En el caso de listas, si combinamos un operador de sunjunto mas asignación a nulo,
+En el caso de listas, si combinamos un operador de subconjunto mas asignación a nulo,
 podemos remover objetos de ésta. 
 
 ```{r}
@@ -316,7 +317,7 @@ print(xtable(operadores), comment = F, include.rownames=F)
 ```
 
 **Ejemplo**: Supongamos que queremos saber qué elementos de $x$ son menores que
-$5$ y mayores que $8$.
+$5$ ó mayores que $8$.
 
 ```{r}
 x <- c(1:10)
@@ -410,7 +411,7 @@ unname(busca[x])
 c(m = "humano", f = "humano", u = "desconocido")[x]
 ```
 
-Esto nos permite pegar un vector a una base de datos de acuerdo a una condicion.
+Esto nos permite pegar un vector a una base de datos de acuerdo a una condición.
 
 ```{r}
 calificaciones <- c(10, 9, 5, 5, 6)
@@ -576,7 +577,29 @@ c(1:10)[intersect(which(pares), which(m.5))]
 c(1:10)[which(xor(pares, m.5))]
 ```
 
+
+\newpage
+
 # Split-apply-combine
+
+Muchos problemas en el análisis de datos pueden ser resueltos aplicando la 
+estrategia separa, aplica y combina (SAC) en donde divides un problema en 
+pequeños pedazos manejables, operas en forma independiente cada uno de éstos y
+después combinas los resultados obtenidos \parencite{wickham2011split}.
+
+Esta estrategia se utiliza en diversas etapas del análisis de datos, por ejemplo \parencite{wickham2011split}:
+
+- **Preparación de datos.** Cuando se crean nuevas variables según grupos, cuando 
+se realizan ordenamientos por grupos, cuando se estandariza o normaliza variables.
+- **Estadística descriptiva.** Cuando se crean agregados por grupos como sus
+medias o medianas.
+- **Modelado**. Cuando se calculan modelos separados para cada panel en un estudio
+de este tipo. Estos modelos pueden examinarse por separado o unificarse para 
+construir modelos más sofisticados que los conjuguen.
+
+Esta estrategia se utiliza en muchas herramientas: 
+en las tablas dinámicas de `Microsoft Excel`, el operador `group by` de `SQL`, 
+el argumento `by` disponible en algunos procedimientos de `SAS` \parencite{wickham2011split}.
 
 El paradigma split-apply-combine se resume en la figura \ref{fig:sac}. 
 
@@ -587,43 +610,53 @@ El paradigma split-apply-combine se resume en la figura \ref{fig:sac}.
     \label{fig:sac}
 \end{figure}
 
-Entendamos mejor:
+Replicamos los vectores $x$ y $y$ de la figura en un *dataframe*:
 
 ```{r}
-letras <- sample(letters, 3)
+letras <- c("a", "b", "c")
 df <- data.frame(
-  letra = letras[rep(seq(letras), 4)],
-  valor = sample(1:10, size = 12, replace = T)
+  x = sort(letras[rep(seq(letras), 2)]),
+  y = c(2, 4, 0, 5, 5, 10)
 )
-df <- df[order(df$letra), ]
 df
 ```
 
-Queremos estimar la media del valor para cada tipo de letra.
+Queremos estimar la **media** de los valores en el vector $y$ para cada tipo de letra
+en el vector $x$. Esto lo podemos hacer utilizando la estrategia **SAC**, como en 
+la figura.
 
 ```{r}
 # Dividimos
-for (l in unique(df$letra) ){
-  print(df[l == df$letra, ])
+for (l in unique(df$x) ){
+  print(paste0("Grupo con letra: ", l))
+  print(df[l == df$x, ])
 }
 # Aplicamos
-for (l in unique(df$letra) ){
-  print(mean(df[l == df$letra, ]$valor))
+for (l in unique(df$x) ){
+  print(paste0("Media para valores de letra: ", l))
+  print(mean(df[l == df$x, ]$y))
 }
 # Combinamos
 medias <- list()
-for (l in unique(df$letra) ){
-  medias[[l]] <- mean(df[l == df$letra, ]$valor)
+for (l in unique(df$x) ){
+  medias[[l]] <- mean(df[l == df$x, ]$y)
 }
 as.data.frame(list(letras = names(medias), medias = unname(unlist(medias))))
 ```
 
-R tiene muchas funciones que facilitan realizar este tipo de operaciones. En 
-particular, la familia `apply` fue pensada para realizar ese tipo de operaciones.
+`R` tiene muchas funciones que facilitan realizar este tipo de operaciones. En 
+particular, la familia `apply` fue pensada para realizarlas. Cada una de las
+funciones en esta familia recibe una estructura de datos en particular, 
+aplica de determinada manera la función que se le especifica y combina los
+resultados de una forma específica.
 
 ## apply
 
 `apply` aplica una función a cada fila o columna en una matriz.
+
+1. **Separa**: por columna o fila según se especifica en el parámetro `MARGIN` (1 para filas, 2 para columnas).
+2. **Aplica**: la función que se especifica en el parámetro `FUN`.
+3. **Combina**: regresa un vector con los resultados.
 
 ```{r}
 m <- matrix(c(1:5, 6:10), nrow = 5, ncol = 2)
@@ -633,11 +666,20 @@ apply(m, 1, sum)
 apply(m, 2, sum)
 ```
 
-**Ejercicio** Haz una función que reciba un vector y devuelva la suma de la 
+\renewcommand\bcStyleTitre[1]{\large\textcolor{bbblack}{#1}}
+\begin{bclogo}[
+  couleur=llred,
+  arrondi=0,
+  logo=\bcstop,
+  barre=none,
+  noborder=true]{Ejercicio}
+Haz una función que reciba un vector y devuelva la suma de la 
 posición $v_i + v_{i + 1}$. Para el n-esimo elemento, suma el primero.
 Aplica esa función a las columnas y filas de la matriz m.
+\end{bclogo}
 
-```{r, echo=F, eval=F}
+```{r, eval=F}
+# Respuesta
 suma.rec <- function(v){
   resultado <- c()
   for (e in seq(length(v) - 1)){
@@ -658,6 +700,7 @@ apply(m, 2, suma.rec)
 `data.frame` es únicamente un estilo particular de lista tal que todos sus elementos tienen el mismo tamaño. Por ende, también podemos utilizar `lapply`
 para iterar sobre las columnas de un `data.frame`.
 
+
 ```{r}
 lista <- list(a = 1:10, b = 2:20)
 lapply(lista, mean)
@@ -666,13 +709,24 @@ df <- data.frame(a = 1:10, b = 11:20)
 lapply(df, mean)
 ```
 
-El `summary` de un data.frame genera un resumen para los vectores que la 
+\renewcommand\bcStyleTitre[1]{\large\textcolor{bbblack}{#1}}
+\begin{bclogo}[
+  couleur=llred,
+  arrondi=0,
+  logo=\bcstop,
+  barre=none,
+  noborder=true]{Ejercicio}
+El \texttt{summary} de un \texttt{data.frame} genera un resumen para los vectores que la 
 conforman de acuerdo a la clase de la misma. Genera una función que regrese
 una tabla de frecuencias para factores y caracteres o una lista con media, 
 desviación estándar para vectores numéricos o enteros. Aplícalo a la base diamonds
 usando lapply.
 
-```{r, echo=F, eval=F}
+\end{bclogo}
+
+
+```{r, eval=F}
+# Respuesta
 mi.resumen <- function(vector){
   if( class(vector) == "factor" || class(vector) == "character"){
     table(vector)
@@ -686,8 +740,10 @@ lapply(names(diamonds), FUN = function(c) mi.resumen(diamonds[, c]))
 
 ## sapply
 
-`sapply` es otra versión de `lapply` que regresa una lista de una matriz cuando
-es apropiado.
+`sapply` es otra versión de `lapply` que regresa una lista o un vector,
+dependiendo si se especifica el parámetro `simplify = T` y si la función aplicada
+regresa un único valor.
+
 
 ```{r}
 x <- sapply(lista, mean, simplify = F)
@@ -696,20 +752,39 @@ x <- sapply(lista, mean, simplify = T)
 x
 ```
 
-**Ejercicio** Obtén un vector tipo caracter con los nombres de las clases de 
+\renewcommand\bcStyleTitre[1]{\large\textcolor{bbblack}{#1}}
+\begin{bclogo}[
+  couleur=llred,
+  arrondi=0,
+  logo=\bcstop,
+  barre=none,
+  noborder=true]{Ejercicio}
+Obtén un vector tipo caracter con los nombres de las clases de 
 las columnas de iris.
+\end{bclogo}
 
-```{r, echo=F, eval=F}
+```{r, eval=F}
+# Respuesta
 sapply(iris, class)
 ```
 
-**Ejercicio** Repite el ejercicio de la suma rara pero usa `sapply`.
+\renewcommand\bcStyleTitre[1]{\large\textcolor{bbblack}{#1}}
+\begin{bclogo}[
+  couleur=llred,
+  arrondi=0,
+  logo=\bcstop,
+  barre=none,
+  noborder=true]{Ejercicio}
+Repite el ejercicio de la suma rara pero usa \texttt{sapply}.\\
 
-*Recuerda la instrucción*: Haz una función que reciba un vector y devuelva 
+\textit{Recuerda la instrucción}: Haz una función que reciba un vector y devuelva 
 la suma de la posición $v_i + v_{i + 1}$. Para el n-esimo elemento, 
-suma el primero. Utiliza `sapply` para realizar esta operacion.
+suma el primero. Utiliza \texttt{sapply} para realizar esta operacion.
+\end{bclogo}
 
-```{r, echo=F, eval=F}
+
+```{r, eval=F}
+# Respuesta
 x <- 1:10
 sapply(seq(x), FUN = function(i){
   if( i == length(x) ){
@@ -725,6 +800,7 @@ sapply(seq(x), FUN = function(i){
 `mapply` es como la versión multivariada de `sapply`. Le aplica una función a
 todos los elementos correspondientes de un argumento.
 
+
 ```{r}
 l1 <-list(a = c(1:5), b = c(6:10))
 l2 <- list(c = c(11:15), d = c(16:20))
@@ -733,6 +809,27 @@ l2
 mapply(sum, l1$a, l1$b, l2$c, l2$d)
 l1[["a"]][1] + l1[["b"]][1] + l2[["c"]][1] + l2[["d"]][1]
 ```
+
+\renewcommand\bcStyleTitre[1]{\large\textcolor{bbblack}{#1}}
+\begin{bclogo}[
+  couleur=llred,
+  arrondi=0,
+  logo=\bcstop,
+  barre=none,
+  noborder=true]{Ejercicio}
+Crea una matriz de 4 x 4 donde el primer renglón sea de unos, el segundo de dos,
+el tercero de 3 y el cuarto de 4. Usa \texttt{mapply} para hacerlo.
+\end{bclogo}
+
+```{r, eval = F}
+# Respuesta
+m <- matrix(c(rep(1, 4), rep(2, 4), rep(3, 4), rep(4, 4)), nrow = 4, byrow = T)
+m
+
+me <- t(mapply(rep, 1:4, 4))
+me
+```
+
 
 ## tapply
 
@@ -746,9 +843,23 @@ tapply(warpbreaks$breaks,
        mean)
 ```
 
-**Ejercicio** 
+\renewcommand\bcStyleTitre[1]{\large\textcolor{bbblack}{#1}}
+\begin{bclogo}[
+  couleur=llred,
+  arrondi=0,
+  logo=\bcstop,
+  barre=none,
+  noborder=true]{Ejercicio}
+Utiliza la función \texttt{tapply} y la base de datos \texttt{diamonds} (que está
+dentro del paquete \texttt{ggplot2}) para obtener las medias de la 
+variable \texttt{carat} para los grupos
+formados por la variable categórica \texttt{cut} y la variable categórica
+\texttt{color}.
+\end{bclogo}
 
-```{r, eval=F, echo=F}
+```{r, eval=F}
+# Respuesta
+library(ggplot2)
 with(diamonds,
      tapply(carat,
             list(cut, color),
@@ -782,15 +893,24 @@ as.data.frame(list(
   ))
 ```
 
-**Ejercicio** Vuelve a utilizar la base de diamonds para calcular el promedio 
+\renewcommand\bcStyleTitre[1]{\large\textcolor{bbblack}{#1}}
+\begin{bclogo}[
+  couleur=llred,
+  arrondi=0,
+  logo=\bcstop,
+  barre=none,
+  noborder=true]{Ejercicio}
+Vuelve a utilizar la base de diamonds para calcular el promedio 
 de carat según cut y color.
+\end{bclogo}
 
-```{r, eval=T, echo=F}
+```{r, eval=F}
+# Respuesta
 library(ggplot2)
 head(diamonds)
 
 res <- by(diamonds[, c("carat")], 
-          list(cut = as.factor(diamonds[, c("cut")]), color = as.factor(diamonds$color))
+          list(cut = as.factor(diamonds$cut), color = as.factor(diamonds$color))
           , mean, simplify = T)
 ```
 
@@ -805,22 +925,33 @@ replicate(6, rnorm(4), simplify = T)
 hist(replicate(100, mean(rexp(10))))
 ```
 
-**Ejercicio** Replica el ejercicio de muestras bootstrap utilizando replicate.
+\renewcommand\bcStyleTitre[1]{\large\textcolor{bbblack}{#1}}
+\begin{bclogo}[
+  couleur=llred,
+  arrondi=0,
+  logo=\bcstop,
+  barre=none,
+  noborder=true]{Ejercicio}
+Replica el ejercicio de muestras bootstrap utilizando la función \texttt{replicate}.\\
 
-Recordando:
+\textit{Recordando las instrucciones}:
 
 \begin{enumerate}
-\item Genera un vector x de tamaño 1000 con realizaciones de una normal media 10, varianza 3. 
-\item Crea 100 muestras bootstrap del vector x.
-\item Calcula la media para cada una de tus muestras.
-\item Grafica con la función hist() el vector de medias de tus muestras.
+\item Genera un vector \texttt{x} de tamaño $1000$ con realizaciones de una normal media $10$, varianza $3$. 
+\item Crea $100$ muestras bootstrap del vector $x$.
+\item Calcula la \textit{media} para cada una de tus muestras.
+\item Grafica con la función \texttt{hist()} el vector de medias de tus muestras.
 \end{enumerate}
 
-```{r, echo=F, eval=F}
+\end{bclogo}
+
+```{r, eval=F}
+# Respuesta
+# 1
 x <- rnorm(1000, mean = 10, sd = sqrt(3))
-hist(
-  replicate(100,
-            mean(sample(x, size = 1000, replace = T))),
+hist( # 4
+  replicate(100, # 2
+            mean(sample(x, size = 1000, replace = T))), # 3
   main = "Muestras bootstrap",
   xlab = "media",
   ylab = "frecuencia"
@@ -832,20 +963,20 @@ hist(
 La familia `apply` viene con R básico. Sin embargo, hay 3 implementaciones excelentes del paradigma split-apply-combine: `plyr`, `dplyr` y `data.table`.
 
 Si la familia apply es poderosa, se queda corta comparada con estos tres.
-`plyr` es la primera versión de s-a-c de Wickham. Posteriormente, mejoró
-muchas de las funciones en `dplyr` sobretodo entorno a velocidad y facilidad de
+`plyr` es la primera versión de SAC de Wickham \parencite{wickham2011split}. 
+Posteriormente, mejoró
+muchas de las funciones en `dplyr` \parencite{dplyr} sobretodo entorno a velocidad y facilidad de
 uso. `plyr` no termina de ser relevante pues varias de sus funciones aun no están
-en `dplyr`.
+en `dplyr` pero está por ser sustituido.
 
-`data.table`, es una implementación con una tradición muy diferente y tiene
+`data.table` \parencite{datatable}, es una implementación con una tradición muy diferente y tiene
 también funciones muy poderosas aunque con una sintaxis muy distinta a `dplyr`.
 Es absurdamente eficiente y tiene múltiples aplicaciones.
 
 Muchas de las funciones en `dplyr` también están implementadas en `data.table`.
-Cuál usar es cuestión de gustos. Depende de con qué se acomoda cada quién pero,
-para algunas cosas uno es superior al otro y viceversa.
+Ambos paquetes son útiles pero priorizan distintos elementos. En el capítulo
+siguiente se repasarán los verbos en `dplyr`.
 
-\printbibliography
 
 ```{r}
 sessionInfo()

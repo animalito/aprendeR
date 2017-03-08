@@ -1,8 +1,38 @@
+@book{adler2010r,
+  title={R in a nutshell: A desktop quick reference},
+  author={Adler, Joseph},
+  year={2010},
+  publisher={" O'Reilly Media, Inc."}
+}
+
 @book{burns2011r,
   title={The R inferno},
   author={Burns, Patrick},
   year={2011},
   publisher={Lulu. com}
+}
+
+@Manual{cran,
+  title = {The Comprehensive R Archive Network},
+  author = {CRAN},
+  organization = {R Foundation for Statistical Computing},
+  address = {Vienna, Austria},
+  year = {2016},
+  url = {https://cran.r-project.org/},
+}
+
+@article{eddelbuettel2010,
+  title={Benchmarking single-and multi-core BLAS implementations and GPUs for use with R},
+  author={Eddelbuettel, Dirk},
+  journal={Mathematica},
+  year={2010}
+}
+
+@book{gandrud2013,
+  title={Reproducible research with R and R studio},
+  author={Gandrud, Christopher},
+  year={2013},
+  publisher={CRC Press}
 }
 
 @book{grolemund2016r,
@@ -14,11 +44,71 @@
   publisher={O'Reilly Media, Incorporated}
 }
 
+@book{hunt2000,
+  title={The pragmatic programmer},
+  author={Hunt, Andrew and Thomas, David},
+  year={1999},
+  publisher={Addison Wesley}
+}
+
+@book{kabacoff2015r,
+  title={R in action: data analysis and graphics with R},
+  author={Kabacoff, Robert},
+  year={2015},
+  publisher={Manning Publications Co.}
+}
+
+@article{likert1932,
+  title={A technique for the measurement of attitudes.},
+  author={Likert, Rensis},
+  journal={Archives of psychology},
+  year={1932}
+}
+
+@article{rossini2004ess,
+  title={Emacs speaks statistics: A multiplatform, multipackage development environment for statistical analysis},
+  author={Rossini, Anthony J and Heiberger, Richard M and Sparapani, Rodney A and Maechler, Martin and Hornik, Kurt},
+  journal={Journal of Computational and Graphical Statistics},
+  volume={13},
+  number={1},
+  pages={247--261},
+  year={2004},
+  publisher={Taylor \& Francis}
+}
+
+@article{wickham2011split,
+  title={The split-apply-combine strategy for data analysis},
+  author={Wickham, Hadley},
+  journal={Journal of Statistical Software},
+  volume={40},
+  number={1},
+  pages={1--29},
+  year={2011}
+}
+
 @book{wickham2014advanced,
   title={Advanced R},
   author={Wickham, Hadley},
   year={2014},
   publisher={CRC Press}
+}
+
+@article{wickham2014tidy,
+  title={Tidy data},
+  author={Wickham, Hadley and others},
+  journal={Journal of Statistical Software},
+  volume={59},
+  number={10},
+  pages={1--23},
+  year={2014},
+  publisher={Foundation for Open Access Statistics}
+}
+
+@misc{wickham2016r,
+  title={R for Data Science},
+  author={Wickham, Hadley and Grolemund, Garrett},
+  year={2016},
+  publisher={Sebastopol, CA: O’Reilly Media}
 }
 
 @book{wickham2015r,
@@ -34,4 +124,203 @@
   url={https://ramnathv.github.io/pycon2014-r},
   year={2014},
   publisher={Github books, en pycon 2014} 
+}
+
+% Blogs y páginas de internet
+@misc{blasinr,
+  author = {Klamer, Brett},
+  title = {Faster BLAS in R},
+  type = {Blog},  
+  year = {2014},
+  month = {11},
+  day = {16},
+  howpublished = {\url{http://brettklamer.com/diversions/statistical/faster-blas-in-r/}}
+}
+
+@misc{optimizedr,
+  author = {Nguyen, Vinh},
+  title = {Optimized R and Python: standard BLAS vs. ATLAS vs. OpenBLAS vs. MKL},
+  type = {Blog},  
+  year = {2014},
+  month = {11},
+  day = {10},
+  howpublished = {\url{http://blog.nguyenvq.com/blog/2014/11/10/optimized-r-and-python-standard-blas-vs-atlas-vs-openblas-vs-mkl/}}
+}
+
+@misc{whatisbigquery,
+  author = {Google Cloud Platform},
+  title = {What is BigQuery},
+  type = {Documentation},  
+  year = {2016},
+  month = {1},
+  day = {23},
+  howpublished = {\url{https://cloud.google.com/bigquery/what-is-bigquery?}}
+}
+
+
+% paquetes
+
+@Manual{datatable,
+  title = {data.table: Extension of Data.frame},
+  author = {M Dowle and A Srinivasan and T Short and S Lianoglou with contributions from R Saporta and E Antonyan},
+  year = {2015},
+  note = {R package version 1.9.6},
+  url = {https://CRAN.R-project.org/package=data.table},
+}
+
+@Manual{dplyr,
+  title = {dplyr: A Grammar of Data Manipulation},
+  author = {Hadley Wickham and Romain Francois},
+  note = {R package version 0.5.0.9000},
+  url = {https://github.com/hadley/dplyr},
+}
+
+@Manual{flights,
+  title = {nycflights13: Flights that Departed NYC in 2013},
+  author = {Hadley Wickham},
+  year = {2016},
+  note = {R package version 0.2.1},
+  url = {https://CRAN.R-project.org/package=nycflights13},
+}
+
+@Manual{foreign,
+  title = {foreign: Read Data Stored by Minitab, S, SAS, SPSS, Stata, Systat, Weka,
+dBase, ...},
+  author = {{R Core Team}},
+  year = {2015},
+  note = {R package version 0.8-66},
+  url = {https://CRAN.R-project.org/package=foreign},
+}
+
+@Manual{gcbd,
+  title = {gcbd: 'GPU'/CPU Benchmarking in Debian-Based Systems},
+  author = {Dirk Eddelbuettel},
+  year = {2016},
+  note = {R package version 0.2.6},
+  url = {https://CRAN.R-project.org/package=gcbd},
+}
+
+@Manual{haven,
+  title = {haven: Import and Export 'SPSS', 'Stata' and 'SAS' Files},
+  author = {Hadley Wickham and Evan Miller},
+  year = {2016},
+  note = {R package version 1.0.0},
+  url = {https://CRAN.R-project.org/package=haven},
+}
+  
+@Manual{pacman,
+  title = {{pacman}: {P}ackage Management for {R}},
+  author = {Tyler W. Rinker and Dason Kurkiewicz},
+  organization = {University at Buffalo/SUNY},
+  address = {Buffalo, New York},
+  note = {version 0.4.1},
+  year = {2015},
+  url = {http://github.com/trinker/pacman},
+}
+
+@Misc{pandas,
+  author = {McKinney, Wes},
+  title =     {{pandas}: {Python} Data Analysis Library},
+  year =      {2010},
+  url = {http://pandas.pydata.org/}
+}
+
+@Manual{rbase,
+  title = {R: A Language and Environment for Statistical Computing},
+  author = {{R Core Team}},
+  organization = {R Foundation for Statistical Computing},
+  address = {Vienna, Austria},
+  year = {2016},
+  url = {https://www.R-project.org/},
+}
+
+@Manual{readr,
+  title = {readr: Read Tabular Data},
+  author = {Hadley Wickham and Jim Hester and Romain Francois},
+  year = {2016},
+  note = {R package version 1.0.0},
+  url = {https://CRAN.R-project.org/package=readr},
+}
+
+@Manual{rfaq,
+  title = {R FAQ. Frequently Asked Questions on R},
+  author = {Hornik, Kurt},
+  organization = {R Foundation for Statistical Computing},
+  address = {Vienna, Austria},
+  year = {2016},
+  version = {2016-06-06},
+  url = {https://cran.r-project.org/doc/FAQ/R-FAQ.html},
+}
+
+@Manual{rmanual,
+  title = {R Language Definition, manual for R version 3.3.2},
+  author = {{R Core Team}},
+  organization = {R Foundation for Statistical Computing},
+  address = {Vienna, Austria},
+  year = {2016},
+  url = {https://cran.r-project.org/doc/manuals/r-release/R-lang.html},
+}
+
+@Manual{rstudio,
+  title = {RStudio: Integrated Development Environment for R},
+  author = {{RStudio Team}},
+  organization = {RStudio, Inc.},
+  address = {Boston, MA},
+  year = {2016},
+  url = {http://www.rstudio.com/},
+}
+
+@Manual{tibble,
+  title = {tibble: Simple Data Frames},
+  author = {Hadley Wickham and Romain Francois and Kirill Müller},
+  year = {2016},
+  note = {R package version 1.2},
+  url = {https://CRAN.R-project.org/package=tibble},
+}
+
+@Manual{tidyr,
+  title = {tidyr: Easily Tidy Data with 'spread()' and 'gather()' Functions},
+  author = {Hadley Wickham},
+  year = {2016},
+  note = {R package version 0.6.1},
+  url = {https://CRAN.R-project.org/package=tidyr},
+}
+
+@misc{tidydata,
+  author = {Wickham, Hadley},
+  title = {tidy-data},
+  year = {2014},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  howpublished = {\url{https://github.com/hadley/tidy-data}},
+  commit = {5623c7a302977e8c88f623a08556d5c08e940d8c}
+}
+
+@Manual{utils,
+  title = {R: A Language and Environment for Statistical Computing},
+  author = {{R Core Team}},
+  organization = {R Foundation for Statistical Computing},
+  address = {Vienna, Austria},
+  year = {2016},
+  url = {https://www.R-project.org/},
+}
+
+@Manual{xlsx,
+  title = {xlsx: Read, write, format Excel 2007 and Excel 97/2000/XP/2003 files},
+  author = {Adrian A. Dragulescu},
+  year = {2014},
+  note = {R package version 0.5.7},
+  url = {https://CRAN.R-project.org/package=xlsx},
+}
+
+
+% talks
+
+@unpublished{wickhammx,
+  title= {Data Science with the Tidyverse},
+  author = {Wickham, Hadley},
+  year = {2016},
+  month = {Noviembre},
+  day = {4},
+  URL= {http://eventos.itam.mx/es/data-science-tidyverse},
 }

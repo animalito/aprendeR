@@ -57,3 +57,6 @@ counts2 <- dplyr::group_by(religion, reltrad, income) %>%
 # Ejemplificacion tipo el paper-
 
 raw <- tidyr::spread(counts, key = income, value = freq)
+
+
+
