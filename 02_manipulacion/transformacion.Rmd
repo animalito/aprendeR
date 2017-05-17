@@ -28,22 +28,27 @@ análisis de datos correspondiente.
 \end{figure}
 
 Existen muchas maneras de transformar los datos y una gran cantidad de paquetes
-que implementan distintas funciones útiles para realizar esta tarea. En particular,
-resaltamos `dplyr` y `data.table`.
+que implementan distintas funciones útiles para realizar esta tarea. 
 
-## dplyr
+La implementación del paquete `dplyr` está pensada fundamentalmente alrededor
+de verbos que expresen y los verbos que se implementan en este paquete para
+transformar los datos.
+
+## Verbos para una tabla
 
 El material que se presenta aquí está basado en los ejemplos y código presentado
 por [Wickham en su tutorial](https://www.dropbox.com/sh/i8qnluwmuieicxc/AAAgt9tIKoIm7WZKIyK25lh6a) de **useR** en el 2014.
 
 **5 verbos** fundamentales implementados en `dplyr`
 
-- `filter`: seleccionamos filas de acuerdo a los valores de las variables
-- `select`: seleccionamos un subconjunto de las columnas utilizando los nombres
+- `filter` (y `slice`): seleccionamos filas de acuerdo a los valores de las variables
+- `select` (y `rename`): seleccionamos un subconjunto de las columnas utilizando los nombres
 de las variables
 - `arrange`: reordenamos filas
-- `mutate`: generar nuevas variables a partir de las variables originales
+- `mutate` (y `transmute`): generar nuevas variables a partir de las variables originales
 - `summarise`: reducir variables a valores
+- `distinct`
+- `sample_n` (y `sample_frac`)
 
 Todos estos verbos funcionan de la misma manera (tienen la misma estructura):
 

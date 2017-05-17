@@ -63,8 +63,8 @@ análisis de datos correspondiente.
     \label{fig:ciclo1}
 \end{figure}
 
-Para aplicar las herramientas de R a nuestro trabajo, es necesario poder importar
-nuestros datos a R. R tiene conectores ya implementados para casi cualquier 
+Para aplicar las herramientas de \texttt{R} a nuestro trabajo, es necesario poder importar
+nuestros datos a \texttt{R}. \texttt{R} tiene conectores ya implementados para casi cualquier 
 tipo y formato de datos. Entre los más comunes están\footnote{La lista no pretende ser comprehensiva, sin embargo, se presentan algunos de los formatos de datos más comunes. De igual forma, se presentan algunas funciones que sirven para conectar \texttt{R} con datos que están guardados en un manejador de datos externo o en la nube. En caso de presentarse más de un método es porque aunque la recomendación de uso es la función en negritas, la otra opción es más antigua y muy utilizada.}:
 
 | Formato                 | Lectura                 | Escritura               |
@@ -74,13 +74,12 @@ tipo y formato de datos. Entre los más comunes están\footnote{La lista no pret
 | csv                     | \hyperref[csv]{utils::read.csv}; **readr::read_csv** | \hyperref[csv]{utils::write.csv}; **readr::write_csv** |
 | Microsoft Excel         | \hyperref[microsoft-excel]{readxl::read\_excel} | \hyperref[microsoft-excel]{xlsx::write.xlsx} |
 | dbf                     | \hyperref[dbf]{foreign::read.dbf}  | \hyperref[dbf]{foreign::write.dbf}    |
-| IBM SPSS                |                                    |                                       |
-| Stata                   |                                    |                                       |
-| SAS                     |                                    |                                       |
-| Google spreadsheet      |                                    |                                       |
-| Google bigquery         |                                    |                                       |
-| Heroku Postgres         |                                    |                                       |
-
+| IBM SPSS                | \hyperref[ibm-spss]{haven::read\_sav} | \hyperref[ibm-spss]{haven::write\_sav} |
+| Stata                   | \hyperref[stata]{haven::read\_dta} | \hyperref[stata]{haven::write\_dta} |
+| SAS                     | \hyperref[sas]{haven::read\_sas} | \hyperref[sas]{haven::write\_sas} |
+| Google spreadsheet      | \hyperref[google-spreadsheet]{googlesheets::gs\_read} | \hyperref[google-spreadsheet]{googlesheets::gs\_new} |
+| Google bigquery         |  | \hyperref[google-bigquery]{bigrquery::query\_exec} |
+| rdata                   | \hyperref[rdata]{base::load} | \hyperref[rdata]{base::save} |
 
 Los paquetes utilizados son (corre estos comandos en la consola):
 
@@ -116,8 +115,8 @@ hará lectura o escritura del archivo en el lugar especificado.
   logo=\bcstop,
   barre=none,
   noborder=true]{Ejercicios}
-`R` tiene conexion con muchos de los formatos en los que se encuentran 
-los datos. Veremos algunos de los mas relevantes.
+\texttt{R} tiene conexión con muchos de los formatos en los que se encuentran 
+los datos. Veremos algunos de los mas relevantes. \\
 
 El código en cada uno de los \texttt{chunks} (un chunk es el pedazo del documento
 en donde hay código de \texttt{R}) está hecho para que puedas correrlo en la
@@ -526,9 +525,7 @@ data <- query_exec(query = sql, project = project)
 Nota como la tabla cuenta con aprox. 140 millones de registros y se obtiene el
 detalle en segundos.
 
-## Heroku Postgres
-
-# rdata
+## rdata
 
 Tambien es posible guardar objetos especificos del ambiente dentro de un formato 
 especial con extension `rdata` o `RData`. Esto es muy útil cuando no han acabado

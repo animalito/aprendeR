@@ -68,7 +68,7 @@ del cual la intuición es explícita.
 Los datos limpios proporcionan una manera estándar de ligar la estructura de un
 dataset (es decir su layout físico) con su semántica (su significado).
 
-#### Estructura de datos
+### Estructura de datos
 
 La mayoría de los datos estadísticos están conformados por tablas rectangulares 
 compuestas por filas y columnas. Las columnas casi siempre están etiquetadas 
@@ -180,7 +180,7 @@ la \ref{fig:estructura}.
 con los valores de la tabla \ref{fig:estructuratidy}.
 \item Extrae el resultado para John Smith, tratamiento a en la primera configuración y en la segunda.
 \item Especifica el número de tratamientos con la forma sucia y la forma limpia.
-\item Cuál es la media de los resultados: usa la forma 1 y la forma 2.
+\item ¿Cuál es la media de los resultados? Usa la forma 1 y la forma 2.
 \item Extrae los tratamientos del tipo a en la forma 2.
 \end{enumerate}
 
