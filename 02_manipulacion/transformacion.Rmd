@@ -66,9 +66,6 @@ nueva implementacion de `read.csv` pero mucho mas rapida.
 flights <- read_csv("data/flights.csv")
 flights
 
-# weather <- read_csv("data/weather.csv")
-# weather
-
 planes <- read_csv("data/planes.csv")
 planes
 
@@ -183,6 +180,22 @@ flights2
 
 La lectura es mucho mas sencilla de esta forma. Recuerden, muchas veces los
 lectores de su codigo seran ustedes en el futuro.
+
+### group_by
+
+Un verbo muy poderoso es el group_by. Es por este tipo de verbos que resultó 
+necesario generar un objeto diferente al tradicional data.frame. Básicamente,
+el tbl_df es capaz de guardar agrupamientos específicos sobre los cuáles 
+puede hacer window functions o resumenes sobre los grupos que se definen.
+
+#### Ejemplo {#ejemplo}
+
+Los datos de vuelos se agrupan naturalmente sobre las aerolineas.
+
+```{r}
+flights.g <- flights %>% group_by(., carrier)
+flights.g
+```
 
 ### summarise 
 
