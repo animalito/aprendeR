@@ -95,7 +95,7 @@ f(4)
 rm(f)
 ```
 
-Por default, los argumentos de 
+Por defecto (*default*), los argumentos de 
 una función son flojos (*lazy*), es decir, solamente son evaluados cuando se 
 utilizan (esto es importante pues si tienes un error en una función no te darás
 cuenta cuando ejecutes la misma sino cuando la mandes llamar).
@@ -195,7 +195,7 @@ x <- c(1:4)
 x
 ```
 
-Esto es debido a que R tienen namespaces separados para funciones y no-funciones. Cuando R intenta concatenar los valores del 1 al 4, busca
+Esto es debido a que R tienen espacios de nombres (*namespaces*) separados para funciones y no-funciones. Cuando R intenta concatenar los valores del 1 al 4, busca
 primero en el ambiente global y, en caso de no encontrarlo, busca en los 
 *namespaces* de cada uno de los paquetes que tiene cargados.
 
@@ -205,7 +205,7 @@ El orden en el que busca se puede encontrar utilizando el comando `search()`.
 search()
 ```
 
-Los paquetes recien llamados acaban en la posición número 2 y todo lo 
+Los paquetes recién llamados acaban en la posición número 2 y todo lo 
 demás se recorre en el orden de la lista. Nota como el *base* (que se
 carga por default en toda sesión) está hasta el final.
 
@@ -366,7 +366,7 @@ de la programación orientada a objetos en `R`.
 class(z)
 ```
 
-Otra función útil es `str` pues permite desplegar en forma compacta la estrucutra
+Otra función útil es `str` pues permite desplegar en forma compacta la estructura
 interna de un objeto en `R`:
 
 ```{r}

@@ -58,7 +58,7 @@ los usuarios de `emacs` y `R` \parencite{rossini2004ess}. Soporta la edición de
 Stata, OPenBUGS/JAGS. Para los que además ya están acostumbrados al enorme poder
 de Emacs, ésta será la mejor opción.
 
-El editor interactivo es muy bueno y casi no tiene overhead de memoria.
+El editor interactivo es muy bueno y casi no consume memoria.
 
 
 # El espacio de trabajo (Workspace)
@@ -101,21 +101,21 @@ getwd()
 1. Abre tu consola de `R` y escribe *setwd("/*. 
 2. Utiliza la tecla `tab` 
 \includegraphics[scale=0.5]{../img/tab_key.jpg}
-para autocompletar las posibles rutas desde donde quiera que estes.
+para autocompletar las posibles rutas desde donde quiera que estés.
 3. Escoge alguna (nuevamente usando la tecla tab para moverte entre las opciones). Si esto no funciona, teclea textualmente alguna de las rutas que ves.
 4. Cierra la doble comilla y el paréntesis.
 5. Teclea enter.
 6. Debes encontrarte en la ruta elegida cuando tecleas `getwd()`.
 
 
-Con lo que acabamos de hacer, R buscará archivos o guardará archivos en el 
-folder `/home/animalito/study/`. En R también es posible navegar a partir de 
+Con lo que acabamos de hacer, R buscará archivos o guardará archivos en la
+carpeta `/home/animalito/study/`. En R también es posible navegar a partir de 
 el directorio de trabajo. Como siempre, 
 
-- "../un\_archivo.R" le indica a R que busque un folder arriba del actual 
+- "../un\_archivo.R" le indica a R que busque una carpeta arriba del actual 
 directorio de trabajo por el archivo *un\_archivo.R*.
 - "datos/otro\_archivo.R" hace que se busque en el directorio de trabajo, dentro 
-del folder *datos* por el archivo *otro\_archivo.R*
+de la carpeta *datos* por el archivo *otro\_archivo.R*
 
 
 \begin{nota}
@@ -183,7 +183,7 @@ Para enlistar los objetos que están en el espacio de trabajo
 ls()
 ```
 
-Para eliminar todos los objetos en un workspace
+Para eliminar todos los objetos en un directorio de trabajo (*workspace*)
 
 ```{r}
 rm(list = ls()) # se puede borrar solo uno, por ejemplo, nombrándolo
@@ -206,7 +206,7 @@ savehistory(file = "mihistoria") # Por default, R ya hace esto
 loadhistory(file = "mihistoria")
 ```
 
-Es posible también guardar el workspace -en forma completa- en un archivo con el 
+Es posible también guardar el ambiente de trabao (*workspace*) -en forma completa- en un archivo con el 
 comando `save.image()` a un archivo con extensión *.RData*. Puedes guardar una 
 lista de objetos específica a un archivo *.RData*. Por ejemplo:
 
@@ -278,7 +278,7 @@ capítulo [Git and GitHub](http://r-pkgs.had.co.nz/git.html)  en
 ## Otras fuentes 
 
 Otros lugares en donde es común que se publiquen paquetes es en [Bioconductor](https://www.bioconductor.org/)
-un projecto de software para la comprensión de datos del genoma humano. 
+un proyecto de software para la comprensión de datos del genoma humano. 
 
 # Paquetes recomendados
 
@@ -375,7 +375,7 @@ pacman::p_load(devtools, testthat, roxygen2)
 
 R es un intérprete. Utiliza un ambiente basado en línea de comandos. Por ende, 
 es necesario escribir la secuencia de comandos que se desea realizar a diferencia
-de otras herramientas en donde es posible utlizar el mouse o menús. 
+de otras herramientas en donde es posible utilizar el mouse o menús. 
 
 Aunque los comandos pueden ser ejecutados directamente en consola una única vez,
 también es posible guardarlos en archivos conocidos como *scripts*. Típicamente,
@@ -393,7 +393,7 @@ source("foo.R")
 
 O con el atajo `CTRL + SHIFT + S` en RStudio.
 
-Para enlistar algunos shortcuts comunes en RStudio presiona `ALT + SHIFT + K`. 
+Para enlistar algunos atajos (*shortcuts*) comunes en RStudio presiona `ALT + SHIFT + K`. 
 
 De la misma manera, si utilizas `Emacs + ESS` \parencite{rossini2004ess}, existen múltiples atajos de teclado
 para realizar todo mucho más eficientemente. Estudiarlos no es tiempo perdido.
@@ -490,11 +490,11 @@ ejemplo, la inversión de matrices (qr) o el análisis por componentes principal
 Incluso una selección de variables (*back/forward selection*) usando una simple regresión lineal sobre 
 múltiples regresores puede llevar un tiempo de cómputo de horas/días o no terminar. 
 
-Una de las manera más rápidas de mejorar el performance de `R` es instalando las librerías de 
+Una de las manera más rápidas de mejorar el rendimiento (*performance*) de `R` es instalando las librerías de 
 álgebra lineal que puede utilizar el software para hacer las operaciones más rápido. 
 
 Para mucho (demasiado) detalle al respecto,
-referirse a la comparación de performance en \textcite{eddelbuettel2010} o
+referirse a la comparación de rendimiento en \textcite{eddelbuettel2010} o
 al paquete del mismo autor \textcite{gcbd}.
 
 Para la parte práctica de todo esto, referirse a 

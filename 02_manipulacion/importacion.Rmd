@@ -98,7 +98,7 @@ library(googlesheets)
 
 Para leer un archivo, recordemos el comando \texttt{getwd()} para encontrar la carpeta
 a la cual \texttt{R} esta dirigido en este momento. Una buena practica es considerar 
-el directorio de trabajo como el lugar en donde esta guardado el archivo o \texttt{script} en el que se trabaja y ``moverse'' desde ahi hasta el archivo que se quiere leer.\\
+el directorio de trabajo como el lugar en donde esta guardado el archivo o \texttt{script} en el que se trabaja y ``moverse'' desde ahí hasta el archivo que se quiere leer.\\
 
 Ya sea en escritura o en lectura, \texttt{R} buscará a partir del directorio
 de trabajo (el que se despliega con \texttt{getwd()}) para buscar a partir 
@@ -116,20 +116,20 @@ hará lectura o escritura del archivo en el lugar especificado.
   logo=\bcstop,
   barre=none,
   noborder=true]{Ejercicios}
-`R` tiene conexion con muchos de los formatos en los que se encuentran 
+`R` tiene conexión con muchos de los formatos en los que se encuentran 
 los datos. Veremos algunos de los mas relevantes.
 
 El código en cada uno de los \texttt{chunks} (un chunk es el pedazo del documento
 en donde hay código de \texttt{R}) está hecho para que puedas correrlo en la
 consola (excepto cuando dice explícitamente \textit{do not run} (leyenda
-comunmente encontrada en los ejemplos de la documentación de las funciones. 
+comúnmente encontrada en los ejemplos de la documentación de las funciones. 
 Con esto entenderás mejor el concepto de rutas relativas.
 \end{bclogo}
 
 
 ## rds
 
-La extensión `rds` es de las más comunmente utilizada en `R`, por ejemplo, para
+La extensión `rds` es de las más comúnmente utilizada en `R`, por ejemplo, para
 guardar los metadatos para un paquete. Las funciones pertenecen al `base` \parencite{rbase}.
 Permiten guardar un solo objeto de `R` a un archivo y recuperarlo.
 
@@ -274,7 +274,7 @@ misdatos <- iris
 write.xlsx(misdatos, "misdatos.xlsx", row.names = F)
 ```
 
-Para **leerlos** dentro del paquete `readxl` se encuentra la funcion `read_excel` que es muy util
+Para **leerlos** dentro del paquete `readxl` se encuentra la función `read_excel` que es muy útil
 en este caso.
 
 ```{r}
@@ -296,7 +296,7 @@ write.dbf(as.data.frame(misdatos), "misdatos.dbf")
 ```
 
 Nota cómo tuvimos que coercionar el objeto a *data frame*. Como en el 
-ejemplo anterior leimos un *tibble* y el paquete `foreign` es más viejo (y no
+ejemplo anterior leímos un *tibble* y el paquete `foreign` es más viejo (y no
 conoce los *tibbles*) entonces le mandamos un objeto que si conoce.
 
 Veremos más adelante la ventaja de usar *tibbles* aún cuando de vez en cuando
@@ -392,7 +392,7 @@ misdatos <- read_sas(data_file = "~/misdatos.sas7bdat", catalog_file = NULL, enc
 file.remove("~/misdatos.sas7bdat")
 ```
 
-Para usar el paquete `foreign` ejemplificaremos la creación de un directrio de
+Para usar el paquete `foreign` ejemplificaremos la creación de un directorio de
 archivos en tu computadora desde `R`:
 
 ```{r}
@@ -523,15 +523,15 @@ group by year;'
 data <- query_exec(query = sql, project = project)
 ```
 
-Nota como la tabla cuenta con aprox. 140 millones de registros y se obtiene el
+Nota como la tabla cuenta con aproximadamente. 140 millones de registros y se obtiene el
 detalle en segundos.
 
 ## Heroku Postgres
 
 # rdata
 
-Tambien es posible guardar objetos especificos del ambiente dentro de un formato 
-especial con extension `rdata` o `RData`. Esto es muy útil cuando no han acabado
+También es posible guardar objetos específicos del ambiente dentro de un formato 
+especial con extensión `rdata` o `RData`. Esto es muy útil cuando no han acabado
 o quieren seguir trabajando con algo.
 
 

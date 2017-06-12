@@ -13,11 +13,11 @@ output:
 
 Estamos acostumbrados a editores del tipo *what you see is what you get*. Markdown permite escribir contenidos en **texto plano**.
 
-Tiene un alfabeto y símbolos que, una vez procesados, se ven de cierta forma. Lo que lo hace grandioso es que, a diferencia de un editor como word en el que la versión de cada computadora cambia la manera en la que se ven los documentos, con markdown esto no sucede. 
+Tiene un alfabeto y símbolos que, una vez procesados, se ven de cierta forma. Lo que lo hace grandioso es que, a diferencia de un editor como Word en el que la versión de cada computadora cambia la manera en la que se ven los documentos, con markdown esto no sucede. 
 
 Este lenguaje se está volviendo cada vez más común y, en particular, páginas como GitHub y reddit lo utilizan para sus comentario.
 
-La curva de aprendizaje es mínima. En lo que se va memorizando el alfabeto de markdown, lo más útil es tener una lista de fácil acceso con los caracteres más comúnes y lo que hacen. 
+La curva de aprendizaje es mínima. En lo que se va memorizando el alfabeto de markdown, lo más útil es tener una lista de fácil acceso con los caracteres más comunes y lo que hacen. 
 
 ## Encabezados
 
@@ -112,7 +112,7 @@ Guiones bajos
 2. Segundo
     - Primer elemento del segundo
     - Segundo elemento del segundo
-7. No tengo que cambiar el nombre, se pondra el correcto
+7. No tengo que cambiar el nombre, se pondrá el correcto
     i. Una sublista con incisos
     ii. Mas incisos
 4. Mas cosas
@@ -151,7 +151,7 @@ Y luego pones a donde te lleva la referencia
 
 Luego quieres hacer referencias a otra parte del documento [por lo tanto, puedes ligar texto]
 
-Detecata urls completos http://www.google.com
+Detecta urls completos http://www.google.com
 
 Y luego pones a donde te lleva la referencia
 
@@ -207,7 +207,7 @@ Una tabla alineada. La alineacion la puedes hacer por columnas
 | 1000  | 1000   | 1000  |
 ```
 
-| Derecha | Centro | Iquierda |
+| Derecha | Centro | Izquierda |
 | ----: | :----: | :---- |
 | 10    | 10     | 10    |
 | 1000  | 1000   | 1000  |
@@ -238,7 +238,7 @@ Puedes controlar mejor las imagenes
   <dd>No *siempre* funciona muy **bien**. Usa puro HTML <em>para que funcione siempre</em>.</dd>
 </dl>
 
-Puedes controlar mejor las imagenes
+Puedes controlar mejor las imágenes
 
 <img src="img/imagen.png" align="middle" height="50" width="75" margin="0 auto" />
 
@@ -250,7 +250,7 @@ En una linea puedo poner `codigo`
 
 En una linea puedo poner `codigo`.
 
-Para poner bloques de codico se utilizan tres acentos invertidos y se especifica el lenguaje.
+Para poner bloques de código se utilizan tres acentos invertidos y se especifica el lenguaje.
 
 ```python
 import requests
@@ -280,7 +280,7 @@ Debo separar para iniciar otro parrafo.
 ```
 
 Si
-escribo asi
+escribo así
 me lo junta todo.
 
-Debo separar para iniciar otro parrafo.
+Debo separar para iniciar otro párrafo.

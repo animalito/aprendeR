@@ -36,7 +36,7 @@ se utilizarán dos sistemas de administración: `packrat` y `virtualenv`, respec
 
 # Packrat
 
-[Packrat](https://rstudio.github.io/packrat/) es un systema de administración de dependencias para R que busca eliminar los problemas que suele haber para utilizar código realizado en diferentes momentos o máquinas con diferentes versiones de las librerías, entre los típicos son:
+[Packrat](https://rstudio.github.io/packrat/) es un sistema de administración de dependencias para R que busca eliminar los problemas que suele haber para utilizar código realizado en diferentes momentos o máquinas con diferentes versiones de las librerías, entre los típicos son:
 
 - La falta de control sobre los paquetes que se necesitaban instalar para correr un script específico.
 - Instalar paquetes en el ambiente global y dejarlos para siempre instalados en las computadoras porque no se sabe si algo se romperá al quitarlos.
@@ -98,9 +98,9 @@ install.packages("reshape2")
 packrat::snapshot()
 ```
 
-Aquí agrega lo que necesita a los folders mencionados antes para poder recrear las versiones y dependencisa. También modifica el archivo `packrat.lock`.
+Aquí agrega lo que necesita a las carpetas mencionados antes para poder recrear las versiones y dependencias. También modifica el archivo `packrat.lock`.
 
-4. En cualquier momento, puedes checar el status
+4. En cualquier momento, puedes revisar el estatus
 
 ```{r}
 packrat::status()
@@ -113,15 +113,15 @@ Debe darte el mensaje **Up to date**.
 
 ## Otras cosas importantes
 
-- Packrat puede incorporar paquetes que no estan en CRAN.
+- Packrat puede incorporar paquetes que no están en CRAN.
 - Puede restaurar un snapshot (de manera similar a la que un juego puedes regresar al último checkpoint).
 
 > Ejercicio: 
 > Restaurando un snapshot en el ejemplo de juguete
 
 Ve a la carpeta "~/prueba-packrat" 
-Muevete a la carpeta `packrat/`
-Borra la libreria `rm -R lib/`
+Muévete a la carpeta `packrat/`
+Borra la librería `rm -R lib/`
 Regresa a la carpeta del proyecto `cd ..`
 Inicializa R
 ... y todo se restaura.
@@ -129,5 +129,5 @@ Inicializa R
 ## Ligas utiles
 
 - [Comandos comunes y listas de opciones](https://rstudio.github.io/packrat/commands.html)
-- [Packrat en RStudio](https://rstudio.github.io/packrat/rstudio.html) lo hace AUN mas facil.
+- [Packrat en RStudio](https://rstudio.github.io/packrat/rstudio.html) lo hace AUN mas fácil.
 - [Limitaciones de packrat](https://rstudio.github.io/packrat/limitations.html)

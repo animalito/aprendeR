@@ -51,7 +51,7 @@ Todos estos verbos funcionan de la misma manera (tienen la misma estructura):
 - Los argumentos subsecuentes indican qué es lo que se debe hacer a ese *data.frame*
 - Siempre regresa un *data.frame*
 
-Para ejemplicar el uso de cada uno de los verbos, utilizaremos los siguientes
+Para ejemplificar el uso de cada uno de los verbos, utilizaremos los siguientes
 conjuntos de datos de muestra, todos disponibles en el paquete `nycflights13` \parencite{flights}.
 
 ```{r, echo=F, warning=F, message=F, error=F}
@@ -59,8 +59,8 @@ library(dplyr)
 library(readr)
 ```
 
-Nota como utilizamos la funcion del paquete `readr` `read_csv`. Esta es una 
-nueva implementacion de `read.csv` pero mucho mas rapida.
+Nota como utilizamos la función del paquete `readr` `read_csv`. Esta es una 
+nueva implementación de `read.csv` pero mucho mas rápida.
 
 ```{r}
 flights <- read_csv("data/flights.csv")
@@ -75,10 +75,10 @@ airports
 
 ### filter
 
-Ya habiamos visto muchas maneras de extraer datos especificos de una base de 
-datos de acuerdo a condiciones logicas impuestas en los valores de las filas
+Ya habíamos visto muchas maneras de extraer datos específicos de una base de 
+datos de acuerdo a condiciones lógicas impuestas en los valores de las filas
 de columnas especificas. `filter` nos permite poner tantas condiciones como 
-queramos de manera muy facil y entendible por cualquiera que lea nuestro codigo.
+queramos de manera muy fácil y entendible por cualquiera que lea nuestro código.
 
 Ejemplos
 
@@ -103,7 +103,7 @@ filter(flights, dest == "SFO" | dest == "OAK", arr_delay > 5)
 
 ### select
 
-Podemos ahora, mas facilmente, quedarnos con unicamente ciertas variables. 
+Podemos ahora, mas fácilmente, quedarnos con únicamente ciertas variables. 
 `select` esta implementado de tal manera que funciona *nombrando* las variables
 que se quieren utilizar.
 
@@ -111,19 +111,19 @@ que se quieren utilizar.
 select(flights, flight, dest)
 ```
 
-Tambien podemos especificar que queremos todas las variables *menos* algunas.
+También podemos especificar que queremos todas las variables *menos* algunas.
 
 ```{r}
 select(flights, -date, -hour, -minute, -dep, -arr, -carrier, -flight)
 ```
 
-Podemos pedir las variables que empiezan con algun caracter.
+Podemos pedir las variables que empiezan con algún caracter.
 
 ```{r}
 select(flights, starts_with("d"))
 ```
 
-O las que contienen algun patron
+O las que contienen algún patrón
 
 ```{r}
 select(flights, contains("dep"))
@@ -131,11 +131,11 @@ select(flights, contains("dep"))
 
 ### arrange
 
-`order` habiamos visto que es la implementacion del base para ordenar vectores o
+`order` habíamos visto que es la implementación del base para ordenar vectores o
 en su defecto, dataframes de acuerdo a valores de vectores en esta. Sin embargo,
 es engorrosa la manera de llamarlo.
 
-Podemos arreglar los valores de las tablas, facilmente con `arrange`. Por ejemplo,
+Podemos arreglar los valores de las tablas, fácilmente con `arrange`. Por ejemplo,
 podemos ver los 5 vuelos con mayor retraso de llegada.
 
 ```{r}
@@ -159,7 +159,7 @@ arrange(flights, dest, arr_delay)
 Muchas veces lo que se desea es generar nuevas variables utilizando funciones sobre
 las variables de la tabla.
 
-Por ejemplo, queremos saber cual fue el vuelo mas rapido. Para esto queremos
+Por ejemplo, queremos saber cual fue el vuelo mas rápido. Para esto queremos
 calcular la velocidad promedio del vuelo.
 
 ```{r}
@@ -168,7 +168,7 @@ select(arrange(mutate(flights, velocidad = dist/time), desc(velocidad)),
 ```
 
 Esta manera de transformar a los datos (utilizando varios de los verbos) es 
-confusa y dificil de leer. Es mas sencillo uilizar el operador pipe de R implementado
+confusa y difícil de leer. Es mas sencillo utilizar el operador pipe de R implementado
 en el paquete `magrittr`, es decir, `%>%`.
 
 ```{r}
@@ -179,18 +179,18 @@ flights2
 ```
 
 La lectura es mucho mas sencilla de esta forma. Recuerden, muchas veces los
-lectores de su codigo seran ustedes en el futuro.
+lectores de su código serán ustedes en el futuro.
 
 ### group_by
 
 Un verbo muy poderoso es el group_by. Es por este tipo de verbos que resultó 
-necesario generar un objeto diferente al tradicional data.frame. Básicamente,
+necesario generar un objeto diferente al tradicional dataframe. Básicamente,
 el tbl_df es capaz de guardar agrupamientos específicos sobre los cuáles 
-puede hacer window functions o resumenes sobre los grupos que se definen.
+puede hacer funciones ventana (*window functions*) o resúmenes sobre los grupos que se definen.
 
 #### Ejemplo {#ejemplo}
 
-Los datos de vuelos se agrupan naturalmente sobre las aerolineas.
+Los datos de vuelos se agrupan naturalmente sobre las aerolíneas.
 
 ```{r}
 flights.g <- flights %>% group_by(., carrier)
@@ -200,7 +200,7 @@ flights.g
 ### summarise 
 
 Ahora, si queremos saber el promedio de velocidad de los vuelos por destino,
-podemos calcularlo facilmente con `group_by` y `summarise`.
+podemos calcularlo fácilmente con `group_by` y `summarise`.
 
 ```{r}
 flights2 %>% group_by(dest) %>%
@@ -211,9 +211,9 @@ flights2 %>% group_by(dest) %>%
 
 ## Joins
 
-Muchas veces la informacion se tiene repartida entre diferentes tablas pero es
+Muchas veces la información se tiene repartida entre diferentes tablas pero es
 necesario juntar las variables de las diferentes observaciones en una sola
-tabla para modelarlas o describirlas. Es muy estandar, en el lenguaje SQL, el
+tabla para modelarlas o describirlas. Es muy estándar, en el lenguaje SQL, el
 tipo de joins que se pueden utilizar. La figura \ref{fig:joins} muestra un 
 resumen del tipo de joins que pueden realizarse.
 
@@ -224,17 +224,17 @@ resumen del tipo de joins que pueden realizarse.
     \label{fig:joins}
 \end{figure}
 
-El paquete `dplyr` implementa estos joins de manera natural, utlizando la 
-logica de SQL.
+El paquete `dplyr` implementa estos joins de manera natural, utilizando la 
+lógica de SQL.
 
 - `inner_join`: regresa todas las filas de x en donde hay valores correspondientes para y, junto con todas las columnas.
-- `left_join`: regresa todas las filas de x, rellenando con NA para valores que no encontro en y.
-- `right_join`: regresa todas las filas de y, rellenando con NA para valores que no encontro en y.
+- `left_join`: regresa todas las filas de x, rellenando con NA para valores que no encontró en y.
+- `right_join`: regresa todas las filas de y, rellenando con NA para valores que no encontró en y.
 - `full_join`: regresa todas las filas y todas las columnas para x y y. Donde no hay valores en alguno de los dos, rellena con NA.
-- `semi_join`: regresa todas las filas de x para las que hay valores en y regresando unicamente las columnas de x.
+- `semi_join`: regresa todas las filas de x para las que hay valores en y regresando únicamente las columnas de x.
 - `anti_join`: regresa todas las filas de x donde no hay valores en y, manteniendo solo las columnas de x.
 
-Ahora, supongamos que quermos saber la velocidad promedio de los aviones que
+Ahora, supongamos que queremos saber la velocidad promedio de los aviones que
 tenemos en nuestros datos para todos sus vuelos.
 
 ```{r}
@@ -265,6 +265,6 @@ inner_join(
   arrange(desc(retraso))
 ```
 
-¿Cuáles son los aeropuertos que SI estan en la base de destinos?
-¿Cuáles son los aeropuertos que NO estan en la base de destinos?
+¿Cuáles son los aeropuertos que SI están en la base de destinos?
+¿Cuáles son los aeropuertos que NO están en la base de destinos?
 
