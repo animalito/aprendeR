@@ -13,48 +13,29 @@ output:
 knitr::opts_chunk$set(echo = T, eval = F)
 ```
 
-# Ubuntu virtualizado
+Uno de los problemas en el trabajo colaborativo es poder ejecutar código realizado en otra computadora. La analítica reproducible y fácil de insertar en un ambiente de producción es fundamental para minimizar el retrabajo y que lo que se realice se (re)utilice.
 
-[Descarga la máquina](https://drive.google.com/file/d/0Bw4a10rhk2QqNmJEa3FDWHU0NHc/view?usp=sharing)
+Existen múltiples maneras de trabajar de manera que se resuelva el problema de las versiones de software y sus dependencias. Una comprehensiva, por ejemplo, es usando `docker`. Cuando un proyecto incluye únicamente código de `R`, `packrat` es suficiente para empaquetarlo y que el código sea reproducible en cualquier computadora y sistema operativo [@packrat].
 
-Para facilitar el aprendizaje, se instaló en la máquina todo lo que se necesitará
-para correr el software que se revisará en el diplomado.
-
-# Ambiente controlado
-
-En el trabajo colaborativo uno de los problemas típicos se resume en la frase
-*en mi compu si corre*. La analítica reproducible y fácil de insertar en un 
-ambiente de producción es fundamental para minimizar la talacha y que lo que
-se realice se (re)utilice.
-
-Existen múltiples maneras de trabajar de manera que se resuelva el problema de 
-las versiones de software y sus dependencias. Una comprehensiva, por ejemplo, es
-`docker`.
-
-Debido a que el trabajo aquí estará concentrado alrededor de `R` y de `python`, 
-se utilizarán dos sistemas de administración: `packrat` y `virtualenv`, respectivamente.
-
-# Packrat
-
-[Packrat](https://rstudio.github.io/packrat/) es un systema de administración de dependencias para R que busca eliminar los problemas que suele haber para utilizar código realizado en diferentes momentos o máquinas con diferentes versiones de las librerías, entre los típicos son:
+[Packrat](https://rstudio.github.io/packrat/) es un sistema de administración de dependencias para R que busca eliminar los problemas que suele haber para utilizar código realizado en diferentes momentos o máquinas con diferentes versiones de las librerías, entre los típicos son [@packratconcept]:
 
 - La falta de control sobre los paquetes que se necesitaban instalar para correr un script específico.
 - Instalar paquetes en el ambiente global y dejarlos para siempre instalados en las computadoras porque no se sabe si algo se romperá al quitarlos.
 - Romper código de otros proyectos por actualizar un paquete en otro.
 
-Packrat permite que os proyectos en R estén:
+Packrat permite que los proyectos en `R` sean [@packratconcept]:
 
 - **Aislados**: cada proyecto tiene su paquetería privada.
-- **Portable**: puedes transferir rápidamente los proyectos de una computadora a otra -y a través de distintas plataformas- pues facilita la instalación de toda la paquetería sobre la que descansa el proyecto.
-- **Reproducible**: guarda las versiones exactas sobre las que el proyecto fue trabajado y éstos son los que son instalados en cualquier ambiente.
+- **Portables**: puedes transferir rápidamente los proyectos de una computadora a otra -y a través de distintas plataformas- pues facilita la instalación de toda la paquetería sobre la que descansa el proyecto.
+- **Reproducibles**: guarda las versiones exactas sobre las que el proyecto fue trabajado y éstos son los que son instalados en cualquier ambiente.
 
-## El directorio del proyecto
+# El directorio del proyecto
 
-Packrat se asocia a un directorio específico. En nuestro caso, el repositorio del diplomado tiene packrat. Al iniciar una sesión de R dentro de un directorio asociado a un packrat, R va a utilizar únicamente los paquetes dentro de esa librería privada. Al instalar, remover o actualizar un paquete dentro de ese directorio, esos cambios se harán en la librería privada.
+Packrat se asocia a un directorio específico. Al iniciar una sesión de R dentro de un directorio asociado a un packrat, R va a utilizar únicamente los paquetes dentro de esa librería privada. Al instalar, remover o actualizar un paquete dentro de ese directorio, esos cambios se harán en la librería privada.
 
 Se guarda en el proyecto toda la información que packrat necesita para poder recrear el conjunto de librerías en cualquier otra máquina. 
 
-## Instalación
+# Instalación
 
 El paquete está en el CRAN y se instala desde R con el comando.
 
@@ -62,7 +43,7 @@ El paquete está en el CRAN y se instala desde R con el comando.
 install.packages("packrat")
 ```
 
-## Inicializarlo
+# Inicializarlo
 
 Al iniciar un proyecto, el que sea, que use R, lo recomendable es asociarle packrat. Esto se hace con el comando `packrat::init`.
 
@@ -72,10 +53,7 @@ packrat::init("~/prueba-packrat")
 
 Con esto, al trabajar en el directorio `"~/prueba-packrat"` ya estás en un proyecto de packrat con su librería privada.
 
-*Este paso ya no lo debes realizar debido a que ya se hizo para el repositorio que clonaste.*
-
-Un proyecto de packrat se distingue porque -igual que git- tiene archivos y directorios adicionales que se crean con la función `init()`
-
+Un proyecto de packrat se distingue porque -igual que git- tiene archivos y directorios adicionales que se crean con la función `init()`:
 
 - `packrat/packrat.lock`: lista las versiones de los paquetes que fueron utilizadas. Este archivo no debe editarse a mano.
 - `packrat/packrat.opts`: guarda las opciones de configuración para el proyecto. Este se puede modificar con las opciones `get_opts` y  `set_opts`. La lista completa de opciones se puede ver al escribir en la consola de R `?"packrat-options"`.
@@ -83,13 +61,13 @@ Un proyecto de packrat se distingue porque -igual que git- tiene archivos y dire
 - `packrat/src/`: paquetes para todas las dependencias.
 - `.Rprofile`: Le dice a R que la lista específica de librerías que debe utilizar cuando está en ese directorio (o cualquiera de sus subdirectorios) es la privada del proyecto que gestiona packrat.
 
-## Agregar, remover y actualizar paquetes
+# Agregar, remover y actualizar paquetes
 
-1. Inicializa `R` dentro de un proyecto packrat. 
+1. Inicializa `R` dentro de un proyecto `packrat`. 
 2. Se instala como siempre, usando `install.packages()`
 
 ```{r}
-install.packages("reshape2")
+install.packages("dplyr")
 ```
 
 3. Se toma un `snapshot` para decirle a packrat que guarde los cambios
@@ -98,7 +76,7 @@ install.packages("reshape2")
 packrat::snapshot()
 ```
 
-Aquí agrega lo que necesita a los folders mencionados antes para poder recrear las versiones y dependencisa. También modifica el archivo `packrat.lock`.
+Aquí `packrat` agrega lo que necesita a los folders mencionados antes para poder recrear las versiones y dependencias. También modifica el archivo `packrat.lock`.
 
 4. En cualquier momento, puedes checar el status
 
@@ -111,22 +89,28 @@ Debe darte el mensaje **Up to date**.
 ¡Y listo!
 
 
-## Otras cosas importantes
+# Otras cosas importantes
 
 - Packrat puede incorporar paquetes que no estan en CRAN.
 - Puede restaurar un snapshot (de manera similar a la que un juego puedes regresar al último checkpoint).
 
-> Ejercicio: 
-> Restaurando un snapshot en el ejemplo de juguete
+\renewcommand\bcStyleTitre[1]{\large\textcolor{bbblack}{#1}}
+\begin{bclogo}[
+  couleur=llred,
+  arrondi=0,
+  logo=\bcstop,
+  barre=none,
+  noborder=true]{Ejercicio: Restaurando un snapshot en el ejemplo de juguete.}
+\begin{enumerate}
+\item Ve a la carpeta \texttt{~/prueba-packrat}
+\item Muevete a la carpeta \texttt{packrat/}
+\item Borra la libreria \texttt{rm -R lib/}
+\item Regresa a la carpeta del proyecto \texttt{cd ..}
+\item Inicializa \texttt{R}... y todo se restaura.
+\end{enumerate}
+\end{bclogo}
 
-Ve a la carpeta "~/prueba-packrat" 
-Muevete a la carpeta `packrat/`
-Borra la libreria `rm -R lib/`
-Regresa a la carpeta del proyecto `cd ..`
-Inicializa R
-... y todo se restaura.
-
-## Ligas utiles
+# Ligas utiles
 
 - [Comandos comunes y listas de opciones](https://rstudio.github.io/packrat/commands.html)
 - [Packrat en RStudio](https://rstudio.github.io/packrat/rstudio.html) lo hace AUN mas facil.

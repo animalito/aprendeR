@@ -9,15 +9,14 @@ output:
       in_header: mypackages.sty
 ---
 
-*Basado en [este cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#links) y [este otro](https://www.stack.nl/~dimitri/doxygen/manual/markdown.html)*
+Estamos acostumbrados a editores del tipo *what you see is what you get*. `Markdown` permite escribir contenidos en **texto plano** con una sintáxis para darle formato. Sobre esta sintáxis la herramienta de software en Perl convierte el
+texto plano a HTML [@markdown].
 
-Estamos acostumbrados a editores del tipo *what you see is what you get*. Markdown permite escribir contenidos en **texto plano**.
+Tiene un alfabeto y símbolos que, una vez procesados, se ven de cierta forma. A diferencia de un editor como Word en el que la versión de cada computadora cambia la manera en la que se ven los documentos, con `Markdown` esto no sucede. 
 
-Tiene un alfabeto y símbolos que, una vez procesados, se ven de cierta forma. Lo que lo hace grandioso es que, a diferencia de un editor como word en el que la versión de cada computadora cambia la manera en la que se ven los documentos, con markdown esto no sucede. 
+Este lenguaje se está volviendo cada vez más común y, en particular, páginas como GitHub y reddit lo utilizan para sus comentarios.
 
-Este lenguaje se está volviendo cada vez más común y, en particular, páginas como GitHub y reddit lo utilizan para sus comentario.
-
-La curva de aprendizaje es mínima. En lo que se va memorizando el alfabeto de markdown, lo más útil es tener una lista de fácil acceso con los caracteres más comúnes y lo que hacen. 
+La curva de aprendizaje es mínima. En lo que se va memorizando el alfabeto de markdown, lo más útil es tener una lista de fácil acceso con los caracteres más comúnes y lo que hacen. A continuación, se proporciona un listado de la sintáxis más común [basado en @markdowncheet1 y en @markdowncheet2].
 
 ## Encabezados
 
@@ -35,7 +34,7 @@ La curva de aprendizaje es mínima. En lo que se va memorizando el alfabeto de m
 ### Nivel 3
 #### Nivel 4
 
-## Lineas horizontales
+# Lineas horizontales
 
 Con tres o mas de los siguientes
 
@@ -63,7 +62,7 @@ ___
 
 Guiones bajos
 
-## Énfasis
+# Énfasis
 
 ```
 *italica* o _italica_
@@ -79,7 +78,7 @@ Guiones bajos
 - **Uno en negritas _el otro combinado_**
 - ~~tachar~~
 
-## Bloques
+# Bloques
 
 ```
 > Ejemplo: Un bloque de varias
@@ -87,9 +86,9 @@ Guiones bajos
 ```
 
 > Ejemplo: Un bloque de varias
-> lineas.
+> líneas.
 
-## Listas
+# Listas
 
 ```
 1. Primero
@@ -123,7 +122,7 @@ Guiones bajos
     - O usando menos
     - O usando el signo de mas
 
-## Links
+# Links
 
 ```
 [Esto es lo que se ve](https://www.google.com)
@@ -153,7 +152,7 @@ Luego quieres hacer referencias a otra parte del documento [por lo tanto, puedes
 
 Detecata urls completos http://www.google.com
 
-Y luego pones a donde te lleva la referencia
+Y luego pones a dónde te lleva la referencia
 
 [1]: https://en.wikipedia.org/wiki/42_%28number%29#The_Hitchhiker.27s_Guide_to_the_Galaxy
 
@@ -161,7 +160,7 @@ Y luego pones a donde te lleva la referencia
 
 Nota que los espacios entre lineas son importantes.
 
-## Imágenes
+# Imágenes
 
 ```
 Puedes ponerlo en una misma linea: 
@@ -182,7 +181,7 @@ Reference-style:
 [logo]: dw.png "Sin duda alguna"
 
 
-## Tablas
+# Tablas
 
 ```
 Una tabla simple 
@@ -212,7 +211,7 @@ Una tabla alineada. La alineacion la puedes hacer por columnas
 | 10    | 10     | 10    |
 | 1000  | 1000   | 1000  |
 
-## HTML 
+# HTML 
 
 Si sabes html, puedes utilizarlo directo.
 
@@ -242,19 +241,19 @@ Puedes controlar mejor las imagenes
 
 <img src="img/imagen.png" align="middle" height="50" width="75" margin="0 auto" />
 
-## Código 
+# Código 
 
 ```
-En una linea puedo poner `codigo`
+En una linea puedo poner `código`
 ```
 
-En una linea puedo poner `codigo`.
+En una linea puedo poner `código`.
 
 Para poner bloques de codico se utilizan tres acentos invertidos y se especifica el lenguaje.
 
 ```python
 import requests
-print "Hola mundo!"
+print "¡Hola mundo!"
 ```
 
 ```sql
@@ -262,14 +261,14 @@ select * from tabla;
 ```
 
 ```r
-library(reshape2)
+library(dplyr)
 ```
 
 ```
 Sin lenguaje, no lo resalta
 ```
 
-## Parrafos
+# Párrafos
 
 ```
 Si
