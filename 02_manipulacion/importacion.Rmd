@@ -27,7 +27,7 @@ Primero es necesario **importar** nuestros datos a R. Los datos pueden estar en
 una gran cantidad de formatos o lugares.
 
 Después, normalmente es necesario **limpiar** nuestros datos, es decir, seguir
-criterios de datos limpios de tal forma que como guardemos los datos
+criterios de datos limpios de tal forma que el cómo guardemos los datos
 equivalga a la semántica de los datos que tenemos. Es muy importante primero
 limpiar porque esto provee de consistencia a lo largo del análisis.
 
@@ -41,8 +41,8 @@ de los datos. Para esto tenemos dos herramientas fundamentales: la estadística
 descriptiva (en el diagrama reducido a **visualización**) y la generación de 
 **modelos**. La primera es fundamental pues permite derivar preguntas pertinentes
 a los datos, encontrar patrones, respuestas, plantear hipótesis. Sin embargo,
-éstas no escalan de la misma manera que los modelos pues estos, una vez que 
-aceptamos sus supuestos generan los resultados que esperamos o contestan la 
+éstas no escalan de la misma manera que los modelos pues éstos, una vez que 
+aceptamos sus supuestos, generan los resultados que esperamos o contestan la 
 pregunta planteada.
 
 Por último, necesitamos **comunicar** los resultados.
@@ -105,7 +105,7 @@ de trabajo (el que se despliega con \texttt{getwd()}) para buscar a partir
 de ahí el archivo por leer o para guardar el que se escribirá si se usan rutas
 relativas.\\
 
-En caso de usar rutas absolutas a pesar de que esto \textbf{no} es una \textit{buena práctica}, se
+En caso de usar rutas absolutas (a pesar de que esto \textbf{no} es una \textit{buena práctica}) se
 hará lectura o escritura del archivo en el lugar especificado.
 \end{nota}
 
@@ -130,7 +130,7 @@ Con esto entenderás mejor el concepto de rutas relativas.
 ## rds
 
 La extensión `rds` es de las más comúnmente utilizada en `R`, por ejemplo, para
-guardar los metadatos para un paquete. Las funciones pertenecen al `base` \parencite{rbase}.
+guardar los datos para un paquete. Las funciones pertenecen al `base` \parencite{rbase}.
 Permiten guardar un solo objeto de `R` a un archivo y recuperarlo.
 
 Para **escribirlos**
@@ -144,7 +144,7 @@ saveRDS(misdatos, file = "misdatos.rds", ascii = FALSE, version = NULL,
 ```
 
 Nota como si usas el comando `getwd()` y después vas a la ruta indicada por 
-medio del explorador de archivos, verás en esa carpeta el archivo `misdatos_locales.rds`.
+medio del explorador de archivos, verás en esa carpeta el archivo `misdatos.rds`.
 
 Para **leerlos** usamos la ruta relativa. Dado que los guardamos en el directorio 
 de trabajo actual (Recuerda, se puede cambiar con el comando `setwd`) entonces
@@ -166,9 +166,9 @@ Para **escribirlos** el mas común es `write.table` del paquete `utils` \parenci
 ```{r, eval = F}
 # Do not run
 write.table(misdatos, file = "~/misdatos.<extension>", append = FALSE
-            , quote = TRUE, sep = " ", eol = "\n", na = "NA", dec = "."
-            , row.names = TRUE, col.names = TRUE
-            , qmethod = c("escape", "double"), fileEncoding = "")
+, quote = TRUE, sep = " ", eol = "\n", na = "NA", dec = "."
+, row.names = TRUE, col.names = TRUE
+, qmethod = c("escape", "double"), fileEncoding = "")
 ```
 
 En el paquete `readr` se implementa también `write_delim` 
@@ -176,7 +176,7 @@ En el paquete `readr` se implementa también `write_delim`
 ```{r, eval = F}
 # Do not run
 write_delim(misdatos, path = "~/misdatos.<extension>"
-            , delim = " ", na = "NA", append = FALSE, col_names = !append)
+            , delim = "\t", na = "NA", append = FALSE, col_names = !append)
 ```
 
 Escribamos ahora el *dataframe* `misdatos` en `psv`:
@@ -356,8 +356,8 @@ de las variables en el *data frame* pues `Stata` no admite puntos en los nombres
 
 ```{r}
 names(misdatos) <- tolower(gsub("\\.", "_", names(misdatos)))
-# haven
-write_dta(data = misdatos, path = "~/misdatos.dta", version = 14)
+# foreign
+write.dta(data = misdatos, file = "~/misdatos.dta", version = 14)
 ```
 
 Para **leerlos**
@@ -401,13 +401,19 @@ dir.create("datos_sas")
 ```
 
 Observa como, en el directorio que se despliega con `getwd` encuentras 
-ahora una carpeta llamada `datos_sas`. Creamos ahí un archivo de texto plano
-con los datos y un `script` de `SAS` para leerlos apropiadamente:
+ahora una carpeta llamada `datos_sas`. Creamos ahí un archivo con la función
+`write_sas` de `haven`:
 
 ```{r}
-# foreign - escribe los datos como texto y un programa para leerlos
-write.foreign(misdatos, "datos_sas/misdatos.txt", "datos_sas/misdatos.sas", package="SAS")
+write_sas(misdatos, "datos_sas/misdatos.sas7bdat")
 ```
+
+Para leerlos, utilizamos `read_sas` del paquete `haven`:
+
+```{r}
+misdatos <- read_sas("datos_sas/misdatos.sas7bdat")
+```
+
 
 Observa desde el explorador de archivos, los dos objetos creados. También desde
 `R` podemos borrar el directorio:
