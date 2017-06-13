@@ -4,21 +4,15 @@
 
 # Session Data files
 .RData
-
 # Example code in package build process
 *-Ex.R
-
 # RStudio files
 .Rproj.user/
-
 # produced vignettes
 vignettes/*.html
 vignettes/*.pdf
-
 # OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
 .httr-oauth
-
-
 # Latex files
 **/*.aux
 **/*.bbl
@@ -28,15 +22,14 @@ vignettes/*.pdf
 **/*.out
 **/*.xml
 **/*.tex
-
 **/*.lof
 **/*.lot
 **/*.synctex.gz
 **/*.toc
-
 # Emacs
 **/*.*~
-
 # Intermediate files
 **/*.pdf
 **/*.html
+.Rproj.user
+packrat/lib*/

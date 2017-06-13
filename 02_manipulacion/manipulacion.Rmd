@@ -31,7 +31,7 @@ análisis de datos correspondiente.
     \label{fig:ciclo2}
 \end{figure}
 
-## Datos limpios
+## Motivación
 
 Mucho del esfuerzo en analítica lidia con la limpieza de datos. Tomar datos de 
 diferentes fuentes y poderlas poner en la forma en la que uno los necesita para
@@ -40,41 +40,44 @@ que esta parte sea más fácil y eficiente. Entre éstas se encuentran los crite
 de datos limpios.
 
 Los conjuntos de datos limpios (*tidy datasets*) permiten manipularlos fácilmente,
-modelarlos y visualizarlos. Además, tienen una estructura específica: cada variable es una 
-columna, cada observación una fila y cada tipo de unidad observacional es una
-tabla.
+modelarlos y visualizarlos. Aunque funcionan independientemente del lenguaje 
+utilizado, son particularmente útiles en \texttt{R} pues éste es un lenguaje
+pensado para estructuras de datos tabulares; mismas que son más fácilmente 
+explotables si se usan datos limpios [@wickham2016r]. 
 
-### Preparación de datos
+Los datos limpios tienen una estructura específica: cada variable es una 
+columna, cada observación una fila y tipo de unidad observacional forma una 
+tabla^[@wickham2016r[, sección Data Tidying] explica este último criterio como "cada valor ocupa su propia celda".].
 
-Esta actividad incluye una gran cantidad de elementos: desde revisar los outliers, 
-hasta extraer variables de cadenas en datos no estrucutrados, imputación de 
+### Datos limpios en el procesamiento de datos
+
+Esta actividad incluye una gran cantidad de elementos: revisión de valores atípicos, 
+extracción de variables de cadenas en datos no estructurados, imputación de 
 valores perdidos. Los datos limpios son tan solo un subconjunto de este proceso y
 lidian con el cómo estructurar los datos de manera que se facilite el análisis.
 
-El estándar de datos limpios está diseñado para facilitar la exploración inicial y
-el análisis de datos así como simplificar el desarrollo de herramientas para el 
-análsis de datos que trabajen bien con datos limpios.
+Los criterios de datos limpios están diseñados para facilitar la exploración inicial y
+el análisis de datos, así como simplificar el desarrollo de herramientas para el 
+análisis de datos que trabajen bien con datos limpios. 
 
 Los criterios de datos limpios están muy relacionados a los de las bases de 
-datos relacionales y, por ende, al algebra relacional de Codd. Sin embargo,
+datos relacionales y, por ende, al álgebra relacional de Codd [@wickham2014tidy]. Sin embargo,
 se expresan y enmarcan en lenguaje que le es familiar a estadísticos. 
 
-Básicamente, están creados para lidear con conjuntos de datos que se encuentran
-en el mundo real. Los criterios de datos limpios proporcionan un marco mental a través
-del cual la intuición es explícita. 
-
-### Definición de datos limpios
-
-Los datos limpios proporcionan una manera estándar de ligar la estructura de un
+Están creados para lidiar con conjuntos de datos que se encuentran
+en el mundo real pues -aunque parecen simples- es difícil encontrar datos limpios de origen. 
+Los criterios de datos limpios proporcionan un marco mental a través
+del cual la intuición es explícita, es decir, proporcionan una manera estándar de ligar la estructura de un
 dataset (es decir su layout físico) con su semántica (su significado).
 
-#### Estructura de datos
+#### Estructura de datos: un ejemplo
 
 La mayoría de los datos estadísticos están conformados por tablas rectangulares 
 compuestas por filas y columnas. Las columnas casi siempre están etiquetadas 
 *colnames* y las filas a veces lo están. 
 
-Tomamos el ejemplo de datos de la figura \ref{fig:estructura} en donde se presentan datos de un experimento. La tabla contiene dos columas y tres filas, 
+Tomamos el ejemplo de datos de la figura \ref{fig:estructura} en donde se presentan 
+datos de un experimento^[Ejemplo tomado de @wickham2014tidy, p. 3]. La tabla contiene dos columnas y tres filas, 
 ambas etiquetadas.
 
 \begin{figure}[h]
@@ -86,10 +89,10 @@ ambas etiquetadas.
 
 Podemos estructurar los datos de diferentes maneras pero la abstracción de filas
 y columnas solamente nos permite pensar en la representación transpuesta que
-se muestra en la figura \ref{fig:estructurat}. El layout cambia pero los datos
+se muestra en la figura \ref{fig:estructurat}. El diseño cambia pero los datos
 son los mismos. Con columnas y filas, no podemos decir esto de manera apropiada.
 Además de la simple apariencia, debemos poder describir la semántica -el significado- 
-de los valores que se muestran en una tabla.
+de los valores que se muestran en una tabla [@wickham2014tidy, p. 3].
 
 \begin{figure}[h]
     \centering
@@ -101,11 +104,14 @@ de los valores que se muestran en una tabla.
 ### Semántica
 
 Un conjunto de datos es una colección de **valores** (normalmente cuantitativos/números o cualitativos/caracteres).
+Los valores se organizan de dos maneras: cada valor pertenece a una variable y a 
+una observación. 
 
-Los valores se organian de dos maneras. Cada valor pertenece a una variable y a 
-una observación. Una variable contiene todos los valores de una medida y del
+Una *variable* contiene todos los valores de una medida y del
 mismo atributo subyacente (por ejemplo, temperatura, duración, altura, latitud)
-a través de unidades. Una observación, en cambio, contiene todos los valores
+a través de unidades. 
+
+Una *observación*, en cambio, contiene todos los valores
 medidos para la misma unidad (por ejemplo, una persona, un día, un municipio)
 a través de distintos atributos.
 
@@ -119,9 +125,14 @@ pensamos ahora en estos términos. Tenemos 3 variables:
 El diseño del experimento mismo nos habla de la estructura de las observaciones 
 y los posibles valores que pueden tomar. Por ejemplo, en este caso el valor
 perdido nos dice que, por diseño, se debió de capturar esta variable pero no se 
-hizo (por eso es importante guardarlo como tal). Los valores perdidos estructurales, 
+hizo (por eso es importante guardarlo como tal)[^1]. 
+
+[^1]: Los valores perdidos estructurales, 
 representan mediciones de valores que no se puede hacer o que no suceden y, por
-tanto, se pueden eliminar (por ejemplo, hombres embarazados). En la figura 
+tanto, se pueden eliminar (por ejemplo, hombres embarazados). En este ejemplo, 
+tenemos un valor perdido no estructural.
+
+En la figura 
 \ref{fig:estructuratidy} se muestran los mismos datos que antes pero pensados tal que las 
 variables son columnas y las observaciones (en este caso, cada punto en el
 diseño experimental) son filas.
@@ -133,30 +144,47 @@ diseño experimental) son filas.
     \label{fig:estructuratidy}
 \end{figure}
 
-Normalmente, es fácil determinar qué son observaciones y qué son variables pero
-es muy dificil definir en forma precisa variables y observaciones. Por ejemplo,
+Normalmente, es fácil determinar cuáles son las observaciones y cuáles son las variables pero
+es muy difícil definir en forma precisa. Por ejemplo,
 si tienes teléfonos de casa y celulares, se pueden considerar como dos variables
 distintas en muchos contextos pero en prevención de fraude necesitas una variable 
 que guarde el tipo de teléfono y otra en la que se guarde el número pues el uso
 regular del mismo número de teléfono por parte de la misma persona puede ayudar
 a detectarlo.
 
-En general, es más fácil describir las relaciones funcionales entre las variables que entre las filas (el radio, una combinación lineal). También es
-más fácil hacer comparaciones entre grupos que entre columnas (la suma, el
-promedio, la varianza, la moda).
+En general, es más fácil describir las relaciones funcionales entre las variables 
+que entre las filas pues las puedes operar fácilmente: por ejemplo, el radio entre
+dos variables, una combinación lineal de varias variabless. También es
+más fácil hacer comparaciones entre grupos de observaciones que entre columnas: la suma, el
+promedio, la varianza, la moda [@wickham2014tidy, p. 4]. Las observaciones son más complejas pues normalmente
+se enmarcan en un análisis específico que se desea realizar con los datos y existen varios
+niveles. Por ejemplo, en un análisis de ingreso podemos tener datos sociodemográficos
+de los individuos, datos geográficos del lugar en el que viven, datos macroeconómicos
+del tiempo específico, datos de la familia del individuo, datos del trabajo del individuo,
+entre otros.
 
-### Datos limpios
+## Datos limpios
 
 Éstos mapean de forma estándar el significado y la estructura de los datos.
-Un conjunto de datos se considera sucio o limpio dependendiendo en cómo las
-filas, columans y tablas mapean a observaciones, variables y tipos. En 
+Un conjunto de datos se considera sucio o limpio dependiendo de cómo las
+filas, columnas y tablas mapean a observaciones, variables y tipos. En 
 **datos limpios**:
 
 1. Cada *variable* es una columna.
 2. Cada *observación* es una fila.
-3. Cada *tipo de unidad observacional* es una tabla.
+3. Cada *tipo de unidad observacional* es una tabla / cada valor tiene su celda.
 
-Esto equivale a la tercera forma normal de Codd enfocado a un solo conjunto de 
+En la figura \ref{fig:datoslimpios} podemos ver la etapa del
+análisis de datos correspondiente.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{../img/datos_limpios.png}
+    \caption{Ejemplificación de datos limpios \parencite[][, sección Data Tidying]{wickham2016r}.}
+    \label{fig:datoslimpios}
+\end{figure}
+
+Esto equivale a la tercera forma normal de Codd [@wickham2014tidy, p. 4] enfocado a un solo conjunto de 
 datos y no a datos conectados como en bases relacionales. Los datos sucios son 
 cualquier otro tipo de manera de organizar los datos.
 
@@ -166,7 +194,7 @@ columna es una variable. Solo tenemos un tipo de unidad observacional, es decir,
 cada renglón es una unidad del diseño experimental. 
 
 Con los datos así ordenados, suele ser más fácil extraer datos que, por ejemplo,
-la \ref{fig:estructura}.
+en Tabla \ref{fig:estructura}.
 
 \renewcommand\bcStyleTitre[1]{\large\textcolor{bbblack}{#1}}
 \begin{bclogo}[
@@ -178,9 +206,9 @@ la \ref{fig:estructura}.
 \begin{enumerate}
 \item Crea un dataframe con los valores de la tabla \ref{fig:estructura} y otro 
 con los valores de la tabla \ref{fig:estructuratidy}.
-\item Extrae el resultado para John Smith, tratamiento a en la primera configuración y en la segunda.
+\item Extrae el resultado para (John Smith, tratamiento a) en la primera configuración y en la segunda.
 \item Especifica el número de tratamientos con la forma sucia y la forma limpia.
-\item Cuál es la media de los resultados: usa la forma 1 y la forma 2.
+\item ¿Cuál es la media de los resultados? Usa la forma 1 y la forma 2.
 \item Extrae los tratamientos del tipo a en la forma 2.
 \end{enumerate}
 
@@ -190,13 +218,13 @@ con los valores de la tabla \ref{fig:estructuratidy}.
 
 ```
 
-Como puedes ver, los datos limpios nos permiten preguntarle cosas a los datos
+Los datos limpios permiten preguntarle cosas a los datos
 de manera simple y sistemática. En particular, es una estructura muy útil para
 programación vectorizada como en R (el ejercicio 5) porque la forma se asegura que
 valores para diferentes variables de la misma observación siempre están apareados.
 
 Por convención, las variables se acomodan de una forma particular. Las variables
-*fijas*, en este ejemplo, las propias al diseño experimental, van primero y
+*fijas* (en este ejemplo, las propias al diseño experimental) van primero y
 posteriormente las variables *medidas*. Ordenamos éstas de forma que las que 
 están relacionadas sean contiguas. 
 
@@ -205,16 +233,16 @@ están relacionadas sean contiguas.
 Los conjuntos de datos normalmente **no cumplen** con estos criterios. Es raro obtener un
 conjunto de datos con el cuál podemos trabajar de manera inmediata. 
 
-Los 5 problemas más comunes para llevar datos sucios a limpios son
+Los 5 problemas más comunes para llevar datos sucios a limpios [@wickham2014tidy, p. 5] son:
 
 1. Los nombres de las columnas son valores, no nombres de variables.
 2. Múltiples variables se encuentran en la misma columna.
 3. Las variables están guardadas tanto en filas como en columnas.
 4. Muchos tipos de unidad observacional se encuentran en la misma tabla.
-5. Una sola unidad observarcional se guardó en varias tablas.
+5. Una sola unidad observacional se guardó en varias tablas.
 
-Estos problemas pueden ser resueltos con 3 herramientas: *melting*, separación de 
-cadenas y *casting*. 
+Estos problemas pueden ser resueltos con las funciones implementadas
+en el paquete \texttt{tidyr}: gather, spread, separate y unite. 
 
 ### Los nombres de las columnas son valores, no nombres de variables
 
@@ -239,12 +267,12 @@ print(xtable(raw, label = "tab:varsencols",
 
 En las columnas tenemos varias variables: método de diagnóstico, género y 
 categorías de edad.
-Para arreglarlo, necesitamos *juntar* (melt) las columnas con valores de
+Para arreglarlo, necesitamos *juntar* (gather) las columnas con valores de
 variables en una sola columna que contenga esos nombres como valores. 
 En otras palabras, debemos convertir de la columna 5 en adelante en filas. 
 
 Con el paquete **tidyr** esto se puede realizar en forma fácil con el comando 
-`gather` de manera que obtenemos una tabla como la que se muestra en la tabla
+`gather` de manera que obtenemos un dataframe como el que se muestra en la tabla
 \ref{tab:varsjuntadas}.
 
 ```{r}
@@ -252,19 +280,19 @@ junta <- tidyr::gather(who, key = variables, value = casos
                        , -country, -iso2, -iso3, -year, na.rm = T)
 ```
 
-Se especifica el *data.frame*
-como primer parámetro, la llave (parámetro *key*) será el nombre que tomará la
-variable con los nombres de las columnas a juntar, el valor (parámetro *value*)
+Los parámetros que recibe la función gather son (al menos):
+
+- El *data.frame* como primer parámetro.
+- La llave (parámetro *key*) será el nombre que tomará la
+variable con los nombres de las columnas a juntar.
+- El valor (parámetro *value*)
 es el nombre de la variable que contendrá los valores correspondientes a cada
-valor (el diagnóstico i-ésima, el j-ésimo género y el k-ésimo grupo de edad) 
-y, por último, especificamos
-las variables que **NO** se deben de juntar (en este caso, el país, su iso2, su 
-iso3 y el año).
+valor (el diagnóstico $i-ésimo$, el $j-ésimo$ género y el $k-ésimo$ grupo de edad). 
+- Al último, especificamos las variables que **NO** se deben de juntar (en este caso: el país, iso2, iso3 y el año).
 
-Hay parámetros adicionales en la función. Para estos datos en particular, es
+Hay parámetros opcionales en la función. Para estos datos en particular, por ejemplo, es
 conveniente remover los grupos para los que no se tiene el dato con el parámetro
-`na.rm = TRUE`.
-
+`na.rm = TRUE` (ver Figura ).
 
 ```{r, echo = F, results = "asis"}
 print(xtable(head(junta), label = "tab:varsjuntadas", 
@@ -272,6 +300,22 @@ print(xtable(head(junta), label = "tab:varsjuntadas",
       comment = F, include.rownames=F, table.placement="ht", 
       size=getOption("xtable.size", "tiny"))
 ```
+
+\begin{nota} 
+\textbf{gather\\}
+
+En la figura se ejemplifica la operacionalización de `gather` para los datos de tratamiento.
+
+\includegraphics[width=0.9\textwidth]{../img/gather.png}
+
+Esto es resultado de ejecutar: \\
+
+\begin{verbatim}
+gather(fig1, key = trt, value = result, -name, na.rm = T) %>% 
+  mutate(trt = gsub("treatment", "", trt))
+\end{verbatim}
+
+\end{nota}
 
 \renewcommand\bcStyleTitre[1]{\large\textcolor{bbblack}{#1}}
 \begin{bclogo}[
@@ -292,17 +336,17 @@ al llenar la información pues implicaría repetir el nombre de la persona,
 el día de la captura y el nivel de colesterol. Supongamos un experimento con
 16 sujetos a lo largo de un año en donde se mide el colesterol una vez al mes (mes1, mes2, etc.). Los datos capturados se muestran en la tabla \ref{tab:sujetos}. \\
 
-Nuevamente, queremos convertir la columan 3 a 14 en filas, es decir, observaciones.
+Nuevamente, queremos convertir la columna 3 a 14 en filas, es decir, observaciones.
 Utiliza el comando `gather` para realizar esto y obtener el resultado que se
 muestra en la tabla \ref{tab:sujetostidy}.
 \end{bclogo}
 
 
 ```{r, echo=F, results='asis'}
+# Generación aleatoria de datos
 df <- data.frame(
   sujetos = LETTERS[1:16],
   grupo = sample(c("control", "tratamiento"), size = 16, replace = T, prob = c(0.5, 0.5))
-  # ,  meses = as.vector(sapply(paste0("mes",1:12), rep, 16))
   )
 m <- t(sapply(runif(16, 16, 35), FUN = function(x){cumsum(c(x, rnorm(11, mean = 0.5, sd = 1)))}))
 colnames(m) <- paste0("mes",1:12)
@@ -315,6 +359,7 @@ print(xtable(df, label = "tab:sujetos",
 
 
 ```{r, echo=F, results='asis'}
+# Respuesta
 opcion1 <- tidyr::gather(df, key = mes, value = IMC, -sujetos, -grupo)
 opcion2 <- tidyr::gather(df, key = mes, value = IMC, mes1:mes12)
 
@@ -353,11 +398,11 @@ todos los valores tienen el sufijo "new_" o "new" pero éste no tiene
 significado. Eliminamos ese pedazo de texto de los valores con la función `gsub`.
 
 Segundo, debemos extraer los valores de las
-variables métdodo de diagnóstico, género y categoría de edad de la columna
+variables método de diagnóstico, género y categoría de edad de la columna
 que acabamos de construir (que llamamos "variables"). Para eso, utilizamos
 la función `extract` del paquete `tidyr`. A esta función, debemos decirle cuál 
 es el nombre de la variable que contiene varios valores (parámetro *col*),
-los nuevos nombres de columnas (parámtro *into*) y la expresión regular con 
+los nuevos nombres de columnas (parámetro *into*) y la expresión regular con 
 la que irá capturando los pedazos y asignándolos a la columna correcta 
 (parámetro *regex*).
 
@@ -396,7 +441,7 @@ Para ejemplificar este problema, se muestran los datos de temperatura máxima
 y mínima en algunas zonas de México \parencite[][archivo data/weather.txt]{tidydata}.
 Los datos que limpiaremos se ven en la tabla \ref{tab:clima}. Como se puede 
 ver, tenemos valores del día del mes de la observación como nombres de variables:
-d1 (día 1), d2 (día 2), etc. Esto es homógolo al problema 1 visto anteriormente.
+d1 (día 1), d2 (día 2), etc. Esto es homólogo al problema 1 visto anteriormente.
 
 También tenemos variables en las filas: la temperatura máxima y la temperatura
 mínima deberían ser el nombre de las columnas.
@@ -411,9 +456,9 @@ print(xtable(raw[, 1:15], label = "tab:clima",
       size=getOption("xtable.size", "tiny"))
 ```
 
-Para limpiar, lo primero que debemos hacer es juntar los dias (que son valores
-de la variable dia) en una sola columna. Después utilizamos la nueva variable
-para crear la fecha. Asi, obtenemos la tabla \ref{tab:clima1}.
+Para limpiar, lo primero que debemos hacer es juntar los días (que son valores
+de la variable día) en una sola columna. Después utilizamos la nueva variable
+para crear la fecha. Así, obtenemos la tabla \ref{tab:clima1}.
 
 
 ```{r}
@@ -438,8 +483,8 @@ print(
   xtable(clean1, caption = "Paso 1. Juntar las columnas, limpiar dias, crear fecha.", label = "tab:clima1"), comment = F, include.rownames=F, table.placement="ht")
 ```
 
-El segundo paso es transformar la variable element en dos columnas pues, en realidad,
-almacena dos variables: temperatura maxima y minima.
+El segundo paso es transformar la variable `element` en dos columnas pues, en realidad,
+almacena dos variables: temperatura máxima y mínima.
 
 ```{r}
 # Cast: las temperaturas van a columnas
@@ -539,15 +584,15 @@ el nombre del paciente, etc. Para limpiar estos datos debemos:
 
 1. Leemos los archivos en una lista de tablas.
 2. Para cada tabla agregamos una columna que registra el nombre del archivo original.
-3. Combinamos las tablas en un solo data frame.
+3. Combinamos las tablas en un solo dataframe.
 
 La carpeta `tidyr_datasets/specdata` contiene 332 archivos csv que 
 almacenan información de monitoreo de contaminación en 332 ubicaciones de EUA. 
 Cada archivo contiene información de una unidad de monitoreo y 
 el número de identificación del monitor es el nombre del archivo.
 
-Primero creamos un vector con los nombres de los archivos en un directoriocon 
-extension .csv.
+Primero creamos un vector con los nombres de los archivos en un directorio con 
+extensión .csv.
 
 ```{r}
 paths <- dir("tidyr_datasets/specdata", pattern = "\\.csv$", full.names = TRUE)
@@ -557,7 +602,7 @@ specdata_US
 ```
 
 Las variables quedaron un poco sucias... las limpiamos y seleccionamos solo 
-las de interes.
+las de interés.
 
 
 ```{r}

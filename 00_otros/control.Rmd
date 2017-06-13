@@ -78,7 +78,7 @@ packrat::snapshot()
 
 Aquí `packrat` agrega lo que necesita a los folders mencionados antes para poder recrear las versiones y dependencias. También modifica el archivo `packrat.lock`.
 
-4. En cualquier momento, puedes checar el status
+4. En cualquier momento, puedes revisar el estatus
 
 ```{r}
 packrat::status()
@@ -91,7 +91,7 @@ Debe darte el mensaje **Up to date**.
 
 # Otras cosas importantes
 
-- Packrat puede incorporar paquetes que no estan en CRAN.
+- Packrat puede incorporar paquetes que no están en CRAN.
 - Puede restaurar un snapshot (de manera similar a la que un juego puedes regresar al último checkpoint).
 
 \renewcommand\bcStyleTitre[1]{\large\textcolor{bbblack}{#1}}
@@ -113,5 +113,5 @@ Debe darte el mensaje **Up to date**.
 # Ligas utiles
 
 - [Comandos comunes y listas de opciones](https://rstudio.github.io/packrat/commands.html)
-- [Packrat en RStudio](https://rstudio.github.io/packrat/rstudio.html) lo hace AUN mas facil.
+- [Packrat en RStudio](https://rstudio.github.io/packrat/rstudio.html) lo hace AUN mas fácil.
 - [Limitaciones de packrat](https://rstudio.github.io/packrat/limitations.html)
