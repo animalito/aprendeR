@@ -486,7 +486,7 @@ gs_delete(gs_title("misdatos"))
 
 `Google bigquery` es un *data warehouse* que permite guardar grandes bases de
 datos. Al contratar el servicio, `google` se encarga del *hardware* y la
-infraestructura necesaria para que su procesamiento sea rápido [@whatisbigquery]. 
+infraestructura necesaria para que su procesamiento sea rápido \parencite{whatisbigquery}. 
 
 Para guardar tus datos en `bigquery` debes crear un proyecto en [la consola de desarrolladores](https://console.developers.google.com/apis/library).
 

@@ -10,13 +10,13 @@ output:
 ---
 
 Estamos acostumbrados a editores del tipo *what you see is what you get*. `Markdown` permite escribir contenidos en **texto plano** con una sintáxis para darle formato. Sobre esta sintáxis la herramienta de software en Perl convierte el
-texto plano a HTML [@markdown].
+texto plano a HTML \parencite{markdown}.
 
 Tiene un alfabeto y símbolos que, una vez procesados, se ven de cierta forma. A diferencia de un editor como Word en el que la versión de cada computadora cambia la manera en la que se ven los documentos, con `Markdown` esto no sucede. 
 
 Este lenguaje se está volviendo cada vez más común y, en particular, páginas como GitHub y reddit lo utilizan para sus comentarios.
 
-La curva de aprendizaje es mínima. En lo que se va memorizando el alfabeto de markdown, lo más útil es tener una lista de fácil acceso con los caracteres más comúnes y lo que hacen. A continuación, se proporciona un listado de la sintáxis más común [basado en @markdowncheet1 y en @markdowncheet2].
+La curva de aprendizaje es mínima. En lo que se va memorizando el alfabeto de markdown, lo más útil es tener una lista de fácil acceso con los caracteres más comúnes y lo que hacen. A continuación, se proporciona un listado de la sintáxis más común \footnote{Basado en \textcite{markdowncheet1} y en \textcite{markdowncheet2}.}.
 
 ## Encabezados
 

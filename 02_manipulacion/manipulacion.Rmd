@@ -43,11 +43,11 @@ Los conjuntos de datos limpios (*tidy datasets*) permiten manipularlos fácilmen
 modelarlos y visualizarlos. Aunque funcionan independientemente del lenguaje 
 utilizado, son particularmente útiles en \texttt{R} pues éste es un lenguaje
 pensado para estructuras de datos tabulares; mismas que son más fácilmente 
-explotables si se usan datos limpios [@wickham2016r]. 
+explotables si se usan datos limpios \parencite{wickham2016r}. 
 
 Los datos limpios tienen una estructura específica: cada variable es una 
 columna, cada observación una fila y tipo de unidad observacional forma una 
-tabla^[@wickham2016r[, sección Data Tidying] explica este último criterio como "cada valor ocupa su propia celda".].
+tabla\footnote{\textcite[][sección Data Tidying]{wickham2016r} explica este último criterio como ``cada valor ocupa su propia celda''.}.
 
 ### Datos limpios en el procesamiento de datos
 
@@ -61,7 +61,7 @@ el análisis de datos, así como simplificar el desarrollo de herramientas para 
 análisis de datos que trabajen bien con datos limpios. 
 
 Los criterios de datos limpios están muy relacionados a los de las bases de 
-datos relacionales y, por ende, al álgebra relacional de Codd [@wickham2014tidy]. Sin embargo,
+datos relacionales y, por ende, al álgebra relacional de Codd \parencite{wickham2014tidy}. Sin embargo,
 se expresan y enmarcan en lenguaje que le es familiar a estadísticos. 
 
 Están creados para lidiar con conjuntos de datos que se encuentran
@@ -77,7 +77,7 @@ compuestas por filas y columnas. Las columnas casi siempre están etiquetadas
 *colnames* y las filas a veces lo están. 
 
 Tomamos el ejemplo de datos de la figura \ref{fig:estructura} en donde se presentan 
-datos de un experimento^[Ejemplo tomado de @wickham2014tidy, p. 3]. La tabla contiene dos columnas y tres filas, 
+datos de un experimento\footnote{Ejemplo tomado de \parencite[][p. 3]{wickham2014tidy}.}. La tabla contiene dos columnas y tres filas, 
 ambas etiquetadas.
 
 \begin{figure}[h]
@@ -92,7 +92,7 @@ y columnas solamente nos permite pensar en la representación transpuesta que
 se muestra en la figura \ref{fig:estructurat}. El diseño cambia pero los datos
 son los mismos. Con columnas y filas, no podemos decir esto de manera apropiada.
 Además de la simple apariencia, debemos poder describir la semántica -el significado- 
-de los valores que se muestran en una tabla [@wickham2014tidy, p. 3].
+de los valores que se muestran en una tabla \parencite[][p. 3]{wickham2014tidy}.
 
 \begin{figure}[h]
     \centering
@@ -156,7 +156,7 @@ En general, es más fácil describir las relaciones funcionales entre las variab
 que entre las filas pues las puedes operar fácilmente: por ejemplo, el radio entre
 dos variables, una combinación lineal de varias variabless. También es
 más fácil hacer comparaciones entre grupos de observaciones que entre columnas: la suma, el
-promedio, la varianza, la moda [@wickham2014tidy, p. 4]. Las observaciones son más complejas pues normalmente
+promedio, la varianza, la moda \parencite[][p. 4]{wickham2014tidy}. Las observaciones son más complejas pues normalmente
 se enmarcan en un análisis específico que se desea realizar con los datos y existen varios
 niveles. Por ejemplo, en un análisis de ingreso podemos tener datos sociodemográficos
 de los individuos, datos geográficos del lugar en el que viven, datos macroeconómicos
@@ -180,11 +180,11 @@ análisis de datos correspondiente.
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.9\textwidth]{../img/datos_limpios.png}
-    \caption{Ejemplificación de datos limpios \parencite[][, sección Data Tidying]{wickham2016r}.}
+    \caption{Ejemplificación de datos limpios \parencite[][sección Data Tidying]{wickham2016r}.}
     \label{fig:datoslimpios}
 \end{figure}
 
-Esto equivale a la tercera forma normal de Codd [@wickham2014tidy, p. 4] enfocado a un solo conjunto de 
+Esto equivale a la tercera forma normal de Codd \parencite[][p. 4]{wickham2014tidy} enfocado a un solo conjunto de 
 datos y no a datos conectados como en bases relacionales. Los datos sucios son 
 cualquier otro tipo de manera de organizar los datos.
 
@@ -233,7 +233,7 @@ están relacionadas sean contiguas.
 Los conjuntos de datos normalmente **no cumplen** con estos criterios. Es raro obtener un
 conjunto de datos con el cuál podemos trabajar de manera inmediata. 
 
-Los 5 problemas más comunes para llevar datos sucios a limpios [@wickham2014tidy, p. 5] son:
+Los 5 problemas más comunes para llevar datos sucios a limpios \parencite[][p. 5]{wickham2014tidy} son:
 
 1. Los nombres de las columnas son valores, no nombres de variables.
 2. Múltiples variables se encuentran en la misma columna.
@@ -247,7 +247,7 @@ en el paquete \texttt{tidyr}: gather, spread, separate y unite.
 ### Los nombres de las columnas son valores, no nombres de variables
 
 La tabla \ref{tab:varsencols} muestra datos sucios con este problema. La base
-acompaña al paquete `tidyr` [@tidyr] y es una muestra de los datos del reporte
+acompaña al paquete `tidyr` \parencite{tidyr} y es una muestra de los datos del reporte
 sobre tuberculosis de la organización mundial de la salud. Contiene observaciones
 anuales por país para casos de tuberculosis según distintos grupos.
 

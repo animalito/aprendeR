@@ -15,15 +15,15 @@ knitr::opts_chunk$set(echo = T, eval = F)
 
 Uno de los problemas en el trabajo colaborativo es poder ejecutar código realizado en otra computadora. La analítica reproducible y fácil de insertar en un ambiente de producción es fundamental para minimizar el retrabajo y que lo que se realice se (re)utilice.
 
-Existen múltiples maneras de trabajar de manera que se resuelva el problema de las versiones de software y sus dependencias. Una comprehensiva, por ejemplo, es usando `docker`. Cuando un proyecto incluye únicamente código de `R`, `packrat` es suficiente para empaquetarlo y que el código sea reproducible en cualquier computadora y sistema operativo [@packrat].
+Existen múltiples maneras de trabajar de manera que se resuelva el problema de las versiones de software y sus dependencias. Una comprehensiva, por ejemplo, es usando `docker`. Cuando un proyecto incluye únicamente código de `R`, `packrat` es suficiente para empaquetarlo y que el código sea reproducible en cualquier computadora y sistema operativo \parencite{packrat}.
 
-[Packrat](https://rstudio.github.io/packrat/) es un sistema de administración de dependencias para R que busca eliminar los problemas que suele haber para utilizar código realizado en diferentes momentos o máquinas con diferentes versiones de las librerías, entre los típicos son [@packratconcept]:
+[Packrat](https://rstudio.github.io/packrat/) es un sistema de administración de dependencias para R que busca eliminar los problemas que suele haber para utilizar código realizado en diferentes momentos o máquinas con diferentes versiones de las librerías, entre los típicos son \parencite{packratconcept}:
 
 - La falta de control sobre los paquetes que se necesitaban instalar para correr un script específico.
 - Instalar paquetes en el ambiente global y dejarlos para siempre instalados en las computadoras porque no se sabe si algo se romperá al quitarlos.
 - Romper código de otros proyectos por actualizar un paquete en otro.
 
-Packrat permite que los proyectos en `R` sean [@packratconcept]:
+Packrat permite que los proyectos en `R` sean \parencite{packratconcept}:
 
 - **Aislados**: cada proyecto tiene su paquetería privada.
 - **Portables**: puedes transferir rápidamente los proyectos de una computadora a otra -y a través de distintas plataformas- pues facilita la instalación de toda la paquetería sobre la que descansa el proyecto.
