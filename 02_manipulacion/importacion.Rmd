@@ -74,13 +74,13 @@ tipo y formato de datos. Entre los más comunes están\footnote{La lista no pret
 | csv                     | \hyperref[csv]{utils::read.csv}; **readr::read_csv** | \hyperref[csv]{utils::write.csv}; **readr::write_csv** |
 | Microsoft Excel         | \hyperref[microsoft-excel]{readxl::read\_excel} | \hyperref[microsoft-excel]{xlsx::write.xlsx} |
 | dbf                     | \hyperref[dbf]{foreign::read.dbf}  | \hyperref[dbf]{foreign::write.dbf}    |
-| IBM SPSS                |                                    |                                       |
-| Stata                   |                                    |                                       |
-| SAS                     |                                    |                                       |
-| Google spreadsheet      |                                    |                                       |
-| Google bigquery         |                                    |                                       |
-| Heroku Postgres         |                                    |                                       |
-
+| IBM SPSS                | \hyperref[ibm-spss]{haven::read\_sav} | \hyperref[ibm-spss]{haven::write\_sav} |
+| Stata                   | \hyperref[stata]{haven::read\_dta} | \hyperref[stata]{foreign::write.dta} |
+| SAS                     | \hyperref[sas]{haven::read\_sas} | \hyperref[sas]{haven::write\_sas} |
+| Google spreadsheet      | \hyperref[google-spreadsheet]{googlesheets::gs\_read} | \hyperref[google-spreadsheet]{googlesheets::gs\_new} |
+| Google bigquery         | \hyperref[google-bigquery]{bigrquery::query\_exec} |                                       |
+| Heroku Postgres         | \hyperref[heroku-postgres]{sql2df} | \hyperref[heroku-postgres]{df2sql} |
+| rdata         | \hyperref[rdata]{base::load} | \hyperref[rdata]{base::save} |
 
 Los paquetes utilizados son (corre estos comandos en la consola):
 
@@ -91,6 +91,7 @@ library(readr)
 library(readxl)
 library(xlsx)
 library(googlesheets)
+library(bigrquery)
 ```
 
 
@@ -109,6 +110,8 @@ En caso de usar rutas absolutas (a pesar de que esto \textbf{no} es una \textit{
 hará lectura o escritura del archivo en el lugar especificado.
 \end{nota}
 
+\vspace{1cm}
+
 \renewcommand\bcStyleTitre[1]{\large\textcolor{bbblack}{#1}}
 \begin{bclogo}[
   couleur=llred,
@@ -125,6 +128,7 @@ consola (excepto cuando dice explícitamente \textit{do not run} (leyenda
 comúnmente encontrada en los ejemplos de la documentación de las funciones. 
 Con esto entenderás mejor el concepto de rutas relativas.
 \end{bclogo}
+
 
 
 ## rds
@@ -357,7 +361,7 @@ de las variables en el *data frame* pues `Stata` no admite puntos en los nombres
 ```{r}
 names(misdatos) <- tolower(gsub("\\.", "_", names(misdatos)))
 # foreign
-write.dta(data = misdatos, file = "~/misdatos.dta", version = 14)
+write.dta(data = misdatos, file = "~/misdatos.dta", version = 12)
 ```
 
 Para **leerlos**
@@ -372,27 +376,7 @@ file.remove("~/misdatos.dta")
 
 ## SAS
 
-Para **escribirlos** también debemos asegurarnos que los nombres de variables
-estén compuestos por letras, números o guiones bajos
-
-```{r}
-misdatos <- iris
-names(misdatos) <- tolower(gsub("\\.", "_", names(misdatos)))
-# haven
-write_sas(data = misdatos, path = "~/misdatos.sas7bdat")
-```
-
-Para **leerlos**
-
-```{r}
-# haven - como tibble
-misdatos <- read_sas(data_file = "~/misdatos.sas7bdat", catalog_file = NULL, encoding = NULL)
-
-# Lo borro
-file.remove("~/misdatos.sas7bdat")
-```
-
-Para usar el paquete `foreign` ejemplificaremos la creación de un directorio de
+Para usar el paquete `haven` en este caso ejemplificaremos la creación de un directorio de
 archivos en tu computadora desde `R`:
 
 ```{r}
@@ -402,21 +386,26 @@ dir.create("datos_sas")
 
 Observa como, en el directorio que se despliega con `getwd` encuentras 
 ahora una carpeta llamada `datos_sas`. Creamos ahí un archivo con la función
-`write_sas` de `haven`:
+`write_sas` de `haven`. Nota que, para **escribirlos**, también debemos 
+asegurarnos que los nombres de variables
+estén compuestos por letras, números o guiones bajos:
 
 ```{r}
-write_sas(misdatos, "datos_sas/misdatos.sas7bdat")
+misdatos <- iris
+names(misdatos) <- tolower(gsub("\\.", "_", names(misdatos)))
+# haven
+write_sas(data = misdatos, path = "datos_sas/misdatos.sas7bdat")
 ```
 
 Para leerlos, utilizamos `read_sas` del paquete `haven`:
 
 ```{r}
-misdatos <- read_sas("datos_sas/misdatos.sas7bdat")
+# haven - como tibble
+misdatos <- read_sas("datos_sas/misdatos.sas7bdat", catalog_file = NULL, encoding = NULL)
 ```
 
-
-Observa desde el explorador de archivos, los dos objetos creados. También desde
-`R` podemos borrar el directorio:
+Observa desde el explorador de archivos, cómo se creó el archivo dentro del
+directorio `datos_sas/`. También desde `R` podemos borrar el directorio:
 
 ```{r}
 unlink("datos_sas", recursive = T, force = FALSE)
@@ -534,12 +523,228 @@ detalle en segundos.
 
 ## Heroku Postgres
 
-# rdata
+`R` no es un manejador de base de datos y, por ende, no es un lenguaje que 
+permite trabajar con una gran cantidad de datos. `R` guarda los objetos utilizando
+la memoria virtual de la computadora, i.e. la RAM, misma que depende de varios elementos (incluido
+el sistema operativo) y que limita los datos que podrán ser procesados.
+
+Cuando necesitamos conocer el tamaño de los datos que están en el ambiente 
+de trabajo, puede utilizarse el paquete `pryr` 
+\parencite[][sección ``the role of physical memory'']{pryr}.
+
+```{r}
+rm(list = ls()) # borramos los objetos del ambiente
+# Cargamos datos al ambiente
+flights <- read_csv("data/flights.csv")
+airports <- read_csv("data/airports.csv")
+planes <- read_csv("data/planes.csv")
+ls() # mostramos los objetos en el ambiente
+
+library(pryr) # Cargamos el paquete pryr
+mem_used() # memoria utilizada
+
+object_size(flights, units = "Mb") # Obtenemos el tamaño de un objeto
+sapply(ls(), function(x) object_size(get(x))) # de todos en el ambiente
+```
+
+Las estrategias en memoria se revisaron brevemente en el apartado XXX, en este
+caso, es pertinente mencionar las estrategias fuera de memoria (*out of memory*).
+
+Es posible explorar un conjunto de datos sin necesidad de cargarlos en `R`
+pero utilizando comandos de `R` y trabajando desde un script de `R`, permitiendo
+que herramientas más eficientes (y apropiadas) para el trabajo de grandes volúmenes de datos
+realicen el procesamiento de los mismos.
+
+Los sistemas gestores de base de datos están optimizados para almacenar y buscar
+en grandes volúmenes de datos en forma más eficiente que `R`. Algunos ejemplos
+populares son Oracle y PostgreSQL 
+\parencite[][sección ``working with large datasets'']{peng2016m}. Hay 
+múltiples paquetes que permiten establecer
+una conexión con estos sistemas desde una sesión de `R`. 
+
+Los paquetes `DBI` y `Postgresql` permiten realizar esta tarea. Debido a que
+requieren credenciales se muestra una función para leer datos desde `PostgreSQL`
+y escribirlos sin necesidad de poner las credenciales dentro del mismo 
+script.
+
+Para que funcionen apropiadamente, es necesario poner en el directorio de 
+trabajo un archivo llamado `parametros.yaml` en donde se escriben las credenciales
+para Postgres:
+
+```
+host : localhost
+db : postgres
+username : usr
+password : password
+
+```
+
+Nota: el salto de línea en la última línea es importante.
+
+Para leer datos, creamos una función a la que podemos enviarle una cadena
+de comandos en SQL. 
+
+```{r}
+sql2df <- function(sql.file, df.file = "") {
+  require(DBI)
+  require(futile.logger)
+  require(yaml)
+  require(RPostgreSQL)
+  
+  if(!file.exists(df.file)) {
+    if(file.exists("./parametros.yaml")) {
+      x <- yaml::yaml.load_file("./parametros.yaml")
+    } else {
+      x <- yaml::yaml.load_file("../parametros.yaml")
+    }
+    
+    # Creamos la conexión a la base de datos
+    futile.logger::flog.info("Conectando a la base de datos")
+    
+    con <- dbConnect(RPostgreSQL::PostgreSQL(), dbname = x$db, 
+                     host = x$host, 
+                     port = 5432, 
+                     user = x$username,
+                     password = x$password)
+    
+    futile.logger::flog.info("Conectado a %s, como %s", x$host, x$username)
+    
+    # Leemos el query
+    sql <- paste(readLines(sql.file,encoding="UTF-8"), sep=" ", collapse=" ")
+    
+    tryCatch( {
+      futile.logger::flog.info("Ejecutando el query")
+      # Creamos el query
+      rs <- RPostgreSQL::dbSendQuery(con, sql)
+      futile.logger::flog.info("Obteniendo los datos")
+      # Obtenemos los datos
+      df <- DBI::dbFetch(rs)
+      # Liberamos el ResultSet
+      futile.logger::flog.info("Limpiando el result set")
+      RPostgreSQL::dbClearResult(rs)
+    }, finally=RPostgreSQL::dbDisconnect(con) # Nos desconectamos de la BD
+    )
+    
+    if(df.file != ""){ 
+      saveRDS(object=df, file=df.file)  
+    }
+  } else {
+    df <- readRDS(df.file)
+  }
+  
+  return(df)
+}
+```
+
+La función `sql2df`\footnote{Función adaptada de notas de Adolfo de Únanue.} 
+recibe como parámetro, como cadena, la ruta hacia un archivo
+de extensión `.sql` con los comandos a ejecutar en el manejador de base de datos.
+Éste puede verse, por ejemplo, como:
+
+```
+select * 
+from information_schema.tables 
+where table_schema = 'information_schema';
+```
+
+Guardamos ésta en el archivo `sql/ejemplo.sql` la cláusula de arriba. Después, 
+llamamos a la función.
+
+```{r}
+datos <- sql2df("sql/ejemplo.sql", df.file = "ejemplo.rds")
+head(datos)
+```
+
+```{r, echo =  F}
+file.remove("ejemplo.rds")
+```
+
+Con el parámetro `df.file` es posible especificar una ruta para que se guarde
+una copia local del resultado de los datos. Esto es útil cuando se está trabajando
+con los datos, de forma que sea más rápido el trabajo con los mismos.
+
+Para escribir datos, podemos utilizar la función siguiente:
+
+```{r}
+df2sql <- function(data.frame, df.schema.name, df.table.name, owner.to = NA) {
+  require(DBI)
+  require(futile.logger)
+  require(yaml)
+  require(RPostgreSQL)
+  data.frame <- data.frame(data.frame)
+  # Normalizamos nombres
+  names(data.frame) <- normalizarNombres(names(data.frame))
+  
+  if(file.exists("./parametros.yaml")) {
+    x <- yaml::yaml.load_file("./parametros.yaml")
+  } else {
+    x <- yaml::yaml.load_file("../parametros.yaml")
+  }
+   
+  # Creamos la conexión a la base de datos
+  futile.logger::flog.info("Conectando a la base de datos")
+    
+  con <- dbConnect(RPostgreSQL::PostgreSQL(), dbname = x$db, 
+                     host = x$host, 
+                     port = 5432, 
+                     user = x$username,
+                     password = x$password)
+  futile.logger::flog.info("Conectado a %s, como %s", x$host, x$username)
+  
+  tryCatch( {
+    flog.info("Ejecutando la escritura de tabla %s en el esquema %s", df.table.name, df.schema.name)
+    # Definimos el camino al esquema deseado
+    if(df.schema.name != "public"){
+      dbSendQuery(conn = con, statement = paste0("SET search_path = ", df.schema.name, ", public;"))
+    }
+    long.name <- paste0(df.schema.name, ".", df.table.name)
+    # Escribimos la tabla
+    dbWriteTable(con,
+                 df.table.name,
+                 data.frame,
+                 overwrite=FALSE,
+                 append = TRUE)
+    
+    flog.info("Escribiendo los datos")
+    
+    if(!is.na(owner.to)){
+      flog.info("Otorgando ownership a %s", owner.to)
+      dbSendQuery(con, paste0("alter table ", long.name, " owner to ", owner.to, ";"))
+    }
+    
+  }, finally=dbDisconnect(con) # Nos desconectamos de la BD
+  )
+  flog.info("Escritura finalizada")
+}
+
+# Función de ayuda
+normalizarNombres <- function(column_names) {
+  require(magrittr)
+  gsub("\\s+", " ", stringr::str_trim(column_names)) %>%
+    gsub("^ *|(?<= ) | *$", "", ., perl=T) %>%
+    gsub('\\ |\\.', '_', .) %>%
+    gsub("([a-z])([A-Z])", "\\1_\\L\\2", ., perl = TRUE) %>%
+    gsub('ñ', 'n', .) %>%
+    iconv(., to='ASCII//TRANSLIT') %>%
+    tolower(.)
+}
+```
+
+Se especifican en los parámetros el data.frame a escribir, una cadena de 
+caracteres indicando el esquema en el que se escribirá la base, una cadena 
+indicando el nombre de la tabla y es posible especificar qué dueño deberá 
+asignarse para la base:
+
+```{r}
+df2sql(iris, "public", "iris", owner.to = "usr")
+```
+
+## rdata
 
 También es posible guardar objetos específicos del ambiente dentro de un formato 
-especial con extensión `rdata` o `RData`. Esto es muy útil cuando no han acabado
-o quieren seguir trabajando con algo.
-
+especial con extensión `rdata` o `RData`. Esto es muy útil, por ejemplo, 
+para guardar modelos u otros objetos y después poder utilizarlos en producción 
+o en alguna aplicación que requiera un tiempo de respuesta bajo.
 
 Para **escribirlos**
 

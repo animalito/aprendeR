@@ -304,6 +304,12 @@ Version: 1.8.4
 Hash: ec0683cf0ab5494db2eff1f31591624e
 Requires: Rcpp
 
+Package: pryr
+Source: CRAN
+Version: 0.1.2
+Hash: 4dc466ed529764016b3f2c30f3e99180
+Requires: Rcpp, stringr
+
 Package: purrr
 Source: CRAN
 Version: 0.2.2.2
