@@ -317,10 +317,8 @@ file.remove("misdatos.dbf")
 
 ## IBM SPSS
 
-SPSS guarda los datos bastante bien: si uno les pone etiquetas entonces tiene
-el valor y las etiquetas para factores, etc. Este tipo de cosas, si ya fueron
-realizados por alguien mas, es una pena perderlas al convertirlo en un csv o 
-un excel. En `R` no lo pierdes.
+SPSS puede guardar los datos  agregando etiquetas y otros metadatos. 
+Para evitar retrabajo, puede leerse directamente a `R`.
 
 Para **escribirlos**
 
@@ -418,7 +416,7 @@ carpeta.
 
 Para hacer este ejercicio, debes tener una cuenta de `gmail`.
 
-Primero, deberás autenticarte. Esto lo puedes hacer en cualquier sesión 
+Primero, debe realizarse la autenticación. Esto lo puedes hacer en cualquier sesión 
 interactiva utilizando alguna función del paquete `googlesheets`
 
 ```{r, eval = F}
