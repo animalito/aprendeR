@@ -125,7 +125,7 @@ Creación de \textbf{nuevas variables}. &
 \hline
 \end{tabular}
 }
-\caption{Acciones y verbos comunes en la manipulación de datos.} 
+\caption{Acciones y verbos comunes en la manipulación de datos \parencite{datawrangling}.} 
 \label{tab:accionescomunes}
 \end{table}
 
@@ -300,7 +300,7 @@ flights %>%
 Pueden utilizarse junto con summarise cualesquiera función en \texttt{R} 
 (por ejemplo: min, max, mean, median, var, sd) que
 realice agregaciones de vectores. Sin embargo, el paquete \texttt{dplyr} implementa
-varias funciones útiles adicionales como: \\
+varias funciones útiles adicionales como \parencite{datawrangling}: \\
 
 \begin{itemize}
 \item \texttt{first}: extrae el primer valor de un vector
@@ -439,7 +439,7 @@ Dentro de mutate, se pueden utilizar otras funciones que realicen transformacion
 sobre vectores que regresen un vector del mismo tamaño, así como funciones
 propias.\\
 
-Ahora bien, \texttt{dplyr} implementa otras funciones ventana como:\\
+Ahora bien, \texttt{dplyr} implementa otras funciones ventana como \parencite{datawrangling}:\\
 
 \begin{itemize}
 \item \texttt{lead}: regresa todos los valores del vector movidos por una posición posterior
