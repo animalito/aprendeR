@@ -16,8 +16,10 @@ knitr::opts_chunk$set(echo = T, error = F, message = F, warning = F)
 # Transformación de datos
 
 Esta sección resume algunas de las funciones existentes para **transformar** 
-datos en `R`. En particular, se utiliza la estrategia **SAC** (*split-apply-combine*)
-implementada en el paquete `dplyr` \parencite{dplyr}. En la figura \ref{fig:ciclo3} podemos ver la etapa del
+datos en `R`. En particular, se revisan las transformaciones más comunes que
+se realizan sobre datos. En esta sección, se revisan las acciones 
+implementadas en el paquete `dplyr` \parencite{dplyr}. 
+En la figura \ref{fig:ciclo3} podemos ver la etapa del
 análisis de datos correspondiente.
 
 \begin{figure}[h]
@@ -29,21 +31,107 @@ análisis de datos correspondiente.
 
 Existen muchas maneras de transformar los datos y una gran cantidad de paquetes
 que implementan distintas funciones útiles para realizar esta tarea. En particular,
-resaltamos `dplyr` y `data.table`.
+resaltamos `dplyr` y `data.table`. En esta sección se ejemplifican todas
+las funciones que permiten hacer trabajo con datos que están implementadas en 
+`dplyr`\footnote{Para iniciar en \texttt{data.table} se recomienda ver \textcite{datatabletutorial} así como las viñetas del paquete \textcite{datatable}.} y en `tidyr` \parencite{tidyr}.
 
-## dplyr
+## Tareas comunes en la manipulación de datos
 
-El material que se presenta aquí está basado en los ejemplos y código presentado
-por [Wickham en su tutorial](https://www.dropbox.com/sh/i8qnluwmuieicxc/AAAgt9tIKoIm7WZKIyK25lh6a) de **useR** en el 2014.
+Las funciones implementadas en este paquete están diseñadas para facilitar la 
+transformación de datos. En general, la transformación de datos implica definir
+qué se hará con ellos, escribir un programa que realice esa tarea y ejecutarlo \parencite[][viñeta de introducción]{dplyr}.
 
-**5 verbos** fundamentales implementados en `dplyr`
+`dplyr` y `tidyr` simplifican estos pasos al proveer de opciones limitadas consideradas como
+las tareas más comunes en la transformación de datos. Además, proveen de verbos simples que
+corresponden a funciones en `R` y que mapean directamente a estas *tareas más comunes* (ver Tabla \ref{tab:accionescomunes}).
 
-- `filter`: seleccionamos filas de acuerdo a los valores de las variables
-- `select`: seleccionamos un subconjunto de las columnas utilizando los nombres
-de las variables
-- `arrange`: reordenamos filas
-- `mutate`: generar nuevas variables a partir de las variables originales
-- `summarise`: reducir variables a valores
+\begin{table}[H]
+\centering
+\scriptsize{
+\begin{tabular}{p{4cm}p{10cm}}
+  \hline
+Acción & Verbos \\ 
+\hline
+Extracción de \textbf{subconjuntos de observaciones}. & 
+  \parbox[t]{10cm}{
+    \begin{itemize} 
+      \item{\texttt{filter}: seleccionamos filas de acuerdo a los valores de las variables} 
+      \item{\texttt{distinct}: elimina renglones duplicados}
+      \item{\texttt{sample\_frac}: selecciona aleatoriamente una fracción de filas}
+      \item{\texttt{sample\_n}: selecciona aleatoriamente $n$ filas}
+      \item{\texttt{slice}: selecciona filas por posición}
+      \item{\texttt{top\_n}: selecciona y ordena según una variable $n$ entradas\\}
+    \end{itemize} 
+  } \\
+\hline
+Extracción de \textbf{subconjuntos de variables}. &  
+  \parbox[t]{10cm}{
+    \begin{itemize} 
+      \item{\texttt{select}: seleccionamos un subconjunto de las columnas utilizando los nombres de las variables\\}
+    \end{itemize} 
+  } \\
+\hline
+Creación de \textbf{resumenes de datos}. & 
+  \parbox[t]{10cm}{
+    \begin{itemize} 
+      \item{\texttt{summarise}: resume los datos en un valor único}
+      \item{\texttt{summarise\_each}: aplica una función de resumen a cada columna}
+      \item{\texttt{count}: cuenta el número de filas con cada valor única de una variable\\}
+    \end{itemize} 
+  } \\
+\hline
+Creación de \textbf{nuevas variables}. &
+  \parbox[t]{10cm}{
+    \begin{itemize} 
+      \item{\texttt{mutate}: genera nuevas variables a partir de las variables originales}
+      \item{\texttt{mutate\_each}: aplica una función ventana a cada columna}
+      \item{\texttt{transmute}: genera una o más nuevas columnas eliminando las columnas originales\\}
+    \end{itemize} 
+  } \\
+\hline
+\textbf{Combinación} de conjuntos de datos. & 
+  \parbox[t]{10cm}{
+    \begin{itemize} 
+      \item{\texttt{left\_join}: realiza un join conservando todas las observaciones de la primera tabla especificada}
+      \item{\texttt{right\_join}: realiza un join conservando todas las observaciones de la segunda tabla especificada}
+      \item{\texttt{inner\_join}: realiza un join conservando todas las observaciones que están en ambas tablas}
+      \item{\texttt{full\_join}: realiza un join conservando todas las observaciones y valores de ambas tablas}
+      \item{\texttt{semi\_join}: conserva todas las observaciones de la primera tabla que están en la segunda tabla}
+      \item{\texttt{anti\_join}: conserva todas las observaciones de la primera tabla que no están en la segunda tabla}
+      \item{\texttt{intersect}: conserva observaciones que están tanto en la primera tabla como en la segunda}
+      \item{\texttt{union}: conserva observaciones que están en cualesquier tabla}
+      \item{\texttt{setdiff}: conserva observaciones de la primera tabla que no están en la segunda}
+      \item{\texttt{bind\_rows}: une las filas de la segunda tabla a las de la primera}
+      \item{\texttt{bind\_cols}: une las columnas de la segunda tabla a las de la primera\\}
+    \end{itemize} 
+  } \\
+\hline
+\textbf{Agrupar} datos. & 
+  \parbox[t]{10cm}{
+    \begin{itemize} 
+      \item{\texttt{group\_by}: agrupa los datos según una o más variables}
+      \item{\texttt{ungroup}: elimina los grupos en un data frame\\}
+    \end{itemize} 
+  } \\
+\hline
+\textbf{Reorganizar} datos (\textit{reshape data}). & 
+  \parbox[t]{10cm}{
+    \begin{itemize} 
+      \item{\texttt{data\_frame}: combina vectores en un dataframe}
+      \item{\texttt{arrange}: Ordena las filas según una o más variables}
+      \item{\texttt{rename}: renombra columnas de un dataframe\\}
+    \end{itemize} 
+  } \\
+\hline
+\end{tabular}
+}
+\caption{Acciones y verbos comunes en la manipulación de datos.} 
+\label{tab:accionescomunes}
+\end{table}
+
+Dentro de `tidyr` hay más verbos útiles para reorganizar datos que se verán en la sección \ref{datos-limpios}
+junto con los *criterios de datos limpios* que proporcionan un sustento para
+la conceptualización de la manipulación de datos eficiente en `R`.
 
 Todos estos verbos funcionan de la misma manera (tienen la misma estructura):
 
@@ -51,8 +139,10 @@ Todos estos verbos funcionan de la misma manera (tienen la misma estructura):
 - Los argumentos subsecuentes indican qué es lo que se debe hacer a ese *data.frame*
 - Siempre regresa un *data.frame*
 
-Para ejemplificar el uso de cada uno de los verbos, utilizaremos los siguientes
-conjuntos de datos de muestra, todos disponibles en el paquete `nycflights13` \parencite{flights}.
+A continuación, se ejemplifica el uso de los distintos verbos de la tabla \ref{tab:accionescomunes}.
+Para esto, utilizaremos los siguientes
+conjuntos de datos de muestra, todos disponibles en el paquete `nycflights13` \parencite{flights}. Se leerán desde archivo de texto plano para ejemplificar algunos elementos de la limpieza.
+
 
 ```{r, echo=F, warning=F, message=F, error=F}
 library(dplyr)
@@ -73,6 +163,8 @@ airports <- read_csv("data/airports.csv")
 airports
 ```
 
+## Extracción de subconjuntos de observaciones
+
 ### filter
 
 Ya habíamos visto muchas maneras de extraer datos específicos de una base de 
@@ -80,9 +172,7 @@ datos de acuerdo a condiciones lógicas impuestas en los valores de las filas
 de columnas especificas. `filter` nos permite poner tantas condiciones como 
 queramos de manera muy fácil y entendible por cualquiera que lea nuestro código.
 
-Ejemplos
-
-Busquemos todos los vuelos hacia SFO o OAK
+Busquemos, por ejemplo, todos los vuelos hacia SFO u OAK
 
 ```{r}
 filter(flights, dest == "SFO" | dest == "OAK")
@@ -101,7 +191,49 @@ SFO o OAK
 filter(flights, dest == "SFO" | dest == "OAK", arr_delay > 5)
 ```
 
-### select
+### distinct
+
+Para eliminar duplicados, usamos la función `distinct` 
+
+```{r}
+flights.dup <- bind_rows(flights, flights)
+dim(flights.dup)
+dim(distinct(flights.dup))
+rm(flights.dup)
+```
+
+### sample_n, sample_frac, slice
+
+En ocasiones necesitamos extraer subconjuntos aleatorios de los datos, para ello
+podemos especificar el número de renglones que necesitamos (usando `sample_n`),
+el porcentaje de datos que deseamos (usando `sample_frac`) o las posiciones
+específicas de los datos que queremos (usando `slice`).
+
+```{r}
+set.seed(1099) 
+# extraemos 10 datos en forma aleatoria
+sample_n(flights, size = 10)
+# Extraemos el 1% de los datos de flights
+sample_frac(flights, size = 0.01)
+# extraemos las posiciones 100 a 110
+slice(flights, 100:110)
+```
+
+### top_n
+
+Podemos obtener los 5 vuelos con mayor retraso de salida:
+
+```{r}
+top_n(flights, 5, dep_delay)
+```
+
+O con el menor retraso de salida:
+
+```{r}
+top_n(flights, 5, desc(dep_delay))
+```
+
+## Extracción de subconjuntos de variables (*select*)
 
 Podemos ahora, mas fácilmente, quedarnos con únicamente ciertas variables. 
 `select` esta implementado de tal manera que funciona *nombrando* las variables
@@ -129,32 +261,90 @@ O las que contienen algún patrón
 select(flights, contains("dep"))
 ```
 
-### arrange
+\renewcommand\bcStyleTitre[1]{\large\textcolor{bbblack}{#1}}
+\begin{bclogo}[
+  couleur=llred,
+  arrondi=0,
+  logo=\bcstop,
+  barre=none,
+  noborder=true]{Ejercicios}
+\begin{enumerate}
+\item{Revisa la ayuda de select con \texttt{?select}.}
+\item Juega con la función \texttt{starts\_with()}. ¿Qué variables empiezan con ``de''?
+\item Juega con la función \texttt{ends\_with()}. ¿Qué variables terminan con ``delay''?
+\item Utiliza la base de datos \texttt{iris} como en el ejemplo de la ayuda.
+\item ¿Qué hace la función \texttt{contains()}?
+\item ¿Cómo es diferente de \texttt{matches()}?
+\item ¿Cómo obtienes todas las variables \textit{menos} Petal.Width?
+\end{enumerate}
+\end{bclogo}
 
-`order` habíamos visto que es la implementación del base para ordenar vectores o
-en su defecto, dataframes de acuerdo a valores de vectores en esta. Sin embargo,
-es engorrosa la manera de llamarlo.
 
-Podemos arreglar los valores de las tablas, fácilmente con `arrange`. Por ejemplo,
-podemos ver los 5 vuelos con mayor retraso de llegada.
+## Creación de resumenes de datos
+
+Las funciones `summarise`, `summarise_each` y `count` permiten realizar 
+resumenes para ciertas variables existentes o nuevas en los datos.
+
+### summarise 
+
+Ahora, si queremos saber el promedio de velocidad de los vuelos 
+podemos calcularlo fácilmente con `summarise`.
 
 ```{r}
-head(arrange(flights, desc(arr_delay)), n=5)
+flights$velocidad <- flights$dist/flights$time
+flights %>%
+  summarise(vel_prom = mean(velocidad, na.rm = T))
 ```
 
-O los 5 con menor atraso de llegada
+\begin{curiosidad}[Funciones resumen]
+Pueden utilizarse junto con summarise cualesquiera función en \texttt{R} 
+(por ejemplo: min, max, mean, median, var, sd) que
+realice agregaciones de vectores. Sin embargo, el paquete \texttt{dplyr} implementa
+varias funciones útiles adicionales como: \\
+
+\begin{itemize}
+\item \texttt{first}: extrae el primer valor de un vector
+\item \texttt{last}: extrae el último valor de un vector
+\item \texttt{n}: cuenta el número de valores en un vector
+\item \texttt{n\_distinct} cuenta el número de valores único en un vector
+\end{itemize}
+\end{curiosidad}
+
+### summarise_each
+
+Podemos especificar una función a aplicar a variables específicas en un
+dataframe. Por ejemplo, extraer la media para las variables: date, dep_delay,
+arr_delay, time y dist.
 
 ```{r}
-head(arrange(flights, arr_delay), n=5)
+summarise_each(flights, funs(mean), date, dep_delay, arr_delay, time, dist)
 ```
 
-Podemos arreglar primero por destino y luego por retraso de llegada.
+Debido a que existen valores perdidos en variables como retraso de salida (*dep_delay*)
+y retrasos de llegada (*arr_delay*), debemos especificar la opción para no utilizar los NAs en la función.
 
 ```{r}
-arrange(flights, dest, arr_delay)
+summarise_each(flights, funs(mean(., na.rm = T)), date, dep_delay, arr_delay, time, dist)
+
+# opcion 2
+mean_na <- function(x){
+  mean(x, na.rm = T)
+}
+summarise_each(flights, funs(mean_na), date, dep_delay, arr_delay, time, dist)
 ```
 
-### mutate
+### count
+
+Podemos contar los valores únicos en variables categóricas, por ejemplo, contar
+el número de vuelos por aerolínea:
+
+```{r}
+count(flights, carrier, sort = T)
+```
+
+## Creación de nuevas variables
+
+### mutate y transmute
 
 Muchas veces lo que se desea es generar nuevas variables utilizando funciones sobre
 las variables de la tabla.
@@ -181,35 +371,108 @@ flights2
 La lectura es mucho mas sencilla de esta forma. Recuerden, muchas veces los
 lectores de su código serán ustedes en el futuro.
 
-### group_by
-
-Un verbo muy poderoso es el group_by. Es por este tipo de verbos que resultó 
-necesario generar un objeto diferente al tradicional dataframe. Básicamente,
-el tbl_df es capaz de guardar agrupamientos específicos sobre los cuáles 
-puede hacer funciones ventana (*window functions*) o resúmenes sobre los grupos que se definen.
-
-#### Ejemplo {#ejemplo}
-
-Los datos de vuelos se agrupan naturalmente sobre las aerolíneas.
+`transmute` es muy similar a `mutate` pero elimina las variables que no fueron
+creadas por la función.
 
 ```{r}
-flights.g <- flights %>% group_by(., carrier)
-flights.g
-```
-
-### summarise 
-
-Ahora, si queremos saber el promedio de velocidad de los vuelos por destino,
-podemos calcularlo fácilmente con `group_by` y `summarise`.
-
-```{r}
-flights2 %>% group_by(dest) %>%
-  summarise(vel_prom = mean(velocidad, na.rm = T))
+dplyr::transmute(flights, velocidad = dist/time) %>%
+              arrange(., desc(velocidad)) 
 ```
 
 
+\renewcommand\bcStyleTitre[1]{\large\textcolor{bbblack}{#1}}
+\begin{bclogo}[
+  couleur=llred,
+  arrondi=0,
+  logo=\bcstop,
+  barre=none,
+  noborder=true]{Ejercicios}
+\begin{enumerate}
+\item ¿Cuáles son los 10 aviones-aerolíneas mas lentos? Utiliza el operador pipe, 
+mutate, arrange y head.
+\item Utiliza la función \texttt{str\_sub} dentro de \texttt{stringr} para extraer únicamente el 
+día del campo \texttt{date}.
+3. Utiliza la función \texttt{ymd} del paquete \texttt{lubridate} para declarar date como una
+fecha (¡otra clase!).
+4. Utiliza las funciones \texttt{paste0} del \texttt{base} y \texttt{ymd\_hm} de \texttt{lubridate} para
+declarar date como un \texttt{datetime}.
+\end{enumerate}
+\end{bclogo}
 
-## Joins
+
+```{r, eval = F}
+# Respuestas
+
+#1
+mutate(flights, velocidad = dist/time) %>%
+    arrange(velocidad) %>%
+    head(10) %>%
+    select(plane, carrier, velocidad)
+
+# Más lindo, usando group_by y top_n: más específicamente el más lento por carrier
+mutate(flights, velocidad = dist/time) %>%
+    group_by(carrier) %>%
+    arrange(velocidad) %>%
+    top_n(1) %>%
+    select(plane, carrier, velocidad)
+
+#2
+mutate(flights, dia = stringr::str_sub(date, 9, 10)) %>%
+    select(date, dia)
+head(flights)
+
+# 3
+mutate(flights,
+       fecha = stringr::str_sub(date, 1, 10)
+       , fecha = lubridate::ymd(fecha)) %>%
+    select(date, fecha)
+
+# 4
+mutate(flights,
+       fecha = lubridate::ymd_hms(date)) %>%
+    select(date, fecha)
+
+```
+
+\begin{curiosidad}[Funciones ventana \textit{window functions}]
+Dentro de mutate, se pueden utilizar otras funciones que realicen transformaciones
+sobre vectores que regresen un vector del mismo tamaño, así como funciones
+propias.\\
+
+Ahora bien, \texttt{dplyr} implementa otras funciones ventana como:\\
+
+\begin{itemize}
+\item \texttt{lead}: regresa todos los valores del vector movidos por una posición posterior
+\item \texttt{lag}: regresa todos los valores del vector movidos por una posición anterior
+\item \texttt{dense\_rank}: rango sin huecos
+\item \texttt{min\_rank}: rango especificando el criterio de mínimo para empates
+\item \texttt{percent\_rank}: rango reescalado para estar entre 0 y 1
+\item \texttt{row\_number}: número de fila
+\item \texttt{ntile}: creación de $n$ percentiles
+\item \texttt{between}: verifica si el valor está entre dos valores
+\item \texttt{cume\_dist}: distribución acumulada
+\item \texttt{cumall}: para vectores lógicos, intersección de los valores al renglón i-ésimo
+\item \texttt{cumany}: para vectores lógicos, unión de los valores al renglón i-ésimo
+\item \texttt{cummean}: acumula la media \\
+\end{itemize}
+
+Para mayor detalle, puede revisarse la viñeta ``window-functions'' en el 
+paquete dplyr \parencite{dplyr} con el comando \texttt{vignette("window-functions", package $=$ "dplyr")}
+\end{curiosidad}
+
+### mutate_each
+
+Igual que con `summarise_each`, `mutate_each` permite especificar una 
+transformación vía una función ventana para variables específicas. Por ejemplo,
+extraemos los deciles correspondientes para las variables tiempo (*time*) y
+distancia (*dist*).
+
+```{r}
+flights.m <- mutate_each(flights, funs(ntile(., 10)), time, dist)
+table(flights.m$time)
+```
+
+## Combinación de conjuntos de datos (*joins*)
 
 Muchas veces la información se tiene repartida entre diferentes tablas pero es
 necesario juntar las variables de las diferentes observaciones en una sola
@@ -220,7 +483,7 @@ resumen del tipo de joins que pueden realizarse.
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.75\textwidth]{../img/02_joins.PNG}
-    \caption{Joins en el lenguaje SQL}.
+    \caption{Joins en el lenguaje SQL \parencite{joins}.}
     \label{fig:joins}
 \end{figure}
 
@@ -240,7 +503,8 @@ tenemos en nuestros datos para todos sus vuelos.
 ```{r}
 # base de aviones con velocidad
 
-vel_aviones <- flights %>% group_by(plane) %>%
+vel_aviones <- flights %>% 
+  group_by(plane) %>%
   summarise(vel_prom = mean(dist/time, na.rm = T))
   
 inner_join(
@@ -254,7 +518,8 @@ inner_join(
 Ahora, queremos saber los destinos con mayores retrasos.
 
 ```{r}
-destinos <- flights %>% group_by(dest) %>%
+destinos <- flights %>% 
+  group_by(dest) %>%
   summarise(retraso = mean(arr_delay, na.rm = T))
 
 inner_join(
@@ -265,6 +530,219 @@ inner_join(
   arrange(desc(retraso))
 ```
 
-¿Cuáles son los aeropuertos que SI están en la base de destinos?
-¿Cuáles son los aeropuertos que NO están en la base de destinos?
+## Agrupar datos
+
+### group_by
+
+Un verbo muy poderoso es el group_by. Es por este tipo de verbos que resultó 
+necesario generar un objeto diferente al tradicional dataframe. Básicamente,
+el tbl_df es capaz de guardar agrupamientos específicos sobre los cuáles 
+puede hacer funciones ventana (*window functions*) o resúmenes sobre los grupos que se definen.
+
+#### Ejemplo {#ejemplo}
+
+Los datos de vuelos se agrupan naturalmente sobre las aerolíneas.
+
+```{r}
+flights.g <- flights %>% group_by(., carrier)
+flights.g
+```
+
+\renewcommand\bcStyleTitre[1]{\large\textcolor{bbblack}{#1}}
+\begin{bclogo}[
+  couleur=llred,
+  arrondi=0,
+  logo=\bcstop,
+  barre=none,
+  noborder=true]{Ejercicios}
+\begin{enumerate}
+\item Busca en la ayuda la función \texttt{top\_n}.
+\item Utilízala, junto con \texttt{group\_by}, \texttt{arrange} y \texttt{summarise} para extraer los 10 
+aviones por aerolínea con el menor promedio de velocidad.
+\item ¿Cuáles son los aeropuertos con mayor promedio de retraso en la salida?
+\item ¿Cuáles son los aeropuertos con mayor promedio de retraso en las llegadas?
+\end{enumerate}
+
+\end{bclogo}
+
+
+```{r, eval = F}
+# Respuestas
+# 1
+?top_n
+# 2
+flights %>%
+    mutate(velocidad = dist/time) %>%
+    group_by(plane, carrier) %>%
+    summarise(vel_prom = mean(velocidad, na.rm = T)) %>%
+    ungroup() %>%
+    group_by(carrier) %>%
+    arrange(vel_prom) %>%
+    top_n(1) 
+
+# 3
+flights %>%
+    group_by(dest) %>%
+    summarise(arr_delay = mean(arr_delay, na.rm = T)) %>%
+    arrange(desc(arr_delay)) %>%
+    head(10)
+                  
+```
+
+\begin{curiosidad}[Afectación de otros verbos por \texttt{group\_by}]
+El establecer grupos puede conjugarse con los demás verbos implementados en 
+el paquete \texttt{dplyr} y los afecta de diferente manera \parencite[][viñeta de introducción]{dplyr}:\\
+
+\begin{itemize}
+\item \texttt{select} realiza la misma operación pero retiene siempre las variables de agrupación.
+\item \texttt{arrange} realiza el arreglo según las variables especificadas pero ordena primero según los grupos.
+\item \texttt{mutate} y \texttt{filter} realizan las operación dentro de los grupos definidos y son más útiles cuando se utilizan en conjunción a las funciones ventana.
+\item \texttt{sample\_n} y \texttt{sample\_frac} extraen el número o fracción de observaciones según el número o fracción de filas en cada grupo.
+\item \texttt{summarise} en conjunción con \texttt{group\_by} llevan acabo el paradigma split (por las variables definidas en el \texttt{group\_by}), apply (por las funciones especificadas en el \texttt{summarise}) y lo combinan en un dataframe.
+\end{itemize}
+\end{curiosidad}
+
+### ungroup
+
+<!-- agregar cuales funciones pueden agruparse -->
+La función `group_by` agrega la clase `grouped_df`, así como atributos al objeto.
+
+```{r}
+g.df <- group_by(flights, plane, carrier)
+class(g.df)
+names(attributes(g.df))
+
+class(flights)
+names(attributes(flights))
+```
+
+
+La función `ungroup` los elimina:
+
+```{r}
+class(ungroup(g.df))
+names(attributes(ungroup(g.df)))
+```
+
+
+\renewcommand\bcStyleTitre[1]{\large\textcolor{bbblack}{#1}}
+\begin{bclogo}[
+  couleur=llred,
+  arrondi=0,
+  logo=\bcstop,
+  barre=none,
+  noborder=true]{Ejercicios}
+\begin{enumerate}
+\item ¿Cuáles son los aeropuertos que SI están en la base de destinos?
+\item ¿Cuáles son los aeropuertos que NO están en la base de destinos?
+\item Realiza un resumen de los vuelos por aeropuerto para varias variables con la función \texttt{summarise}.
+\item Utiliza la función \texttt{inner\_join} para pegar la tablas de resumen creada en el paso anterior a la tabla \textit{airports}
+\item Realiza un resumen de los vuelos por avión para varias variables con la función \texttt{summarise}.
+\item Utiliza la función \texttt{left\_join} para pegar la tablas de resumen creada en el paso anterior a la tabla \textit{planes}
+\item Extrae el porcentaje de vuelos cancelados por aerolínea cada año y el porcentaje de vuelos retrasados por aerolínea cada año.
+\end{enumerate}
+
+\end{bclogo}
+
+```{r, eval = F}
+# Respuestas
+
+# 1
+semi_join(airports, flights, by = c("iata" = "dest"))
+# 2
+anti_join(airports, flights, by = c("iata" = "dest"))
+# 3
+res.vuelos <- flights %>%
+  group_by(dest) %>%
+  summarise(
+    flights = n()
+    , planes = n_distinct(plane)
+    , carriers = n_distinct(carrier)
+    , cancelled_flights = sum(cancelled, na.rm = T)
+    , dep_delay_mean = mean(dep_delay, na.rm = T)
+  )
+# 4
+airports_flights <- inner_join(airports, res.vuelos, by = c("iata" = "dest"))
+# 5
+res.aviones <- flights %>%
+  group_by(plane) %>%
+  summarise(
+    flights = n()
+    , carriers = n_distinct(carrier)
+    , cancelled_flights = sum(cancelled, na.rm = T)
+    , dep_delay_mean = mean(dep_delay, na.rm = T)
+    , arr_delay_mean = mean(arr_delay, na.rm = T)
+    , dist_mean = mean(dist, na.rm = T)
+    , vel_mean = mean(dist/time, na.rm = T)
+  ) 
+# 6
+planes_flights <- left_join(planes, res.aviones)
+# 7 
+flights %>%
+  mutate(anio = lubridate::year(date)) %>%
+  group_by(carrier, anio) %>%
+  summarise(
+    vuelos.anuales = n()
+    , cancelados = sum(cancelled, na.rm = T)/vuelos.anuales * 100
+    , retrasados = sum(dep_delay > 0, na.rm = T)/vuelos.anuales * 100
+  ) %>%
+  ungroup()
+```
+
+## Reorganizar datos
+
+### data_frame
+
+Al igual que la función `data.frame`, esta función permite generar un data frame
+a partir de vectores:
+
+```{r}
+df <- data_frame(
+  x = rnorm(100)
+  , y = runif(100)
+)
+class(df)
+
+df <- data.frame(
+  x = rnorm(100)
+  , y = runif(100)
+)
+class(df)
+```
+
+La clase del objeto generado por la función `data_frame` es un `tibble` mientras
+que la función del base `data.frame` es de clase `data.frame`.
+
+### arrange
+
+`order` habíamos visto que es la implementación del base para ordenar vectores o
+en su defecto, dataframes de acuerdo a valores de vectores en esta. Sin embargo,
+es engorrosa la manera de llamarlo.
+
+Podemos arreglar los valores de las tablas, fácilmente con `arrange`. Por ejemplo,
+podemos ver los 5 vuelos con mayor retraso de llegada.
+
+```{r}
+head(arrange(flights, desc(arr_delay)), n=5)
+```
+
+O los 5 con menor atraso de llegada
+
+```{r}
+head(arrange(flights, arr_delay), n=5)
+```
+
+Podemos arreglar primero por destino y luego por retraso de llegada.
+
+```{r}
+arrange(flights, dest, arr_delay)
+```
+
+### rename
+
+Es posible renombrar las variables por nombre utilizando la función `rename`:
+
+```{r}
+rename(flights, iata = dest)
+```
 

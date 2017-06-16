@@ -277,6 +277,12 @@ Version: 1.1-13
 Hash: 79296150a979c6caa62600bb259edbdd
 Requires: Rcpp, RcppEigen, minqa, nloptr
 
+Package: lubridate
+Source: CRAN
+Version: 1.6.0
+Hash: b90f4cbefe0b3c545dd68b22c66a8a12
+Requires: stringr
+
 Package: magrittr
 Source: CRAN
 Version: 1.5
@@ -309,6 +315,12 @@ Package: nloptr
 Source: CRAN
 Version: 1.0.4
 Hash: 8053df240a4635aeb54fc68c6de67709
+
+Package: nycflights13
+Source: CRAN
+Version: 0.2.2
+Hash: dc3dbaaf3493c7ea43ff8a1523046c80
+Requires: tibble
 
 Package: openssl
 Source: CRAN

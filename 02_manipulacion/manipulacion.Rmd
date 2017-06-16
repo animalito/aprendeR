@@ -18,7 +18,7 @@ library(xtable)
 library(readxl)
 ```
 
-# Manipulación de datos
+# Datos limpios
 
 Esta sección resume algunas de las funciones existentes para **limpiar** 
 datos de distintos formatos a `R`. En particular, se utiliza la conceptualización 
