@@ -22,24 +22,87 @@ library(ggplot2)
 
 ## La gramática de las gráficas
 
-Es una herramienta que nos permite:
+Es una herramienta que nos permite \parencite{wickham2010layered}:
 
 - Describir los componentes de una gráfica en forma concisa
 - Ir más allá de los nombres de la gráfica (e.g. scatterplot, boxplot, etc.)
 - Entender la estructura detrás de los gráficos estadísticos
-   
-Héroes de trabajos en la gramática de las gráficas:
 
-- [Wickham, 2010. A layered grammar of graphics.](http://vita.had.co.nz/papers/layered-grammar.pdf)
-- [Wilkinson, 2005. The grammar of graphics](https://www.cs.uic.edu/~wilkinson/TheGrammarOfGraphics/GOG.html)
-- Bertin, 1983. Semiology of Graphics. [Update a] 2010!(https://www.amazon.es/Semiology-Graphics-Diagrams-Networks-Maps/dp/1589482611)
-    
 ## ¿Qué es?
 
-Es una abstracción que nos permite describir cómo crear gráficos ricos e informativos.
-Una gramática permite que pensemos que dos gráficos distintos comparten una 
-estructura común. Además, tenerlo en un paquete permite que los usuarios no se
-limiten únicamente a los gráficos específicos que se implementan paquete a paquete.
+La gramática le da reglas al lenguaje y es un sistema formal para 
+generar enunciados \parencite{wilkinson2006grammar}. 
+\textcite{wilkinson2006grammar} proporciona una gramática para gráficos que
+permite describir y construir una gran cantidad de gráficos estadísticos.
+\parencite{wickham2010layered} implementa esta gramática en el paquete 
+`ggplot2` de `R` \parencite{ggplot2}.
+
+La gramática define un gráfico estadístico como un mapeo de datos a atributos
+estéticos (un color, una forma) de objetos geométricos (barras, líneas, puntos).
+Además, una gráfica puede implicar transformaciones estadísticas de los datos
+y se dibuja sobre un sistema de coordenadas específico. Por último, es posible
+generar el mismo gráfico en diferentes subconjuntos de los datos (facetas). La combinación
+de estos factores independientes conforman un gráfico \parencite[][p. 5]{ggplot2}. 
+
+La implementación en capas, permite que los usuarios no se limiten únicamente a los gráficos específicos 
+que se implementan paquete a paquete sino que puedan realizar tantos gráficos 
+como este lenguaje de gráficos permita.
+
+## Base plotting vs. ggplot
+
+Observemos una gráfica utilizando la base `diamonds` en donde graficamos en el 
+eje $x$ el carataje de diamantes y en el eje $y$ su precio:
+
+```{r}
+str(diamonds)
+
+plot(diamonds$carat, diamonds$price)
+```
+
+Ese mismo gráfico, podemos realizarlo con la función `qplot` del paquete`ggplot`:
+
+```{r}
+qplot(data = diamonds, x = carat, y = price, geom = "point")
+```
+
+## ggplot
+
+Los componentes de la gramática de gráficas específica para `ggplot` son:
+
+1. Una o más capas donde cada cuál tiene:
+    a. Datos 
+    b. Mapeo estético de los datos (*aesthetic mappings*)
+    c. Un objeto geométrico
+    d. Una transformación estadística
+    e. Ajustes en las posiciones de los objetos
+2. Una escala para cada estética
+3. Un sistema de coordenadas
+4. Una especificación de facetas
+
+Al graficar en `ggplot` se tiene control sobre todos estos elementos:
+
+```{r, echo = T}
+ggplot() +
+  layer( # una capa
+    data = diamonds, # datos
+    mapping = aes(x = carat, y = price), # mapeo estético
+    geom = "point", # geometría
+    stat = "identity", # transformación estadística
+    position = "identity" # ajuste en posición de objetos
+    ) + 
+  scale_y_continuous() + # Escala para estética 2
+  scale_x_continuous() + # Escala para estética 1
+  coord_cartesian() # Sistema de coordenadas
+```
+
+`ggplot` implementa también una serie de `defaults` \parencite[][p. 3]{ggplot2} que facilitan la escritura
+de nuevas gráficas pues no es necesario especificar cada uno de los detalles al 
+agregar una capa. Por tanto, es posible escribir el mismo gráfico haciendo 
+uso de esos `defaults`:
+
+```{r}
+ggplot(diamonds, aes(carat, price)) + geom_point()
+```
 
 ## Características importantes
 
@@ -48,59 +111,6 @@ Los componentes de una gráfica son ortogonales:
     - Cambiar uno no debe romper los otros
     - Una configuración distinta de componentes es válida
     - Puedes construir mayor complejidad agregando capas
-
-## ggplot
-
-**Aquí empieza el pocheo necesario. Es más fácil si saben cómo se llama en inglés**.
-
-Los componentes de la gramática de gráficas específica para ggplot son:
-
-1. Una o más capas:
-    a. Datos y *aesthetic mappings*
-    b. UNa transformación estadística
-    c. Un objeto geométrico
-    d. Ajustes en las posiciones de los objetos
-2. Una escala para cada estética
-3. Un sistema de coordenadas
-4. Una especificación de facetas
-
-### Base plotting
-
-```{r}
-str(diamonds)
-
-plot(diamonds$carat, diamonds$price)
-```
-
-Buen primer intento pero... algo feo... y limitado.
-
-### Primer ejemplo en ggplot
-
-```{r, echo = T}
-ggplot() +
-  layer(
-    data = diamonds,
-    mapping = aes(x = carat, y = price),
-    geom = "point",
-    stat = "identity",
-    position = "identity") +
-  scale_y_continuous() + 
-  scale_x_continuous() +
-  coord_cartesian()
-```
-
-Si conoces los `defaults` del paquete, puedes escribir las cosas de manera aun 
-mas simple...
-
-```{r}
-ggplot(diamonds, aes(carat, price)) + geom_point()
-```
-
-o aun mas abreviado... con el magnifico `qplot`
-
-```{r}
-qplot(data = diamonds, x = carat, y = price, geom = "point")
-```
 
 ## Las capas
 
@@ -115,28 +125,32 @@ Así como en otros casos, el objeto en `R` puede ser guardado en una variable, s
 le puede imprimir, se le puede guardar como imagen de diferentes formatos, o se
 puede guardar en una lista o en un `Rdata`.
 
-### Componentes de una capa
+## Componentes de una capa
 
-#### Datos y mapa estético
+### Datos y mapa estético
 
 Permite mapear las columnas del `data.frame` de entrada a los aspectos de la grafica.
 
 Es decir,
 
-- las coordenadas x, y
+- las coordenadas $x$, $y$
+- los grupos (definidos por otra variable)
 - el tamaño
 - el color
 - el relleno 
-- las agrupaciones
+
+Para ejemplificar, generamos una variable $x$ que proviene de dos distribuciones
+normales: mil realizaciones $N(0, 1)$ y mil $N(3, 1)$. Asignamos un grupo a 
+las primeras mil y otro a la segunda.
 
 ```{r}
 mix2norm <- data.frame(x  = c(rnorm(1000), rnorm(1000, 3)), 
-                       grp = as.factor(rep(c(1,2),each=1000)))
+                       grupo = as.factor(rep(c(1,2),each=1000)))
 
-ggplot(mix2norm, aes(x=x, color = grp)) + geom_density(adjust = 1/2)
+ggplot(mix2norm, aes(x=x, color = grupo)) + geom_density()
 ```
 
-#### Transformaciones estadísticas
+### Transformaciones estadísticas
 
 Ésta puede ser, por ejemplo, un resumen del input recibido; se especifica 
 vía el comando `stat`. Ejemplos:
@@ -146,17 +160,20 @@ vía el comando `stat`. Ejemplos:
 - boxplot
 - identity
 
+Utilizamos, por ejemplo, la transformación *bin*, misma que se especifica en 
+el objeto geométrico:
+
 ```{r}
-ggplot(mix2norm, aes(x=x, color = grp, fill= grp)) + 
-  geom_density(alpha = .4, size = 2, stat = "bin") +
-  scale_color_manual(values = c("1" = "magenta", "2" = "blue"))
+ggplot(mix2norm, aes(x=x, color = grupo)) + 
+  geom_density(stat = "bin", binwidth = 0.1)
 ```
 
-Horrible pero... ¡ilustra el control que te da!
+La transformación utilizada tiene asociada parámetros como lo es el tamaño en el
+que deben realizarse los colapsos de la variable categórica (*binwidth*).
 
-#### El objeto geométrico
+### El objeto geométrico
 
-Esto permite especificar el tipo de gráfico a crear. Se especifica a partir vía la
+Esto permite especificar el tipo de gráfico a crear. Se especifica con la
 `geom`. Se define de acuerdo a su dimensión, es decir,
 
 - `0-dim`: puntos, texto
@@ -171,36 +188,75 @@ Otras geometrías incluyen:
 - `geom_line`
 - `geom_density`
 
-`geom_density` por ejemplo utiliza `ribbon` o una cosa que a veces encontrarán en
-español como violín (no pun intended).
-
-```{r}
-ggplot(diamonds, aes(x = price)) +
-  stat_density(aes(ymax = ..density..,  ymin = -..density..),
-    fill = "grey50", colour = "grey50",
-    geom = "ribbon", position = "identity") +
-  facet_grid(. ~ cut) +
-  coord_flip()
-```
-
 Además, se puede cambiar la transformación estadística manteniendo la geometría
-fijada.
+fijada. Al ejemplo anterior, le agregamos una transformación estadística dentro
+del objeto geométrico con el parámetro `adjust`.
 
 ```{r}
-ggplot(mix2norm, aes(x = x, color = grp)) + geom_density(adjust = 1/2)
+ggplot(mix2norm, aes(x = x, color = grupo)) + geom_density(adjust = 1/2)
 ```
+
+En este caso, estamos pidiendo la mitad del tamaño del bin que se calcula en forma
+algorítmica por el paquete. 
 
 Viceversa, puede cambiarse la geometría pero mantener la transformación estadística.
 
 ```{r}
-ggplot(mix2norm, aes(x = x, color = grp)) + stat_density(adjust = 1/2)
+ggplot(mix2norm, aes(x = x, color = grupo)) + stat_density(adjust = 1/2)
 ```
 
 Revisa el comando `position` y `geometry`.
 
 Revisa sus defaults y juega con los ejemplos!
 
-#### Posición
+\renewcommand\bcStyleTitre[1]{\large\textcolor{bbblack}{#1}}
+\begin{bclogo}[
+  couleur=llred,
+  arrondi=0,
+  logo=\bcstop,
+  barre=none,
+  noborder=true]{Ejercicios}
+\begin{enumerate}
+\item Genera una gráfica con la función \texttt{ggplot} en donde los datos sea
+la base \texttt{diamonds} y la estética sea $x = price$. Especifica como geometría
+una densidad.
+\item Cambia el color y el relleno de la geometría a gris (\texttt{grey50})
+\item Cambia la geometría a \texttt{ribbon}, cambia los parámetros necesarios
+para que funcione.
+\item Agrega una faceta para que se haga un gráfico para cada uno de los subconjuntos
+definidos por la variable \texttt{cut}.
+\item Agrega a la gráfica el comando \texttt{coord\_flip} para que el precio este
+en el eje $y$.
+\end{enumerate}
+
+\end{bclogo}
+
+`geom_density` por ejemplo utiliza `ribbon` o una cosa que a veces encontrarán en
+español como violín.
+
+```{r, eval = F}
+# Respuestas
+# 1
+g <- ggplot(diamonds, aes(x = price)) + stat_density()
+g
+# 2
+g +
+  stat_density(fill = "grey50", colour = "grey50") 
+# 3
+g <- g +
+  stat_density(aes(ymax = ..density..,  ymin = -..density..),
+    fill = "grey50", colour = "grey50",
+    geom = "ribbon", position = "identity")
+g
+# 4
+g <- g  +
+  facet_grid(. ~ cut) 
+g
+# 5
+g + coord_flip()
+```
+
+### Posición
 
 Es posible especificar la posición de cada una de las capas en relación a otras. 
 Ejemplos:
@@ -211,11 +267,11 @@ Ejemplos:
 
 
 ```{r}
-ggplot(mix2norm, aes(x=x, color = grp)) + 
+ggplot(mix2norm, aes(x=x, color = grupo)) + 
   stat_density(adjust=1/2, size=2, position ="identity",geom ="line")
 ```
 
-#### Escalas
+### Escalas
 
 Determina cuál valor de entrada mapea a qué estética específica. Se escribe 
 usando `scale`. Hay de todo:
@@ -229,12 +285,12 @@ usando `scale`. Hay de todo:
 
 
 ```{r}
-ggplot(mix2norm, aes(x=x, color = grp)) + 
+ggplot(mix2norm, aes(x=x, color = grupo)) + 
   stat_density(adjust=1/2, size=2, position ="identity", geom ="line") +
   scale_y_log10(limits = c(1e-5,1))
 ```
 
-#### Coordenadas
+### Coordenadas
 
 Te permite especificar las posiciones de las cosas y cómo mapean a las posiciones 
 en la pantalla. Antes todo era entorno a cómo le dices las cosas a R pero 
@@ -246,19 +302,19 @@ geométricos. Ejemplos:
 - `map-projection`
 
 ```{r}
-ggplot(mix2norm, aes(x=x, color = grp)) + 
+ggplot(mix2norm, aes(x=x, color = grupo)) + 
   stat_density(adjust=1/2, size=2, position ="identity",geom ="line") +
   coord_polar()
 ```
 
-#### Facetas
+### Facetas
 
 Permite arreglar diferentes gráficas en un grid o panel.
 
 ```{r}
-ggplot(mix2norm, aes(x=x, color = grp)) + 
+ggplot(mix2norm, aes(x=x, color = grupo)) + 
   stat_density(adjust = 1/2, size = 2, position = "identity", geom = "line") +
-  facet_grid(grp~.)
+  facet_grid(grupo~.)
 ```
 
 Ve el help de `facet_wrap`
@@ -287,7 +343,7 @@ Ve el help de `facet_wrap`
 
 ```
 
-```{r}
+```{r, echo = F}
 #http://www.stat.purdue.edu/~varao/STAT598Z/lect7.pdf
 #http://docs.ggplot2.org/0.9.3.1/stat_density.html
 #http://vita.had.co.nz/papers/layered-grammar.pdf
