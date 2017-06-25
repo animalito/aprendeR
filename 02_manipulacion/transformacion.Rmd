@@ -292,8 +292,8 @@ podemos calcularlo fácilmente con `summarise`.
 
 ```{r}
 flights$velocidad <- flights$dist/flights$time
-flights %>%
-  summarise(vel_prom = mean(velocidad, na.rm = T))
+
+summarise(flights, vel_prom = mean(velocidad, na.rm = T))
 ```
 
 \begin{curiosidad}[Funciones resumen]
@@ -358,8 +358,8 @@ select(arrange(mutate(flights, velocidad = dist/time), desc(velocidad)),
 ```
 
 Esta manera de transformar a los datos (utilizando varios de los verbos) es 
-confusa y difícil de leer. Es mas sencillo utilizar el operador pipe de R implementado
-en el paquete `magrittr`, es decir, `%>%`.
+confusa y difícil de leer. Es mas sencillo utilizar el operador pipe\footnote{Para una explicación más detallada de la importancia de este operador en la simplificación de código, ver la nota del autor del paquete Stefan Milton en \textcite{simplermagrittr} y la viñeta \texttt{magrittr} dentro del paquete.} de `R` implementado
+en el paquete `magrittr`, es decir, `%>%` \parencite{magrittr}.
 
 ```{r}
 flights2 <- mutate(flights, velocidad = dist/time) %>%
@@ -368,8 +368,15 @@ flights2 <- mutate(flights, velocidad = dist/time) %>%
 flights2
 ```
 
-La lectura es mucho mas sencilla de esta forma. Recuerden, muchas veces los
-lectores de su código serán ustedes en el futuro.
+La lectura es mucho mas sencilla de esta forma pues se lee de manera secuencial
+las transformaciones que se están realizando a los datos:
+
+1. Agrego la columna de velocidad a la base de datos de `flights`, luego (operador pipe)
+2. Ordeno los vuelos en forma descendiente según su velocidad, luego
+3. Selecciono las variables de vuelo, destino y velocidad.
+
+Que el código sea entendible no es importante únicamente en el contexto del trabajo
+colaborativo pues muchas veces los lectores de su código serán ustedes en el futuro.
 
 `transmute` es muy similar a `mutate` pero elimina las variables que no fueron
 creadas por la función.

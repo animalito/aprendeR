@@ -20,6 +20,66 @@ library(ggplot2)
 
 # Visualización
 
+La graficación es una manera eficiente de resumir, y mostrar información. 
+Es fundamental entender el contexto de negocio y de la generación de los datos
+para tener más información con respecto a lo que se está graficando. 
+
+Aunqu eno hay mucha teoría alrededor de gráficos estadísticos, muchos se describen
+en distintos libros de texto de estadística \parencite[][Introducción]{unwin2015}. 
+
+\textcite[][citando a John Tukey]{unwin2015} resume el propósito de la visualización
+de datos en cuatro frases: 
+
+1. Las gráficas son para análsisis cualitativos o descriptivos y quizá semi cuantitativos, 
+nunca para análisis profundo cuantitativo (las tablas son mejores para esta tarea). 
+2. Las gráficas son para realizar comparaciones (en el tiempo, entre grupos), no para describir cantidades particulares. 
+3. Las gráficas son para impactar (visualmente, para sorprender, para transmitir 
+información), pero casi nunca sirven para reflejar patrones escondidos en los datos. 
+4. Las gráficas deberían de reportar un análisis de datos trabajado, fino y cuidadoso.
+Jamás deben de reemplazar el análisis. Las gráficas están para fortalecer el análisis, no para fundamentarlo y
+los gráficos finales en un análisis deben reflejar el análisis realizado. 
+
+Esta sección resume algunas de las funciones implementadas para **visualizar** 
+datos implementados en el paquete `ggplot2` de `R`. Está fuera de la alcance de
+este apartado las consideraciones estadísticas que deben de realizarse en 
+un análisis de datos pues el enfoque es mostrar cómo realizar esta tarea en `R`. 
+En la figura \ref{fig:ciclo4} podemos ver la etapa del
+análisis de datos correspondiente.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{../img/02_ciclo_4.png}
+    \caption{Visualización en el análisis de datos \textcite[Introducción]{grolemund2016r}.}
+    \label{fig:ciclo4}
+\end{figure}
+
+En `R` hay muchas maneras de realizar una tarea, esto es particularmente cierto
+en lo que se refiere a visualización de datos \parencite{basevggplot}. A fin de 
+cuentas, lo más importante de la visualización de datos es cuán útil es esta
+herramienta para el análisis de datos y la forma en la que se le indica a la 
+máquina como realizar la tarea es un elemento importante solo en la medida en 
+la que facilite el trabajo del estadístico.
+
+Aunque posiblemente cualquiera de los gráficos que se pueden hacer con `ggplot2`
+pueden hacerse también con los gráficos implementados en el `base graphics` de `R` 
+\parencite{basevggplot}, aquí se cubre visualización en `ggplot2` principalmente
+debido a que:
+
+- El patrón de programación está definido formalmente mientras que en el `base`
+no lo está. Esto significa que cuando entiendes cómo hacer una gráfica en 
+`ggplot2`, puedes hacer una gran cantidad de gráficos \parencite{basevggplot}.
+- `ggplot2` tiene una gran cantidad de *defaults* predefinidos que facilitan 
+realizar gráficos ilustrativos y estéticos muy rápidamente \parencite{reasonsggplot}.
+- `ggplot2` es compatible con *piping*\footnote{Se introdujo el operador \textit{pipe} de \texttt{R} en la sección de transformación en este capítulo y se mencionó como ayuda en la lectura y escritura de código. Un\textit{pipeline} en programación consiste en un arreglo de elementos de procesamiento en donde la salida de cada elemento es la entrada del siguiente elemento. Este concepto fue concebido por Douglas Mcllroy \parencite{unixpipes}.}
+\parencite{notggplot}.
+- Muchas veces, resulta necesario realizar un mismo gráfico para varios subconjuntos
+de datos. Esta tarea se puede hacer en forma directa en `ggplot2` y no en el 
+`base` a través de facetas.
+
+Primero, se cubrirá el concepto detrás de `ggplot2`, la gramática de las gráficas. 
+Posteriormente, se describen los componentes de una gráfica en `ggplot2`, las 
+capas y sus componentes proporcionando ejemplos en cada caso.
+
 ## La gramática de las gráficas
 
 Es una herramienta que nos permite \parencite{wickham2010layered}:
@@ -38,7 +98,7 @@ permite describir y construir una gran cantidad de gráficos estadísticos.
 `ggplot2` de `R` \parencite{ggplot2}.
 
 La gramática define un gráfico estadístico como un mapeo de datos a atributos
-estéticos (un color, una forma) de objetos geométricos (barras, líneas, puntos).
+estéticos (un color, una forma) en objetos geométricos (barras, líneas, puntos).
 Además, una gráfica puede implicar transformaciones estadísticas de los datos
 y se dibuja sobre un sistema de coordenadas específico. Por último, es posible
 generar el mismo gráfico en diferentes subconjuntos de los datos (facetas). La combinación
@@ -54,6 +114,7 @@ Observemos una gráfica utilizando la base `diamonds` en donde graficamos en el
 eje $x$ el carataje de diamantes y en el eje $y$ su precio:
 
 ```{r}
+data(diamonds, package = "ggplot2")
 str(diamonds)
 
 plot(diamonds$carat, diamonds$price)
@@ -64,6 +125,16 @@ Ese mismo gráfico, podemos realizarlo con la función `qplot` del paquete`ggplo
 ```{r}
 qplot(data = diamonds, x = carat, y = price, geom = "point")
 ```
+
+En donde especificamos que la variable `carat` en la base `diamonds` mapea al 
+eje $x$, la variable `price` en la misma base al eje $y$ y queremos que la
+geometría sea de puntos.
+
+Observa que la estética de la gráfica generada con la función `plot` es un poco
+distinta a la generada con `qplot` (función que utiliza `ggplot`). Verifica la 
+clase que tiene cada objeto, en el primer caso no tiene y en el segundo tenemos
+un objeto de clase `ggplot` que tiene atributos y que podemos guardar en un 
+objeto. 
 
 ## ggplot
 
@@ -90,8 +161,8 @@ ggplot() +
     stat = "identity", # transformación estadística
     position = "identity" # ajuste en posición de objetos
     ) + 
-  scale_y_continuous() + # Escala para estética 2
-  scale_x_continuous() + # Escala para estética 1
+  scale_y_continuous() + # Escala para estética continua en y
+  scale_x_continuous() + # Escala para estética continua en x
   coord_cartesian() # Sistema de coordenadas
 ```
 
@@ -118,7 +189,8 @@ Los componentes de una gráfica son ortogonales:
 sabe cómo convertirlo en una gráfica.
 
 Este objeto está formado por capas, mismas que tienen sus entradas (*inputs*) particulares
-y que comparten argumentos del gráfico `base` generado por `ggplot()`. Con el operador
+y que comparten argumentos del gráfico `base` generado por la función `ggplot()`. 
+Con el operador
 `+` se van agregando las distintas capas al mismo objeto.
 
 Así como en otros casos, el objeto en `R` puede ser guardado en una variable, se
@@ -129,7 +201,7 @@ puede guardar en una lista o en un `Rdata`.
 
 ### Datos y mapa estético
 
-Permite mapear las columnas del `data.frame` de entrada a los aspectos de la grafica.
+Permite mapear las columnas del `data.frame` de entrada a los aspectos de la gráfica.
 
 Es decir,
 
@@ -152,7 +224,7 @@ ggplot(mix2norm, aes(x=x, color = grupo)) + geom_density()
 
 ### Transformaciones estadísticas
 
-Ésta puede ser, por ejemplo, un resumen del input recibido; se especifica 
+Ésta puede ser, por ejemplo, un resumen de la entrada (*input*) recibido; se especifica 
 vía el comando `stat`. Ejemplos:
 
 - binning
@@ -205,9 +277,11 @@ Viceversa, puede cambiarse la geometría pero mantener la transformación estad�
 ggplot(mix2norm, aes(x = x, color = grupo)) + stat_density(adjust = 1/2)
 ```
 
-Revisa el comando `position` y `geometry`.
+Revisa el comando `position` y `geometry`. Revisa sus defaults y copia 
+algunos de los ejemplos en la documentación.
 
-Revisa sus defaults y juega con los ejemplos!
+`geom_density` por ejemplo utiliza `ribbon` o una cosa que a veces encontrarán en
+español como violín.
 
 \renewcommand\bcStyleTitre[1]{\large\textcolor{bbblack}{#1}}
 \begin{bclogo}[
@@ -230,9 +304,6 @@ en el eje $y$.
 \end{enumerate}
 
 \end{bclogo}
-
-`geom_density` por ejemplo utiliza `ribbon` o una cosa que a veces encontrarán en
-español como violín.
 
 ```{r, eval = F}
 # Respuestas
@@ -268,7 +339,7 @@ Ejemplos:
 
 ```{r}
 ggplot(mix2norm, aes(x=x, color = grupo)) + 
-  stat_density(adjust=1/2, size=2, position ="identity",geom ="line")
+  stat_density(adjust=1/2, size=2, position = "identity", geom = "line")
 ```
 
 ### Escalas
@@ -293,7 +364,7 @@ ggplot(mix2norm, aes(x=x, color = grupo)) +
 ### Coordenadas
 
 Te permite especificar las posiciones de las cosas y cómo mapean a las posiciones 
-en la pantalla. Antes todo era entorno a cómo le dices las cosas a R pero 
+en la pantalla. Antes todo era entorno a cómo le dices las cosas a `R` pero 
 también importa cómo las ves. Coordenadas distintas pueden afectar a los objetos
 geométricos. Ejemplos:
 
@@ -302,8 +373,8 @@ geométricos. Ejemplos:
 - `map-projection`
 
 ```{r}
-ggplot(mix2norm, aes(x=x, color = grupo)) + 
-  stat_density(adjust=1/2, size=2, position ="identity",geom ="line") +
+ggplot(mix2norm, aes(x = x, color = grupo)) + 
+  stat_density(adjust = 1/2, size = 2, position = "identity", geom = "line") +
   coord_polar()
 ```
 
@@ -312,9 +383,9 @@ ggplot(mix2norm, aes(x=x, color = grupo)) +
 Permite arreglar diferentes gráficas en un grid o panel.
 
 ```{r}
-ggplot(mix2norm, aes(x=x, color = grupo)) + 
+ggplot(mix2norm, aes(x = x, color = grupo)) + 
   stat_density(adjust = 1/2, size = 2, position = "identity", geom = "line") +
-  facet_grid(grupo~.)
+  facet_grid(grupo ~ .)
 ```
 
 Ve el help de `facet_wrap`

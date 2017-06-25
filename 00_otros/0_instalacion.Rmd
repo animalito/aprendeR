@@ -14,15 +14,40 @@ knitr::opts_chunk$set(echo = T, error = F, message = F, warning = F)
 ```
 
 
-Para los usuario de Linux recomiendo 
-[este link](https://github.com/Skalas/massive-adventure-ubuntu/blob/master/i_R.sh) 
-para instalar R compilándolo.
-Ésta es la mejor opción pues, de esta manera, se aprovecharán todas las 
-características de su máquina. Pueden clonar el repositorio y en la terminal
-correr
+Para los usuarios de Linux, se pueden correr los siguientes comandos en la consola 
+para instalar R compilándolo \parencite{instalarcompilado}.
+Ésta es la mejor opción pues se aprovecharán todas las 
+características de su máquina. 
 
-```
-./i_R.sh
+```{bash, eval = F}
+#!/bin/bash
+while true; do
+    read -p "Do you wish to Compile R? y/n " yn
+    case $yn in
+        [Yy]* ) sudo apt-get update;
+	    sudo apt-get upgrade -y;
+	    sudo apt-get install -y build-essential libpq-dev liblapack3 libblas3 libmysql++-dev sqlite3 fort77 gnuplot-x11  texinfo liblapack-dev texi2html libglpk-dev libgeos-dev libgdal1-dev libproj-dev;
+	    sudo apt install -y gfortran  autoconf automake bzip2-doc cdbs debhelper dh-strip-nondeterminism dh-translations gettext intltool intltool-debian libarchive-zip-perl libasprintf-dev libbz2-dev libfile-stripnondeterminism-perl libgettextpo-dev libgettextpo0 liblzma-dev libmail-sendmail-perl libncurses5-dev libpcre3-dev libpcre32-3 libpcrecpp0v5 libreadline-dev libreadline6-dev libsys-hostname-long-perl libtinfo-dev libunistring0 m4 po-debconf python-scour xorg-dev libcairo2-dev libgtk2.0-dev;
+	    sudo apt-get -y build-dep r-base;
+	    mkdir -p $HOME/src;
+	    cd $HOME/src;
+	    wget -c http://cran.r-project.org/src/base/R-latest.tar.gz;
+	    tar zxvf R-latest.tar.gz && rm R-latest.tar.gz;
+	    cd "$(ls -dt R-*/ | head -1 )";
+	    ./configure --enable-memory-profiling --enable-R-shlib --with-blas --with-lapack --with-tcltk  --with-cairo --with-libpng --with-jpeglib --with-libtiff;
+	    make;
+	    sudo make install;
+	    break;;
+        [Nn]* ) sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9;
+	    ubuntu_codename=`lsb_release -cs` ;
+	    sudo chmod ugo+rw /etc/apt/sources.list;
+	    echo "deb http://cran.r-project.org/bin/linux/ubuntu $ubuntu_codename/" >> '/etc/apt/sources.list';
+	    sudo apt-get update;
+	    sudo apt-get install -y --no-install-recommends r-base r-base-dev;
+	    exit;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
 ```
 
 Para descargar e instalar R en su versión precompilada, seguir las instrucciones
@@ -31,7 +56,7 @@ utilizando.
 
 # Editores
 
-Hay muchísimos, yo les recomiendo dos.
+Hay muchísimos, en particular se mencionarán dos.
 
 ## RStudio
 
@@ -40,13 +65,15 @@ siguiendo las instrucciones para cada sistema operativo. RStudio es un IDE (inte
 development environment) para R que incluye consola, editor de texto, memoria de 
 gráficos, vista de objetos en el ambiente y otras herramientas útiles para 
 desarrollar. En su versión más reciente, también autocompleta código y debuggea
-al vuelo.
+al vuelo \parencite{rstudio}.
 
-Aguas con el uso de la memoria RAM de este editor pues abusa bastante y -cuando 
-están usando una gran cantidad de datos o procesos muy pesados- RStudio suele 
-tronar fácilmente. Buenas prácticas de todos los días: guarden seguido, sigan 
-un workflow aunado a controlador de versiones (o algún tipo de backup) y, sobretodo,
-creen sus funciones, lógica, algoritmos, con una muestra de sus datos.
+Este editor usa bastante memoria RAM y -cuando 
+se está usando una gran cantidad de datos o procesos muy pesados- es muy probable
+que sea posible realizar el proceso desde consola y no en RStudio. 
+
+Aplican las buenas prácticas tradicionales: guardar seguido, seguir 
+un flujo de trabajo (*workflow*) aunado a controlador de versiones (o algún tipo de respaldo) y, sobretodo,
+crear las funciones, lógica y algoritmos con una muestra de los datos.
 
 ## ESS
 
@@ -55,19 +82,19 @@ los usuarios de emacs \& R. Soporta la edición de scripts para R, S-plus, SAS,
 Stata, OPenBUGS/JAGS. Para los que además ya están acostumbrados al enorme poder
 de Emacs, ésta será la mejor opción.
 
-El editor interactivo es muy bueno y casi no tiene overhead de memoria.
+El editor interactivo es muy bueno y casi no tiene *overhead* de memoria.
 
 # Optimizando
 
-Es común que muy pronto nos encontremos con limitaciones al poder de cómputo y 
-rapidez con el que R procesa los datos. Hay operaciones intensivas como, por 
+Es común encontrarse muy pronto con limitaciones al poder de cómputo y 
+rapidez con el que `R` procesa los datos. Hay operaciones intensivas como, por 
 ejemplo, la inversión de matrices (qr) o el análisis por componentes principales (svd). 
-Incluso un back/forward selection usando una simple regresión lineal sobre 
-múltiples regresores puede hacernos esperar por horas/días o no terminar. 
+Incluso una selección de variables (*back/forward selection*) usando una simple regresión lineal sobre 
+múltiples regresores puede ser un proceso que tarde horas/días o, simplmente, no terminar en el tiempo requerido. 
 
-Una de las manera más rápidas de mejorar el performance de R es la librería de 
-álgebra lineal que utliza el software. Para mucho (demasiado) detalle al respecto,
-referirse a la comparación de performance en 
+Una de las manera más rápidas de mejorar el rendimiento (*performance*) de `R` es la librería de 
+álgebra lineal que utliza el software. Para más detalle al respecto,
+referirse a la comparación de performance en  \textcite{}
 [este paper](https://cran.r-project.org/web/packages/gcbd/vignettes/gcbd.pdf) o
 al paquete del gran Dirk Eddelbuettel 
 [gcbd](https://cran.rstudio.com/web/packages/gcbd/index.html).
