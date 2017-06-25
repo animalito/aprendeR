@@ -14,6 +14,23 @@ output:
 knitr::opts_chunk$set(echo = T, error = F, message = F, warning = F)
 ```
 
+En este capítulo se revisarán elementos básicos para poder iniciar el trabajo en
+`R`. Primero que nada, se proporcionan instrucciones de instalación según el 
+sistema operativo utilizado. Posteriormente, se recomiendan editores que
+facilitan la edición de código y documentos en `R`, particularmente `Rstudio` o
+`Emacs` combinado con `ESS`. Posteriormente, se describe brevemente el espacio de trabajo y se dan
+algunos ejemplos que ilustran la interacción con la consola.
+
+Se cubren algunos temas útiles para el trabajo continuo en `R`: se recomiendan 
+paquetes que complementan a la instalación básica de `R` y que 
+son particularmente útiles para el análisis de datos; se describe qué es un 
+`script` y un documento de `R`; se explica cómo obtener ayuda y accesar a la
+documentación.
+
+Por último, se recomienda realizar instalaciones adicionales que permiten 
+optimizar el trabajo de álgebra lineal que soporta los distintos métodos 
+implementados en `R`.
+
 # Instalación
 
 Para los usuarios de Linux, se pueden correr los siguientes comandos en la consola 
@@ -28,22 +45,36 @@ while true; do
     case $yn in
         [Yy]* ) sudo apt-get update;
 	    sudo apt-get upgrade -y;
-	    sudo apt-get install -y build-essential libpq-dev liblapack3 libblas3 libmysql++-dev sqlite3 fort77 gnuplot-x11  texinfo liblapack-dev texi2html libglpk-dev libgeos-dev libgdal1-dev libproj-dev;
-	    sudo apt install -y gfortran  autoconf automake bzip2-doc cdbs debhelper dh-strip-nondeterminism dh-translations gettext intltool intltool-debian libarchive-zip-perl libasprintf-dev libbz2-dev libfile-stripnondeterminism-perl libgettextpo-dev libgettextpo0 liblzma-dev libmail-sendmail-perl libncurses5-dev libpcre3-dev libpcre32-3 libpcrecpp0v5 libreadline-dev libreadline6-dev libsys-hostname-long-perl libtinfo-dev libunistring0 m4 po-debconf python-scour xorg-dev libcairo2-dev libgtk2.0-dev;
+	    sudo apt-get install -y build-essential libpq-dev liblapack3 libblas3 \
+	    libmysql++-dev sqlite3 fort77 gnuplot-x11  texinfo liblapack-dev \
+	    texi2html libglpk-dev libgeos-dev libgdal1-dev libproj-dev;
+	    sudo apt install -y gfortran  autoconf automake bzip2-doc cdbs \
+	    debhelper dh-strip-nondeterminism dh-translations gettext intltool \
+	    intltool-debian libarchive-zip-perl libasprintf-dev libbz2-dev \
+	    libfile-stripnondeterminism-perl libgettextpo-dev libgettextpo0 \
+	    liblzma-dev libmail-sendmail-perl libncurses5-dev libpcre3-dev \
+	    libpcre32-3 libpcrecpp0v5 libreadline-dev libreadline6-dev \
+	    libsys-hostname-long-perl libtinfo-dev libunistring0 m4 po-debconf \
+	    python-scour xorg-dev libcairo2-dev libgtk2.0-dev;
 	    sudo apt-get -y build-dep r-base;
 	    mkdir -p $HOME/src;
 	    cd $HOME/src;
 	    wget -c http://cran.r-project.org/src/base/R-latest.tar.gz;
 	    tar zxvf R-latest.tar.gz && rm R-latest.tar.gz;
 	    cd "$(ls -dt R-*/ | head -1 )";
-	    ./configure --enable-memory-profiling --enable-R-shlib --with-blas --with-lapack --with-tcltk  --with-cairo --with-libpng --with-jpeglib --with-libtiff;
+	    ./configure --enable-memory-profiling --enable-R-shlib \
+	    --with-blas --with-lapack --with-tcltk  --with-cairo \
+	    --with-libpng --with-jpeglib --with-libtiff;
 	    make;
 	    sudo make install;
 	    break;;
-        [Nn]* ) sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9;
+        [Nn]* ) sudo apt-key adv --keyserver keyserver.ubuntu.com \
+        --recv-keys E084DAB9;
 	    ubuntu_codename=`lsb_release -cs` ;
 	    sudo chmod ugo+rw /etc/apt/sources.list;
-	    echo "deb http://cran.r-project.org/bin/linux/ubuntu $ubuntu_codename/" >> '/etc/apt/sources.list';
+	    echo \
+	    "deb http://cran.r-project.org/bin/linux/ubuntu $ubuntu_codename/" \
+	    >> '/etc/apt/sources.list';
 	    sudo apt-get update;
 	    sudo apt-get install -y --no-install-recommends r-base r-base-dev;
 	    exit;;
@@ -121,25 +152,33 @@ setwd("/home/animalito/study/")
 getwd()
 ```
 
-**Ejercicio** 
-
-1. Abre tu consola de `R` y escribe *setwd("/*. 
-2. Utiliza la tecla `tab` 
+\renewcommand\bcStyleTitre[1]{\large\textcolor{bbblack}{#1}}
+\begin{bclogo}[
+  couleur=llred,
+  arrondi=0,
+  logo=\bcstop,
+  barre=none,
+  noborder=true]{Ejercicios}
+\begin{enumerate}
+\item Abre tu consola de \texttt{R} y escribe \texttt{setwd()}. 
+\item{Utiliza la tecla \texttt{tab}
 \includegraphics[scale=0.5]{../img/tab_key.jpg}
-para autocompletar las posibles rutas desde donde quiera que estés.
-3. Escoge alguna (nuevamente usando la tecla tab para moverte entre las opciones). Si esto no funciona, teclea textualmente alguna de las rutas que ves.
-4. Cierra la doble comilla y el paréntesis.
-5. Teclea enter.
-6. Debes encontrarte en la ruta elegida cuando tecleas `getwd()`.
+para autocompletar las posibles rutas desde donde quiera que estés.}
+\item Escoge alguna (nuevamente usando la tecla tab para moverte entre las opciones). Si esto no funciona, teclea textualmente alguna de las rutas que ves.
+\item Cierra la doble comilla y el paréntesis.
+\item Teclea enter.
+\item Debes encontrarte en la ruta elegida cuando tecleas \texttt{getwd()}.
+\end{enumerate}
+\end{bclogo}
 
 
-Con lo que acabamos de hacer, R buscará archivos o guardará archivos en la
-carpeta `/home/animalito/study/`. En R también es posible navegar a partir de 
+Con lo que acabamos de hacer, `R` buscará archivos o guardará archivos en la
+carpeta que obtuviste con el comando `getwd()`. En `R` también es posible navegar a partir de 
 el directorio de trabajo. Como siempre, 
 
-- "../un\_archivo.R" le indica a R que busque una carpeta arriba del actual 
+- *../un\_archivo.R* le indica a `R` que busque una carpeta arriba del actual 
 directorio de trabajo por el archivo *un\_archivo.R*.
-- "datos/otro\_archivo.R" hace que se busque en el directorio de trabajo, dentro 
+- *datos/otro\_archivo.R* hace que se busque en el directorio de trabajo, dentro 
 de la carpeta *datos* por el archivo *otro\_archivo.R*
 
 
@@ -398,9 +437,9 @@ pacman::p_load(devtools, testthat, roxygen2)
 
 # Scripting
 
-R es un intérprete. Utiliza un ambiente basado en línea de comandos. Por ende, 
+`R` es un intérprete. Utiliza un ambiente basado en línea de comandos. Por ende, 
 es necesario escribir la secuencia de comandos que se desea realizar a diferencia
-de otras herramientas en donde es posible utilizar el mouse o menús. 
+de otras herramientas en donde es posible utilizar el *mouse* o menús. 
 
 Aunque los comandos pueden ser ejecutados directamente en consola una única vez,
 también es posible guardarlos en archivos conocidos como *scripts*. Típicamente,
@@ -410,7 +449,7 @@ inmediatamente un nuevo editor en el panel superior izquierdo.
 En RStudio, por ejemplo, se puede *ir editando* el script y corriendo los comandos línea por línea con `CTRL + ENTER`. 
 Esto también aplica para *correr* una selección del texto editable^[RStudio tiene muchos [atajos de teclado](https://support.rstudio.com/hc/en-us/articles/200711853-Keyboard-Shortcuts) que facilitan el trabajo.]. 
 
-Es posible también correr todo el script
+Es posible también ejecutar todo el script
 
 ```{r, eval=F}
 source("foo.R")
@@ -422,6 +461,96 @@ Para enlistar algunos atajos (*shortcuts*) comunes en RStudio presiona `ALT + SH
 
 De la misma manera, si utilizas `Emacs + ESS` \parencite{rossini2004ess}, existen múltiples atajos de teclado
 para realizar todo mucho más eficientemente. Estudiarlos no es tiempo perdido.
+
+# rmarkdown
+
+Es posible generar documentos reproducibles en `R` utilizando `R Markdown`, un 
+*framework* que permite salvar y ejecutar código, así como generar reportes de
+alta calidad en múltiples formatos \parencite{rmarkdownconcept}. Para utilizarlo,
+se instala el paquete `rmarkdown` con el comando:
+
+```{r, eval = F}
+install.packages("rmarkdown")
+```
+
+Para generar un documento, se necesitan conocer únicamente algunos elementos 
+importantes. La extensión que se suele utilizar para estos documentos es `.Rmd`
+o `.rmd`.
+
+## Encabezado y formatos
+
+El primer elemento es el encabezado y se conoce como el `yaml` o `front-matter`. Se
+coloca en la parte superior del documento y corresponde a las opciones que
+ofrece `pandoc` para la generación de documentos.
+
+Éste contiene la especificación de elementos como el título del documento, autor, fecha,
+entre otros. Además, se especifica el formato de salida del documento.
+
+Para crear un documento en HTML, por ejemplo, es necesario especificar como el 
+`output` del documento `html_output` y se ve como sigue:
+
+```
+---
+title: "Un título"
+author: "Un autor"
+date: "Una fecha"
+output: 
+  html_document:
+    toc: yes
+    toc_depth: 2
+    toc_float: true
+    theme: spacelab
+---
+
+```
+
+En este ejemplo, se colocaron opciones adicionales para el documento HTML como
+el que incluya una tabla de contenidos (`toc: yes`), que la profundidad de
+dicha tabla de contenidos incluya los primeros dos niveles de encabezados (`toc_depth: 2`),
+que la tabla de contenidos sea flotante -que se encuentre fija en una barra
+a la izquierda del documento aunque se desplace el documento (`toc_float: true`)
+y, por último, se especifica el tema para la estética del documento (`theme: spacelab`).
+
+Existen muchas otras opciones, mismas que puedes encontrar en 
+[la documentación](http://rmarkdown.rstudio.com/html_document_format.html#overview) \parencite{rmarkdownhtml}.
+
+Es posible también especificar como salida para el documento un pdf con la 
+opción `pdf_document`. Las opciones se encuentran también en 
+[la documentación](http://rmarkdown.rstudio.com/pdf_document_format.html) \parencite{rmarkdownpdf}. 
+Esta opción es conveniente cuando se tiene conocimiento previo de LaTeX.
+
+Por último, cabe mencionar la opción `word_document`, cuyas opciones se encuentran [aquí](http://rmarkdown.rstudio.com/word_document_format.html) \parencite{rmarkdownword} y la opción `md_document` que compila a Markdown.
+
+Así como es posible generar documentos, es posible crear presentaciones en HTML (ioslides o slidy)
+o pdf (beamer) \parencite{rmarkdownreference} y dashboards (con flexdashboards) \parencite{flexdashboard}.
+
+En el apéndice \ref{apendice-markdown} se detalla la sintaxis de Markdown, misma
+que permitirá escribir documentos.
+
+## Knitr chunks
+
+Entre distintas líneas de texto, es posible incluir `chunks` o *pedazos* de 
+código de `R`. Para iniciar un pedazo de código, se incluyen tres acentos 
+invertidos, seguidos de la letra *r* entre llaves; se cierra un pedazo de código
+con tres acentos invertidos \parencite{rmarkdownreference}.
+
+```
+```{r}
+paste("Hola", "Mundo")
+```
+```
+
+Se puede incluir un pedazo de código en cualquier parte del documento y se controlan
+las opciones de cada pedazo, por ejemplo, incluyendo una opción para que el
+código no se imprima y que solo se imprima el resultado:
+
+```
+```{r, echo = F}
+paste("Hola", "Mundo")
+```
+```
+
+Las opciones se encuentran resumidas en \textcite{rmarkdownreference}.
 
 # Ayuda y documentación
 
@@ -436,7 +565,7 @@ help.start()
 ```
 
 Para la **ayuda de una función en especifico**, por ejemplo, si se quiere graficar 
-algo y sabemos que existe la funcion `plot` podemos consultar
+algo y sabemos que existe la función `plot` podemos consultar
 fácilmente la ayuda.
 
 ```{r, eval=F}

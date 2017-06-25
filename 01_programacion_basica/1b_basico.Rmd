@@ -516,7 +516,7 @@ que \texttt{R} arroja a la consola y verificar que el resultado obtenido es el
 deseado o que la pérdida de información no se puede evitar.
 \end{nota}
 
-### Acceder a partes del vector
+### Extraer partes del vector
 
 `R` tiene constructos que permite acceder a elementos individuales o subconjuntos
 de un vector a través de operaciones de indexación (*indexing*) \parencite[][sección ``Indexing'']{rmanual}.
@@ -855,7 +855,8 @@ es muy útil":
 
 ```{r}
 set.seed(2887)
-respuestas <- sample(x = c(1:5), size = 500, replace =  T, prob = c(0.1, 0.15, 0.2, 0.4, 0.15))
+respuestas <- sample(x = c(1:5), size = 500, replace =  T
+                     , prob = c(0.1, 0.15, 0.2, 0.4, 0.15))
 y <- factor(
   x = respuestas,
   levels = c("1", "2", "3", "4", "5"),
@@ -1273,13 +1274,13 @@ if ( sample(x, 1) <= 10 ) {
 }
 ```
 
-O lo que es lo mismo pero un poco mas eficiente (vectorizado)
+O lo que es lo mismo:
 
 ```{r}
 ifelse(sample(x, 1) <= 10, "x es menor o igual que 10", "x es mayor que 10")
 ```
 
-También es posible asignar variables a través condicionando a algo.
+También es posible asignar variables dentro de una condición.
 
 ```{r, eval = F}
 if ( sample(x, 1) <= 10 ){
