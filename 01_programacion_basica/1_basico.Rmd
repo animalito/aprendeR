@@ -512,7 +512,7 @@ a la izquierda del documento aunque se desplace el documento (`toc_float: true`)
 y, por último, se especifica el tema para la estética del documento (`theme: spacelab`).
 
 Existen muchas otras opciones, mismas que puedes encontrar en 
-[la documentación](http://rmarkdown.rstudio.com/html_document_format.html#overview) \parencite{rmarkdownhtml}.
+[la documentación](http://rmarkdown.rstudio.com/html_document_format.html) \parencite{rmarkdownhtml}.
 
 Es posible también especificar como salida para el documento un pdf con la 
 opción `pdf_document`. Las opciones se encuentran también en 
