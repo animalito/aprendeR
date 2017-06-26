@@ -1,3 +1,4 @@
+load("../.RData")
 library(rmarkdown)
 rmarkdown::render("markdown.Rmd")
 rmarkdown::render("0_instalacion.Rmd")
