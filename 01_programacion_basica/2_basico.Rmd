@@ -15,6 +15,29 @@ library(rformat)
 library(xtable)
 ```
 
+En este capítulo se profundiza en la forma en la que es posible operar los
+distintos objetos examinados en el capítulo anterior. En particular, se revisa
+con detalle las diferentes maneras con las que se pueden extraer *subconjuntos*
+de las estructuras de datos.
+
+Para *vectores*, se detallan los seis tipos de extracciones y, posteriormente,
+se describe cómo esos seis métodos aplican en *matrices* y *dataframes*.
+
+Se describe la asignación de valores a los subconjuntos extraídos, así como los
+operadores lógicos disponibles en `R` y sus particularidades.
+
+Se introducen también distintas aplicaciones del material revisados de forma
+que sea posible realizar operaciones que típicamente se hacen en Excel, como 
+buscarv o buscarh. Se revisa cómo expandir una base con pesos, cómo seleccionar
+muestras aleatorias y cómo generar datos a partir de realizaciones de 
+distribuciones específicas implementadas en `R`. 
+
+Por último, se revisa la estrategia separa, aplica y combina (SAC), así como 
+su implementación en `R` básico en la familia `apply` Esta estrategia 
+permitirá que fácilmente se realicen operaciones complejas sobre grupos,
+especificando explícitamente la estructura de datos de entrada y de salida
+que se está buscando. 
+
 # Subconjuntos de diferentes estructuras de datos
 
 Esta sección está basada en \textcite[Subsetting]{wickham2014advanced} disponible 
@@ -379,7 +402,7 @@ impares | mult.3
 xor(impares, mult.3)
 ```
 
-# ¿Por qué tanto detalle? Aplicaciones 
+# Aplicaciones 
 
 Una de las formas más fáciles de frustrarse con R (y con cualquier otro 
 lenguaje) es no saber decirle al lenguaje lo que se desea hacer. Entender
@@ -552,7 +575,7 @@ df
 df[rep(1:nrow(df), df$n), ]
 ```
 
-## Otras
+## Which, intersect y union
 
 Ya estuvimos utilizando otras aplicaciones de estos comandos: ordenamientos,
 selección de filas o columnas según una condición lógica.
@@ -575,6 +598,27 @@ m.5 <- 1:10 %% 5 == 0
 c(1:10)[union(which(pares), which(m.5))]
 c(1:10)[intersect(which(pares), which(m.5))]
 c(1:10)[which(xor(pares, m.5))]
+```
+
+## Generación de datos a partir de distribuciones
+
+`R` básico provee funciones de distribución de probabilidad (p), funciones de
+densidad (d), funciones cuantiles (q) y generación de números aleatorios (r)
+para varias distribuciones como la binomial, chi-cuadrada, gamma, geométrica,
+etc. \textcite{probdistributions} resumen otros paquetes en donde se encuentran
+implementadas otras funcionalidades o distribuciones multivariadas y cópulas. 
+
+En las funciones de `R` básico, podemos construir un *dataframe* con realizaciones
+de distintas distintas distribuciones, por ejemplo, a continuación generamos
+la variable $x$ como realizaciones de una normal, $y$ con realizaciones de 
+una exponencial y $z$ con realizaciones de una uniforme.
+
+```{r}
+df <- data.frame(
+  x = rnorm(100)
+  , y = rexp(100)
+  , z = runif(100)
+)
 ```
 
 
@@ -977,8 +1021,8 @@ Muchas de las funciones en `dplyr` también están implementadas en `data.table`
 Ambos paquetes son útiles pero priorizan distintos elementos. En el capítulo
 siguiente se repasarán los verbos en `dplyr`.
 
+# Material adicional
 
-```{r}
-sessionInfo()
-```
-
+- Curso de `swirl` **R Programming**, módulos 10 a 15.
+- Curso **Intermediate R** de [Data Camp](https://www.datacamp.com/courses/intermediate-r).
+- Curso **Intermediate R - Practice** de [Data Camp](https://www.datacamp.com/courses/intermediate-r-practice).

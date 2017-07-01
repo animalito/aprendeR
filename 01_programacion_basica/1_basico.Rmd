@@ -435,6 +435,15 @@ pacman::p_load(XML, jsonlite, httr)
 pacman::p_load(devtools, testthat, roxygen2)
 ```
 
+\begin{nota}{Packrat}
+Cuando cambian las versiones de distintos paquetes de \texttt{R}, es posible
+que código que solía funcionar deje de hacerlo. Por esta razón, es conveniente
+empaquetar proyectos de código de manera que el código en un proyecto específico 
+tenga asociados también las versiones específicas de los paquetes con los cuáles
+fue creado. Una forma de lograr esto es utilizando \texttt{packrat}. Para mayor
+detalle, ver el apéndice \ref{apendice-packrat}.
+\end{nota}
+
 # Scripting
 
 `R` es un intérprete. Utiliza un ambiente basado en línea de comandos. Por ende, 
@@ -657,4 +666,48 @@ para instalar las librerías apropiadas para BLAS y Lapack \parencite{blasinr}. 
 bastante práctica de las diferentes versiones de esas librerías, ver
 [aquí](http://blog.nguyenvq.com/blog/2014/11/10/optimized-r-and-python-standard-blas-vs-atlas-vs-openblas-vs-mkl/) \parencite{optimizedr}.
 
+# Material adicional
 
+Práctica y paciencia son dos elementos fundamentales para tener éxito cuando
+se aprende un nuevo lenguaje de programación. Un proyecto interesante para
+aprender `R` es `swirl` \parencite{swirl}, un paquete en CRAN en el que se 
+desarrolla una gama de cursos que permiten aprender interactivamente desde la 
+consola de `R`. El material actualmente se encuentra en inglés.
+
+Para instalar swirl,
+
+```{r, eval=F}
+install.packages("swirl")
+library("swirl")
+```
+
+Luego llama a la función `swirl` para activarlo
+
+```{r, eval=F}
+swirl()
+```
+
+Lo primero que te pedirá es un nombre de usuario (para que pueda guardar el avance
+en los cursos y no debas regresar) y dará algunas instrucciones y comandos
+útiles.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{../img/swirl_commands.PNG}
+\end{figure}
+
+- `skip()` para saltarte la pregunta actual
+- `play()` para poder utilizar la consola en ese momento y practicar un poco más
+- `nxt()` para que se pase a la siguiente pregunta
+- `bye()` para salir de swirl
+- `main()` para regresar al menú principal
+- `info()` para recordar las instrucciones
+
+Una vez que te da la introducción, acepta que te instale el curso de **R Programming**
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{../img/swirl_install_course.PNG}
+\end{figure}
+
+El material de este capítulo se cubre en los módulos 1 a 3 del curso **R Programming**.

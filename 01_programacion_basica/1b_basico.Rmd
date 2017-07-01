@@ -15,6 +15,32 @@ knitr::opts_chunk$set(echo = T, error = F, message = F, warning = F)
 library(knitr)
 ```
 
+En este capítulo se introducen los principales objetos de `R`. Primero, se 
+definen brevemente. Después se introducen las funciones, objetos que permiten 
+realizar acciones sobre otros objetos.
+
+Posteriormente, se introducen las distintas estructuras de datos en `R` básico.
+El primer bloque de construcción son las *clases* de datos con los que `R` sabe
+trabajar, es decir, caracteres, números enteros, reales, complejos y booleanos. 
+
+El segundo bloque son los *vectores*. Esta es una estructura fundamental en `R`
+y están conformados por un conjunto de elementos de una de las clases de datos.
+El tercero son las *matrices*, que le agregan una dimensión a los vectores. Las 
+*listas* son como vectores pero pueden contener un subconjunto de elementos de
+cualesquiera de las clases, incluida otra lista.
+
+Los *dataframes* son listas con la restricción que cada uno de sus elementos es
+un vector del mismo tamaño. Esta estructura es la más natural para un estadístico
+pues refiere a la forma tabular en la que se acostumbra pensar a los datos en 
+esa disciplina. Los *tibbles* y los *datatables* extienden los dataframes, haciéndolos más 
+eficientes para el procesamiento de una mayor cantidad de datos.
+
+Finalmente, se mencionan objetos adicionales -como el infinito y el objeto que 
+representa valores perdidos- y se describen las principales estructuras de 
+control, proporcionando ejemplos para escribirlos en `R`.
+
+# Objetos
+
 \renewcommand\bcStyleTitre[1]{\large\textcolor{ttblue}{#1}}
 \begin{bclogo}[
   couleur=bgblue,
@@ -1403,7 +1429,8 @@ Normalmente, se recomienda utilizar estructuras vectorizadas (como ifelse) pues,
 de esta manera, R es mucho más eficiente. 
 \end{nota}
 
+# Material adicional
 
-```{r}
-sessionInfo()
-```
+- Curso de `swirl` **R Programming**, módulos 4 a 9.
+- Curso **Introduction to R** de [Data Camp](https://www.datacamp.com/courses/free-introduction-to-r).
+- Curso **TryR** de [Code School](http://tryr.codeschool.com/).

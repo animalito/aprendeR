@@ -390,32 +390,21 @@ ggplot(mix2norm, aes(x = x, color = grupo)) +
 
 Ve el help de `facet_wrap`
 
-```{r}
+# Material adicional
 
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r, echo = F}
-#http://www.stat.purdue.edu/~varao/STAT598Z/lect7.pdf
-#http://docs.ggplot2.org/0.9.3.1/stat_density.html
-#http://vita.had.co.nz/papers/layered-grammar.pdf
-```
+- Importación
+    - Curso **Importing Data in R (Part 1)** de [Data Camp](https://www.datacamp.com/courses/importing-data-in-r-part-1).
+    - Curso **Importing Data in R (Part 2)** de [Data Camp](https://www.datacamp.com/courses/importing-data-in-r-part-2).
+- `dplyr` y `tidyr`
+    - Curso de `swirl` **Getting and cleaning data**.
+    - Curso **Cleaning Data in R** de [Data Camp](https://www.datacamp.com/courses/cleaning-data-in-r).
+    - Curso **Data Manipulation in R with dplyr** de [Data Camp](https://www.datacamp.com/courses/dplyr-data-manipulation-r-tutorial).
+    - Curso **Joining data in R with dplyr** de [Data Camp](https://www.datacamp.com/courses/joining-data-in-r-with-dplyr).
+- Gráficos del `base`
+    - Curso de `swirl` **Overview of Statistics**.
+- `ggplot2`
+    - Curso de `swirl` **Exploratory data analysis**.
+    - Curso **Data Visualization in R** de [Data Camp](https://www.datacamp.com/courses/data-visualization-in-r).
+    - Curso **Data Visualization with ggplot2 (Part 1)** de [Data Camp](https://www.datacamp.com/courses/data-visualization-with-ggplot2-1).
+    - Curso **Data Visualization with ggplot2 (Part 2)** de [Data Camp](https://www.datacamp.com/courses/data-visualization-with-ggplot2-2).
+    - Curso **Data Visualization with ggplot2 (Part 3)** de [Data Camp](https://www.datacamp.com/courses/data-visualization-with-ggplot2-3).
