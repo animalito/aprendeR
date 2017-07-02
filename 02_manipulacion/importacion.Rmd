@@ -399,7 +399,8 @@ Para leerlos, utilizamos `read_sas` del paquete `haven`:
 
 ```{r}
 # haven - como tibble
-misdatos <- read_sas("datos_sas/misdatos.sas7bdat", catalog_file = NULL, encoding = NULL)
+misdatos <- read_sas("datos_sas/misdatos.sas7bdat"
+                     , catalog_file = NULL, encoding = NULL)
 ```
 
 Observa desde el explorador de archivos, cómo se creó el archivo dentro del
@@ -455,7 +456,8 @@ cuenta de `gmail`.
 Ahora, vamos a **escribir** una nueva hoja en tu cuenta. 
 
 ```{r, eval = F}
-gs_new("misdatos", ws_title = "mihoja", input = head(iris), trim = TRUE, verbose = FALSE)
+gs_new("misdatos", ws_title = "mihoja", input = head(iris)
+       , trim = TRUE, verbose = FALSE)
 ```
 
 Si vas a tu google drive, deberás ver que se creó un nuevo elemento que se ve
@@ -608,7 +610,8 @@ sql2df <- function(sql.file, df.file = "") {
     futile.logger::flog.info("Conectado a %s, como %s", x$host, x$username)
     
     # Leemos el query
-    sql <- paste(readLines(sql.file,encoding="UTF-8"), sep=" ", collapse=" ")
+    sql <- paste(readLines(sql.file,encoding="UTF-8")
+                 , sep=" ", collapse=" ")
     
     tryCatch( {
       futile.logger::flog.info("Ejecutando el query")
@@ -687,13 +690,17 @@ df2sql <- function(data.frame, df.schema.name, df.table.name, owner.to = NA) {
                      port = 5432, 
                      user = x$username,
                      password = x$password)
-  futile.logger::flog.info("Conectado a %s, como %s", x$host, x$username)
+  futile.logger::flog.info("Conectado a %s, como %s"
+                           , x$host, x$username)
   
   tryCatch( {
-    flog.info("Ejecutando la escritura de tabla %s en el esquema %s", df.table.name, df.schema.name)
+    flog.info("Ejecutando la escritura de tabla %s en el esquema %s"
+              , df.table.name, df.schema.name)
     # Definimos el camino al esquema deseado
     if(df.schema.name != "public"){
-      dbSendQuery(conn = con, statement = paste0("SET search_path = ", df.schema.name, ", public;"))
+      dbSendQuery(conn = con
+                  , statement = paste0("SET search_path = "
+                                       , df.schema.name, ", public;"))
     }
     long.name <- paste0(df.schema.name, ".", df.table.name)
     # Escribimos la tabla
@@ -707,7 +714,8 @@ df2sql <- function(data.frame, df.schema.name, df.table.name, owner.to = NA) {
     
     if(!is.na(owner.to)){
       flog.info("Otorgando ownership a %s", owner.to)
-      dbSendQuery(con, paste0("alter table ", long.name, " owner to ", owner.to, ";"))
+      dbSendQuery(con, paste0("alter table ", long.name
+                              , " owner to ", owner.to, ";"))
     }
     
   }, finally=dbDisconnect(con) # Nos desconectamos de la BD

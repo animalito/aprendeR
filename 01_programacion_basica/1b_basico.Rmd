@@ -326,7 +326,7 @@ attributes(y)
 
 ############ Ejemplo 3
 
-z <- c(1L, 2L, 3L) # Nota como para denotar enteros debes incluir una L al final
+z <- c(1L, 2L, 3L) # Nota como para denotar enteros se incluye una L al final
 typeof(z)
 length(z)
 ```

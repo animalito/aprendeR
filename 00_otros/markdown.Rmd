@@ -126,7 +126,8 @@ Guiones bajos
 
 ```
 [Esto es lo que se ve](https://www.google.com)
-[Esto es lo que se ve y el mensaje "Google" aparece en el hover](https://www.google.com "Google")
+[Esto es lo que se ve y el mensaje "Google" aparece en el hover]
+(https://www.google.com "Google")
 [Puedo hacer referencia a un archivo local](readme.md)
 [Puedes poner referencias][1]
 
@@ -221,7 +222,7 @@ Si sabes html, puedes utilizarlo directo.
   <dd> Una def.</dd>
 
   <dt>Markdown en HTML</dt>
-  <dd>No *siempre* funciona muy **bien**. Usa puro HTML <em>para que funcione siempre</em>.</dd>
+  <dd>No *siempre* funciona **bien**. Puro HTML <em>para que funcione</em>.</dd>
 </dl>
 
 Puedes controlar mejor las imagenes

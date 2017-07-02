@@ -353,9 +353,12 @@ muestra en la tabla \ref{tab:sujetostidy}.
 # Generación aleatoria de datos
 df <- data.frame(
   sujetos = LETTERS[1:16],
-  grupo = sample(c("control", "tratamiento"), size = 16, replace = T, prob = c(0.5, 0.5))
+  grupo = sample(c("control", "tratamiento"), size = 16, replace = T
+                 , prob = c(0.5, 0.5))
   )
-m <- t(sapply(runif(16, 16, 35), FUN = function(x){cumsum(c(x, rnorm(11, mean = 0.5, sd = 1)))}))
+m <- t(sapply(runif(16, 16, 35), FUN = function(x){
+  cumsum(c(x, rnorm(11, mean = 0.5, sd = 1)))
+  }))
 colnames(m) <- paste0("mes",1:12)
 df <- cbind(df, m)
 print(xtable(df, label = "tab:sujetos", 
@@ -450,8 +453,10 @@ en la base:
 limpios %<>%
   mutate(
     edad = factor(edad, 
-                  levels = c("014", "1524", "2534", "3544", "4554", "5564", "65")
-                  , labels = c("0-14", "15-24", "25-34", "35-44", "45-54", "55-64", "65>")
+                  levels = c("014", "1524", "2534", "3544"
+                             , "4554", "5564", "65")
+                  , labels = c("0-14", "15-24", "25-34", "35-44"
+                               , "45-54", "55-64", "65>")
                   , ordered = T)
   )
 ```
@@ -512,7 +517,8 @@ pob <- tibble(
 # Utilizamos separate para generar las variables:
 # sexo, año de nacimiento y altura
 pob.tidy <- pob %>%
-  separate(col = variables, into = c("sexo", "anio_nac", "altura"), sep = "_")
+  separate(col = variables
+           , into = c("sexo", "anio_nac", "altura"), sep = "_")
 
 # Pasamos a enteros las variables anio de nac y altura
 pob.tidy %<>%
@@ -555,7 +561,8 @@ los datos en el dataframe *raw*.
 ```{r}
 # Tidy
 # Primero, juntamos la variable dias
-clean1 <- tidyr::gather(raw, key = variable, value = value, d1:d31, na.rm = T)
+clean1 <- tidyr::gather(raw, key = variable, value = value, d1:d31
+                        , na.rm = T)
 
 # Después, generamos la variable día y fecha
 clean1$day <- as.integer(str_replace(clean1$variable, "d", ""))
@@ -618,7 +625,8 @@ if (!file.exists("tidyr_datasets/billboard.csv")) download.file("https://raw.git
 
 ```{r}
 billboard <- readr::read_csv("tidyr_datasets/billboard.csv")
-billboard_long <- gather(billboard, week, rank, x1st.week:x76th.week, na.rm = TRUE)
+billboard_long <- gather(billboard, week, rank, x1st.week:x76th.week
+                         , na.rm = TRUE)
 billboard_tidy <- billboard_long %>%
   mutate(
     week = extract_numeric(week),
@@ -708,7 +716,8 @@ Primero creamos un vector con los nombres de los archivos en un directorio con
 extensión .csv.
 
 ```{r}
-paths <- dir("tidyr_datasets/specdata", pattern = "\\.csv$", full.names = TRUE)
+paths <- dir("tidyr_datasets/specdata", pattern = "\\.csv$"
+             , full.names = TRUE)
 names(paths) <- basename(paths)
 specdata_US <- tbl_df(ldply(paths, read.csv, stringsAsFactors = FALSE))
 specdata_US %>% head
@@ -761,8 +770,8 @@ limpios\footnote{Los datos fueron tomados de \textcite[][p. 218-219]{informe} y 
 rm(list = ls())
 # Funciones auxiliares
 
-# Como son archivos de excel, muchas líneas están vacias pero R no lo entiende
-# Esta función quita esas lineas.
+# Como son archivos de excel, muchas líneas están vacias pero R no 
+# lo entiende. Esta función quita esas lineas.
 quita.nas <- function(df, prop.na = 0.8) {
   df <- df[, !is.na(names(df)) & names(df) != ""]
   r <- sapply(seq(nrow(df)), FUN = function(x){
@@ -799,24 +808,30 @@ pega.estados <- function(df, nombres = "entidad") {
 }
 
 # Limpieza de datos
-df <- read_excel("tidyr_datasets/informe/M2_218.xlsx", skip = 4, col_names = T) 
+df <- read_excel("tidyr_datasets/informe/M2_218.xlsx", skip = 4
+                 , col_names = T) 
 names(df) <- c('entidad', paste0('imss_', 2000:2008)
                , paste0('issste_', 2000:2008))
 df <- df %>%
   quita.nas(.) %>%
   pega.estados(.) %>%
-  tidyr::gather(., key = variable, value = valor, -entidad, -estado, na.rm = T) %>%
+  tidyr::gather(., key = variable, value = valor, -entidad
+                , -estado, na.rm = T) %>%
   tidyr::separate(variable, c("indicador", "anio"), extra = "drop") %>%
   dplyr::mutate(indicador = paste0("pago_pensiones_", indicador))
 
 all <- df
-df <- read_excel("tidyr_datasets/informe/M2_219.xlsx", skip = 4, col_names = T) 
-names(df) <- c('entidad', paste0('imss_', 2009:2016), paste0('issste_', 2009:2016))
+df <- read_excel("tidyr_datasets/informe/M2_219.xlsx", skip = 4
+                 , col_names = T) 
+names(df) <- c('entidad', paste0('imss_', 2009:2016)
+               , paste0('issste_', 2009:2016))
 df <- df %>%
   quita.nas(.) %>%
   pega.estados(.) %>%
-  tidyr::gather(., key = variable, value = valor, -entidad, -estado, na.rm = T) %>%
-  tidyr::separate(variable, c("indicador", "anio"), extra = "drop") %>%
+  tidyr::gather(., key = variable, value = valor, -entidad
+                , -estado, na.rm = T) %>%
+  tidyr::separate(variable, c("indicador", "anio")
+                  , extra = "drop") %>%
   dplyr::mutate(indicador = paste0("pago_pensiones_", indicador))
 all <- rbind(all, df)
 

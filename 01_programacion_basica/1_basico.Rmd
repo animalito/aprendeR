@@ -414,7 +414,8 @@ pacman::p_install_gh('htmlwidgets/sparkline')
 pacman::p_load(dygraphs, DT, DiagrammeR, networkD3, googleVis)
 
 # Para modelar (data modelling)
-pacman::p_load(car, mgcv, lme4, nlme, randomForest, multcomp, vcd, glmnet, survival, caret)
+pacman::p_load(car, mgcv, lme4, nlme, randomForest, multcomp, vcd
+               , glmnet, survival, caret)
 
 # Para generar reportes (reports)
 pacman::p_load(shiny, xtable, knitr, rmarkdown)
@@ -543,21 +544,23 @@ código de `R`. Para iniciar un pedazo de código, se incluyen tres acentos
 invertidos, seguidos de la letra *r* entre llaves; se cierra un pedazo de código
 con tres acentos invertidos \parencite{rmarkdownreference}.
 
-```
+\begin{verbatim}
+
 ```{r}
 paste("Hola", "Mundo")
 ```
-```
+
+\end{verbatim}
 
 Se puede incluir un pedazo de código en cualquier parte del documento y se controlan
 las opciones de cada pedazo, por ejemplo, incluyendo una opción para que el
-código no se imprima y que solo se imprima el resultado:
+código no se imprima y que solo se imprima el resultado agregando `r, echo = F`:
 
-```
+\begin{verbatim}
 ```{r, echo = F}
 paste("Hola", "Mundo")
 ```
-```
+\end{verbatim}
 
 Las opciones se encuentran resumidas en \textcite{rmarkdownreference}.
 
@@ -641,8 +644,8 @@ Para búsquedas más comprensivas, se puede buscar de otras maneras:
 
 ```{r, eval=F}
 apropos("foo") # Enlista todas las funciones que contengan la cadena "foo"
-RSiteSearch("foo") # Busca por la cadena "foo" en todos los manuales de ayuda 
-# y listas de distribución.
+RSiteSearch("foo") # Busca por la cadena "foo" en todos 
+# los manuales de ayuda y listas de distribución.
 ```
 
 # Optimizando

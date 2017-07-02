@@ -440,7 +440,8 @@ Esto nos permite pegar un vector a una base de datos de acuerdo a una condición
 calificaciones <- c(10, 9, 5, 5, 6)
 aprueba <- data.frame(
   calificacion = 10:1,
-  descripcion = c(rep("excelente", 2), "bueno", rep("aceptable", 2), rep("no satisfactorio", 5)),
+  descripcion = c(rep("excelente", 2), "bueno", rep("aceptable", 2)
+                  , rep("no satisfactorio", 5)),
   aprobatorio = c(rep(T, 5), rep(F, 5))
 )
 id <- match(calificaciones, aprueba$calificacion)
@@ -954,7 +955,8 @@ library(ggplot2)
 head(diamonds)
 
 res <- by(diamonds[, c("carat")], 
-          list(cut = as.factor(diamonds$cut), color = as.factor(diamonds$color))
+          list(cut = as.factor(diamonds$cut)
+               , color = as.factor(diamonds$color))
           , mean, simplify = T)
 ```
 
@@ -963,7 +965,7 @@ res <- by(diamonds[, c("carat")],
 `replicate` es una función muy útil sobretodo en el contexto de simulación.
 
 ```{r, fig.height=4}
-replicate(5, rnorm(6), simplify = F)
+replicate(5, rnorm(5), simplify = F)
 replicate(6, rnorm(4), simplify = T)
 
 hist(replicate(100, mean(rexp(10))))
