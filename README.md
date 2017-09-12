@@ -31,3 +31,5 @@ Obvio no puse los pdfs porque hay que respetar a los autores. Algunos recursos:
 - Otros
     - Kabacoff con [R in Action](https://www.manning.com/books/r-in-action-second-edition). Se lee como el Quick-R (que por cierto, es excelente starting point). Si no les alcanza para el libro, el código lo pueden descargar y es un gran starting point para muchos temas. Lo encontré en pdf [aquí](http://kek.ksu.ru/EOS/DataMining/1379968983.pdf) pero es un buen libro y si pueden pagar por el, está bueno.
 
+- Más para seguir aprendiendo R:
+    - Para visualización en ciencias sociales: Kieran Healey acaba de publicar [Data Visualization for Social Science. A practical introduction with R and ggplot2](http://socviz.co/)
