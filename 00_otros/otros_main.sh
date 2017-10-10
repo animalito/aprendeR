@@ -5,12 +5,14 @@ rm 0_instalacion.tex || true
 rm markdown.tex || true
 rm control.tex || true
 rm introduccion.tex || true
+rm conclusion.tex || true
 
 Rscript render.R
 sed -i 's/\\begin{figure}\[htbp\]/\\begin{figure}\[H\]/g;s/\\maketitle//g' 0_instalacion.tex
 sed -i 's/\\begin{figure}\[htbp\]/\\begin{figure}\[H\]/g;s/\\maketitle//g' markdown.tex
 sed -i 's/\\begin{figure}\[htbp\]/\\begin{figure}\[H\]/g;s/\\maketitle//g' control.tex
 sed -i 's/\\begin{figure}\[htbp\]/\\begin{figure}\[H\]/g;s/\\maketitle//g' introduccion.tex
+sed -i 's/\\begin{figure}\[htbp\]/\\begin{figure}\[H\]/g;s/\\maketitle//g' conclusion.tex
 
 pdflatex 0_instalacion.tex
 biber 0_instalacion 
@@ -31,3 +33,8 @@ pdflatex introduccion.tex
 biber introduccion 
 pdflatex introduccion.tex
 pdflatex introduccion.tex
+
+pdflatex conclusion.tex
+biber conclusion 
+pdflatex conclusion.tex
+pdflatex conclusion.tex

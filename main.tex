@@ -37,6 +37,9 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{hyperref}
 \hypersetup{unicode=true,
+            linkcolor = blue,
+            urlcolor = blue,
+            citecolor = blue,
             pdftitle={aprendeR},
             pdfborder={0 0 0},
             breaklinks=true}
@@ -153,6 +156,7 @@
 \fi
 
 \usepackage{xcolor}
+
 \usepackage[tikz]{bclogo}
 \usepackage[framemethod=tikz]{mdframed}
 \usepackage{lipsum}
@@ -251,6 +255,15 @@
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 %% USA 12.5 CENTIMETROS PARA EL MARGEN!
 %% ----------------------------------------------------------------
+\title{aprendeR}
+\author{\normalsize{Andrea Fernández Conde}\\}
+\date{\small{2 de julio de 2017}}
+
+\makeatletter
+\let\newtitle\@title
+\let\newauthor\@author
+\let\newdate\@date
+\makeatother
 \begin{document}
 \frontmatter      % Begin Roman style (i, ii, iii, iv...) page numbering
 
@@ -258,7 +271,7 @@
 %\title  {Title}
 
 % % title page commented for now
-% \maketitle
+\maketitle
 %% ----------------------------------------------------------------
 \tableofcontents  % Write out the Table of Contents
 
@@ -299,6 +312,10 @@
 
 \graphicspath{{03_visualizacion/}}
 \input{03_visualizacion/ggplot2}
+
+\chapter{Conclusión}
+\graphicspath{{00_otros/}}
+\input{00_otros/conclusion}
 
 \addtocontents{toc}{\vspace{2em}} % Add a gap in the Contents, for aesthetics
 
