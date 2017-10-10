@@ -1,0 +1,247 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={Conclusión},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+  \title{Conclusión}
+  \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+  \author{}
+  \preauthor{}\postauthor{}
+  \date{}
+  \predate{}\postdate{}
+
+\usepackage[
+  backend=biber,
+  style=alphabetic,
+  sorting=ynt,
+  citestyle=authoryear
+  ]{biblatex}
+\addbibresource{../lit/bib.bib}
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+
+%%%% Frames
+\ifxetex
+    \makeatletter % undo the wrong changes made by mathspec
+    \let\RequirePackage\original@RequirePackage
+    \let\usepackage\RequirePackage
+    \makeatother
+\fi
+
+\usepackage{xcolor}
+\usepackage[tikz]{bclogo}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{lipsum}
+\usepackage[many]{tcolorbox}
+
+\definecolor{bgblue}{RGB}{245,243,253}
+\definecolor{ttblue}{RGB}{91,194,224}
+\definecolor{llred}{RGB}{255,228,225}
+\definecolor{bbblack}{RGB}{0,0,0}
+
+\mdfdefinestyle{mystyle}{%
+  rightline=true,
+  innerleftmargin=10,
+  innerrightmargin=10,
+  outerlinewidth=3pt,
+  topline=false,
+  rightline=true,
+  bottomline=false,
+  skipabove=\topsep,
+  skipbelow=\topsep
+}
+
+\newtcolorbox{curiosidad}[1][]{
+  breakable,
+  title=#1,
+  colback=white,
+  colbacktitle=white,
+  coltitle=black,
+  fonttitle=\bfseries,
+  bottomrule=0pt,
+  toprule=0pt,
+  leftrule=3pt,
+  rightrule=3pt,
+  titlerule=0pt,
+  arc=0pt,
+  outer arc=0pt,
+  colframe=black,
+}
+
+\newtcolorbox{nota}[1][]{
+  breakable,
+  freelance,
+  title=#1,
+  colback=white,
+  colbacktitle=white,
+  coltitle=black,
+  fonttitle=\bfseries,
+  bottomrule=0pt,
+  boxrule=0pt,
+  colframe=white,
+  overlay unbroken and first={
+  \draw[red!75!black,line width=3pt]
+    ([xshift=5pt]frame.north west) -- 
+    (frame.north west) -- 
+    (frame.south west);
+  \draw[red!75!black,line width=3pt]
+    ([xshift=-5pt]frame.north east) -- 
+    (frame.north east) -- 
+    (frame.south east);
+  },
+  overlay unbroken app={
+  \draw[red!75!black,line width=3pt,line cap=rect]
+    (frame.south west) -- 
+    ([xshift=5pt]frame.south west);
+  \draw[red!75!black,line width=3pt,line cap=rect]
+    (frame.south east) -- 
+    ([xshift=-5pt]frame.south east);
+  },
+  overlay middle and last={
+  \draw[red!75!black,line width=3pt]
+    (frame.north west) -- 
+    (frame.south west);
+  \draw[red!75!black,line width=3pt]
+    (frame.north east) -- 
+    (frame.south east);
+  },
+  overlay last app={
+  \draw[red!75!black,line width=3pt,line cap=rect]
+    (frame.south west) --
+    ([xshift=5pt]frame.south west);
+  \draw[red!75!black,line width=3pt,line cap=rect]
+    (frame.south east) --
+    ([xshift=-5pt]frame.south east);
+  },
+}
+
+\begin{document}
+
+
+Este manual surge de la necesidad detectada de contar con material en
+español que permita al usuario aprender a operar un proyecto de datos,
+más allá del aprendizaje del lenguaje de programación. A través de cada
+capitulo, se espera que el lector se familiarice con los elementos
+básicos del ambiente de \texttt{R}, sus más importantes estructuras de
+datos, así como distintas maneras de operarlas. Sin embargo, el enfoque
+del manual es que el lector cuente con las herramientas necesarias para
+poder desarrollar un proyecto de datos.
+
+El manual está estructurado para que en los primeros tres capítulos el
+lector conozca las principales herramientas que facilitan el trabajo del
+analista a través del dominio básico de la sintaxis de \texttt{R}, para,
+posteriormente, en el capítulo 4, centrarse en el ciclo de análisis de
+datos.
+
+Para éste ciclo, se revisaron los métodos de importación de datos al
+ambiente de \texttt{R}, la manipulación y limpieza de datos, revisando a
+fondo los verbos implementados en \texttt{dplyr} y el concepto de datos
+limpios, así como su implementación en \texttt{tidyr}. Por último, para
+concluir el ciclo de análisis se mostró una introducción a la gramática
+de gráficas y su implementación en \texttt{ggplot2}. Se utilizó la
+conjugación de los verbos de \texttt{dplyr}, pues estos permiten
+realizar casi todas las operaciones que un analista debe realizar para
+preparar sus datos para el modelado, facilitando su visualización o
+presentación en formato tabular, así como permitir la realización de
+estadística descriptiva.
+
+Por último, con la finalidad de que el lector pueda practicar lo
+aprendido se incluyeron múltiples ejercicios y referencias a otro tipo
+de herramientas que salen del alcance de este manual pero que
+complementan al material presentado, como lo son, las expresiones
+regulares, el trabajo con fechas, la manipulación de cadenas de
+caracteres, entre otros.
+
+A través de diversas iteraciones con distintos grupos, el material ha
+probado ser útil como guía en varios cursos introductorios a \texttt{R},
+cumpliendo con el objetivo o alcance del mismo.
+
+Con la finalidad de fortalecer el presente manual, así como seguir
+construyendo material en español que permita el desarrollo de proyectos
+de datos cada vez más sólidos, es posible ampliar el material de manera
+que se cubran distintas herramientas para el modelado, particularmente
+las implementadas en \texttt{purrr} que continúan con el
+\emph{framework} de datos limpios para esta etapa en el ciclo de
+análisis; así como ahondar en el apartado de comunicación, que solo se
+cubrió en el capítulo 2 presentando \texttt{rmarkdown} para compilar
+documentos reproducibles, así como traducir los cursos de \texttt{swirl}
+a los que se hace referencia.
+
+En este sentido, se invita a que el lector proporcione comentarios y
+sugerencias para mejorar o ampliar el material a través de \emph{issues}
+o \emph{pull requests} en el repositorio del proyecto:
+\url{https://github.com/animalito/aprendeR}.
+
+
+\end{document}

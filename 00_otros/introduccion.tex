@@ -1,0 +1,311 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={Introducción},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+  \title{Introducción}
+  \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+  \author{}
+  \preauthor{}\postauthor{}
+  \date{}
+  \predate{}\postdate{}
+
+\usepackage[
+  backend=biber,
+  style=alphabetic,
+  sorting=ynt,
+  citestyle=authoryear
+  ]{biblatex}
+\addbibresource{../lit/bib.bib}
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+
+%%%% Frames
+\ifxetex
+    \makeatletter % undo the wrong changes made by mathspec
+    \let\RequirePackage\original@RequirePackage
+    \let\usepackage\RequirePackage
+    \makeatother
+\fi
+
+\usepackage{xcolor}
+\usepackage[tikz]{bclogo}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{lipsum}
+\usepackage[many]{tcolorbox}
+
+\definecolor{bgblue}{RGB}{245,243,253}
+\definecolor{ttblue}{RGB}{91,194,224}
+\definecolor{llred}{RGB}{255,228,225}
+\definecolor{bbblack}{RGB}{0,0,0}
+
+\mdfdefinestyle{mystyle}{%
+  rightline=true,
+  innerleftmargin=10,
+  innerrightmargin=10,
+  outerlinewidth=3pt,
+  topline=false,
+  rightline=true,
+  bottomline=false,
+  skipabove=\topsep,
+  skipbelow=\topsep
+}
+
+\newtcolorbox{curiosidad}[1][]{
+  breakable,
+  title=#1,
+  colback=white,
+  colbacktitle=white,
+  coltitle=black,
+  fonttitle=\bfseries,
+  bottomrule=0pt,
+  toprule=0pt,
+  leftrule=3pt,
+  rightrule=3pt,
+  titlerule=0pt,
+  arc=0pt,
+  outer arc=0pt,
+  colframe=black,
+}
+
+\newtcolorbox{nota}[1][]{
+  breakable,
+  freelance,
+  title=#1,
+  colback=white,
+  colbacktitle=white,
+  coltitle=black,
+  fonttitle=\bfseries,
+  bottomrule=0pt,
+  boxrule=0pt,
+  colframe=white,
+  overlay unbroken and first={
+  \draw[red!75!black,line width=3pt]
+    ([xshift=5pt]frame.north west) -- 
+    (frame.north west) -- 
+    (frame.south west);
+  \draw[red!75!black,line width=3pt]
+    ([xshift=-5pt]frame.north east) -- 
+    (frame.north east) -- 
+    (frame.south east);
+  },
+  overlay unbroken app={
+  \draw[red!75!black,line width=3pt,line cap=rect]
+    (frame.south west) -- 
+    ([xshift=5pt]frame.south west);
+  \draw[red!75!black,line width=3pt,line cap=rect]
+    (frame.south east) -- 
+    ([xshift=-5pt]frame.south east);
+  },
+  overlay middle and last={
+  \draw[red!75!black,line width=3pt]
+    (frame.north west) -- 
+    (frame.south west);
+  \draw[red!75!black,line width=3pt]
+    (frame.north east) -- 
+    (frame.south east);
+  },
+  overlay last app={
+  \draw[red!75!black,line width=3pt,line cap=rect]
+    (frame.south west) --
+    ([xshift=5pt]frame.south west);
+  \draw[red!75!black,line width=3pt,line cap=rect]
+    (frame.south east) --
+    ([xshift=-5pt]frame.south east);
+  },
+}
+
+\begin{document}
+
+
+\texttt{R} inicia a principios de los noventas en la Universidad de
+Auckland en Nueva Zelanda. Ross Ihaka, profesor del departamento de
+estadística, pensaba que debía existir una alternativa superior para el
+análisis de datos realizado por los alumnos, que utilizaban lo que él
+llamaba \emph{programas viejos y cuchos}. Robert Gentleman le sugiere a
+Ross escribir un software cuya ambición inicial era poder enseñar sus
+cursos de licenciatura de primer año. Así, en 1991 generan una
+estructura básica a través de la cuál sus estudiantes podían hacer
+análisis de datos y producir modelos gráficos de la información. Lo
+bautizan \texttt{R} por sus iniciales \parencite{rorigins}.
+
+Ross y Robert no comercializan el software sino que lo ponen a
+disposición de otros interesados. Ross ha expresado que \texttt{R}
+cambió su opinión acerca de la humanidad pues es el resultado del
+trabajo de muchos que no reciben ingresos o reconocimiento por el mismo
+\parencite{rorigins}. En 1996, presentan \texttt{R} en un paper
+introductorio \parencite{ihaka1996r}.
+
+A partir de entonces, \texttt{R} ha crecido en forma importante. Entre
+los contribuidores actuales más relevantes se encuentra Hadley Wickham,
+alumno de licenciatura en el departamento de estadística de la
+Universidad de Auckland cuando \texttt{R} se encontraba en desarrollo.
+En la gráfica siguiente, se muestran las descargas anuales de paquetes
+de \texttt{R} del 2012 al 2016 del espejo de
+RStudio\footnote{Estos números representan únicamente una fracción de las descargas de \texttt{R} en el mundo pues existen múltiples espejos del software de donde es posible realizar la descarga. Los datos son tomados de \textcite{cranlogs}}.
+
+\begin{figure}
+\centering
+\includegraphics{introduccion_files/figure-latex/unnamed-chunk-1-1.pdf}
+\caption{Descargas anuales del espejo de RStudio de paquetes de R de
+2012 a 2016 y descargas de R para 2015 y 2016 (en millones).}
+\end{figure}
+
+En el 2016 \texttt{R} fue descargado 670,705 veces. El aumento en la
+popularidad de \texttt{R} no es el único elemento por el cuál \texttt{R}
+es un lenguaje valioso. Sin embargo, el que sea un lenguaje comúnmente
+enseñado en universidades y utilizado en empresas, lo convierte en una
+habilidad con considerable valor de mercado.
+
+En la encuesta de \texttt{Stackoverflow}, \texttt{R} se encuentra en el
+lugar séptimo de los mejores pagados para los desarrolladores cuya
+ocupación es matemáticas, superando a \texttt{Python} y a \texttt{SQL}
+\parencite[][Top paying tech per occupation, mathematics]{stackoverflowsurvey16}.
+En cuanto a las tecnologías más populares por tipo de desarrollador que
+declara dedicarse a matemáticas y datos, \texttt{R} está en el sexto
+lugar, el primer lugar lo tiene \texttt{python}, seguido de \texttt{SQL}
+\parencite[][Most Popular Technologies per Dev Type, Math and Data]{stackoverflowsurvey16}.
+
+Actualmente, \texttt{R}, \texttt{python} y \texttt{SQL} se encuentran
+entre las herramientas más populares tanto entre desarrolladores como
+empresas, aunque no son las únicas. La decisión de aprender alguno de
+estos lenguajes depende de muchos factores, entre ellos cuán natural
+resulta la interacción individual con cada cuál, el lenguaje preferido
+en el grupo de trabajo particular y el tipo de análisis que se requiere
+realizar en el día a día. Escapa del objetivo de este manual el realizar
+una comparación exhaustiva de tecnologías pero se recomienda tener en
+cuenta que cada herramienta tiene una especialidad específica y,
+particularmente en un ambiente de producción, es necesario tener esto en
+consideración.
+
+\texttt{R} es un excelente lenguaje para aprender ciencia de datos; de
+hecho en \textcite{cran} se describe a \texttt{R} como un proyecto para
+estadística computacional. Esto lo convierte en un lenguaje único pues
+fue construido por estadísticos y diseñado para realizar análisis de
+datos.
+
+Su uso generalizado en la comunidad estadística tiene la ventaja de que
+casi cualquier prueba o técnica estadística puede ser encontrada en
+algún paquete de \texttt{R} \parencite{recommendr}. Además, existe una
+documentación extensa y estandarizada que facilita su uso.
+
+Aunque el material para aprender \texttt{R} es amplio y hay una
+comunidad mundial muy activa que constantemente produce nuevos recursos,
+existen pocas referencias que faciliten iniciar su aprendizaje para
+hispanoparlantes. En general, la documentación, listas de distribución,
+libros y tutoriales están escritos en inglés.
+
+Este manual tiene como objetivo guiar a principiantes en programación
+que tienen una formación previa como analistas de datos. El enfoque
+principal es el de facilitar de ejemplos que permitan al analista
+traducir la manipulación de datos que ya saben realizar en otro ambiente
+a \texttt{R}.
+
+El manual se estructura como sigue: en el capítulo 2, se introducen
+elementos básicos para poder iniciar el trabajo en \texttt{R}. Se
+especifica cómo instalar el software, se recomienda utilizar un editor
+especializado, así como paquetes útiles para diferentes tareas. En
+particular, se explica cómo guardar código de manera que otras personas
+puedan ejecutarlo y cómo realizar documentos reproducibles. Por último,
+se explica cómo accesar a la ayuda y documentación, así como la forma en
+la que puede optimizarse su funcionamiento. Este capítulo actúa más como
+una referencia general para poder realizar el trabajo en el ambiente.
+
+En el capítulo 3, se introducen las funciones, las estructuras de datos
+y las estructuras de control disponibles en el lenguaje. El capítulo 4,
+explica como operar los objetos y estructuras detallados en el capítulo
+anterior, proporcionando múltiples ejemplos y ejercicios para
+familiarizar al lector con el lenguaje.
+
+El capítulo 5, detalla las herramientas básicas para poder realizar un
+proyecto de datos en \texttt{R}. Las herramientas que se desarrollan en
+este capítulo permiten iterar sobre parte del ciclo de un proyecto de
+datos: importación de datos al ambiente, manipulación, limpieza y
+visualización de los mismos. Éstas herramientas permiten operar sobre
+los objetos introducidos en el capítulo 3 en una forma eficiente, fácil
+de aprender, fácil de leer y que permite que el usuario realice
+manipulaciones de datos complejas que le permitirán, a su vez, utilizar
+todas las herramientas de modelado que \texttt{R} posee que necesitan
+como insumo datos limpios y preparados en una forma específica.
+
+Cada capítulo incluye ejercicios y respuestas a los mismos; al final se
+recomienda material adicional para repasar los conceptos estudiados. El
+material se encuentra disponible electrónicamente en
+\url{https://github.com/animalito/aprendeR}. Para facilitar el
+aprendizaje, se recomienda descargar los materiales o clonar el
+repositorio, esto permite revisar el material y el código desde el
+ambiente local evitando copiar y pegar el mismo para su ejecución.
+
+
+\end{document}

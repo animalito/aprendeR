@@ -1,0 +1,441 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={Packrat},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+  \title{Packrat}
+  \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+  \author{}
+  \preauthor{}\postauthor{}
+  \date{}
+  \predate{}\postdate{}
+
+\usepackage[
+  backend=biber,
+  style=alphabetic,
+  sorting=ynt,
+  citestyle=authoryear
+  ]{biblatex}
+\addbibresource{../lit/bib.bib}
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+
+%%%% Frames
+\ifxetex
+    \makeatletter % undo the wrong changes made by mathspec
+    \let\RequirePackage\original@RequirePackage
+    \let\usepackage\RequirePackage
+    \makeatother
+\fi
+
+\usepackage{xcolor}
+\usepackage[tikz]{bclogo}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{lipsum}
+\usepackage[many]{tcolorbox}
+
+\definecolor{bgblue}{RGB}{245,243,253}
+\definecolor{ttblue}{RGB}{91,194,224}
+\definecolor{llred}{RGB}{255,228,225}
+\definecolor{bbblack}{RGB}{0,0,0}
+
+\mdfdefinestyle{mystyle}{%
+  rightline=true,
+  innerleftmargin=10,
+  innerrightmargin=10,
+  outerlinewidth=3pt,
+  topline=false,
+  rightline=true,
+  bottomline=false,
+  skipabove=\topsep,
+  skipbelow=\topsep
+}
+
+\newtcolorbox{curiosidad}[1][]{
+  breakable,
+  title=#1,
+  colback=white,
+  colbacktitle=white,
+  coltitle=black,
+  fonttitle=\bfseries,
+  bottomrule=0pt,
+  toprule=0pt,
+  leftrule=3pt,
+  rightrule=3pt,
+  titlerule=0pt,
+  arc=0pt,
+  outer arc=0pt,
+  colframe=black,
+}
+
+\newtcolorbox{nota}[1][]{
+  breakable,
+  freelance,
+  title=#1,
+  colback=white,
+  colbacktitle=white,
+  coltitle=black,
+  fonttitle=\bfseries,
+  bottomrule=0pt,
+  boxrule=0pt,
+  colframe=white,
+  overlay unbroken and first={
+  \draw[red!75!black,line width=3pt]
+    ([xshift=5pt]frame.north west) -- 
+    (frame.north west) -- 
+    (frame.south west);
+  \draw[red!75!black,line width=3pt]
+    ([xshift=-5pt]frame.north east) -- 
+    (frame.north east) -- 
+    (frame.south east);
+  },
+  overlay unbroken app={
+  \draw[red!75!black,line width=3pt,line cap=rect]
+    (frame.south west) -- 
+    ([xshift=5pt]frame.south west);
+  \draw[red!75!black,line width=3pt,line cap=rect]
+    (frame.south east) -- 
+    ([xshift=-5pt]frame.south east);
+  },
+  overlay middle and last={
+  \draw[red!75!black,line width=3pt]
+    (frame.north west) -- 
+    (frame.south west);
+  \draw[red!75!black,line width=3pt]
+    (frame.north east) -- 
+    (frame.south east);
+  },
+  overlay last app={
+  \draw[red!75!black,line width=3pt,line cap=rect]
+    (frame.south west) --
+    ([xshift=5pt]frame.south west);
+  \draw[red!75!black,line width=3pt,line cap=rect]
+    (frame.south east) --
+    ([xshift=-5pt]frame.south east);
+  },
+}
+
+\begin{document}
+
+
+Uno de los problemas en el trabajo colaborativo es poder ejecutar código
+realizado en otra computadora. La analítica reproducible y fácil de
+insertar en un ambiente de producción es fundamental para minimizar el
+retrabajo y que lo que se realice se (re)utilice.
+
+Existen múltiples maneras de trabajar de manera que se resuelva el
+problema de las versiones de software y sus dependencias. Una
+comprehensiva, por ejemplo, es usando \texttt{docker}. Cuando un
+proyecto incluye únicamente código de \texttt{R}, \texttt{packrat} es
+suficiente para empaquetarlo y que el código sea reproducible en
+cualquier computadora y sistema operativo \parencite{packrat}.
+
+\href{https://rstudio.github.io/packrat/}{Packrat} es un sistema de
+administración de dependencias para R que busca eliminar los problemas
+que suele haber para utilizar código realizado en diferentes momentos o
+máquinas con diferentes versiones de las librerías, entre los típicos
+son \parencite{packratconcept}:
+
+\begin{itemize}
+\tightlist
+\item
+  La falta de control sobre los paquetes que se necesitaban instalar
+  para correr un script específico.
+\item
+  Instalar paquetes en el ambiente global y dejarlos para siempre
+  instalados en las computadoras porque no se sabe si algo se romperá al
+  quitarlos.
+\item
+  Romper código de otros proyectos por actualizar un paquete en otro.
+\end{itemize}
+
+Packrat permite que los proyectos en \texttt{R} sean
+\parencite{packratconcept}:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Aislados}: cada proyecto tiene su paquetería privada.
+\item
+  \textbf{Portables}: puedes transferir rápidamente los proyectos de una
+  computadora a otra -y a través de distintas plataformas- pues facilita
+  la instalación de toda la paquetería sobre la que descansa el
+  proyecto.
+\item
+  \textbf{Reproducibles}: guarda las versiones exactas sobre las que el
+  proyecto fue trabajado y éstos son los que son instalados en cualquier
+  ambiente.
+\end{itemize}
+
+\section{El directorio del proyecto}\label{el-directorio-del-proyecto}
+
+Packrat se asocia a un directorio específico. Al iniciar una sesión de R
+dentro de un directorio asociado a un packrat, R va a utilizar
+únicamente los paquetes dentro de esa librería privada. Al instalar,
+remover o actualizar un paquete dentro de ese directorio, esos cambios
+se harán en la librería privada.
+
+Se guarda en el proyecto toda la información que packrat necesita para
+poder recrear el conjunto de librerías en cualquier otra máquina.
+
+\section{Instalación}\label{instalacion}
+
+El paquete está en el CRAN y se instala desde R con el comando.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{install.packages}\NormalTok{(}\StringTok{"packrat"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Inicializarlo}\label{inicializarlo}
+
+Al iniciar un proyecto, el que sea, que use R, lo recomendable es
+asociarle packrat. Esto se hace con el comando \texttt{packrat::init}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{packrat}\OperatorTok{::}\KeywordTok{init}\NormalTok{(}\StringTok{"~/prueba-packrat"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Con esto, al trabajar en el directorio
+\texttt{"\textasciitilde{}/prueba-packrat"} ya estás en un proyecto de
+packrat con su librería privada.
+
+Un proyecto de packrat se distingue porque -igual que git- tiene
+archivos y directorios adicionales que se crean con la función
+\texttt{init()}:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{packrat/packrat.lock}: lista las versiones de los paquetes que
+  fueron utilizadas. Este archivo no debe editarse a mano.
+\item
+  \texttt{packrat/packrat.opts}: guarda las opciones de configuración
+  para el proyecto. Este se puede modificar con las opciones
+  \texttt{get\_opts} y \texttt{set\_opts}. La lista completa de opciones
+  se puede ver al escribir en la consola de R
+  \texttt{?"packrat-options"}.
+\item
+  \texttt{packrat/lib/}: paquetes para el proyecto.
+\item
+  \texttt{packrat/src/}: paquetes para todas las dependencias.
+\item
+  \texttt{.Rprofile}: Le dice a R que la lista específica de librerías
+  que debe utilizar cuando está en ese directorio (o cualquiera de sus
+  subdirectorios) es la privada del proyecto que gestiona packrat.
+\end{itemize}
+
+\section{Agregar, remover y actualizar
+paquetes}\label{agregar-remover-y-actualizar-paquetes}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Inicializa \texttt{R} dentro de un proyecto \texttt{packrat}.
+\item
+  Se instala como siempre, usando \texttt{install.packages()}
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{install.packages}\NormalTok{(}\StringTok{"dplyr"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  Se toma un \texttt{snapshot} para decirle a packrat que guarde los
+  cambios
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{packrat}\OperatorTok{::}\KeywordTok{snapshot}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+Aquí \texttt{packrat} agrega lo que necesita a los folders mencionados
+antes para poder recrear las versiones y dependencias. También modifica
+el archivo \texttt{packrat.lock}.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  En cualquier momento, puedes revisar el estatus
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{packrat}\OperatorTok{::}\KeywordTok{status}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+Debe darte el mensaje \textbf{Up to date}.
+
+¡Y listo!
+
+\section{Otras cosas importantes}\label{otras-cosas-importantes}
+
+\begin{itemize}
+\tightlist
+\item
+  Packrat puede incorporar paquetes que no están en CRAN.
+\item
+  Puede restaurar un snapshot (de manera similar a la que un juego
+  puedes regresar al último checkpoint).
+\end{itemize}
+
+\renewcommand\bcStyleTitre[1]{\large\textcolor{bbblack}{#1}}
+
+\begin{bclogo}[
+  couleur=llred,
+  arrondi=0,
+  logo=\bcstop,
+  barre=none,
+  noborder=true]{Ejercicio: Restaurando un snapshot en el ejemplo de juguete.}
+\begin{enumerate}
+\item Ve a la carpeta \texttt{~/prueba-packrat}
+\item Muevete a la carpeta \texttt{packrat/}
+\item Borra la libreria \texttt{rm -R lib/}
+\item Regresa a la carpeta del proyecto \texttt{cd ..}
+\item Inicializa \texttt{R}... y todo se restaura.
+\end{enumerate}
+\end{bclogo}
+
+\section{Ligas utiles}\label{ligas-utiles}
+
+\begin{itemize}
+\tightlist
+\item
+  \href{https://rstudio.github.io/packrat/commands.html}{Comandos
+  comunes y listas de opciones}
+\item
+  \href{https://rstudio.github.io/packrat/rstudio.html}{Packrat en
+  RStudio} lo hace AUN mas fácil.
+\item
+  \href{https://rstudio.github.io/packrat/limitations.html}{Limitaciones
+  de packrat}
+\end{itemize}
+
+
+\end{document}

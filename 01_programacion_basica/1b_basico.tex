@@ -1,0 +1,3075 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={Estructuras y funciones},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\usepackage{longtable,booktabs}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+  \title{Estructuras y funciones}
+  \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+  \author{}
+  \preauthor{}\postauthor{}
+  \date{}
+  \predate{}\postdate{}
+
+\usepackage[
+  backend=biber,
+  style=alphabetic,
+  sorting=ynt,
+  citestyle=authoryear
+  ]{biblatex}
+\addbibresource{../lit/bib.bib}
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+
+\usepackage{float}
+\usepackage{enumitem}
+\newcommand\novspace{\@minipagetrue}
+
+%%%% Frames
+\ifxetex
+    \makeatletter % undo the wrong changes made by mathspec
+    \let\RequirePackage\original@RequirePackage
+    \let\usepackage\RequirePackage
+    \makeatother
+\fi
+
+\usepackage{xcolor}
+\usepackage[tikz]{bclogo}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{lipsum}
+\usepackage[many]{tcolorbox}
+
+\definecolor{bgblue}{RGB}{245,243,253}
+\definecolor{ttblue}{RGB}{91,194,224}
+\definecolor{llred}{RGB}{255,228,225}
+\definecolor{bbblack}{RGB}{0,0,0}
+
+\mdfdefinestyle{mystyle}{%
+  rightline=true,
+  innerleftmargin=10,
+  innerrightmargin=10,
+  outerlinewidth=3pt,
+  topline=false,
+  rightline=true,
+  bottomline=false,
+  skipabove=\topsep,
+  skipbelow=\topsep
+}
+
+\newtcolorbox{curiosidad}[1][]{
+  breakable,
+  title=#1,
+  colback=white,
+  colbacktitle=white,
+  coltitle=black,
+  fonttitle=\bfseries,
+  bottomrule=0pt,
+  toprule=0pt,
+  leftrule=3pt,
+  rightrule=3pt,
+  titlerule=0pt,
+  arc=0pt,
+  outer arc=0pt,
+  colframe=black,
+}
+
+\newtcolorbox{nota}[1][]{
+  breakable,
+  freelance,
+  title=#1,
+  colback=white,
+  colbacktitle=white,
+  coltitle=black,
+  fonttitle=\bfseries,
+  bottomrule=0pt,
+  boxrule=0pt,
+  colframe=white,
+  overlay unbroken and first={
+  \draw[red!75!black,line width=3pt]
+    ([xshift=5pt]frame.north west) -- 
+    (frame.north west) -- 
+    (frame.south west);
+  \draw[red!75!black,line width=3pt]
+    ([xshift=-5pt]frame.north east) -- 
+    (frame.north east) -- 
+    (frame.south east);
+  },
+  overlay unbroken app={
+  \draw[red!75!black,line width=3pt,line cap=rect]
+    (frame.south west) -- 
+    ([xshift=5pt]frame.south west);
+  \draw[red!75!black,line width=3pt,line cap=rect]
+    (frame.south east) -- 
+    ([xshift=-5pt]frame.south east);
+  },
+  overlay middle and last={
+  \draw[red!75!black,line width=3pt]
+    (frame.north west) -- 
+    (frame.south west);
+  \draw[red!75!black,line width=3pt]
+    (frame.north east) -- 
+    (frame.south east);
+  },
+  overlay last app={
+  \draw[red!75!black,line width=3pt,line cap=rect]
+    (frame.south west) --
+    ([xshift=5pt]frame.south west);
+  \draw[red!75!black,line width=3pt,line cap=rect]
+    (frame.south east) --
+    ([xshift=-5pt]frame.south east);
+  },
+}
+
+\begin{document}
+
+
+En este capítulo se introducen los principales objetos de \texttt{R}.
+Primero, se definen brevemente. Después se introducen las funciones,
+objetos que permiten realizar acciones sobre otros objetos.
+
+Posteriormente, se introducen las distintas estructuras de datos en
+\texttt{R} básico. El primer bloque de construcción son las
+\emph{clases} de datos con los que \texttt{R} sabe trabajar, es decir,
+caracteres, números enteros, reales, complejos y booleanos.
+
+El segundo bloque son los \emph{vectores}. Esta es una estructura
+fundamental en \texttt{R} y están conformados por un conjunto de
+elementos de una de las clases de datos. El tercero son las
+\emph{matrices}, que le agregan una dimensión a los vectores. Las
+\emph{listas} son como vectores pero pueden contener un subconjunto de
+elementos de cualesquiera de las clases, incluida otra lista.
+
+Los \emph{dataframes} son listas con la restricción que cada uno de sus
+elementos es un vector del mismo tamaño. Esta estructura es la más
+natural para un estadístico pues refiere a la forma tabular en la que se
+acostumbra pensar a los datos en esa disciplina. Los \emph{tibbles} y
+los \emph{datatables} extienden los dataframes, haciéndolos más
+eficientes para el procesamiento de una mayor cantidad de datos.
+
+Finalmente, se mencionan objetos adicionales -como el infinito y el
+objeto que representa valores perdidos- y se describen las principales
+estructuras de control, proporcionando ejemplos para escribirlos en
+\texttt{R}.
+
+\section{Objetos}\label{objetos}
+
+\renewcommand\bcStyleTitre[1]{\large\textcolor{ttblue}{#1}}
+
+\begin{bclogo}[
+  couleur=bgblue,
+  arrondi=0,
+  logo=\bcattention,
+  barre=none,
+  noborder=true]{En R}
+\begin{itemize}
+\item Todo lo que existe es un objeto.
+\item Todo lo que sucede es una llamada a una función.
+\end{itemize}
+\end{bclogo}
+
+Todo lenguaje de programación provee de una forma de accesar los datos
+guardados en memoria. R no permite un acceso directo a la memoria de la
+computadora pero ofrece varias estructuras de datos especializadas para
+realizar esa tarea. A estas estructuras, se les da el nombre de objetos
+\parencite[][ver sección 2 ``objetos'']{rmanual}. Estos objetos son
+referidos a través de símbolos o variables, sin embargo, los símbolos
+son también objetos y pueden ser manipulados de la misma manera.
+
+Todos los objetos tienen un \emph{tipo}, mismo que se le puede preguntar
+a los objetos con la función \texttt{typeof}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{typeof}\NormalTok{(}\StringTok{"hola"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "character"
+\end{verbatim}
+
+Esta función puede reconocer muchos tipos, entre ellos algunos de los
+que veremos con mayor detalle a continuación. Comenzaremos con las
+funciones que, regresando al cuadro anterior, \emph{todo lo que sucede
+es una llamada a una función}. Posteriormente, se revisarán las
+estructuras de datos más básicas en R y, por último, se verán
+estructuras de control básicas que permitirán mezclar el uso de objetos
+de manera que se operen bajo ciertas condiciones lógicas.
+
+\section{Funciones}\label{funciones}
+
+Hay una regla de oro en programación en general: \emph{DRY
+code}\footnote{El concepto es mucho más general que esto pero lo
+  reduciremos a una de sus capas más bajas primero para introducirlo y,
+  segundo, porque el concepto general cobra sentido al avanzar en las
+  tareas de programación a las que se enfrenta el usuario.} (acrónimo de
+``Don't repeat yourself'') \parencite{hunt2000}. Básicamente esto se
+reduce a \emph{no te repitas}. Cuando tienes las mismas líneas de código
+varias veces (cuando estas copiando y pegando mucho) entonces lo que
+necesitas es escribir una función que realice esa tarea.
+
+En R las funciones son los \emph{building blocks} de básicamente todo.
+Como todo lo demás en R, las funciones son también objetos. Cuando
+llamas a un objeto en R, casi siempre estas en realidad llamando a una
+función.
+
+\subsection{Componentes de una
+función}\label{componentes-de-una-funcion}
+
+\begin{itemize}
+\tightlist
+\item
+  El \texttt{body()} o cuerpo de la función es el código dentro de la
+  misma.
+\item
+  \texttt{formals()} o el listado de argumentos formales de la función,
+  controla cómo se puede llamar a una función.
+\item
+  El ambiente \texttt{environment()} determina cómo son referidas las
+  variables dentro de la función.
+\item
+  La lista de argumentos se obtiene con \texttt{args()}
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Ejecuto la función}
+\NormalTok{f <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(x) x}
+\CommentTok{# Imprimo el objeto f}
+\NormalTok{f}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## function(x) x
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Al usar la función body, veo solo el cuerpo}
+\KeywordTok{body}\NormalTok{(f)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## x
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Listo sus parámetros o argumentos}
+\KeywordTok{formals}\NormalTok{(f)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $x
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Veo en qué ambiente está la función}
+\KeywordTok{environment}\NormalTok{(f)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## <environment: R_GlobalEnv>
+\end{verbatim}
+
+Una vez definida una función, llamarla es muy sencillo: se le
+proporciona un valor para los parámetros y nos regresa el resultado
+esperado. Una función puede regresar cualquier objeto, por ejemplo, una
+función o un valor. Llamamos a la función declarada arriba:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{f}\NormalTok{(}\DecValTok{4}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 4
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Elimino la función del espacio de trabajo}
+\KeywordTok{rm}\NormalTok{(f)}
+\end{Highlighting}
+\end{Shaded}
+
+Por defecto (\emph{default}), los argumentos de una función son flojos
+(\emph{lazy}), es decir, solamente son evaluados cuando se utilizan
+(esto es importante pues si tienes un error en una función no te darás
+cuenta cuando ejecutes la misma sino cuando la mandes llamar).
+
+\subsection{El ambiente}\label{el-ambiente}
+
+Las variables que se definen dentro de una función existen en un
+ambiente distinto al ambiente global de R. Si una variable \textbf{no}
+está definida dentro de la función, R busca en el nivel superior por esa
+variable.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x <-}\StringTok{ }\DecValTok{2}
+\NormalTok{g <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{() \{}
+\NormalTok{    y <-}\StringTok{ }\DecValTok{1}
+    \KeywordTok{c}\NormalTok{(x, y)}
+\NormalTok{\}}
+\KeywordTok{g}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 2 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{rm}\NormalTok{(x, g)}
+\end{Highlighting}
+\end{Shaded}
+
+Así como fuimos capaces de anidar ciclos for, también podemos anidar
+funciones. Esta capacidad es muy útil pero hay que tener cuidado con los
+ambientes y la jerarquía en los mismos.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{myfuncion <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{() \{}
+  \KeywordTok{print}\NormalTok{(}\StringTok{"Hola"}\NormalTok{)}
+\NormalTok{\}}
+\KeywordTok{myfuncion}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Hola"
+\end{verbatim}
+
+Podemos generar funciones con mayor utilidad.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{suma <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(x, y)\{}
+  \KeywordTok{return}\NormalTok{(x }\OperatorTok{+}\StringTok{ }\NormalTok{y)}
+\NormalTok{\}}
+\NormalTok{vector <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{)}
+\KeywordTok{sapply}\NormalTok{(vector, suma, }\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 3 4 5 6
+\end{verbatim}
+
+Toda función \emph{regresa} un valor.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x <-}\StringTok{ }\DecValTok{10}
+\NormalTok{f <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{() \{}
+\NormalTok{    y <-}\StringTok{ }\DecValTok{25}
+\NormalTok{    g <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{() \{}
+\NormalTok{        z <-}\StringTok{ }\DecValTok{30}
+        \KeywordTok{c}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ x, }\DataTypeTok{y =}\NormalTok{ y, }\DataTypeTok{z =}\NormalTok{ z)}
+\NormalTok{    \}}
+    \KeywordTok{g}\NormalTok{()}
+\NormalTok{\}}
+\KeywordTok{f}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  x  y  z 
+## 10 25 30
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{f <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(x) \{}
+\NormalTok{  x }\OperatorTok{*}\StringTok{ }\DecValTok{2}
+\NormalTok{\}}
+\NormalTok{g <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(x) \{}
+\NormalTok{  x }\OperatorTok{+}\StringTok{ }\DecValTok{2}
+\NormalTok{\}}
+\KeywordTok{f}\NormalTok{(}\KeywordTok{g}\NormalTok{(}\DecValTok{2}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 8
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{g}\NormalTok{(}\KeywordTok{f}\NormalTok{(}\DecValTok{2}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 6
+\end{verbatim}
+
+En este caso, utilizamos una función con parámetros que \emph{recibe}
+cuando es llamada. También podemos generar funciones con valores
+predefinidos, es decir, defaults. Éstos son utilizados cuando se llama a
+la función \emph{a menos que} se especifique lo contrario (es decir, se
+\emph{overide them}).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{f <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(}\DataTypeTok{a =} \DecValTok{2}\NormalTok{, }\DataTypeTok{b =} \DecValTok{3}\NormalTok{) \{}
+  \KeywordTok{return}\NormalTok{(a }\OperatorTok{+}\StringTok{ }\NormalTok{b)}
+\NormalTok{\}}
+\KeywordTok{f}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 5
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{f}\NormalTok{(}\DecValTok{4}\NormalTok{, }\DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 9
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{f}\NormalTok{(}\DataTypeTok{b =} \DecValTok{4}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 6
+\end{verbatim}
+
+\begin{curiosidad}[Return]
+No es necesario especificar lo que regresa la función. Las funciones por
+default regresan el último elemento o valor computado.
+\end{curiosidad}
+
+\subsection{Reglas de visibilidad
+(scoping)}\label{reglas-de-visibilidad-scoping}
+
+Sabemos que existe la función \emph{c} que nos permite concatenar
+vectores o elementos a vectores. Sin embargo, es posible asignar un
+valor a una variable llamada \emph{c} y que la función \emph{c} siga
+funcionando.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{c <-}\StringTok{ }\DecValTok{1000}
+\NormalTok{c }\OperatorTok{+}\StringTok{ }\DecValTok{1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1001
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{4}\NormalTok{)}
+\NormalTok{x}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1 2 3 4
+\end{verbatim}
+
+Esto es debido a que R tienen espacios de nombres (\emph{namespaces})
+separados para funciones y no-funciones. Cuando R intenta concatenar los
+valores del 1 al 4, busca primero en el ambiente global y, en caso de no
+encontrarlo, busca en los \emph{namespaces} de cada uno de los paquetes
+que tiene cargados.
+
+El orden en el que busca se puede encontrar utilizando el comando
+\texttt{search()}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{search}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] ".GlobalEnv"        "package:knitr"     "package:rmarkdown"
+##  [4] "package:stats"     "package:graphics"  "package:grDevices"
+##  [7] "package:utils"     "package:datasets"  "Autoloads"        
+## [10] "package:base"
+\end{verbatim}
+
+Los paquetes recién llamados acaban en la posición número 2 y todo lo
+demás se recorre en el orden de la lista. Nota como el \emph{base} (que
+se carga por default en toda sesión) está hasta el final.
+
+\texttt{.GlobalEnv} es el workspace del que hablamos antes. Si hay un
+símbolo que corresponde a tu petición entonces tomará el valor en tu
+workspace para poder ejecutar tu petición. Si no encuentra nada, busca
+en el namespace de cada uno de los paquetes que has cargado hasta el
+momento en el \emph{orden} en el que los llamaste.
+
+Esto es \textbf{muy} importante. Hay contribuidores de paquetes en todo
+el mundo y es muy común que utilicen el mismo nombre para
+implementaciones de distintas cosas y, por lo tanto, a veces nuestros
+resultados no son lo que esperábamos.
+
+El orden en el que cargamos los paquetes importa:
+
+\begin{verbatim}
+## <environment: namespace:car>
+\end{verbatim}
+
+\begin{verbatim}
+## <environment: namespace:car>
+\end{verbatim}
+
+\begin{verbatim}
+## <environment: namespace:VIF>
+\end{verbatim}
+
+La otra opción, sin quitar el paquete del ambiente, es especificar de
+que paquete tomarlo. En otras palabras, le pedimos explícitamente a
+\texttt{R} que busque la función en el espacio de nombres de \emph{un}
+paquete en específico y que no use su búsqueda normal.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{environment}\NormalTok{(VIF}\OperatorTok{::}\NormalTok{vif)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## <environment: namespace:VIF>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{environment}\NormalTok{(car}\OperatorTok{::}\NormalTok{vif)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## <environment: namespace:car>
+\end{verbatim}
+
+\section{Estructuras de datos}\label{estructuras-de-datos}
+
+R tiene diferentes tipos y estructuras de datos que permiten al usuario
+aprovechar el lenguaje. La manipulación de estos objetos es algo que se
+hace diario y entender cómo operarlos o cómo convertir de una a otra es
+muy útil.
+
+\subsection{Clases atómicas (atomic
+classes)}\label{clases-atomicas-atomic-classes}
+
+R tiene 6 clases atómicas\footnote{Los tipos básicos son referidos como
+  atómicos cuando es necesario excluir listas.} \parencite{rmanual}.
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{character} (caracter)
+\item
+  \texttt{numeric} (números reales o decimales, a esta clase también se
+  le llama \texttt{double})
+\item
+  \texttt{integer} (números enteros)
+\item
+  \texttt{logical} (booleanos, i.e.~falso-verdadero)
+\item
+  \texttt{complex} (números complejos)
+\item
+  \texttt{raw} (contiene bytes)
+\end{itemize}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{p{2.5cm}p{2.5cm}p{5cm}}
+  \hline
+Type & Tipo & Ejemplo \\ 
+  \hline
+\texttt{character} & Caracter & "hola", "x" \\ 
+\texttt{numeric} & Numérico & 67, 45.5 \\
+\texttt{integer} & Integer & 2L, 67L \\
+\texttt{logical} & Lógico & TRUE, FALSE, T, F \\
+\texttt{complex} & Complejo & 1 + 4i\\
+\texttt{raw} & Crudo & 01 - imprime hexadecimales\\
+   \hline
+\end{tabular}
+\caption{Clases atómicas.}
+\end{table}
+
+Algunos comandos importantes para las clases atómicas son su tipo
+\texttt{typeof()}, su tamaño \texttt{length()} y sus atributos
+\texttt{attributes()}, es decir, sus metadatos.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{############ Ejemplo 1}
+
+\NormalTok{x <-}\StringTok{ "una cadena"}
+\KeywordTok{typeof}\NormalTok{(x)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "character"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{length}\NormalTok{(x) }\CommentTok{# tamaño: ¿cuántas cadenas son?}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{nchar}\NormalTok{(x) }\CommentTok{# Número de caracteres}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 10
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{attributes}\NormalTok{(x) }\CommentTok{# Le pusimos metadatos?}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## NULL
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{############ Ejemplo 2}
+
+\NormalTok{y <-}\StringTok{ }\DecValTok{1}\OperatorTok{:}\DecValTok{10}
+\KeywordTok{typeof}\NormalTok{(y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "integer"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{length}\NormalTok{(y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 10
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{attributes}\NormalTok{(y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## NULL
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{############ Ejemplo 3}
+
+\NormalTok{z <-}\StringTok{ }\KeywordTok{c}\NormalTok{(1L, 2L, 3L) }\CommentTok{# Nota como para denotar enteros se incluye una L al final}
+\KeywordTok{typeof}\NormalTok{(z)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "integer"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{length}\NormalTok{(z)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 3
+\end{verbatim}
+
+\subsection{Vectores}\label{vectores}
+
+Los vectores son la estructura de datos más básica de R
+\parencite{wickham2014advanced}. Hay dos tipos de vectores: vectores
+atómicos y listas.
+
+Típicamente -en libros, blogs, manuales, cuando se mencionan vectores se
+refieren a los atómicos y no a las listas.
+
+\subsubsection{Vectores atómicos}\label{vectores-atomicos}
+
+Los vectores pueden ser pensados como celdas contiguas que contienen
+datos \parencite{rmanual}, es decir, elementos de alguna de las clases
+atómicas (\texttt{character}, \texttt{logical}, \texttt{integer},
+\texttt{numeric}). Se puede crear un vector vacío con el comando
+\texttt{vector()} así como especificar su tamaño y su clase.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{v <-}\StringTok{ }\KeywordTok{vector}\NormalTok{()}
+\NormalTok{v }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## logical(0)
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{## Especifico clase y longitud}
+\KeywordTok{vector}\NormalTok{(}\StringTok{"character"}\NormalTok{, }\DataTypeTok{length =} \DecValTok{10}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] "" "" "" "" "" "" "" "" "" ""
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{## Lo mismo pero usando un wrapper}
+\KeywordTok{character}\NormalTok{(}\DecValTok{10}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] "" "" "" "" "" "" "" "" "" ""
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{## Numerico de tamaño 5}
+\KeywordTok{numeric}\NormalTok{(}\DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0 0 0 0 0
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{## Lógico tamaño 5}
+\KeywordTok{logical}\NormalTok{(}\DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] FALSE FALSE FALSE FALSE FALSE
+\end{verbatim}
+
+\subsubsection{Tipos de vectores}\label{tipos-de-vectores}
+
+Realiza los siguientes ejemplos en la consola de R.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x <-}\StringTok{ }\KeywordTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{5}\NormalTok{)}
+\NormalTok{x}
+\KeywordTok{typeof}\NormalTok{(x)}
+
+\NormalTok{xi <-}\StringTok{ }\KeywordTok{c}\NormalTok{(1L, 3L, 56L, 4L)}
+\NormalTok{xi}
+\KeywordTok{typeof}\NormalTok{(xi)}
+
+\NormalTok{y <-}\StringTok{ }\KeywordTok{c}\NormalTok{(T, F, T, F, F, T)}
+
+\NormalTok{z <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"a"}\NormalTok{, }\StringTok{"aba"}\NormalTok{, }\StringTok{"andrea"}\NormalTok{, }\StringTok{"b"}\NormalTok{, }\StringTok{"bueno"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Dijimos que la función \texttt{typeof} permitía preguntarle a un objeto
+qué tipo de dato es. La función \texttt{class} permite hacer una
+pregunta similar. La diferencia radica en el punto de vista: el primero
+da el tipo del objeto como un objeto en \texttt{R} mientras que, el
+segundo identifica el tipo del objeto desde el punto de vista de la
+programación orientada a objetos en \texttt{R}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{class}\NormalTok{(z)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "integer"
+\end{verbatim}
+
+Otra función útil es \texttt{str} pues permite desplegar en forma
+compacta la estructura interna de un objeto en \texttt{R}:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{str}\NormalTok{(z)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  int [1:3] 1 2 3
+\end{verbatim}
+
+\subsubsection{Operaciones con vectores}\label{operaciones-con-vectores}
+
+Aritmética: por default, se realizan componente a componente.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{a <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{5}\NormalTok{)}
+\NormalTok{b <-}\StringTok{ }\NormalTok{a }\OperatorTok{+}\StringTok{ }\DecValTok{10}
+\NormalTok{b}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 11 12 13 14 15
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{c <-}\StringTok{ }\KeywordTok{sqrt}\NormalTok{(b) }\CommentTok{# square root = raíz}
+\NormalTok{c}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 3.316625 3.464102 3.605551 3.741657 3.872983
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{a }\OperatorTok{+}\StringTok{ }\NormalTok{c}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 4.316625 5.464102 6.605551 7.741657 8.872983
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DecValTok{10} \OperatorTok{*}\StringTok{ }\NormalTok{(a }\OperatorTok{+}\StringTok{ }\NormalTok{c)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 43.16625 54.64102 66.05551 77.41657 88.72983
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{a}\OperatorTok{^}\DecValTok{2}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1]  1  4  9 16 25
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{a }\OperatorTok{*}\StringTok{ }\NormalTok{c}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1]  3.316625  6.928203 10.816654 14.966630 19.364917
+\end{verbatim}
+
+Agregar elementos aun vector ya creado
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{a <-}\StringTok{ }\KeywordTok{c}\NormalTok{(a, }\DecValTok{7}\NormalTok{)}
+\NormalTok{a}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1 2 3 4 5 7
+\end{verbatim}
+
+Para construir datos rápido, podemos usar comandos como \texttt{rep},
+\texttt{seq} o distintas distribuciones, e.g., la normal \texttt{rnorm},
+uniformes \texttt{runif} o cualquiera en
+\href{https://stat.ethz.ch/R-manual/R-devel/library/stats/html/Distributions.html}{esta
+lista}.
+
+Prueba lo siguiente:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Dame un vector donde el minimo sea 0, maximo 1 en intervalos de 0.25}
+\KeywordTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\FloatTok{0.25}\NormalTok{)}
+\CommentTok{# Vector con 10 unos}
+\KeywordTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{10}\NormalTok{)}
+\CommentTok{# 5 realizaciones de una normal(0,1)}
+\KeywordTok{rnorm}\NormalTok{(}\DecValTok{5}\NormalTok{)}
+\CommentTok{# De una normal(10, 5)}
+\KeywordTok{rnorm}\NormalTok{(}\DecValTok{5}\NormalTok{, }\DataTypeTok{mean =} \DecValTok{10}\NormalTok{, }\DataTypeTok{sd =} \KeywordTok{sqrt}\NormalTok{(}\DecValTok{5}\NormalTok{))}
+\CommentTok{# De una uniforme(0,1)}
+\KeywordTok{runif}\NormalTok{(}\DecValTok{5}\NormalTok{)}
+\CommentTok{# De una uniforme(5, 15)}
+\KeywordTok{runif}\NormalTok{(}\DecValTok{5}\NormalTok{, }\DataTypeTok{min =} \DecValTok{5}\NormalTok{, }\DataTypeTok{max =} \DecValTok{15}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{Atributos de un vector}\label{atributos-de-un-vector}
+
+Cada objeto tiene atributos. Hay atributos específicos para vectores
+que, sin importar su clase, tienen en común. Ya revisamos algunos:
+tamaño (\texttt{length}), clase (\texttt{class}). También son
+importantes atributos como los nombres
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{calificaciones <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{6}\NormalTok{, }\DecValTok{5}\NormalTok{, }\DecValTok{8}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{10}\NormalTok{)}
+\KeywordTok{names}\NormalTok{(calificaciones) <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Maria"}\NormalTok{, }\StringTok{"Jorge"}\NormalTok{, }\StringTok{"Miguel"}\NormalTok{, }\StringTok{"Raúl", "}\NormalTok{Carla}\StringTok{")}
+\StringTok{attributes(calificaciones)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $names
+## [1] "Maria"  "Jorge"  "Miguel" "Raúl"   "Carla"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# O llamamos directo a los nombres}
+\KeywordTok{names}\NormalTok{(calificaciones)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Maria"  "Jorge"  "Miguel" "Raúl"   "Carla"
+\end{verbatim}
+
+\subsubsection{Coerción}\label{coercion}
+
+Los vectores solo permiten tener objetos del mismo tipo. Hay coercioń
+explícita (\emph{explicit coercion}, también llamada \emph{cast})
+utilizando \texttt{as.\textless{}nombre\_clase\textgreater{}}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{as.numeric}\NormalTok{()}
+\KeywordTok{as.character}\NormalTok{()}
+\KeywordTok{as.integer}\NormalTok{()}
+\KeywordTok{as.logical}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+Utilizando coerción explícita garantizamos siempre tener el resultado en
+cuanto a la clase del objeto.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{c}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"a"}\NormalTok{, }\StringTok{"b"}\NormalTok{, }\StringTok{"c"}\NormalTok{), }\KeywordTok{as.character}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "a" "b" "c" "1" "2" "3"
+\end{verbatim}
+
+Realizar coerción explícita implica trabajar extra y, a veces, no se
+puede realizar de manera directa: los datos pueden venir \emph{sucios}
+con varios tipos de datos mezclados en una misma \emph{variable}.
+
+\texttt{R} mezcla distintos tipos de datos y realiza una \emph{coerción
+implícita} utilizando reglas razonables. En otras palabras, R realiza
+una coerción explícita \emph{por default} entre los objetos y ``decide''
+cuál es la clase del vector.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Número + caracter = caracter}
+\KeywordTok{c}\NormalTok{(}\FloatTok{1.7}\NormalTok{, }\StringTok{"a"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "1.7" "a"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Lógico + número = número}
+\KeywordTok{c}\NormalTok{(}\OtherTok{TRUE}\NormalTok{, }\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1 2
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Número + caracter = caracter}
+\KeywordTok{c}\NormalTok{(}\StringTok{"a"}\NormalTok{, }\OtherTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "a"    "TRUE"
+\end{verbatim}
+
+En ese proceso, puede haber pérdidas de información, por ejemplo, al
+mezclar valores lógicos con numéricos, Se confunden valores
+\emph{verdaderos} con un \emph{uno}. Hay que tener cuidado
+particularmente cuando se limpian los datos:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{c}\NormalTok{(}\KeywordTok{c}\NormalTok{(T, T, T), }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1 1 1 1 2 3
+\end{verbatim}
+
+Hay conversiones que no tienen sentido y generan pérdida de información
+total:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"a"}\NormalTok{, }\StringTok{"b"}\NormalTok{, }\StringTok{"c"}\NormalTok{)}
+\KeywordTok{as.numeric}\NormalTok{(x)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] NA NA NA
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{as.logical}\NormalTok{(x)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] NA NA NA
+\end{verbatim}
+
+Normalmente, se obtiene un mensaje de advertencia (\emph{warning})
+cuando alguna coerción puede derivar en pérdida de información
+\parencite{wickham2014advanced}.
+
+La última consideración importante es que para R un objeto no es igual,
+aunque no se pierda información, si su tipo no es el mismo
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x <-}\StringTok{ }\DecValTok{0}\OperatorTok{:}\DecValTok{5}
+\KeywordTok{identical}\NormalTok{(x, }\KeywordTok{as.numeric}\NormalTok{(x))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] FALSE
+\end{verbatim}
+
+En este ejemplo, cuando declaramos \(x\) no especificamos su clase y R
+decidió que era entero. Al coercionar al objeto para que fuese numérico,
+R no considera a los dos objetos iguales.
+
+En general, la coersión de R es muy útil pues permite incluso comparar
+objetos de distintas clases si el resultado tiene sentido
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DecValTok{1} \OperatorTok{<}\StringTok{ "2"}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+
+\begin{nota}
+Lo importante es recordar que es importante revisar las \textbf{advertencias}
+que \texttt{R} arroja a la consola y verificar que el resultado obtenido es el 
+deseado o que la pérdida de información no se puede evitar.
+\end{nota}
+
+\subsubsection{Extraer partes del
+vector}\label{extraer-partes-del-vector}
+
+\texttt{R} tiene constructos que permite acceder a elementos
+individuales o subconjuntos de un vector a través de operaciones de
+indexación (\emph{indexing})
+\parencite[][sección ``Indexing'']{rmanual}.
+
+Para los vectores, es posible acceder al i-ésimo elemento usando
+\texttt{x{[}i{]}}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{10}\NormalTok{, }\DecValTok{20}\NormalTok{, }\DecValTok{30}\NormalTok{, }\DecValTok{40}\NormalTok{, }\DecValTok{50}\NormalTok{)}
+\KeywordTok{names}\NormalTok{(x) <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"a"}\NormalTok{, }\StringTok{"b"}\NormalTok{, }\StringTok{"c"}\NormalTok{, }\StringTok{"d"}\NormalTok{, }\StringTok{"e"}\NormalTok{)}
+\CommentTok{# Accedemos al 4to elemento}
+\NormalTok{x[}\DecValTok{4}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  d 
+## 40
+\end{verbatim}
+
+Además de la indexación con un entero, se puede
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# x[i] - caso anterior}
+\CommentTok{# x[[i]]}
+\NormalTok{x[[}\DecValTok{4}\NormalTok{]]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 40
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# x["a"] - por nombre (cuando existen)}
+\NormalTok{x[}\StringTok{"a"}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  a 
+## 10
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Se puede extraer un subconjunto}
+\NormalTok{x[}\DecValTok{1}\OperatorTok{:}\DecValTok{3}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  a  b  c 
+## 10 20 30
+\end{verbatim}
+
+\begin{nota}[\texttt{[]} vs. \texttt{[[]]}]
+Estas dos formas de acceder a los elementos de un vector (utilizados también 
+en otras estructuras de datos) suelen causar confusión.\\
+
+En vectores, \texttt{[[} casi no se utiliza, aunque son ligeramente diferentes. Como 
+vimos en el ejemplo, \texttt{[[} quita los nombres o atributos y permite extraer
+únicamente un elemento a la vez.
+\end{nota}
+
+\subsection{Matrices}\label{matrices}
+
+Las matrices son un tipo especial de vectores. Son un vector atómico con
+una dimensión adicional pues tienen filas y columnas.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{m <-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{), }\DataTypeTok{nrow =} \DecValTok{2}\NormalTok{, }\DataTypeTok{ncol =} \DecValTok{2}\NormalTok{)}
+\NormalTok{m}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      [,1] [,2]
+## [1,]    1    3
+## [2,]    2    4
+\end{verbatim}
+
+En términos de sus atributos por \emph{default}, la diferencia entre los
+vectores y las matrices es:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{)}
+\KeywordTok{attributes}\NormalTok{(x)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## NULL
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{attributes}\NormalTok{(m)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $dim
+## [1] 2 2
+\end{verbatim}
+
+Como puedes notar, las matrices se forman \emph{por default} usando los
+elementos del vector para llenar columna por columna de izquierda a
+derecha. Podemos simplemente ``agregarle'' una dimensión a un vector
+para construir una matriz.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{m <-}\StringTok{ }\DecValTok{1}\OperatorTok{:}\DecValTok{10}
+\NormalTok{m}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1]  1  2  3  4  5  6  7  8  9 10
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{dim}\NormalTok{(m) <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{5}\NormalTok{)}
+\NormalTok{m}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      [,1] [,2] [,3] [,4] [,5]
+## [1,]    1    3    5    7    9
+## [2,]    2    4    6    8   10
+\end{verbatim}
+
+También podemos pegar o concatenar vectores de la misma longitud como si
+fueran columnas de una matriz usando \texttt{cbind} o como si fueran
+filas \texttt{rbind} (r = row, c = column).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x <-}\StringTok{ }\KeywordTok{runif}\NormalTok{(}\DecValTok{4}\NormalTok{)}
+\NormalTok{y <-}\StringTok{ }\KeywordTok{rnorm}\NormalTok{(}\DecValTok{4}\NormalTok{)}
+\KeywordTok{cbind}\NormalTok{(x, y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##              x          y
+## [1,] 0.3683017  0.7765167
+## [2,] 0.9638695  0.4221273
+## [3,] 0.4937018 -0.8593989
+## [4,] 0.8532536  0.6414013
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{rbind}\NormalTok{(x, y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##        [,1]      [,2]       [,3]      [,4]
+## x 0.3683017 0.9638695  0.4937018 0.8532536
+## y 0.7765167 0.4221273 -0.8593989 0.6414013
+\end{verbatim}
+
+Le agregamos atributos para accesar más fácilmente a los objetos.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{m <-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\KeywordTok{c}\NormalTok{(x, y), }\DataTypeTok{nrow =} \DecValTok{4}\NormalTok{, }\DataTypeTok{ncol =} \DecValTok{2}\NormalTok{, }\DataTypeTok{byrow =}\NormalTok{ T,}
+            \DataTypeTok{dimnames =} \KeywordTok{list}\NormalTok{(}\KeywordTok{paste0}\NormalTok{(}\StringTok{"row"}\NormalTok{, }\DecValTok{1}\OperatorTok{:}\DecValTok{4}\NormalTok{),}
+                            \KeywordTok{paste0}\NormalTok{(}\StringTok{"col"}\NormalTok{, }\DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{)))}
+\NormalTok{m}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##            col1      col2
+## row1  0.3683017 0.9638695
+## row2  0.4937018 0.8532536
+## row3  0.7765167 0.4221273
+## row4 -0.8593989 0.6414013
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{dimnames}\NormalTok{(m)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [[1]]
+## [1] "row1" "row2" "row3" "row4"
+## 
+## [[2]]
+## [1] "col1" "col2"
+\end{verbatim}
+
+Acceder a elementos de una matriz puede hacerse de muchas formas
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# m[i] - quinto elemento, contando desde entrada 1,1 por columnas}
+\NormalTok{m[}\DecValTok{5}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.9638695
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# m[[i]] - quinto elemento, quitando atributos}
+\NormalTok{m[[}\DecValTok{5}\NormalTok{]]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.9638695
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# m[i, j] - mismo elemento que m[5] pero usando notacion fila, columna}
+\NormalTok{m[}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.9638695
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# m[[i, j]] - mismo elemento, quitando atributos}
+\NormalTok{m[[}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{]]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.9638695
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Puedo llamar por su nombre}
+\NormalTok{m[}\StringTok{"row1"}\NormalTok{, }\StringTok{"col2"}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.9638695
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Misma forma, quitando atributos}
+\NormalTok{m[[}\StringTok{"row1"}\NormalTok{, }\StringTok{"col2"}\NormalTok{]]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.9638695
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# m[i, ] - toda la fila i-ésima}
+\NormalTok{m[}\DecValTok{1}\NormalTok{, ]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      col1      col2 
+## 0.3683017 0.9638695
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# m[, j] - toda la columna j-ésima}
+\NormalTok{m[, }\DecValTok{2}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      row1      row2      row3      row4 
+## 0.9638695 0.8532536 0.4221273 0.6414013
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Índices o nombres son equivalentes}
+\NormalTok{m[}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{] }\OperatorTok{==}\StringTok{ }\NormalTok{m[}\StringTok{"row1"}\NormalTok{, }\StringTok{"col1"}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+
+\begin{nota}[\texttt{[]} vs. \texttt{[[]]}]
+En matrices, \texttt{[[} casi no se utiliza. Como 
+vimos en el ejemplo, \texttt{[[} quita los nombres o atributos y permite extraer
+únicamente un elemento a la vez.
+\end{nota}
+
+\subsection{Listas}\label{listas}
+
+Tiene características muy similares a un vector pero permite que cada
+elemento sea de un tipo distinto. Mas aún, es posible incluir una lista
+como un elemento de otra lista y por eso también se les conoce como
+vectores recursivos (\emph{recursive vectors})
+\textbackslash{}parencite{[}{]}{[}sección
+``lists''{]}\{wickham2014advanced.
+
+Para crear una lista vacía utilizas \texttt{list()} y para coercionar un
+objeto a una lista usa \texttt{as.list()}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x <-}\StringTok{ }\KeywordTok{list}\NormalTok{(3L, }\FloatTok{3.56}\NormalTok{, }\DecValTok{1} \OperatorTok{+}\StringTok{ }\NormalTok{4i, }\OtherTok{TRUE}\NormalTok{, }\StringTok{"hola"}\NormalTok{, }\KeywordTok{list}\NormalTok{(}\StringTok{"genial"}\NormalTok{, }\DecValTok{1}\NormalTok{))}
+
+\KeywordTok{length}\NormalTok{(x)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 6
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{class}\NormalTok{(x)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "list"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{class}\NormalTok{(x[}\DecValTok{1}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "list"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{class}\NormalTok{(x[[}\DecValTok{1}\NormalTok{]])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "integer"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{y <-}\StringTok{ }\KeywordTok{as.list}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{10}\NormalTok{)}
+\KeywordTok{length}\NormalTok{(y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 10
+\end{verbatim}
+
+Nota como muchas propiedades que tenían los vectores atómicos los tienen
+también las listas. Las listas también pueden tener nombres
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Lista vacia}
+\NormalTok{lista <-}\StringTok{ }\KeywordTok{list}\NormalTok{()}
+\CommentTok{# Concatenamos un vector}
+\NormalTok{lista[[}\StringTok{"numeros"}\NormalTok{]] <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{34}\NormalTok{, }\FloatTok{45.5}\NormalTok{, }\DecValTok{34}\NormalTok{) }
+\CommentTok{# Concatenamos un objeto de datos}
+\NormalTok{lista[[}\StringTok{"datos"}\NormalTok{]] <-}\StringTok{ }\KeywordTok{head}\NormalTok{(iris)}
+\CommentTok{# Concatenamos un número}
+\NormalTok{lista <-}\StringTok{ }\KeywordTok{c}\NormalTok{(lista, }\DecValTok{3}\NormalTok{) }\CommentTok{# ¡No le tuvimos que poner nombre!}
+
+\NormalTok{lista}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $numeros
+## [1]  1.0 34.0 45.5 34.0
+## 
+## $datos
+##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+## 1          5.1         3.5          1.4         0.2  setosa
+## 2          4.9         3.0          1.4         0.2  setosa
+## 3          4.7         3.2          1.3         0.2  setosa
+## 4          4.6         3.1          1.5         0.2  setosa
+## 5          5.0         3.6          1.4         0.2  setosa
+## 6          5.4         3.9          1.7         0.4  setosa
+## 
+## [[3]]
+## [1] 3
+\end{verbatim}
+
+\begin{curiosidad}
+R tiene muchos \href{https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/00Index.html}{datos de ejemplo}
+que son utilizados en muchos paquetes, blogs y libros. Utiliza {\bf help(iris)} para
+saber más del dataset usado arriba.
+\end{curiosidad}
+
+Por su propiedad recursiva, se navega diferente. Repasamos las
+principales maneras de extraer los elementos de la lista utilizando la
+lista \(x\) declarada anteriormente:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Recordamos a x}
+\NormalTok{x}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [[1]]
+## [1] 3
+## 
+## [[2]]
+## [1] 3.56
+## 
+## [[3]]
+## [1] 1+4i
+## 
+## [[4]]
+## [1] TRUE
+## 
+## [[5]]
+## [1] "hola"
+## 
+## [[6]]
+## [[6]][[1]]
+## [1] "genial"
+## 
+## [[6]][[2]]
+## [1] 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# x[i] - el i-ésimo elemento de la lista}
+\NormalTok{x[}\DecValTok{3}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [[1]]
+## [1] 1+4i
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{## Nota como la clase del objeto sigue siendo lista}
+\KeywordTok{class}\NormalTok{(x[}\DecValTok{3}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "list"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# x[[i]] - el i-ésimo elemento de la lista}
+\NormalTok{x[[}\DecValTok{3}\NormalTok{]]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1+4i
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{## La clase ahora es la del objeto dentro del "espacio" 3 en la lista original}
+\KeywordTok{class}\NormalTok{(x[[}\DecValTok{3}\NormalTok{]])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "complex"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Nombramos la lista}
+\KeywordTok{names}\NormalTok{(x) <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"entero"}\NormalTok{, }\StringTok{"numerico"}\NormalTok{, }\StringTok{"complejo"}
+\NormalTok{              , }\StringTok{"booleano"}\NormalTok{, }\StringTok{"caracter"}\NormalTok{, }\StringTok{"lista"}\NormalTok{)}
+
+\CommentTok{# Ganamos formas de accesar los objetos}
+\CommentTok{# x$a - llamamos al elemento con nombre "a"}
+\NormalTok{x}\OperatorTok{$}\NormalTok{entero}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{class}\NormalTok{(x}\OperatorTok{$}\NormalTok{entero) }\CommentTok{# Es equivalente a [[]]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "integer"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# x$"a"}
+\NormalTok{x}\OperatorTok{$}\StringTok{"complejo"}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1+4i
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# x[["lista"]][i] - i-ésimo elemento de la lista dentro de la lista }
+\NormalTok{x[[}\StringTok{"lista"}\NormalTok{]][}\DecValTok{1}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [[1]]
+## [1] "genial"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# x[[j]][i] - Mismas reglas en la lista anidada}
+\NormalTok{x[[}\DecValTok{6}\NormalTok{]][}\DecValTok{1}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [[1]]
+## [1] "genial"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# x[[j]][[i]] - i-ésimo elemento en la lista del j-ésimo elemento de x}
+\NormalTok{x[[}\DecValTok{6}\NormalTok{]][[}\DecValTok{1}\NormalTok{]]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "genial"
+\end{verbatim}
+
+\begin{nota}[\texttt{[]} vs. \texttt{[[]]}]
+En listas, \texttt{[[} es fundamental para accesar correctamente los objetos y 
+poder navegar la lista. \\
+
+Como en vectores y matrices, \texttt{[[} quita los nombres o atributos y permite extraer únicamente un elemento a la vez. En listas, además, devuelve el objeto dentro 
+del i-ésimo elemento. Por el contrario, \texttt{[} devuelve una lista.\\
+
+Puedo poner listas dentro de listas, dentro de listas... Se navega en orden
+como en el ejemplo.
+\end{nota}
+
+Las longitudes de los objetos en la lista se pueden pensar \emph{por
+niveles}, por su propiedad recursiva.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# El tamaño es del "primer nivel".}
+\KeywordTok{length}\NormalTok{(x)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 6
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Hay 6 elementos en x, todos de diferentes tipos}
+\KeywordTok{names}\NormalTok{(x)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "entero"   "numerico" "complejo" "booleano" "caracter" "lista"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Para obtener la longitud dentro del i-ésimo elemento de la lista, debo}
+\KeywordTok{length}\NormalTok{(x[[}\DecValTok{6}\NormalTok{]]) }\CommentTok{# La lista anidada tiene 2 elementos}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 2
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# que no es lo mismo que}
+\KeywordTok{length}\NormalTok{(x[}\DecValTok{6}\NormalTok{]) }\CommentTok{# Donde hay un solo elemento: una lista}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1
+\end{verbatim}
+
+\subsection{Factores (factor)}\label{factores-factor}
+
+Los factores son otro tipo de vectores pero que ayuda a representar
+datos del tipo categórico u ordinal, es decir, cuando los posibles
+valores de la variable tipo caracter es limitado. Por ejemplo, son
+útiles cuando tenemos una variable como ``sexo'' donde, al menos por
+ahora, legalmente solo puede tomar los valores \emph{hombre} o
+\emph{mujer}. Si, en cambio, se tiene un vector de nombres es
+conveniente dejarlo como caracter.
+
+Un factor se guarda como un \emph{enteros} pero con \emph{etiquetas}
+encima tal que cada entero corresponde a una etiqueta (\emph{label}).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{y <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"no"}\NormalTok{, }\StringTok{"si"}\NormalTok{, }\StringTok{"si"}\NormalTok{, }\StringTok{"no"}\NormalTok{)}
+\KeywordTok{class}\NormalTok{(y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "character"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Debemos pedirle explícitamente que lo guarde como factor}
+\NormalTok{x <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"no"}\NormalTok{, }\StringTok{"si"}\NormalTok{, }\StringTok{"si"}\NormalTok{, }\StringTok{"no"}\NormalTok{))}
+\NormalTok{x}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] no si si no
+## Levels: no si
+\end{verbatim}
+
+Al imprimir el objeto, se observa como los niveles fueron asignados.
+Éstos corresponden al número de valores únicos en el vector de caracter
+y se asignan en orden alfabético los valores.
+
+Los factores se despliegan \emph{como si fueran} vectores tipo caracter
+y algunas operaciones son análogas:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{table}\NormalTok{(x)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## x
+## no si 
+##  2  2
+\end{verbatim}
+
+La ganancia es que son más rápidas. Aunque a veces los factores se
+comportan como vectores tipo caracter pero \emph{debemos} recordar que
+por debajo son enteros y tenemos que ser cuidadosos si los tratamos como
+caracteres.
+
+Supongamos por ejemplo que tenemos un factor con valores 5, 6 o 7. Lo
+tenemos guardado como factor.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ej <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"7"}\NormalTok{, }\StringTok{"6"}\NormalTok{, }\StringTok{"5"}\NormalTok{, }\StringTok{"7"}\NormalTok{, }\StringTok{"5"}\NormalTok{, }\StringTok{"7"}\NormalTok{, }\StringTok{"6"}\NormalTok{, }\StringTok{"5"}\NormalTok{, }\StringTok{"5"}\NormalTok{, }\StringTok{"6"}\NormalTok{,}\StringTok{"5"}\NormalTok{))}
+\NormalTok{ej}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] 7 6 5 7 5 7 6 5 5 6 5
+## Levels: 5 6 7
+\end{verbatim}
+
+Dado que los valores son números, conceptualmente tiene sentido
+operarlos como tal:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{as.integer}\NormalTok{(ej)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] 3 2 1 3 1 3 2 1 1 2 1
+\end{verbatim}
+
+Obtuvimos los enteros a los que las etiquetas originales habían sido
+asignados. Para recuperar los valores originales, debemos hacer
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{as.integer}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(ej))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] 7 6 5 7 5 7 6 5 5 6 5
+\end{verbatim}
+
+Algunos métodos que están hechos para caracteres coercionan un factor a
+caracter mientras que otros arrojan un error. Si usas métodos de
+caracteres, lo mejor es ``castear'' (coerción explícita) a caracter tu
+factor utilizando \texttt{as.character(mifactor)}. De esta manera se
+pierden algunas cosas pero te aseguras que las cosas funcionen como
+deben.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{summary}\NormalTok{(x)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## no si 
+##  2  2
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{summary}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(x))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    Length     Class      Mode 
+##         4 character character
+\end{verbatim}
+
+\begin{curiosidad}[Summary]
+\texttt{R} funciona mejor gracias a sus convenciones, es decir, porque
+los contribuyentes se ponen de acuerdo en seguir ciertas 
+reglas de manera que sea más fácil utilizar los paquetes de otros
+(con sus objetos y funciones).\\
+
+La función \texttt{summary} es la función genérica que produce resumenes para objetos
+de muchas clases. La función invoca métodos que dependen de la clase
+del argumento enviado (en estos ejemplos, el resumen para un factor y para un 
+caracter respectivamente).
+\end{curiosidad}
+
+Los factores pueden incluir únicamente los niveles con los que fueron
+definidos. Por esa razón, la unión de dos factores ddeclarados en forma
+independiente puede dar resultados no deseados.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{y <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"si"}\NormalTok{, }\StringTok{"no"}\NormalTok{, }\StringTok{"tal vez"}\NormalTok{))}
+\KeywordTok{c}\NormalTok{(x, y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1 2 2 1 2 1 3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{class}\NormalTok{(}\KeywordTok{c}\NormalTok{(x, y))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "integer"
+\end{verbatim}
+
+No es posible entonces recuperar el valor de las etiquetas. \texttt{R}
+hizo las operaciones posibles pero hubo pérdida de información. Para
+concatenar dos factores correctamente, es necesario:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{factor}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(x), }\KeywordTok{as.character}\NormalTok{(y)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] no      si      si      no      si      no      tal vez
+## Levels: no si tal vez
+\end{verbatim}
+
+En general, se recomienda incluir el valor de u nnivel posible,
+independientemente de si se tiene o no esa respuesta. Sin embargo, el
+problema al concatenar persiste.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"no"}\NormalTok{, }\StringTok{"si"}\NormalTok{, }\StringTok{"si"}\NormalTok{, }\StringTok{"no"}\NormalTok{), }\DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"no"}\NormalTok{, }\StringTok{"si"}\NormalTok{, }\StringTok{"tal vez"}\NormalTok{))}
+\KeywordTok{c}\NormalTok{(x, }\StringTok{"tal vez"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "1"       "2"       "2"       "1"       "tal vez"
+\end{verbatim}
+
+Para datos ordinales como las respuestas en una pregunta de encuesta con
+escala likert
+\footnote{Se denomina así por su autor quien en \parencite{likert1932} describe su uso.}
+los factores son también objetos útiles.
+
+Veamos un ejemplo en donde tenemos 500 respuestas a la pregunta ``este
+tutorial es muy útil'':
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{set.seed}\NormalTok{(}\DecValTok{2887}\NormalTok{)}
+\NormalTok{respuestas <-}\StringTok{ }\KeywordTok{sample}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{5}\NormalTok{), }\DataTypeTok{size =} \DecValTok{500}\NormalTok{, }\DataTypeTok{replace =}\NormalTok{  T}
+\NormalTok{                     , }\DataTypeTok{prob =} \KeywordTok{c}\NormalTok{(}\FloatTok{0.1}\NormalTok{, }\FloatTok{0.15}\NormalTok{, }\FloatTok{0.2}\NormalTok{, }\FloatTok{0.4}\NormalTok{, }\FloatTok{0.15}\NormalTok{))}
+\NormalTok{y <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(}
+  \DataTypeTok{x =}\NormalTok{ respuestas,}
+  \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"1"}\NormalTok{, }\StringTok{"2"}\NormalTok{, }\StringTok{"3"}\NormalTok{, }\StringTok{"4"}\NormalTok{, }\StringTok{"5"}\NormalTok{),}
+  \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"totalmente en desacuerdo"}\NormalTok{, }\StringTok{"en desacuerdo"}
+\NormalTok{             , }\StringTok{"ni de acuerdo ni en desacuerdo"}
+\NormalTok{             , }\StringTok{"de acuerdo"}\NormalTok{, }\StringTok{"totalmente de acuerdo"}\NormalTok{),}
+  \DataTypeTok{ordered =}\NormalTok{ T)}
+\KeywordTok{table}\NormalTok{(y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## y
+##       totalmente en desacuerdo                  en desacuerdo 
+##                             51                             74 
+## ni de acuerdo ni en desacuerdo                     de acuerdo 
+##                            108                            194 
+##          totalmente de acuerdo 
+##                             73
+\end{verbatim}
+
+Nota como la tabla está ordenada de izquierda a derecha con la respuesta
+más en desacuerdo a la más de acuerdo pues introducimos la opción
+\texttt{ordered\ =\ T} en la definición del factor debido a que las
+respuestas están en una escala ordinal.
+
+\begin{curiosidad}[Otras funciones útiles]
+En el ejemplo anterior, introducimos las funciones:
+\begin{itemize}
+\item \texttt{set.seed}: sirve para fijar la semilla con la que se generan números aleatorios. Esto es importante pues al fijarla se puede reproducir exactamente el mismo vector de respuestas cuantas veces sea necesario.
+\item \texttt{sample}: permite extraer muestras de un vector \texttt{x} especificando el tamaño de la muestra, si es muestreo con reemplazo y permite establecer pesos para el muestreo.
+\end{itemize}
+\end{curiosidad}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{table}\NormalTok{(y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## y
+##       totalmente en desacuerdo                  en desacuerdo 
+##                             51                             74 
+## ni de acuerdo ni en desacuerdo                     de acuerdo 
+##                            108                            194 
+##          totalmente de acuerdo 
+##                             73
+\end{verbatim}
+
+Por último, al utilizar factores (y más aún, declarar un orden cuando es
+conceptualmente pertinente) es más fácil visualizar correctamente los
+datos con menor desgaste. Si graficamos las respuestas como caracter
+recibimos:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(ggplot2)}
+\NormalTok{df <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{como.caracter =} \KeywordTok{as.character}\NormalTok{(y), }\DataTypeTok{como.factor =}\NormalTok{ y) }
+\KeywordTok{ggplot}\NormalTok{(df, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ como.caracter)) }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_bar}\NormalTok{() }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{axis.text.x =} \KeywordTok{element_text}\NormalTok{(}\DataTypeTok{angle =} \DecValTok{45}\NormalTok{, }\DataTypeTok{hjust =} \DecValTok{1}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{1b_basico_files/figure-latex/unnamed-chunk-53-1.pdf}
+
+Si utilizamos el factor ordenado obtenemos:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(df, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ como.factor)) }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_bar}\NormalTok{() }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{axis.text.x =} \KeywordTok{element_text}\NormalTok{(}\DataTypeTok{angle =} \DecValTok{45}\NormalTok{, }\DataTypeTok{hjust =} \DecValTok{1}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{1b_basico_files/figure-latex/unnamed-chunk-54-1.pdf}
+
+\begin{nota}[Nota]
+En R muchas cosas son más fáciles si se utliza la estructura de datos apropiada 
+y se establecen correctamente todos los metadatos necesarios al objeto para 
+que los defaults de R faciliten el trabajo.
+
+Al utilizar factores cuando es pertinente se gana, al menos, lo siguiente:
+
+\begin{itemize}
+\item Se almacenan los datos usando menos memoria. Esto es importante pues R trabaja en ram.
+\item El rendimiento es mejor que usando caracteres.
+\item Por \textit{default} R utiliza los métodos apropiados para el tipo de variable. Por ejemplo, si se introduce un factor como variable dependiente en un modelo de regresión, automáticamente aplica un logit y no un ols.
+\item Se pueden especificar elementos, como el orden de los niveles, que son útiles para el análisis y presentación de resultados.
+\end{itemize}
+
+A pesar de sus ventajas, si son incorrectamente utilizados las estructuras de datos pueden resultar en pérdidas de información o comportamientos indeseados.
+\end{nota}
+
+\subsection{Data frames}\label{data-frames}
+
+Los dataframes son una de las estructuras de datos más importantes para
+guardar datos en R
+\parencite[][sección ``Data frames'']{wickham2014advanced}. En
+\texttt{python}, existe una estructura similar en la librería
+\texttt{pandas} creado para facilitar el análisis de datos en este
+lenguaje sin la necesidad de cambiar a un lenguaje de dominio específico
+como \texttt{R}
+\parencite[][sección ``What problem does pandas solve?'']{pandas}.
+
+Este objeto es tan importante porque muchos de los modelos estadísticos
+que se utliizan necesitan una estructura de datos tabular.
+
+Los dataframes tienen atributos adicionales a los que tienen los
+vectores:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{rownames()}
+\item
+  \texttt{colnames()}
+\item
+  \texttt{names()}
+\item
+  \texttt{head()} te enseña las primeras 6 lineas.
+\item
+  \texttt{tail()} te enseña las últimas 6 líneas.
+\item
+  \texttt{nrow()} te da el número de filas
+\item
+  \texttt{ncol()} te da el número de columnas
+\item
+  \texttt{str()} te dice el tipo de cada columna y te muestra ejemplos
+\end{itemize}
+
+Podemos ver a los dataframes como un tipo de lista con algunas
+restricciones \parencite[][sección ``Data frames'']{rmanual}:
+
+\begin{itemize}
+\tightlist
+\item
+  Los componentes deben ser vectores, factores, matrices numéricas,
+  listas u otros dataframes.
+\item
+  Las matrices, listaa y otros data frames proveen de tantas columnas,
+  elementos o variables como las originales, respectivamente.
+\item
+  Los vectores numéricos, lógicos y factores se incluyen en el dataframe
+  sin transformaciones adicionales. Los vectores tipo caracter se
+  coercionan a factores.
+\item
+  Todos los elementos (las columnas) deben tener la misma longitud o
+  tamaño.
+\end{itemize}
+
+Los dataframes se pueden crear utilizando comandos como
+\texttt{read.table()} (que tiene como caso particular
+\texttt{read.csv()}. Se verá con detalle el uso de estas funciones en la
+sección \ref{importacion-de-datos}.
+
+Para convertir un dataframe a una matriz se utiliza
+\texttt{data.matrix()}. La coerción es forzada y no necesariamente da lo
+que uno espera.
+
+Se pueden crear data.frames con la función \texttt{data.frame()}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}
+  \DataTypeTok{x =} \KeywordTok{rnorm}\NormalTok{(}\DecValTok{10}\NormalTok{),}
+  \DataTypeTok{y =} \KeywordTok{runif}\NormalTok{(}\DecValTok{10}\NormalTok{),}
+  \DataTypeTok{n =}\NormalTok{ LETTERS[}\DecValTok{1}\OperatorTok{:}\DecValTok{10}\NormalTok{],}
+  \DataTypeTok{stringsAsFactors =}\NormalTok{ F }\CommentTok{# F = FALSE, T = TRUE}
+\NormalTok{)}
+
+\KeywordTok{head}\NormalTok{(df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##             x          y n
+## 1  0.89814648 0.52584158 A
+## 2 -0.37532709 0.68789829 B
+## 3 -2.17112789 0.60079780 C
+## 4 -0.63011959 0.86922537 D
+## 5  0.03778982 0.44119997 E
+## 6  0.35565256 0.02638035 F
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{dim}\NormalTok{(df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 10  3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{str}\NormalTok{(df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 'data.frame':    10 obs. of  3 variables:
+##  $ x: num  0.8981 -0.3753 -2.1711 -0.6301 0.0378 ...
+##  $ y: num  0.526 0.688 0.601 0.869 0.441 ...
+##  $ n: chr  "A" "B" "C" "D" ...
+\end{verbatim}
+
+\begin{curiosidad}[¿Por qué usar la opción \texttt{stringsAsFactors = F}?]
+
+Por \textit{default} las columnas tipo caracter en un \texttt{dataframe} son
+convertidas a factor. Esto es útil cuando se tienen los datos limpios y se va 
+a proceder a modelas sin realizar mayores transformaciones o limpiezas a los
+datos. Sin embargo, cuando se realizarán manipulaciones a los mismos, es 
+recomendable cambiar la opción por \textit{default} para leer columnas
+como caracter, de esta forma se evitan los problemas mencionados en la sección
+de factores.
+\end{curiosidad}
+
+Es posible concatenar columnas o filas:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df <-}\StringTok{ }\KeywordTok{cbind}\NormalTok{(df, }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{z =} \KeywordTok{rexp}\NormalTok{(}\DecValTok{10}\NormalTok{)))}
+\NormalTok{df <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(df, }\KeywordTok{c}\NormalTok{(}\KeywordTok{rnorm}\NormalTok{(}\DecValTok{1}\NormalTok{), }\KeywordTok{runif}\NormalTok{(}\DecValTok{1}\NormalTok{), }\StringTok{"K"}\NormalTok{, }\KeywordTok{rexp}\NormalTok{(}\DecValTok{1}\NormalTok{)))}
+\KeywordTok{dim}\NormalTok{(df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 11  4
+\end{verbatim}
+
+Repasamos las principales maneras de extraer los elementos de un
+dataframe utilizando el objeto \(df\):
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}
+  \DataTypeTok{x =} \KeywordTok{rnorm}\NormalTok{(}\DecValTok{4}\NormalTok{),}
+  \DataTypeTok{y =} \KeywordTok{runif}\NormalTok{(}\DecValTok{4}\NormalTok{),}
+  \DataTypeTok{n =}\NormalTok{ LETTERS[}\DecValTok{1}\OperatorTok{:}\DecValTok{4}\NormalTok{],}
+  \DataTypeTok{stringsAsFactors =}\NormalTok{ F }\CommentTok{# F = FALSE, T = TRUE}
+\NormalTok{)}
+
+\CommentTok{# df[i]}
+\NormalTok{df[}\DecValTok{1}\NormalTok{] }\CommentTok{# La primera columna}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##             x
+## 1  0.38112864
+## 2  0.51810269
+## 3 -0.84698783
+## 4  0.03558633
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{class}\NormalTok{(df[}\DecValTok{1}\NormalTok{]) }\CommentTok{# Regresa un dataframe}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "data.frame"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# df[[i]]}
+\NormalTok{df[[}\DecValTok{1}\NormalTok{]] }\CommentTok{# La primera columna}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1]  0.38112864  0.51810269 -0.84698783  0.03558633
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{class}\NormalTok{(df[[}\DecValTok{1}\NormalTok{]]) }\CommentTok{# Regresa un vector }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "numeric"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# df[i, j]}
+\NormalTok{df[}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{] }\CommentTok{# elemento en la primera fila, segunda columna}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.5346584
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# df[[i, j]]}
+\NormalTok{df[[}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{]] }\CommentTok{# mismo resultado}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.5346584
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# df$columna }
+\NormalTok{df}\OperatorTok{$}\NormalTok{x }\CommentTok{# La columna llamada x}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1]  0.38112864  0.51810269 -0.84698783  0.03558633
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# df$"columna"}
+\NormalTok{df}\OperatorTok{$}\StringTok{"x"}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1]  0.38112864  0.51810269 -0.84698783  0.03558633
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df[[}\StringTok{"n"}\NormalTok{]][}\DecValTok{1}\NormalTok{] }\CommentTok{# Podemos navegar igual que en una lista}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "A"
+\end{verbatim}
+
+\begin{nota}[\texttt{[]} vs. \texttt{[[]]}]
+Debido a que los \textit{dataframes} son un caso particular de las listas,
+\texttt{[[} es también fundamental para accesar correctamente los objetos.\\ 
+
+\texttt{[[} quita los nombres o atributos, permite extraer
+únicamente un elemento a la vez y devuelve el objeto dentro 
+del i-ésimo elemento. \\
+
+\texttt{[} devuelve un data frame con la columna(s) que sea nombradas o los índices
+que sean utilizados.
+\end{nota}
+
+Cuando se declara un \texttt{dataframe} automáticamente se verifican que
+los nombres sean sintácticamente válidos con la función
+\texttt{make.names}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{data.frame}\NormalTok{(}\StringTok{"2000"}\NormalTok{ =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{100}\OperatorTok{:}\DecValTok{104}\NormalTok{)}
+\NormalTok{           , }\StringTok{"una-variable"}\NormalTok{ =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{200}\OperatorTok{:}\DecValTok{204}\NormalTok{)}
+\NormalTok{           , }\StringTok{".2000"}\NormalTok{ =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{300}\OperatorTok{:}\DecValTok{304}\NormalTok{)}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   X2000 una.variable X.2000
+## 1   100          200    300
+## 2   101          201    301
+## 3   102          202    302
+## 4   103          203    303
+## 5   104          204    304
+\end{verbatim}
+
+\begin{curiosidad}[Nombres sintácticamente válidos]
+Los \texttt{dataframes} pueden tener únicamente nombres sintácticamente 
+válidos \parencite[][sección \textit{What are valid names?}]{rfaq}:
+\begin{itemize}
+\item Está compuesto por letras, números, puntos o guiones bajos. 
+\item No deben empezar con números. Tampoco pueden empezar con un punto seguido de un número.
+\item No se permiten palabras reservadas (if, else, repeat, next, TRUE, FALSE, entre otras).
+\end{itemize}
+\end{curiosidad}
+
+\section{Estructuras de datos fuera de
+R-básico}\label{estructuras-de-datos-fuera-de-r-basico}
+
+Fuera del \textcite{rbase}, se han desarrollado otras estructuras de
+datos particularmente útiles para hacer análisis de datos. Hay paquetes
+compatibles con este tipo de estructuras que facilitan el trabajo. A
+continuación presentaremos \texttt{data.tables} y \texttt{tibbles} que
+sustituyen el \texttt{data.frame}. Ambos se coercionan a
+\emph{dataframe} de manera automática cuando se llama a una función que
+contiene únicamente métodos para \emph{dataframe}.
+
+\subsection{Data tables}\label{data-tables}
+
+\texttt{data.table} provee una versión de alto rendimiento para los
+\emph{dataframes} del \textcite{rbase}. Está implementado en el paquete
+del mismo nombre \parencite{datatable}.
+
+Un \texttt{data.table} se crea en forma análoga a un
+\texttt{data.frame}. En la sección anterior, creamos un objeto llamado
+\(df\)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}
+  \DataTypeTok{x =} \KeywordTok{rnorm}\NormalTok{(}\DecValTok{4}\NormalTok{),}
+  \DataTypeTok{y =} \KeywordTok{runif}\NormalTok{(}\DecValTok{4}\NormalTok{),}
+  \DataTypeTok{n =}\NormalTok{ LETTERS[}\DecValTok{1}\OperatorTok{:}\DecValTok{4}\NormalTok{],}
+  \DataTypeTok{stringsAsFactors =}\NormalTok{ F }
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Usamos la función \texttt{data.table()}:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(data.table)}
+\NormalTok{dt <-}\StringTok{ }\KeywordTok{data.table}\NormalTok{(}
+  \DataTypeTok{x =} \KeywordTok{rnorm}\NormalTok{(}\DecValTok{4}\NormalTok{),}
+  \DataTypeTok{y =} \KeywordTok{runif}\NormalTok{(}\DecValTok{4}\NormalTok{),}
+  \DataTypeTok{n =}\NormalTok{ LETTERS[}\DecValTok{1}\OperatorTok{:}\DecValTok{4}\NormalTok{]}
+\NormalTok{)}
+\KeywordTok{str}\NormalTok{(dt)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Classes 'data.table' and 'data.frame':   4 obs. of  3 variables:
+##  $ x: num  1.777 1.024 0.952 -0.492
+##  $ y: num  0.0295 0.9999 0.4618 0.6732
+##  $ n: chr  "A" "B" "C" "D"
+##  - attr(*, ".internal.selfref")=<externalptr>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{class}\NormalTok{(dt)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "data.table" "data.frame"
+\end{verbatim}
+
+Por \emph{default} los vectores tipo caracter son leidos \emph{as-is},
+es decir, sin coercionar a factor. El objeto con clase \emph{data.table}
+retiene todos los atributos del \emph{data.frame}. Podemos usar las
+funciones: \texttt{head}, \texttt{names},
+
+Para crear \texttt{data.tables} se puede coercionar cualquier
+\texttt{data.frame} con
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{as.data.table}\NormalTok{(diamonds)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##        carat       cut color clarity depth table price    x    y    z
+##     1:  0.23     Ideal     E     SI2  61.5    55   326 3.95 3.98 2.43
+##     2:  0.21   Premium     E     SI1  59.8    61   326 3.89 3.84 2.31
+##     3:  0.23      Good     E     VS1  56.9    65   327 4.05 4.07 2.31
+##     4:  0.29   Premium     I     VS2  62.4    58   334 4.20 4.23 2.63
+##     5:  0.31      Good     J     SI2  63.3    58   335 4.34 4.35 2.75
+##    ---                                                               
+## 53936:  0.72     Ideal     D     SI1  60.8    57  2757 5.75 5.76 3.50
+## 53937:  0.72      Good     D     SI1  63.1    55  2757 5.69 5.75 3.61
+## 53938:  0.70 Very Good     D     SI1  62.8    60  2757 5.66 5.68 3.56
+## 53939:  0.86   Premium     H     SI2  61.0    58  2757 6.15 6.12 3.74
+## 53940:  0.75     Ideal     D     SI2  62.2    55  2757 5.83 5.87 3.64
+\end{verbatim}
+
+Nota como los \texttt{datatables} tienen por \emph{default} una
+impresión diferente que un \texttt{dataframe} pues imprimen los primeros
+y los últimos 6 renglones.
+
+Los \emph{data.tables} incorporan nuevas maneras de extraer objetos,
+agruparlos y juntarlos con otras tablas. Para más detalles, se pueden
+revisar las viñetas del paquete:
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Item & Title\tabularnewline
+\midrule
+\endhead
+datatable-faq & Frequently asked questions (source, pdf)\tabularnewline
+datatable-intro & Quick introduction (source, pdf)\tabularnewline
+datatable-intro-vignette & Vignette Title (source, html)\tabularnewline
+datatable-keys-fast-subset & Vignette Title (source,
+html)\tabularnewline
+datatable-reference-semantics & Vignette Title (source,
+html)\tabularnewline
+datatable-reshape & Vignette Title (source, html)\tabularnewline
+\bottomrule
+\end{longtable}
+
+Para ver una viñeta en específico se puede usar
+\texttt{vignette("datatable-faq",\ package\ =\ "data.table")}.
+
+\begin{curiosidad}[Viñetas]
+Todos los paquetes tienen viñetas en donde se documentan en forma más detallada
+sus funciones, clases y métodos.
+\end{curiosidad}
+
+\subsection{Tibbles}\label{tibbles}
+
+Los \texttt{tibbles} son escencialmente \texttt{dataframes} pero con
+algunas modificaciones a los \emph{defaults} para facilitar el trabajo
+\parencite[][ver sección ``tibbles'']{wickham2016r}.
+
+Un \texttt{tibble} se crea en forma análoga a un \texttt{data.frame}. En
+la sección \ref{}, creamos un objeto llamado \(df\)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}
+  \DataTypeTok{x =} \KeywordTok{rnorm}\NormalTok{(}\DecValTok{4}\NormalTok{),}
+  \DataTypeTok{y =} \KeywordTok{runif}\NormalTok{(}\DecValTok{4}\NormalTok{),}
+  \DataTypeTok{n =}\NormalTok{ LETTERS[}\DecValTok{1}\OperatorTok{:}\DecValTok{4}\NormalTok{],}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Usamos la función \texttt{tibble()} del paquete \textcite{tibble}:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(tibble)}
+\NormalTok{tb <-}\StringTok{ }\KeywordTok{tibble}\NormalTok{(}
+  \DataTypeTok{x =} \KeywordTok{rnorm}\NormalTok{(}\DecValTok{4}\NormalTok{),}
+  \DataTypeTok{y =} \KeywordTok{runif}\NormalTok{(}\DecValTok{4}\NormalTok{),}
+  \DataTypeTok{n =}\NormalTok{ LETTERS[}\DecValTok{1}\OperatorTok{:}\DecValTok{4}\NormalTok{]}
+\NormalTok{)}
+\KeywordTok{str}\NormalTok{(tb)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Classes 'tbl_df', 'tbl' and 'data.frame':    4 obs. of  3 variables:
+##  $ x: num  0.208 1.155 0.731 -0.214
+##  $ y: num  0.146 0.895 0.418 0.809
+##  $ n: chr  "A" "B" "C" "D"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{class}\NormalTok{(tb)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "tbl_df"     "tbl"        "data.frame"
+\end{verbatim}
+
+Para crear \texttt{tibbles} se puede coercionar cualquier
+\texttt{data.frame} con
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{as_tibble}\NormalTok{(diamonds)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 53,940 × 10
+##    carat       cut color clarity depth table price     x     y     z
+##    <dbl>     <ord> <ord>   <ord> <dbl> <dbl> <int> <dbl> <dbl> <dbl>
+## 1   0.23     Ideal     E     SI2  61.5    55   326  3.95  3.98  2.43
+## 2   0.21   Premium     E     SI1  59.8    61   326  3.89  3.84  2.31
+## 3   0.23      Good     E     VS1  56.9    65   327  4.05  4.07  2.31
+## 4   0.29   Premium     I     VS2  62.4    58   334  4.20  4.23  2.63
+## 5   0.31      Good     J     SI2  63.3    58   335  4.34  4.35  2.75
+## 6   0.24 Very Good     J    VVS2  62.8    57   336  3.94  3.96  2.48
+## 7   0.24 Very Good     I    VVS1  62.3    57   336  3.95  3.98  2.47
+## 8   0.26 Very Good     H     SI1  61.9    55   337  4.07  4.11  2.53
+## 9   0.22      Fair     E     VS2  65.1    61   337  3.87  3.78  2.49
+## 10  0.23 Very Good     H     VS1  59.4    61   338  4.00  4.05  2.39
+## # ... with 53,930 more rows
+\end{verbatim}
+
+Los \texttt{tibbles}, como los \texttt{datatables} tienen una impresión
+diferente que un \texttt{dataframe}. En este caso, se imprime la
+dimensión y los primeros 10 renglones.
+
+Al crear un \texttt{tibble} nunca hay conversión de tipos (no se
+convierte de caracter a factor), no se cambian los nombres de las
+variables y no se crean nombres para las filas. Se permite también tener
+nombres de variables que no son sintácticamente válidos, para utilizar
+estos nombres, se declaran con acento invertido \texttt{`}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{tibble}\NormalTok{(}
+  \StringTok{`}\DataTypeTok{2000}\StringTok{`}\NormalTok{ =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{100}\OperatorTok{:}\DecValTok{104}\NormalTok{)}
+\NormalTok{  , }\StringTok{`}\DataTypeTok{una-variable}\StringTok{`}\NormalTok{ =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{200}\OperatorTok{:}\DecValTok{204}\NormalTok{)}
+\NormalTok{  , }\StringTok{`}\DataTypeTok{año}\StringTok{`}\NormalTok{ =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{300}\OperatorTok{:}\DecValTok{304}\NormalTok{)}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 5 × 3
+##   `2000` `una-variable`   año
+##    <int>          <int> <int>
+## 1    100            200   300
+## 2    101            201   301
+## 3    102            202   302
+## 4    103            203   303
+## 5    104            204   304
+\end{verbatim}
+
+Para utilizar nombres no sintácticamente válidos es necesario
+conjugarlos con el acento invertido al nombrarlos en otros paquetes como
+\texttt{dplyr}, \texttt{ggplot2}, entre otros que son compatibles con el
+objeto \texttt{tibble}.
+
+La otra diferencia importante entre los \texttt{tibbles} y los
+\texttt{data.frames} es que pueden incorporar elementos de listas en una
+columna en forma sencilla \parencite{wickhammx}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{try}\NormalTok{(df <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{list}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{, }\DecValTok{3}\OperatorTok{:}\DecValTok{5}\NormalTok{)))}
+
+\NormalTok{df<-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{I}\NormalTok{(}\KeywordTok{list}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{, }\DecValTok{3}\OperatorTok{:}\DecValTok{5}\NormalTok{)))}
+\NormalTok{df}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##         x
+## 1    1, 2
+## 2 3, 4, 5
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tb <-}\StringTok{ }\KeywordTok{tibble}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{list}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{, }\DecValTok{3}\OperatorTok{:}\DecValTok{5}\NormalTok{))}
+\NormalTok{tb}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 2 × 1
+##           x
+##      <list>
+## 1 <int [2]>
+## 2 <int [3]>
+\end{verbatim}
+
+\section{Objetos importantes}\label{objetos-importantes}
+
+\subsection{Infinito}\label{infinito}
+
+\texttt{Inf} es como R denomina al infinito. En el mundo de R se permite
+también positivo o negativo.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DecValTok{1}\OperatorTok{/}\DecValTok{0}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] Inf
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DecValTok{1}\OperatorTok{/}\OtherTok{Inf}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0
+\end{verbatim}
+
+\subsection{No es un número}\label{no-es-un-numero}
+
+\texttt{NaN} es como R denota a algo que no es un número (literal:
+\emph{not a number}).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DecValTok{0}\OperatorTok{/}\DecValTok{0}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] NaN
+\end{verbatim}
+
+\subsection{Valores perdidos (missing
+values)}\label{valores-perdidos-missing-values}
+
+En la página \pageref{otros-objetos-importantes} se habló de otros
+objetos en R. De particular importancia es \texttt{NA} para valores
+perdidos en general y \texttt{NaN} para operaciones matemáticas no
+definidas. Lógicamente, podemos preguntar a R si un objeto es de este
+tipo
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{is.na}\NormalTok{()}
+\KeywordTok{is.nan}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+Los valores \texttt{NA} tienen una clase particular. Puede haber valores
+perdidos enteros \texttt{NA\_integer\_} o caracteres
+\texttt{NA\_character\_}. \texttt{NaN} es un \texttt{NA} pero no al
+revés.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{6}\NormalTok{, }\OtherTok{NA}\NormalTok{, }\OtherTok{NaN}\NormalTok{, }\DecValTok{45}\NormalTok{)}
+\KeywordTok{is.nan}\NormalTok{(x)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] FALSE FALSE FALSE FALSE  TRUE FALSE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{is.na}\NormalTok{(x)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] FALSE FALSE FALSE  TRUE  TRUE FALSE
+\end{verbatim}
+
+Cuando tenemos un dataframe que tiene valores perdidos y lo queremos
+incorporar, por ejemplo, a un modelo de regresión, lo primero que hará
+el método es excluir todos los renglones que tengan \emph{algún} valor
+perdido usando \texttt{na.exclude(datos)}. Normalmente, este \textbf{no}
+es el tratamiento deseado para valores perdidos pero es el
+comportamiento por \emph{default}.
+
+\section{Estructuras de control}\label{estructuras-de-control}
+
+Las estructuras de control permiten controlar la ejecución. Pueden ser
+utilizadas en un script o dentro de funciones. Entre las más comunes se
+encuentran:
+
+\begin{itemize}
+\tightlist
+\item
+  if, else
+\item
+  for
+\item
+  while
+\item
+  repeat
+\item
+  break
+\item
+  next
+\item
+  return
+\end{itemize}
+
+\subsection{If}\label{if}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{if}\NormalTok{ ( condicion ) \{}
+  \CommentTok{# Cuando se cumple la condicion, ejecuta esto}
+\NormalTok{\} }\ControlFlowTok{else}\NormalTok{ \{}
+  \CommentTok{# Para todo lo que no se cumple la condicion, ejecuta esto}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Ejemplo,
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x <-}\StringTok{ }\DecValTok{1}\OperatorTok{:}\DecValTok{20}
+\ControlFlowTok{if}\NormalTok{ ( }\KeywordTok{sample}\NormalTok{(x, }\DecValTok{1}\NormalTok{) }\OperatorTok{<=}\StringTok{ }\DecValTok{10}\NormalTok{ ) \{}
+  \KeywordTok{print}\NormalTok{(}\StringTok{"x es menor o igual que 10"}\NormalTok{)}
+\NormalTok{\} }\ControlFlowTok{else}\NormalTok{ \{}
+  \KeywordTok{print}\NormalTok{(}\StringTok{"x es mayor que 10"}\NormalTok{)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "x es menor o igual que 10"
+\end{verbatim}
+
+O lo que es lo mismo:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ifelse}\NormalTok{(}\KeywordTok{sample}\NormalTok{(x, }\DecValTok{1}\NormalTok{) }\OperatorTok{<=}\StringTok{ }\DecValTok{10}\NormalTok{, }\StringTok{"x es menor o igual que 10"}\NormalTok{, }\StringTok{"x es mayor que 10"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "x es menor o igual que 10"
+\end{verbatim}
+
+También es posible asignar variables dentro de una condición.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{if}\NormalTok{ ( }\KeywordTok{sample}\NormalTok{(x, }\DecValTok{1}\NormalTok{) }\OperatorTok{<=}\StringTok{ }\DecValTok{10}\NormalTok{ )\{}
+\NormalTok{  y <-}\StringTok{ }\DecValTok{0}
+\NormalTok{\} }\ControlFlowTok{else}\NormalTok{ \{}
+\NormalTok{  y <-}\StringTok{ }\DecValTok{1}
+\NormalTok{\}}
+
+\CommentTok{# o}
+
+\NormalTok{y <-}\StringTok{ }\ControlFlowTok{if}\NormalTok{ ( }\KeywordTok{sample}\NormalTok{(x, }\DecValTok{1}\NormalTok{) }\OperatorTok{<=}\StringTok{ }\DecValTok{10}\NormalTok{ )\{}
+    \DecValTok{0}
+\NormalTok{  \} }\ControlFlowTok{else}\NormalTok{ \{}
+    \DecValTok{1}
+\NormalTok{  \}}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{For}\label{for}
+
+Un ciclo \texttt{for} itera una variable y va realizando, para cada
+iteración, la secuencia de comandos que se especifica dentro del mismo.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\DecValTok{3}\NormalTok{ )\{}
+  \KeywordTok{print}\NormalTok{(}\KeywordTok{paste0}\NormalTok{(}\StringTok{"i vale: "}\NormalTok{, i))}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "i vale: 1"
+## [1] "i vale: 2"
+## [1] "i vale: 3"
+\end{verbatim}
+
+Es posible también iterar directamente sobre vectores o partes de
+vectores.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Andrea"}\NormalTok{, }\StringTok{"Liz"}\NormalTok{, }\StringTok{"Edwin"}\NormalTok{, }\StringTok{"Miguel"}\NormalTok{)}
+
+\ControlFlowTok{for}\NormalTok{ ( i }\ControlFlowTok{in} \KeywordTok{seq}\NormalTok{(x) ) \{}
+  \KeywordTok{print}\NormalTok{(x[i])}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Andrea"
+## [1] "Liz"
+## [1] "Edwin"
+## [1] "Miguel"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{for}\NormalTok{ ( e }\ControlFlowTok{in}\NormalTok{ x ) \{}
+  \KeywordTok{print}\NormalTok{(e)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Andrea"
+## [1] "Liz"
+## [1] "Edwin"
+## [1] "Miguel"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{for}\NormalTok{ ( i }\ControlFlowTok{in} \KeywordTok{seq}\NormalTok{(x) )\{}
+  \KeywordTok{print}\NormalTok{(x[i])}
+\NormalTok{\}}
+
+\ControlFlowTok{for}\NormalTok{ ( i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\KeywordTok{length}\NormalTok{(x) ) }\KeywordTok{print}\NormalTok{(x[i])}
+\end{Highlighting}
+\end{Shaded}
+
+Podemos incluir \texttt{fors} dentro de \texttt{fors}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{m <-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{10}\NormalTok{, }\DecValTok{2}\NormalTok{)}
+
+\ControlFlowTok{for}\NormalTok{( i }\ControlFlowTok{in} \KeywordTok{seq}\NormalTok{(}\KeywordTok{nrow}\NormalTok{(m)) ) \{}
+  \ControlFlowTok{for}\NormalTok{ ( j }\ControlFlowTok{in} \KeywordTok{seq}\NormalTok{(}\KeywordTok{ncol}\NormalTok{(m)) ) \{}
+    \KeywordTok{print}\NormalTok{(m[i, j])}
+\NormalTok{  \}}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Whiles}\label{whiles}
+
+Otra manera de iterar sobre comandos es con la estructura
+\texttt{while}. A diferencia del \texttt{for}, esta te permite iterar
+sobre la secuencia de comandos especificada hasta que se cumpla cierta
+condición lógica. Esta última tiene que variar a lo largo de las
+iteraciones o es posible generar ciclos infinitos. Esta estructrura da
+mucha flexibilidad.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x <-}\StringTok{ }\KeywordTok{runif}\NormalTok{(}\DecValTok{1}\NormalTok{)}
+
+\ControlFlowTok{while}\NormalTok{ ( x }\OperatorTok{<}\StringTok{ }\FloatTok{0.20} \OperatorTok{|}\StringTok{ }\NormalTok{i }\OperatorTok{<=}\StringTok{ }\DecValTok{10}\NormalTok{ ) \{}
+  \KeywordTok{print}\NormalTok{(x)}
+\NormalTok{  x <-}\StringTok{ }\KeywordTok{runif}\NormalTok{(}\DecValTok{1}\NormalTok{)}
+\NormalTok{  i <-}\StringTok{ }\NormalTok{i }\OperatorTok{+}\StringTok{ }\DecValTok{1}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{nota}[Importante]
+Asegurate de especificar una manera de salir de un ciclo while.
+\end{nota}
+
+\subsection{Repeat - Break}\label{repeat---break}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x <-}\StringTok{ }\DecValTok{1}
+\ControlFlowTok{repeat}\NormalTok{ \{}
+  \CommentTok{# Haz algo}
+  \KeywordTok{print}\NormalTok{(x)}
+\NormalTok{  x =}\StringTok{ }\NormalTok{x}\OperatorTok{+}\DecValTok{1}
+  \CommentTok{# Hasta que se cumpla lo siguiente}
+  \ControlFlowTok{if}\NormalTok{ (x }\OperatorTok{==}\StringTok{ }\DecValTok{6}\NormalTok{)\{}
+    \ControlFlowTok{break}
+\NormalTok{  \}}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Next}\label{next}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\DecValTok{20}\NormalTok{) \{}
+  \ControlFlowTok{if}\NormalTok{ (i }\OperatorTok{%%}\StringTok{ }\DecValTok{2} \OperatorTok{==}\StringTok{ }\DecValTok{0}\NormalTok{)\{}
+    \ControlFlowTok{next}
+\NormalTok{  \} }\ControlFlowTok{else}\NormalTok{ \{}
+    \KeywordTok{print}\NormalTok{(i)}
+\NormalTok{  \}}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Este ciclo itera sobre los valores del 1 al 20 e imprime los valores
+impares.
+
+\begin{nota}[Importante]
+R no es muy eficiente cuando se combina con estructuras de control tipo for o 
+while. Sin embargo, estas estructuras son muy comunes y es útil conocerlas. 
+
+Normalmente, se recomienda utilizar estructuras vectorizadas (como ifelse) pues,
+de esta manera, R es mucho más eficiente. 
+\end{nota}
+
+\section{Material adicional}\label{material-adicional}
+
+\begin{itemize}
+\tightlist
+\item
+  Curso de \texttt{swirl} \textbf{R Programming}, módulos 4 a 9.
+\item
+  Curso \textbf{Introduction to R} de
+  \href{https://www.datacamp.com/courses/free-introduction-to-r}{Data
+  Camp}.
+\item
+  Curso \textbf{TryR} de \href{http://tryr.codeschool.com/}{Code
+  School}.
+\end{itemize}
+
+
+\end{document}
